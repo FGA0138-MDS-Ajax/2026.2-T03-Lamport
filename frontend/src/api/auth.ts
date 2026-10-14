@@ -15,6 +15,10 @@ export interface RegisterData {
   accept_terms: boolean
 }
 
+export interface Terms {
+  version: string
+}
+
 interface TokenResponse {
   access_token: string
   token_type: 'bearer'
@@ -27,4 +31,8 @@ export const authApi = {
     request<TokenResponse>('/auth/login', { method: 'POST', body: { email, password } }),
   logout: (token: string) => request<void>('/auth/logout', { method: 'POST', token }),
   me: (token: string) => request<User>('/users/me', { token }),
+}
+
+export const termsApi = {
+  get: () => request<Terms>('/terms'),
 }

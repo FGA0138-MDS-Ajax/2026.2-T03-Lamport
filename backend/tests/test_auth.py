@@ -3,6 +3,7 @@ from datetime import UTC, datetime, timedelta
 
 import jwt
 
+from app.core.config import get_settings
 from app.core.security import ALGORITHM
 
 
@@ -119,3 +120,10 @@ def test_health(client):
 
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
+
+
+def test_terms_returns_current_version(client):
+    response = client.get("/api/terms")
+
+    assert response.status_code == 200
+    assert response.json() == {"version": get_settings().terms_version}

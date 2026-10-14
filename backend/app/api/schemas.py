@@ -31,3 +31,7 @@ class UserResponse(BaseModel):
     email: str
     role: Role
     created_at: datetime
+
+
+class TermsResponse(BaseModel):
+    version: str
