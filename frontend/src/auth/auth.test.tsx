@@ -33,6 +33,20 @@ describe('authentication flow', () => {
     expect(sessionStorage.getItem('sintoniza.token')).toBeNull()
   })
 
+  it('tells the user to wait after too many failed attempts', async () => {
+    mockApi({
+      'POST /api/auth/login': {
+        status: 429,
+        body: { detail: 'Too many login attempts, try again later' },
+      },
+    })
+    renderApp('/login')
+
+    await submitLogin('senha-errada')
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/Muitas tentativas sem sucesso/)
+  })
+
   it('logs in, opens the private page and logs out', async () => {
     const fetchMock = mockApi({
       'POST /api/auth/login': {

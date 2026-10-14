@@ -40,7 +40,12 @@ export function LoginPage() {
       // On success the GuestOnly guard redirects to the private area.
       await login(email.trim(), password)
     } catch (error) {
-      setSubmitError(describeError(error, { 401: 'E-mail ou senha incorretos.' }))
+      setSubmitError(
+        describeError(error, {
+          401: 'E-mail ou senha incorretos.',
+          429: 'Muitas tentativas sem sucesso. Aguarde alguns minutos e tente novamente.',
+        }),
+      )
       setSubmitting(false)
     }
   }
