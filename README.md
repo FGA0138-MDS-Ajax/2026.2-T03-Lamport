@@ -56,6 +56,8 @@ python -c "import secrets; print(secrets.token_urlsafe(48))"
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | Validade do token de acesso (padrão: 60)                    |
 | `CORS_ORIGINS`                | Origens autorizadas a chamar a API (lista JSON)             |
 | `TERMS_VERSION`               | Versão dos termos registrada no consentimento do cadastro   |
+| `LOGIN_MAX_ATTEMPTS`          | Falhas de login permitidas por e-mail na janela (padrão: 5) |
+| `LOGIN_LOCKOUT_MINUTES`       | Duração da janela de bloqueio, em minutos (padrão: 15)      |
 
 Aplique as migrações e inicie a API:
 
@@ -112,10 +114,13 @@ A API usa JWT enviado no cabeçalho `Authorization: Bearer <token>`. Senhas são
 | POST   | `/api/auth/login`    | Não          | Retorna `access_token` para `email` e `password`              |
 | POST   | `/api/auth/logout`   | Sim          | Revoga o token atual                                          |
 | GET    | `/api/users/me`      | Sim          | Retorna os dados do usuário autenticado                       |
+| GET    | `/api/terms`         | Não          | Retorna a versão vigente dos termos de uso                    |
 
-Respostas de erro seguem o formato `{"detail": ...}`: `401` para credenciais ou token inválidos, `409` para e-mail já cadastrado, `422` para dados inválidos e `503` para falha de acesso ao banco.
+Respostas de erro seguem o formato `{"detail": ...}`: `401` para credenciais ou token inválidos, `409` para e-mail já cadastrado, `422` para dados inválidos, `429` para excesso de tentativas de login e `503` para falha de acesso ao banco.
 
-Ao alterar o texto dos termos de uso, atualize `TERMS_VERSION` no backend e a constante correspondente em `frontend/src/pages/PrivacyPage.tsx`.
+Depois de `LOGIN_MAX_ATTEMPTS` falhas de login para o mesmo e-mail dentro de `LOGIN_LOCKOUT_MINUTES`, novas tentativas recebem `429` com o cabeçalho `Retry-After`. E-mails não cadastrados são bloqueados da mesma forma, para não revelar quais contas existem. As tentativas são registradas pelo hash do e-mail, e um login bem-sucedido zera a contagem.
+
+Ao alterar o texto dos termos de uso, atualize `TERMS_VERSION` no backend. A página de privacidade do frontend lê a versão de `GET /api/terms`.
 
 ## Sobre o repositório
 

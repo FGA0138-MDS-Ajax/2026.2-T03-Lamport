@@ -1,3 +1,4 @@
+# Configuração para desenvolvimento local: as credenciais padrão do banco não devem ir para produção.
 services:
   db:
     image: postgres:17-alpine
