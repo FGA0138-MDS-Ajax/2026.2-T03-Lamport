@@ -42,7 +42,7 @@ def database():
 def clean_tables():
     yield
     with get_engine().begin() as conn:
-        conn.execute(text("TRUNCATE users, consents, revoked_tokens"))
+        conn.execute(text("TRUNCATE users, consents, revoked_tokens, login_attempts"))
 
 
 @pytest.fixture

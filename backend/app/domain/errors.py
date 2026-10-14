@@ -16,3 +16,7 @@ class InvalidCredentialsError(DomainError):
 
 class NotAuthenticatedError(DomainError):
     pass
+
+
+class TooManyLoginAttemptsError(DomainError):
+    pass

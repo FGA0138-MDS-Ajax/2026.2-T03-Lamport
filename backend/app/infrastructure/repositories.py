@@ -8,7 +8,12 @@ from sqlalchemy.orm import Session
 
 from app.domain.errors import EmailAlreadyRegisteredError
 from app.domain.users import Consent, User
-from app.infrastructure.models import ConsentModel, RevokedTokenModel, UserModel
+from app.infrastructure.models import (
+    ConsentModel,
+    LoginAttemptModel,
+    RevokedTokenModel,
+    UserModel,
+)
 
 
 def _to_user(model: UserModel) -> User:
@@ -83,3 +88,26 @@ class SqlRevokedTokenRepository:
 
     def is_revoked(self, jti: str) -> bool:
         return self.session.get(RevokedTokenModel, jti) is not None
+
+
+class SqlLoginAttemptRepository:
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    def count_failures(self, key: str, since: datetime) -> int:
+        return self.session.scalar(
+            select(func.count())
+            .select_from(LoginAttemptModel)
+            .where(LoginAttemptModel.key == key, LoginAttemptModel.attempted_at >= since)
+        )
+
+    def record_failure(self, key: str, older_than: datetime) -> None:
+        self.session.execute(
+            delete(LoginAttemptModel).where(LoginAttemptModel.attempted_at < older_than)
+        )
+        self.session.add(LoginAttemptModel(key=key))
+        self.session.commit()
+
+    def clear(self, key: str) -> None:
+        self.session.execute(delete(LoginAttemptModel).where(LoginAttemptModel.key == key))
+        self.session.commit()

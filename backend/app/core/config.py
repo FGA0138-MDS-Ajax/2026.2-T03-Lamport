@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = Field(default=60, gt=0)
     cors_origins: list[str] = ["http://localhost:5173"]
     terms_version: str = "2026-10"
+    login_max_attempts: int = Field(default=5, gt=0)
+    login_lockout_minutes: int = Field(default=15, gt=0)
 
 
 @lru_cache

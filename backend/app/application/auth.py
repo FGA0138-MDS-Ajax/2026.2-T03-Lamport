@@ -1,4 +1,6 @@
+import hashlib
 from dataclasses import dataclass
+from datetime import UTC, datetime, timedelta
 
 from app.core.security import (
     InvalidTokenError,
@@ -13,8 +15,15 @@ from app.domain.errors import (
     InvalidCredentialsError,
     NotAuthenticatedError,
     TermsNotAcceptedError,
+    TooManyLoginAttemptsError,
 )
-from app.domain.users import Consent, RevokedTokenRepository, User, UserRepository
+from app.domain.users import (
+    Consent,
+    LoginAttemptRepository,
+    RevokedTokenRepository,
+    User,
+    UserRepository,
+)
 
 TERMS_PURPOSE = "terms_of_use"
 
@@ -39,16 +48,31 @@ def normalize_email(email: str) -> str:
     return email.strip().lower()
 
 
+def _attempt_key(email: str) -> str:
+    # Failed attempts are tracked by a digest so typed e-mails of non-users are not stored.
+    return hashlib.sha256(email.encode()).hexdigest()
+
+
+@dataclass(frozen=True)
+class LoginThrottle:
+    max_attempts: int
+    window: timedelta
+
+
 class AuthService:
     def __init__(
         self,
         users: UserRepository,
         revoked_tokens: RevokedTokenRepository,
+        login_attempts: LoginAttemptRepository,
         terms_version: str,
+        throttle: LoginThrottle,
     ) -> None:
         self.users = users
         self.revoked_tokens = revoked_tokens
+        self.login_attempts = login_attempts
         self.terms_version = terms_version
+        self.throttle = throttle
 
     def register(self, email: str, password: str, accepted_terms: bool) -> User:
         if not accepted_terms:
@@ -63,13 +87,24 @@ class AuthService:
         return user
 
     def login(self, email: str, password: str) -> AccessToken:
-        user = self.users.get_by_email(normalize_email(email))
+        email = normalize_email(email)
+        key = _attempt_key(email)
+        window_start = datetime.now(UTC) - self.throttle.window
+        # Unknown e-mails are throttled too, so a lockout does not reveal whether an account exists.
+        if self.login_attempts.count_failures(key, window_start) >= self.throttle.max_attempts:
+            raise TooManyLoginAttemptsError
+
+        user = self.users.get_by_email(email)
         if user is None:
             verify_password(password, _DUMMY_HASH)
-            raise InvalidCredentialsError
-        if not verify_password(password, user.password_hash):
+            valid = False
+        else:
+            valid = verify_password(password, user.password_hash)
+        if not valid:
+            self.login_attempts.record_failure(key, older_than=window_start)
             raise InvalidCredentialsError
 
+        self.login_attempts.clear(key)
         value, expires_in = create_access_token(user.id)
         return AccessToken(value=value, expires_in=expires_in)
 
