@@ -1,9 +1,45 @@
-site_name: Documentação
+site_name: Sintoniza – Grupo Lamport
+site_description: Documentação do Sintoniza, aplicação web de apoio à saúde mental (MDS 2026 – Turma 03).
+repo_url: https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport
+edit_uri: edit/docs/docs/
 
 nav:
-  - Instruções mkdocs: "index.md"
+  - Início: "index.md"
+  - Visão do Produto e do Projeto: "visao-produto-projeto.md"
+  - Documento de Arquitetura: "arquitetura.md"
+  - Histórico de versões: "historico-versoes.md"
   - Atas de Reunião:
     - Ata 1: "atas-reuniao/ata-reuniao-1.md"
 
 theme:
   name: material
+  language: pt-BR
+  features:
+    - navigation.sections
+    - navigation.top
+    - toc.follow
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Modo escuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Modo claro
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
