@@ -1,0 +1,2298 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação do Sintoniza, aplicação web de apoio à saúde mental (MDS 2026 – Turma 03).">
+      
+      
+      
+      
+        <link rel="prev" href="../arquitetura/">
+      
+      
+        <link rel="next" href="../historico-versoes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Vocabulário do check-in - Sintoniza – Grupo Lamport</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#vocabulario-do-check-in-diario" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Sintoniza – Grupo Lamport" class="md-header__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sintoniza – Grupo Lamport
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Vocabulário do check-in
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Sintoniza – Grupo Lamport" class="md-nav__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Sintoniza – Grupo Lamport
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visao-produto-projeto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão do Produto e do Projeto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vocabulário do check-in
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vocabulário do check-in
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#historico-de-revisoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histórico de revisões
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-objetivo-e-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 Objetivo e escopo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-a-issue-e-a-visao-v21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 A issue e a Visão v2.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-principios-de-redacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Princípios de redação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-perguntas-e-escalas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 Perguntas e escalas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-tags-e-niveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 Tags e níveis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-textos-da-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 Textos da interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6 Textos da interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-entrada-na-pagina-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Entrada na página inicial
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-etapa-1-como-voce-esta-hoje-p1-a-p4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Etapa 1: como você está hoje (P1 a P4)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-etapa-2-pergunta-de-seguranca-p5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Etapa 2: pergunta de segurança (P5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-resultado-conteudos-do-dia-p5-nao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Resultado: conteúdos do dia (P5 = Não)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-resultado-tela-de-ajuda-imediata-p5-sim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Resultado: Tela de Ajuda Imediata (P5 = Sim)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#66-estados-e-erros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 Estados e erros
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#67-historico-r12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7 Histórico (R12)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#68-acessibilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8 Acessibilidade
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-decisoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7 Decisões
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-impacto-nas-demais-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8 Impacto nas demais issues
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-ajustes-de-redacao-para-o-po" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9 Ajustes de redação para o PO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-pendencias-para-decisao-do-po" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 Pendências para decisão do PO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apendice-a-exemplos-de-requisicao-e-resposta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apêndice A – Exemplos de requisição e resposta
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apendice-b-sugestao-de-constantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apêndice B – Sugestão de constantes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apendice-c-texto-sugerido-para-os-termos-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apêndice C – Texto sugerido para os termos de uso
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referências
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../historico-versoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Histórico de versões
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atas de Reunião
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Atas de Reunião
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../atas-reuniao/ata-reuniao-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ata 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#historico-de-revisoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histórico de revisões
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-objetivo-e-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 Objetivo e escopo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-a-issue-e-a-visao-v21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 A issue e a Visão v2.1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-principios-de-redacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Princípios de redação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-perguntas-e-escalas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 Perguntas e escalas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-tags-e-niveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 Tags e níveis
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-textos-da-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 Textos da interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6 Textos da interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-entrada-na-pagina-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Entrada na página inicial
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-etapa-1-como-voce-esta-hoje-p1-a-p4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Etapa 1: como você está hoje (P1 a P4)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-etapa-2-pergunta-de-seguranca-p5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Etapa 2: pergunta de segurança (P5)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-resultado-conteudos-do-dia-p5-nao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 Resultado: conteúdos do dia (P5 = Não)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-resultado-tela-de-ajuda-imediata-p5-sim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 Resultado: Tela de Ajuda Imediata (P5 = Sim)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#66-estados-e-erros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 Estados e erros
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#67-historico-r12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7 Histórico (R12)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#68-acessibilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8 Acessibilidade
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-decisoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7 Decisões
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-impacto-nas-demais-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8 Impacto nas demais issues
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-ajustes-de-redacao-para-o-po" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9 Ajustes de redação para o PO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-pendencias-para-decisao-do-po" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 Pendências para decisão do PO
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apendice-a-exemplos-de-requisicao-e-resposta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apêndice A – Exemplos de requisição e resposta
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apendice-b-sugestao-de-constantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apêndice B – Sugestão de constantes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apendice-c-texto-sugerido-para-os-termos-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apêndice C – Texto sugerido para os termos de uso
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referências
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="vocabulario-do-check-in-diario">Vocabulário do check-in diário<a class="headerlink" href="#vocabulario-do-check-in-diario" title="Permanent link">&para;</a></h1>
+<p><strong>Versão 1.1 – 29/10/2026</strong> · Perguntas, escalas, identificadores e textos da interface do check-in diário.</p>
+<div class="admonition warning">
+<p class="admonition-title">Proposta em revisão</p>
+<p>Este documento atende à issue <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/issues/3">#3</a> e complementa a <a href="../visao-produto-projeto/">Visão do Produto e do Projeto</a> e o <a href="../arquitetura/">Documento de Arquitetura</a>, ambos na versão 2.2. <strong>Onde houver divergência, valem a Visão e a Arquitetura.</strong> Os pontos 1, 3, 5 e 8 da <a href="#10-pendencias-para-decisao-do-po">seção 10</a> foram decididos na versão 2.2 desses documentos; os demais aguardam decisão do PO.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Projeto</strong></td>
+<td style="text-align: left;">Sintoniza – Grupo Lamport, MDS 2026.2, Turma 03 (UnB)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Issue</strong></td>
+<td style="text-align: left;"><a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/issues/3">#3</a> [PO/UX] Definir vocabulário do check-in: categorias de humor, escala e fatores de contexto</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Base</strong></td>
+<td style="text-align: left;">Visão do Produto e do Projeto v2.2 e Documento de Arquitetura v2.2, ambos de 29/10/2026</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Elaboração</strong></td>
+<td style="text-align: left;">Vinícius Evangelista Borges Pinto (UX/UI, conteúdo e documentação)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Revisão</strong></td>
+<td style="text-align: left;">Martin Quadros de Melo (Product Owner) – parcial (seção 10)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="historico-de-revisoes">Histórico de revisões<a class="headerlink" href="#historico-de-revisoes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Data</th>
+<th style="text-align: center;">Versão</th>
+<th style="text-align: left;">Descrição</th>
+<th style="text-align: left;">Autor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">28/10/2026</td>
+<td style="text-align: center;">1.0</td>
+<td style="text-align: left;">Proposta inicial do vocabulário do check-in, alinhada à Visão v2.1.</td>
+<td style="text-align: left;">Vinícius E. B. Pinto</td>
+</tr>
+<tr>
+<td style="text-align: center;">29/10/2026</td>
+<td style="text-align: center;">1.1</td>
+<td style="text-align: left;">Alinhamento à Visão e à Arquitetura v2.2: D3 aprovada (P1 a P4 opcionais); D4 rejeitada (a API usa <code>p1</code> a <code>p5</code> na entrada e na saída; os nomes <code>humor</code>, <code>ansiedade</code>, <code>sono</code>, <code>sobrecarga</code> e <code>pensamento_risco</code> ficam no domínio e no banco); retirada do convite para avaliação (R07, R-D7); Apêndices A e B atualizados; pontos 1, 3, 5 e 8 da seção 10 resolvidos.</td>
+<td style="text-align: left;">Martin Q. de Melo (PO)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-objetivo-e-escopo">1 Objetivo e escopo<a class="headerlink" href="#1-objetivo-e-escopo" title="Permanent link">&para;</a></h2>
+<p>Este documento define o vocabulário do check-in diário do Sintoniza: as perguntas e as opções de resposta, os identificadores usados na API, no banco de dados e no frontend, os rótulos exibidos ao usuário e os textos de cada etapa. Ele atende à issue #3 e serve de referência para as issues de modelo de dados (#4), API (#5 e #6), frontend (#7 a #9) e testes (#10).</p>
+<p>Ficam fora do escopo: os textos do PHQ-9 e do GAD-7, que seguem as versões oficiais em português (Visão, seção 4.5.2); o conteúdo da Tela de Ajuda Imediata, já fixado na Visão (seção 4.5.5); e os títulos e resumos dos materiais, que seguem as regras do catálogo (Visão, seção 4.5.4).</p>
+<div class="admonition note">
+<p class="admonition-title">Resumo</p>
+<ul>
+<li>O check-in tem cinco perguntas fechadas (P1 a P5) e nenhum campo de texto livre.</li>
+<li>P1 a P4 são opcionais e servem apenas para escolher conteúdos de autocuidado. P5 é obrigatória e, se a resposta for “Sim”, leva direto à Tela de Ajuda Imediata.</li>
+<li>São duas etapas de perguntas e uma tela de resultado, com no máximo um check-in por dia.</li>
+<li>Campos: <code>humor</code>, <code>ansiedade</code>, <code>sono</code>, <code>sobrecarga</code> e <code>pensamento_risco</code>. As respostas são gravadas como números (P1 a P4) ou verdadeiro/falso (P5); tags e níveis, como slugs em letras minúsculas.</li>
+</ul>
+</div>
+<h2 id="2-a-issue-e-a-visao-v21">2 A issue e a Visão v2.1<a class="headerlink" href="#2-a-issue-e-a-visao-v21" title="Permanent link">&para;</a></h2>
+<p>A issue #3 foi aberta em 14/10/2026 com um modelo baseado em categorias de humor, escala de intensidade de 1 a 5 e fatores de contexto. No dia seguinte, a versão 2.0 da Visão do Produto e do Projeto definiu o check-in como cinco perguntas fechadas (P1 a P5), ligadas a regras de recomendação com valores-limite (R-D1 a R-D7), e a versão 2.1, de 18/10/2026 e vigente, manteve essa definição. Como a documentação do projeto estabelece que vale a versão mais recente de cada documento, este vocabulário segue a Visão v2.1 (seção 4.5.1, Quadros 15 e 16) e a Arquitetura v2.1 (Figura 6 e Quadros 5 e 6).</p>
+<p>Os dois modelos não são compatíveis. As regras da v2.1 comparam respostas em escalas ordenadas com limites (por exemplo, P1 ≤ 2 gera a tag <code>humor</code>), e uma categoria de escolha única não registra estados que ocorrem juntos, como cansaço e preocupação no mesmo dia. O Quadro 1 mostra como cada tarefa e cada critério de aceite da issue foram atendidos.</p>
+<p>A issue também cita requisitos pela numeração anterior (C02/R03 e C02/R04). Na Visão v2.1, o check-in corresponde a C02/R05 (responder o check-in), C02/R06 (receber conteúdos do dia) e C02/R07 (convite para a avaliação, retirado na Visão v2.2); R03 e R04 passaram a ser os requisitos de termos de uso e de exclusão de conta.</p>
+<p><strong>Quadro 1 – Correspondência entre a issue #3 e este documento</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Tarefa ou critério da issue</th>
+<th style="text-align: left;">Como foi atendido</th>
+<th style="text-align: center;">Seção</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Lista fechada de categorias de humor</td>
+<td style="text-align: left;">Substituída pela escala de humor da P1, com cinco pontos de “Muito ruim” a “Muito bom”, já definida na Visão v2.1.</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Escala de intensidade e rótulo de cada ponto</td>
+<td style="text-align: left;">Duas escalas: qualidade, de 1 a 5 (P1 e P3), e intensidade, de 0 a 3 (P2 e P4), com rótulo para cada ponto.</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Lista fechada de fatores de contexto</td>
+<td style="text-align: left;">Sono virou a P3; estresse e estudo/trabalho viraram a P4 (sobrecarga), que gera a tag <code>estresse</code>. Relações, saúde física e alimentação ficaram de fora (decisão D2).</td>
+<td style="text-align: center;">4, 7</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pergunta e microcopy de cada etapa, em linguagem simples e não diagnóstica</td>
+<td style="text-align: left;">Textos de todas as etapas, estados e mensagens, com princípios de redação e lista de termos evitados.</td>
+<td style="text-align: center;">3, 6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sem campo de texto livre no MVP</td>
+<td style="text-align: left;">Decisão D1, justificada pela LGPD e pela segurança do usuário.</td>
+<td style="text-align: center;">7</td>
+</tr>
+<tr>
+<td style="text-align: left;">Identificadores (slugs) estáveis para a API</td>
+<td style="text-align: left;">Nomes de campo, valores das respostas, tags e níveis.</td>
+<td style="text-align: center;">4, 5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Textos revisados pelo PO, sem termos clínicos</td>
+<td style="text-align: left;">Revisão do PO pendente; há ajustes de redação opcionais para ele decidir.</td>
+<td style="text-align: center;">3, 9</td>
+</tr>
+<tr>
+<td style="text-align: left;">Publicar no repositório e confirmar com backend e frontend</td>
+<td style="text-align: left;">Depois da revisão do PO. O que muda em cada issue relacionada está resumido para facilitar a confirmação.</td>
+<td style="text-align: center;">8</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-principios-de-redacao">3 Princípios de redação<a class="headerlink" href="#3-principios-de-redacao" title="Permanent link">&para;</a></h2>
+<p>Valem para todos os textos que a equipe escreve para o check-in:</p>
+<ol>
+<li>Linguagem simples, na segunda pessoa (“você”), com frases curtas e uma ideia por frase.</li>
+<li>Perguntar sobre o dia, nunca classificar a pessoa: o check-in não atribui rótulos de saúde a ninguém.</li>
+<li>Nenhum termo clínico (Quadro 2). Títulos de materiais oficiais aparecem como a fonte os publica.</li>
+<li>Nenhuma resposta é certa ou errada: sem julgamento e sem promessa de resultado.</li>
+<li>Evitar a marcação de gênero com “(a)”, reescrevendo a frase quando possível. As perguntas P2, P4 e P5 e os motivos das regras R-D3 e R-D5 mantêm a forma da Visão v2.1; há versões neutras para o PO avaliar na seção 9.</li>
+<li>Cor, ícone ou emoji nunca são a única forma de informação: toda opção tem rótulo em texto.</li>
+<li>Nomes internos (tags em maiúsculas, níveis e códigos de regra) não aparecem na interface. O usuário vê rótulos e motivos em linguagem simples.</li>
+</ol>
+<p><strong>Quadro 2 – Termos evitados nos textos do check-in</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Evitar</th>
+<th style="text-align: left;">Usar no lugar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">depressão, depressivo</td>
+<td style="text-align: left;">humor ruim, dia difícil</td>
+</tr>
+<tr>
+<td style="text-align: left;">crise de ansiedade, ansiedade generalizada</td>
+<td style="text-align: left;">nervosismo, preocupação; “ansiedade” só no sentido do dia a dia, como na P2</td>
+</tr>
+<tr>
+<td style="text-align: left;">transtorno, distúrbio, doença, patologia</td>
+<td style="text-align: left;">descrever o que a pessoa sentiu, sem nomear condições</td>
+</tr>
+<tr>
+<td style="text-align: left;">diagnóstico, avaliação clínica</td>
+<td style="text-align: left;">“o check-in não é um teste de saúde” (decisão D8)</td>
+</tr>
+<tr>
+<td style="text-align: left;">sintoma, paciente, tratamento</td>
+<td style="text-align: left;">o que você sentiu; você; cuidado, apoio</td>
+</tr>
+<tr>
+<td style="text-align: left;">crise, surto, risco</td>
+<td style="text-align: left;">momento difícil; ajuda imediata</td>
+</tr>
+<tr>
+<td style="text-align: left;">suicídio, suicida</td>
+<td style="text-align: left;">descrever pensamentos, como faz a P5, sem rótulos</td>
+</tr>
+<tr>
+<td style="text-align: left;">normal, anormal, grave</td>
+<td style="text-align: left;">nenhum juízo sobre as respostas</td>
+</tr>
+</tbody>
+</table>
+<p>A lista vale para os textos do check-in. Os termos de uso e a avaliação quinzenal continuam usando “não é diagnóstico”, como a Visão prevê para o risco R2.</p>
+<h2 id="4-perguntas-e-escalas">4 Perguntas e escalas<a class="headerlink" href="#4-perguntas-e-escalas" title="Permanent link">&para;</a></h2>
+<p>As cinco perguntas e os valores gravados são os do Quadro 15 da Visão. P1 a P4 são perguntas próprias da equipe, não validadas, e servem apenas para escolher conteúdos de autocuidado; P5 adapta para o dia o item 9 do PHQ-9 e serve exclusivamente para identificar risco (Visão, seção 4.5.1). Este documento acrescenta o nome de cada campo, a obrigatoriedade e o tratamento das perguntas sem resposta. A coluna Campo traz o nome usado no domínio e no banco (Arquitetura, Figura 6); na API, as respostas usam <code>p1</code> a <code>p5</code> na entrada e na saída (Arquitetura v2.2, Quadro 6).</p>
+<p><strong>Quadro 3 – Perguntas do check-in diário</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ID</th>
+<th style="text-align: left;">Campo</th>
+<th style="text-align: left;">Pergunta (texto exibido)</th>
+<th style="text-align: left;">Escala</th>
+<th style="text-align: center;">Obrigatória</th>
+<th style="text-align: center;">Regra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">P1</td>
+<td style="text-align: left;"><code>humor</code></td>
+<td style="text-align: left;">Como você avalia seu humor hoje?</td>
+<td style="text-align: left;">Qualidade</td>
+<td style="text-align: center;">Não</td>
+<td style="text-align: center;">R-D2</td>
+</tr>
+<tr>
+<td style="text-align: center;">P2</td>
+<td style="text-align: left;"><code>ansiedade</code></td>
+<td style="text-align: left;">Hoje, o quanto você se sentiu nervoso(a), ansioso(a) ou preocupado(a)?</td>
+<td style="text-align: left;">Intensidade</td>
+<td style="text-align: center;">Não</td>
+<td style="text-align: center;">R-D3</td>
+</tr>
+<tr>
+<td style="text-align: center;">P3</td>
+<td style="text-align: left;"><code>sono</code></td>
+<td style="text-align: left;">Como foi seu sono na última noite?</td>
+<td style="text-align: left;">Qualidade</td>
+<td style="text-align: center;">Não</td>
+<td style="text-align: center;">R-D4</td>
+</tr>
+<tr>
+<td style="text-align: center;">P4</td>
+<td style="text-align: left;"><code>sobrecarga</code></td>
+<td style="text-align: left;">Hoje, o quanto você se sentiu sobrecarregado(a) com estudos, trabalho ou outras demandas?</td>
+<td style="text-align: left;">Intensidade</td>
+<td style="text-align: center;">Não</td>
+<td style="text-align: center;">R-D5</td>
+</tr>
+<tr>
+<td style="text-align: center;">P5</td>
+<td style="text-align: left;"><code>pensamento_risco</code></td>
+<td style="text-align: left;">Hoje você teve pensamentos de se machucar ou de que seria melhor estar morto(a)?</td>
+<td style="text-align: left;">Sim ou não</td>
+<td style="text-align: center;">Sim</td>
+<td style="text-align: center;">R-D1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quadro 4 – Escalas de resposta</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Escala</th>
+<th style="text-align: left;">Usada em</th>
+<th style="text-align: center;">Valor gravado</th>
+<th style="text-align: left;">Rótulo exibido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Qualidade</td>
+<td style="text-align: left;">P1 e P3</td>
+<td style="text-align: center;"><code>1</code></td>
+<td style="text-align: left;">Muito ruim</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>2</code></td>
+<td style="text-align: left;">Ruim</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>3</code></td>
+<td style="text-align: left;">Regular</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>4</code></td>
+<td style="text-align: left;">Bom</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>5</code></td>
+<td style="text-align: left;">Muito bom</td>
+</tr>
+<tr>
+<td style="text-align: left;">Intensidade</td>
+<td style="text-align: left;">P2 e P4</td>
+<td style="text-align: center;"><code>0</code></td>
+<td style="text-align: left;">Nada</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>1</code></td>
+<td style="text-align: left;">Um pouco</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>2</code></td>
+<td style="text-align: left;">Bastante</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>3</code></td>
+<td style="text-align: left;">Extremamente</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sim ou não</td>
+<td style="text-align: left;">P5</td>
+<td style="text-align: center;"><code>false</code></td>
+<td style="text-align: left;">Não</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><code>true</code></td>
+<td style="text-align: left;">Sim</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sem resposta</td>
+<td style="text-align: left;">P1 a P4</td>
+<td style="text-align: center;"><code>null</code></td>
+<td style="text-align: left;">Prefiro não responder (ou nenhuma opção marcada)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>O valor é o identificador.</strong> O número gravado identifica a opção de forma estável. O rótulo pode ser revisado sem migração de dados, desde que cada posição mantenha o mesmo sentido.</li>
+<li><strong>Exibição.</strong> As opções aparecem na ordem do Quadro 4, sem nenhuma pré-selecionada, e os números não aparecem na interface.</li>
+<li><strong>Início das escalas.</strong> A escala de qualidade começa em 1 e a de intensidade em 0, como na Visão; por isso, o frontend deve usar o valor de cada opção, e não a posição dela na lista. Na qualidade, valor maior é melhor; na intensidade, valor maior indica mais dificuldade.</li>
+<li><strong>Perguntas sem resposta.</strong> P1 a P4 sem resposta, ou com “Prefiro não responder”, são enviadas e gravadas como <code>null</code> e não acionam a regra correspondente. Se nenhuma das regras R-D2 a R-D5 for acionada, inclusive quando P1 a P4 ficam todas sem resposta, vale a R-D6 (tag <code>bem_estar</code>).</li>
+<li><strong>P5.</strong> Não aceita <code>null</code>: sem resposta, o check-in não é enviado.</li>
+<li><strong>Um por dia.</strong> Cada usuário faz no máximo um check-in por data, calculada no fuso <code>America/Sao_Paulo</code> (Arquitetura, seção 2.5.3). O contrato da API não prevê edição depois do envio (Arquitetura, Quadro 6).</li>
+</ul>
+<h2 id="5-tags-e-niveis">5 Tags e níveis<a class="headerlink" href="#5-tags-e-niveis" title="Permanent link">&para;</a></h2>
+<p>As respostas geram <em>tags</em>, que indicam o tema dos conteúdos sugeridos, e um <em>nível</em>, que define o que o usuário vê depois do check-in. O slug é o valor que trafega na API e fica gravado no banco e no catálogo (<code>materiais.yaml</code>); o nome em maiúsculas é a constante no código e a forma usada nos documentos do projeto.</p>
+<p><strong>Quadro 5 – Tags (temas dos conteúdos)</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Constante</th>
+<th style="text-align: left;">Slug</th>
+<th style="text-align: left;">Rótulo na interface</th>
+<th style="text-align: left;">Origem no check-in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>HUMOR</code></td>
+<td style="text-align: left;"><code>humor</code></td>
+<td style="text-align: left;">Humor</td>
+<td style="text-align: left;">R-D2: P1 ≤ 2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ANSIEDADE</code></td>
+<td style="text-align: left;"><code>ansiedade</code></td>
+<td style="text-align: left;">Ansiedade</td>
+<td style="text-align: left;">R-D3: P2 ≥ 2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>SONO</code></td>
+<td style="text-align: left;"><code>sono</code></td>
+<td style="text-align: left;">Sono</td>
+<td style="text-align: left;">R-D4: P3 ≤ 2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ESTRESSE</code></td>
+<td style="text-align: left;"><code>estresse</code></td>
+<td style="text-align: left;">Estresse</td>
+<td style="text-align: left;">R-D5: P4 ≥ 2</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>BEM_ESTAR</code></td>
+<td style="text-align: left;"><code>bem_estar</code></td>
+<td style="text-align: left;">Bem-estar</td>
+<td style="text-align: left;">R-D6: nenhuma das regras anteriores</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>AJUDA_PROFISSIONAL</code></td>
+<td style="text-align: left;"><code>ajuda_profissional</code></td>
+<td style="text-align: left;">Ajuda profissional</td>
+<td style="text-align: left;">Não é gerada pelo check-in, só pela avaliação quinzenal</td>
+</tr>
+</tbody>
+</table>
+<p>Na interface, as tags aparecem como “temas”. Listas de temas seguem a ordem de prioridade da regra R-S1: <code>ajuda_profissional</code>, <code>ansiedade</code>, <code>humor</code>, <code>estresse</code>, <code>sono</code> e <code>bem_estar</code>.</p>
+<p><strong>Quadro 6 – Níveis</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Constante</th>
+<th style="text-align: left;">Slug</th>
+<th style="text-align: center;">Código</th>
+<th style="text-align: left;">No check-in</th>
+<th style="text-align: left;">O que o usuário vê</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>AUTOCUIDADO</code></td>
+<td style="text-align: left;"><code>autocuidado</code></td>
+<td style="text-align: center;">N0</td>
+<td style="text-align: left;">P5 = Não</td>
+<td style="text-align: left;">Conteúdos do dia (seção 6.4)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ATENCAO</code></td>
+<td style="text-align: left;"><code>atencao</code></td>
+<td style="text-align: center;">N1</td>
+<td style="text-align: left;">Nunca</td>
+<td style="text-align: left;">Só na avaliação quinzenal</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>PRIORITARIO</code></td>
+<td style="text-align: left;"><code>prioritario</code></td>
+<td style="text-align: center;">N2</td>
+<td style="text-align: left;">Nunca</td>
+<td style="text-align: left;">Só na avaliação quinzenal</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>CRISE</code></td>
+<td style="text-align: left;"><code>crise</code></td>
+<td style="text-align: center;">N3</td>
+<td style="text-align: left;">P5 = Sim</td>
+<td style="text-align: left;">Tela de Ajuda Imediata, sem conteúdos</td>
+</tr>
+</tbody>
+</table>
+<p>O check-in só produz <code>autocuidado</code> ou <code>crise</code>, porque suas perguntas não são instrumento de rastreio (Visão, seção 4.5.1). O nome do nível nunca aparece na interface.</p>
+<h2 id="6-textos-da-interface">6 Textos da interface<a class="headerlink" href="#6-textos-da-interface" title="Permanent link">&para;</a></h2>
+<p>Nos quadros desta seção, a coluna “Texto” traz o texto exato a implementar e a coluna “Observação” orienta o uso. As reticências são o caractere único U+2026, como o código atual já usa em “Criando conta…”. O fluxo tem duas etapas de perguntas e uma tela de resultado (Figura 1), dentro do limite de três telas da issue #2.</p>
+<p><strong>Figura 1 – Fluxo do check-in diário</strong></p>
+<pre class="mermaid"><code>flowchart LR
+    I["Página inicial&lt;br/&gt;“Fazer check-in”"] --&gt; E1["Etapa 1&lt;br/&gt;P1 a P4, opcionais"]
+    E1 --&gt; E2["Etapa 2&lt;br/&gt;P5, obrigatória"]
+    E2 -- "P5 = Não" --&gt; C["Conteúdos do dia&lt;br/&gt;nível autocuidado"]
+    E2 -- "P5 = Sim" --&gt; A["Tela de Ajuda Imediata&lt;br/&gt;nível crise"]
+    style A fill:#f8d7da,stroke:#c0392b</code></pre>
+<h3 id="61-entrada-na-pagina-inicial">6.1 Entrada na página inicial<a class="headerlink" href="#61-entrada-na-pagina-inicial" title="Permanent link">&para;</a></h3>
+<p><strong>Quadro 7 – Textos da entrada no check-in</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Elemento</th>
+<th style="text-align: left;">Texto</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Título do cartão</td>
+<td style="text-align: left;">Check-in de hoje</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr>
+<td style="text-align: left;">Texto, sem check-in no dia</td>
+<td style="text-align: left;">Conte como você está hoje. Leva menos de um minuto e ajuda a escolher conteúdos de autocuidado para você.</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr>
+<td style="text-align: left;">Botão</td>
+<td style="text-align: left;">Fazer check-in</td>
+<td style="text-align: left;">Abre a etapa 1.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Texto, com check-in no dia</td>
+<td style="text-align: left;">Você já fez o check-in de hoje. Um novo check-in fica disponível amanhã.</td>
+<td style="text-align: left;">Consulta <code>GET /api/checkins/hoje</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Botão, com check-in no dia</td>
+<td style="text-align: left;">Ver check-in de hoje</td>
+<td style="text-align: left;">Mostra o resultado já registrado; se o nível do dia for <code>crise</code>, mostra a Tela de Ajuda.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62-etapa-1-como-voce-esta-hoje-p1-a-p4">6.2 Etapa 1: como você está hoje (P1 a P4)<a class="headerlink" href="#62-etapa-1-como-voce-esta-hoje-p1-a-p4" title="Permanent link">&para;</a></h3>
+<p><strong>Quadro 8 – Textos da etapa 1</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Elemento</th>
+<th style="text-align: left;">Texto</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Indicador de etapa</td>
+<td style="text-align: left;">Etapa 1 de 2</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr>
+<td style="text-align: left;">Título</td>
+<td style="text-align: left;">Como você está hoje?</td>
+<td style="text-align: left;">Recebe o foco ao abrir a etapa.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Texto de apoio</td>
+<td style="text-align: left;">Escolha a opção que mais combina com o seu dia. As perguntas desta etapa não são obrigatórias.</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr>
+<td style="text-align: left;">Perguntas</td>
+<td style="text-align: left;">P1 a P4, com as opções do Quadro 4</td>
+<td style="text-align: left;">Cada pergunta é um <code>fieldset</code>, com o texto da pergunta no <code>legend</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Opção extra</td>
+<td style="text-align: left;">Prefiro não responder</td>
+<td style="text-align: left;">Última opção de P1 a P4; grava <code>null</code> e permite desfazer uma escolha (decisão D3).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Botão principal</td>
+<td style="text-align: left;">Continuar</td>
+<td style="text-align: left;">Sempre habilitado.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Link secundário</td>
+<td style="text-align: left;">Cancelar</td>
+<td style="text-align: left;">Volta à página inicial sem gravar nada.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="63-etapa-2-pergunta-de-seguranca-p5">6.3 Etapa 2: pergunta de segurança (P5)<a class="headerlink" href="#63-etapa-2-pergunta-de-seguranca-p5" title="Permanent link">&para;</a></h3>
+<p><strong>Quadro 9 – Textos da etapa 2</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Elemento</th>
+<th style="text-align: left;">Texto</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Indicador de etapa</td>
+<td style="text-align: left;">Etapa 2 de 2</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr>
+<td style="text-align: left;">Título</td>
+<td style="text-align: left;">Uma última pergunta</td>
+<td style="text-align: left;">Recebe o foco ao abrir a etapa.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Texto de apoio</td>
+<td style="text-align: left;">Fazemos esta pergunta em todo check-in. Se a resposta for “Sim”, mostramos na hora contatos de ajuda gratuitos, que funcionam 24 horas.</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pergunta</td>
+<td style="text-align: left;">P5, com as opções Não e Sim</td>
+<td style="text-align: left;">Sem pré-seleção e sem “Prefiro não responder”. Não pedir confirmação ao marcar “Sim”.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Obrigatoriedade</td>
+<td style="text-align: left;">Resposta obrigatória.</td>
+<td style="text-align: left;">Texto visível, ligado ao grupo por <code>aria-describedby</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Aviso</td>
+<td style="text-align: left;">O Sintoniza não acompanha suas respostas em tempo real e não avisa ninguém.</td>
+<td style="text-align: left;">Mesma frase da Tela de Ajuda (Visão, seção 4.5.5).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Erro de validação</td>
+<td style="text-align: left;">Responda esta pergunta para concluir o check-in.</td>
+<td style="text-align: left;">Ao tentar concluir sem resposta.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Botão principal</td>
+<td style="text-align: left;">Concluir check-in</td>
+<td style="text-align: left;">Durante o envio: “Enviando…”, com o botão desabilitado. Com P5 = Sim, a Tela de Ajuda abre na hora (decisão D9).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Botão secundário</td>
+<td style="text-align: left;">Voltar</td>
+<td style="text-align: left;">Volta à etapa 1 mantendo as respostas.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="64-resultado-conteudos-do-dia-p5-nao">6.4 Resultado: conteúdos do dia (P5 = Não)<a class="headerlink" href="#64-resultado-conteudos-do-dia-p5-nao" title="Permanent link">&para;</a></h3>
+<p><strong>Quadro 10 – Textos do resultado</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Elemento</th>
+<th style="text-align: left;">Texto</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Confirmação</td>
+<td style="text-align: left;">Check-in de hoje registrado.</td>
+<td style="text-align: left;">Componente <code>Alert</code> de sucesso.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Título</td>
+<td style="text-align: left;">Conteúdos para hoje</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr>
+<td style="text-align: left;">Texto de apoio</td>
+<td style="text-align: left;">Separamos materiais de fontes oficiais com base nas suas respostas.</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cartão de material</td>
+<td style="text-align: left;">Título, fonte e resumo do material</td>
+<td style="text-align: left;">Vêm do <code>materiais.yaml</code>, sem alteração.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Link do material</td>
+<td style="text-align: left;">Abrir no site oficial</td>
+<td style="text-align: left;">Abre em nova aba; o nome acessível inclui o título do material.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Explicação</td>
+<td style="text-align: left;">Por que estou vendo isto?</td>
+<td style="text-align: left;">Mostra o motivo da regra (Quadro 11).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Aviso</td>
+<td style="text-align: left;">O check-in não é um teste de saúde: ele serve apenas para sugerir conteúdos de autocuidado.</td>
+<td style="text-align: left;">Decisão D8.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sem materiais (R-S6)</td>
+<td style="text-align: left;">Não encontramos materiais para hoje. Continue acompanhando como você está.</td>
+<td style="text-align: left;">Situação evitada pelo teste TU-07.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Navegação</td>
+<td style="text-align: left;">Ver histórico · Voltar ao início</td>
+<td style="text-align: left;">–</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quadro 11 – Motivos exibidos em “Por que estou vendo isto?” (Visão, Quadro 16)</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Regra</th>
+<th style="text-align: left;">Motivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">R-D2</td>
+<td style="text-align: left;">Você indicou humor ruim ou muito ruim hoje.</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-D3</td>
+<td style="text-align: left;">Você indicou ter se sentido bastante ou extremamente ansioso(a) hoje.</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-D4</td>
+<td style="text-align: left;">Você indicou que dormiu mal na última noite.</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-D5</td>
+<td style="text-align: left;">Você indicou ter se sentido bastante ou extremamente sobrecarregado(a).</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-D6</td>
+<td style="text-align: left;">Você não indicou dificuldades marcantes hoje.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="65-resultado-tela-de-ajuda-imediata-p5-sim">6.5 Resultado: Tela de Ajuda Imediata (P5 = Sim)<a class="headerlink" href="#65-resultado-tela-de-ajuda-imediata-p5-sim" title="Permanent link">&para;</a></h3>
+<p>O conteúdo da Tela de Ajuda é fixo (Visão, seção 4.5.5) e não muda aqui. Quando a tela é aberta pelo check-in, entram apenas os textos do Quadro 12, e nenhum conteúdo é sugerido.</p>
+<p><strong>Quadro 12 – Textos da Tela de Ajuda aberta pelo check-in</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Elemento</th>
+<th style="text-align: left;">Texto</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Acolhimento, no topo</td>
+<td style="text-align: left;">Obrigado por responder. Você não precisa enfrentar isso sem apoio: fale agora com alguém.</td>
+<td style="text-align: left;">Só quando a tela vem do check-in.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Registro, no rodapé</td>
+<td style="text-align: left;">Seu check-in de hoje foi registrado.</td>
+<td style="text-align: left;">Discreto; aparece depois da confirmação da API.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Falha no envio</td>
+<td style="text-align: left;">Não foi possível salvar seu check-in agora, mas os contatos acima funcionam normalmente.</td>
+<td style="text-align: left;">A tela continua visível (decisão D9).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="66-estados-e-erros">6.6 Estados e erros<a class="headerlink" href="#66-estados-e-erros" title="Permanent link">&para;</a></h3>
+<p><strong>Quadro 13 – Estados e mensagens de erro</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Situação</th>
+<th style="text-align: left;">Texto</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Carregando</td>
+<td style="text-align: left;">Carregando…</td>
+<td style="text-align: left;">Componente <code>LoadingState</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Check-in já feito (409)</td>
+<td style="text-align: left;">Você já fez o check-in de hoje.</td>
+<td style="text-align: left;">Mostrar o resultado do dia.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sessão expirada (401)</td>
+<td style="text-align: left;">Sua sessão expirou. Entre novamente para fazer o check-in.</td>
+<td style="text-align: left;">Levar ao login.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sem conexão</td>
+<td style="text-align: left;">Não foi possível enviar seu check-in. Suas respostas foram mantidas: verifique sua conexão e tente novamente.</td>
+<td style="text-align: left;">Manter as respostas no formulário.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Dados inválidos (422)</td>
+<td style="text-align: left;">Não foi possível registrar suas respostas. Revise-as e tente novamente.</td>
+<td style="text-align: left;">Não deve ocorrer com o frontend correto.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Serviço indisponível (5xx)</td>
+<td style="text-align: left;">O serviço está indisponível no momento. Tente novamente em instantes.</td>
+<td style="text-align: left;">Texto já usado em <code>describeError</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Qualquer erro com P5 = Sim</td>
+<td style="text-align: left;">Ver o Quadro 12</td>
+<td style="text-align: left;">A Tela de Ajuda é exibida mesmo assim.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="67-historico-r12">6.7 Histórico (R12)<a class="headerlink" href="#67-historico-r12" title="Permanent link">&para;</a></h3>
+<p><strong>Quadro 14 – Textos do histórico de check-ins</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Elemento</th>
+<th style="text-align: left;">Texto</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Título</td>
+<td style="text-align: left;">Histórico</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr>
+<td style="text-align: left;">Texto de apoio</td>
+<td style="text-align: left;">Seus últimos 30 check-ins.</td>
+<td style="text-align: left;">Limite do requisito R12.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Data</td>
+<td style="text-align: left;">Hoje; Ontem; 15 de out.</td>
+<td style="text-align: left;">Formato curto em português.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Humor</td>
+<td style="text-align: left;">Humor: Bom</td>
+<td style="text-align: left;">Rótulo do Quadro 4; sem resposta, “Humor: não informado”.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Temas</td>
+<td style="text-align: left;">Temas: Ansiedade, Sono</td>
+<td style="text-align: left;">Rótulos do Quadro 5, na ordem da R-S1; a linha some quando não há tags.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Leitura por leitor de tela</td>
+<td style="text-align: left;">15 de outubro: humor bom; temas: ansiedade e sono.</td>
+<td style="text-align: left;">Exemplo de texto acessível de um item.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Lista vazia</td>
+<td style="text-align: left;">Você ainda não fez nenhum check-in.</td>
+<td style="text-align: left;">Botão “Fazer o primeiro check-in”.</td>
+</tr>
+</tbody>
+</table>
+<p>O histórico não mostra a resposta da P5 nem o nível do check-in (decisão D6).</p>
+<h3 id="68-acessibilidade">6.8 Acessibilidade<a class="headerlink" href="#68-acessibilidade" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Cada pergunta é um <code>fieldset</code> com <code>legend</code>; cada opção é um botão de rádio com rótulo visível e área de toque de pelo menos 44 px (issue #2).</li>
+<li>Ao mudar de etapa, o foco vai para o título da nova etapa.</li>
+<li>Erros ficam ligados à pergunta por <code>aria-describedby</code> e marcados com <code>aria-invalid</code>, como já acontece no cadastro.</li>
+<li>Confirmações são anunciadas com <code>role="status"</code> e erros com <code>role="alert"</code>, como no componente <code>Alert</code>.</li>
+<li>Nenhuma informação depende só de cor ou de ícone (decisão D7).</li>
+</ul>
+<h2 id="7-decisoes">7 Decisões<a class="headerlink" href="#7-decisoes" title="Permanent link">&para;</a></h2>
+<p>As decisões abaixo completam a Visão onde ela não detalha o check-in. A D3 foi aprovada e a D4 rejeitada pelo PO na versão 2.2 da Visão e da Arquitetura; as demais dependem da revisão do PO e da confirmação de backend e frontend na issue #3.</p>
+<p><strong>D1 – Sem campo de texto livre no MVP.</strong>
+As respostas sobre o estado emocional são dados pessoais sensíveis, por se referirem à saúde (LGPD, art. 5º, II), e a coleta deve se limitar ao mínimo necessário para a finalidade (art. 6º, III). Um texto livre também poderia receber relatos de risco que ninguém vai ler, já que o Sintoniza não acompanha as respostas, o que criaria uma falsa expectativa de acolhimento. Além disso, ele não pode ser usado pelas regras determinísticas da Visão.</p>
+<p><strong>D2 – Relações, saúde física e alimentação ficam fora do check-in.</strong>
+Nenhuma regra da Visão v2.1 usa esses dados, e coletá-los sem finalidade contraria o princípio da necessidade; “relações” ainda tende a envolver dados de terceiros. Os outros fatores sugeridos na issue continuam cobertos: sono pela P3; estresse e estudo/trabalho pela P4.</p>
+<p><strong>D3 – P1 a P4 são opcionais; P5 é obrigatória.</strong>
+A Visão torna obrigatória apenas a P5 (requisito R05 e Quadro 15; Arquitetura, Figura 3). Perguntas opcionais diminuem o esforço do check-in e tratam o risco de baixa adesão citado na issue #2. A opção “Prefiro não responder” deixa a escolha explícita e permite desfazer uma resposta, o que um grupo de botões de rádio não permite sozinho. Consequência para o backend: P1 a P4 aceitam <code>null</code>, e a função <code>avaliar_checkin</code> (Arquitetura, Quadro 5) passa a receber valores ausentes nessas perguntas, que não acionam suas regras.</p>
+<p><strong>D4 – Mesmos nomes de campo na API, no banco e no frontend.</strong> <em>Rejeitada pelo PO (v2.2): a API usa <code>p1</code> a <code>p5</code> na entrada e na saída, conforme o Quadro 6 da Arquitetura; os nomes abaixo valem para o domínio e o banco. O texto original fica como registro.</em>
+A Arquitetura define campos de domínio em português sem acento (seção 2.4, item 6), e a Figura 6 já usa <code>humor</code>, <code>ansiedade</code>, <code>sono</code>, <code>sobrecarga</code> e <code>pensamento_risco</code>. Usar esses nomes também no corpo da API, no lugar de <code>p1</code> a <code>p5</code> (forma abreviada do Quadro 6 da Arquitetura), evita uma tradução entre camadas e deixa as requisições legíveis. P1 a P5 continuam identificando as perguntas nos documentos e nos testes.</p>
+<p><strong>D5 – Números para respostas; slugs em minúsculas para tags e níveis.</strong>
+As regras comparam valores (por exemplo, P1 ≤ 2), então o número é o identificador estável da resposta, e o rótulo pode mudar sem migração. Tags e níveis usam letras minúsculas sem acento, com sublinhado entre palavras, como o código já faz com o papel do usuário (constante <code>Role.USER</code>, valor <code>user</code>); os nomes em maiúsculas dos documentos são as constantes correspondentes.</p>
+<p><strong>D6 – Nomes internos não aparecem; o histórico não mostra a P5 nem o nível.</strong>
+Palavras como “crise”, “HUMOR” ou “R-D3” são termos do sistema e podem soar como rótulos sobre a pessoa. Por isso, as tags aparecem como temas, com os rótulos do Quadro 5. Omitir a P5 e o nível no histórico protege o usuário quando outra pessoa vê a tela, cuidado que o frontend já tem ao guardar a sessão em <code>sessionStorage</code>.</p>
+<p><strong>D7 – Sem ícones nem emoji nas opções do MVP.</strong>
+Emoji variam entre sistemas e são lidos de forma imprevisível por leitores de tela. Por isso, as constantes do frontend não terão campo de ícone por enquanto (issue #7). Se o protótipo adotar ícones, eles serão decorativos (<code>aria-hidden</code>) e nunca substituirão o rótulo.</p>
+<p><strong>D8 – O check-in não usa a palavra “diagnóstico”.</strong>
+A issue proíbe termos clínicos nos textos do check-in, e a Visão pede que nenhum resultado pareça um diagnóstico (risco R2). A frase “O check-in não é um teste de saúde: ele serve apenas para sugerir conteúdos de autocuidado” atende às duas exigências em linguagem simples.</p>
+<p><strong>D9 – Com P5 = Sim, a Tela de Ajuda não depende da API.</strong>
+A Tela de Ajuda é estática justamente para funcionar com a API fora do ar (Arquitetura, seção 2.4, item 3). Ao concluir com P5 = Sim, o frontend abre a tela na hora e envia o check-in em paralelo; uma falha no envio não impede que os contatos apareçam.</p>
+<h2 id="8-impacto-nas-demais-issues">8 Impacto nas demais issues<a class="headerlink" href="#8-impacto-nas-demais-issues" title="Permanent link">&para;</a></h2>
+<p><em>Atualização (v1.1): em 29/10/2026 as issues foram reescritas com base na Visão e na Arquitetura v2.2; o quadro abaixo fica como registro.</em></p>
+<p>As issues #2 e #4 a #10 foram abertas junto com a #3, antes da Visão v2.0, e ainda descrevem o modelo de categorias, intensidade e fatores. Elas também situam o check-in na Sprint 3, que na v2.1 passou a ser a sprint de regras e catálogo; o check-in agora é da Sprint 4 (29/10 a 11/11/2026). O Quadro 15 resume o que muda em cada uma.</p>
+<p><strong>Quadro 15 – O que muda nas demais issues</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Issue</th>
+<th style="text-align: left;">O que muda</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">#2 Protótipo</td>
+<td style="text-align: left;">Fluxo da Figura 1 (etapa 1 com P1 a P4, etapa 2 com P5 e depois conteúdos ou Tela de Ajuda) no lugar de categoria, intensidade e fatores; textos da seção 6.</td>
+</tr>
+<tr>
+<td style="text-align: left;">#4 Modelo de dados</td>
+<td style="text-align: left;">Entidade <code>CheckinDiario</code> (Arquitetura, Figura 6) com <code>data</code>; <code>humor</code>, <code>ansiedade</code>, <code>sono</code> e <code>sobrecarga</code> (inteiros que aceitam nulo); <code>pensamento_risco</code> (booleano obrigatório); <code>tags</code> e <code>nivel</code>. Um check-in por usuário e data. Saem <code>mood_category</code>, <code>intensity</code> e a tabela de fatores.</td>
+</tr>
+<tr>
+<td style="text-align: left;">#5 <code>POST /checkins</code></td>
+<td style="text-align: left;">Corpo com os cinco campos da seção 4 (Apêndice A); 422 para valor fora da faixa ou <code>pensamento_risco</code> ausente; 409 para um segundo check-in no mesmo dia (TI-04). Sai a validação de fatores duplicados ou desconhecidos. Continuam valendo: usuário obtido só do token e conteúdo do check-in fora dos logs.</td>
+</tr>
+<tr>
+<td style="text-align: left;">#6 <code>GET /checkins</code></td>
+<td style="text-align: left;">Itens com os campos da seção 4, <code>tags</code> e <code>nivel</code>. A Arquitetura prevê também <code>GET /api/checkins/hoje</code>, e a v2.1 limita a lista aos últimos 30 check-ins (R12).</td>
+</tr>
+<tr>
+<td style="text-align: left;">#7 Cliente e tipos</td>
+<td style="text-align: left;">Tipos e constantes das seções 4 e 5 (sugestão no Apêndice B); saem <code>MoodCategory</code>, <code>ContextFactor</code> e os ícones.</td>
+</tr>
+<tr>
+<td style="text-align: left;">#8 Tela de check-in</td>
+<td style="text-align: left;">Etapas e textos da seção 6. “Concluir sem fatores” passa a ser “concluir respondendo só à P5”. Tela de Ajuda independente da API (decisão D9).</td>
+</tr>
+<tr>
+<td style="text-align: left;">#9 Histórico</td>
+<td style="text-align: left;">Itens com data, humor e temas (seção 6.7), sem a P5 nem o nível. Exemplo de leitura: “15 de outubro: humor bom; temas: ansiedade e sono”.</td>
+</tr>
+<tr>
+<td style="text-align: left;">#10 Testes</td>
+<td style="text-align: left;">Valores inválidos: <code>humor</code> ou <code>sono</code> iguais a 0 ou 6; <code>ansiedade</code> ou <code>sobrecarga</code> iguais a −1 ou 4; <code>pensamento_risco</code> ausente. Saem “categoria inexistente” e “fator duplicado”. Na v2.1, o check-in é coberto por TU-05, TI-03 a TI-05, TS-03, TSI-01 e TSI-02.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Termos de uso (R03)</td>
+<td style="text-align: left;">A página atual promete que novas categorias de dados só serão coletadas depois de o usuário ser informado. Antes de liberar o check-in, incluir os dados dele nos termos (texto sugerido no Apêndice C), atualizar <code>TERMS_VERSION</code> e definir com o PO como colher o aceite de quem já tem conta.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="9-ajustes-de-redacao-para-o-po">9 Ajustes de redação para o PO<a class="headerlink" href="#9-ajustes-de-redacao-para-o-po" title="Permanent link">&para;</a></h2>
+<p>Os textos abaixo vêm da Visão v2.1 e foram mantidos sem alteração nas seções anteriores. As versões sugeridas não mudam valores, regras nem testes; se aprovadas, passam a valer na interface e entram na próxima revisão da Visão. A P5 não está na lista porque sua redação acompanha o item 9 do PHQ-9 e deve continuar próxima dele.</p>
+<p><strong>Quadro 16 – Ajustes opcionais de redação</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Texto</th>
+<th style="text-align: left;">Visão v2.1</th>
+<th style="text-align: left;">Sugestão</th>
+<th style="text-align: left;">Motivo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">P2</td>
+<td style="text-align: left;">Hoje, o quanto você se sentiu nervoso(a), ansioso(a) ou preocupado(a)?</td>
+<td style="text-align: left;">Hoje, o quanto você sentiu nervosismo, ansiedade ou preocupação?</td>
+<td style="text-align: left;">Sem “(a)”: leitura mais fluida, inclusive por leitores de tela.</td>
+</tr>
+<tr>
+<td style="text-align: center;">P4</td>
+<td style="text-align: left;">Hoje, o quanto você se sentiu sobrecarregado(a) com estudos, trabalho ou outras demandas?</td>
+<td style="text-align: left;">Hoje, o quanto você sentiu sobrecarga com estudos, trabalho ou outras demandas?</td>
+<td style="text-align: left;">Mesmo motivo da P2.</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-D3</td>
+<td style="text-align: left;">Você indicou ter se sentido bastante ou extremamente ansioso(a) hoje.</td>
+<td style="text-align: left;">Você indicou muito nervosismo, ansiedade ou preocupação hoje.</td>
+<td style="text-align: left;">Sem “(a)”; repete as palavras da P2.</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-D5</td>
+<td style="text-align: left;">Você indicou ter se sentido bastante ou extremamente sobrecarregado(a).</td>
+<td style="text-align: left;">Você indicou muita sobrecarga com estudos, trabalho ou outras demandas hoje.</td>
+<td style="text-align: left;">Sem “(a)”; inclui “hoje”, como os demais motivos.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="10-pendencias-para-decisao-do-po">10 Pendências para decisão do PO<a class="headerlink" href="#10-pendencias-para-decisao-do-po" title="Permanent link">&para;</a></h2>
+<p>A revisão deste vocabulário contra a Visão v2.1 e a Arquitetura v2.1 encontrou os pontos abaixo. Os três primeiros são decisões deste documento que alteram a Arquitetura; os demais são divergências entre os próprios documentos v2.1.</p>
+<p><strong>Quadro 17 – Pontos que dependem de decisão do PO</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">#</th>
+<th style="text-align: left;">Ponto</th>
+<th style="text-align: left;">O que dizem os documentos</th>
+<th style="text-align: left;">Decisão necessária</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">P1 a P4 opcionais (D3)</td>
+<td style="text-align: left;">A Visão diz apenas “P5 obrigatória” (R05). A Arquitetura tipa os campos sem nulo (Figura 6: <code>humor: int 1..5</code>) e o Quadro 5 diz que <code>avaliar_checkin</code> recebe “inteiros nas faixas”.</td>
+<td style="text-align: left;"><strong>Decidido (v2.2):</strong> P1 a P4 opcionais; Figura 6, Figura 3 e Quadro 5 da Arquitetura atualizados.</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Check-in sem respostas vira “bem-estar”</td>
+<td style="text-align: left;">Pela R-D6, se P1 a P4 ficarem em branco, a tag é <code>bem_estar</code> e o motivo é “Você não indicou dificuldades marcantes hoje”, o que pode soar como se a pessoa estivesse bem.</td>
+<td style="text-align: left;">Manter, usar outro motivo quando tudo estiver em branco, ou não sugerir conteúdo nesse caso. Depende do ponto 1.</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">Nomes dos campos na API (D4)</td>
+<td style="text-align: left;">O Quadro 6 da Arquitetura usa <code>p1</code> a <code>p5</code> no corpo de <code>POST /api/checkins</code>.</td>
+<td style="text-align: left;"><strong>Decidido (v2.2):</strong> manter <code>p1</code> a <code>p5</code>, na entrada e na saída das rotas de check-in (Quadro 6 da Arquitetura).</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Momento em que a Tela de Ajuda abre (D9)</td>
+<td style="text-align: left;">A Figura 3 da Arquitetura mostra a Tela de Ajuda depois que a API valida e salva o check-in. A seção 2.4, item 3, da mesma Arquitetura exige que ela não dependa do backend.</td>
+<td style="text-align: left;">Aprovar a D9 e ajustar a Figura 3.</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Convite para avaliação (R-D7)</td>
+<td style="text-align: left;">O Quadro 16 da Visão fala nos “3 últimos check-ins registrados”, que podem estar espalhados no tempo; a Figura 3 da Arquitetura, o teste TU-08 e a mensagem falam em “seguidos” e “dias seguidos”. Um check-in com P5 = Sim não gera tags e interrompe a sequência, caso que nenhum documento trata.</td>
+<td style="text-align: left;"><strong>Sem efeito (v2.2):</strong> o convite (R07, R-D7) saiu do escopo no replanejamento da Sprint 3.</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td style="text-align: left;">Escalas em sentidos opostos</td>
+<td style="text-align: left;">P1 e P3 vão de 1 a 5 e valor maior é melhor; P2 e P4 vão de 0 a 3 e valor maior é pior (Visão, Quadro 15). Na tela, a opção “boa” fica num extremo em uma pergunta e no outro na seguinte.</td>
+<td style="text-align: left;">Manter como está (mudar exige rever regras e testes) ou ajustar só a ordem de exibição, sem mudar os valores gravados.</td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td style="text-align: left;">Tema diferente da pergunta</td>
+<td style="text-align: left;">A P4 pergunta sobre “sobrecarga”, mas gera a tag <code>ESTRESSE</code>, exibida como “Estresse”.</td>
+<td style="text-align: left;">Manter ou exibir a tag como “Sobrecarga” na interface, sem mudar o slug.</td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td style="text-align: left;">Prefixo das rotas</td>
+<td style="text-align: left;">A Figura 3 da Arquitetura usa <code>GET /checkins/hoje</code> e <code>POST /checkins</code>; o Quadro 6 e a seção 2.4, item 4, usam o prefixo <code>/api</code>.</td>
+<td style="text-align: left;"><strong>Corrigido na Arquitetura v2.2.</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="apendice-a-exemplos-de-requisicao-e-resposta">Apêndice A – Exemplos de requisição e resposta<a class="headerlink" href="#apendice-a-exemplos-de-requisicao-e-resposta" title="Permanent link">&para;</a></h2>
+<p>O exemplo 1 usa as respostas do caso TI-03 da Visão (P1 = 4, P2 = 3, P3 = 1, P4 = 0 e P5 = Não). As recomendações (requisito R06) foram omitidas, porque a estrutura delas fica a cargo do backend.</p>
+<p><strong>Exemplo 1 – check-in sem risco</strong></p>
+<div class="highlight"><pre><span></span><code><span class="err">POST /api/checkins</span>
+<span class="err">Authorization: Bearer &lt;token&gt;</span>
+
+<span class="err">{</span>
+<span class="err">  "p1": 4,</span>
+<span class="err">  "p2": 3,</span>
+<span class="err">  "p3": 1,</span>
+<span class="err">  "p4": 0,</span>
+<span class="err">  "p5": false</span>
+<span class="err">}</span>
+
+<span class="err">201 Created (trecho)</span>
+
+<span class="err">{</span>
+<span class="err">  "nivel": "autocuidado",</span>
+<span class="err">  "tags": ["ansiedade", "sono"]</span>
+<span class="err">}</span>
+</code></pre></div>
+<p>No exemplo 2, P2 a P4 ficam sem resposta e P5 = Sim. A regra R-D1 tem precedência, então nenhuma tag é gerada, embora P1 = 2.</p>
+<p><strong>Exemplo 2 – perguntas sem resposta e P5 = Sim</strong></p>
+<div class="highlight"><pre><span></span><code><span class="err">POST /api/checkins</span>
+
+<span class="err">{</span>
+<span class="err">  "p1": 2,</span>
+<span class="err">  "p2": null,</span>
+<span class="err">  "p3": null,</span>
+<span class="err">  "p4": null,</span>
+<span class="err">  "p5": true</span>
+<span class="err">}</span>
+
+<span class="err">201 Created (trecho)</span>
+
+<span class="err">{</span>
+<span class="err">  "nivel": "crise",</span>
+<span class="err">  "tags": []</span>
+<span class="err">}</span>
+</code></pre></div>
+<h2 id="apendice-b-sugestao-de-constantes">Apêndice B – Sugestão de constantes<a class="headerlink" href="#apendice-b-sugestao-de-constantes" title="Permanent link">&para;</a></h2>
+<p>Sugestão não normativa para as issues #4, #5 e #7. Os nomes de campo da API seguem o Quadro 6 da Arquitetura (<code>p1</code> a <code>p5</code>); os valores e os rótulos são os das seções 4 e 5; a organização do código fica a critério de cada equipe.</p>
+<p><strong>Backend (Python)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># backend/app/domain/checkins.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrEnum</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Tag</span><span class="p">(</span><span class="n">StrEnum</span><span class="p">):</span>
+    <span class="n">HUMOR</span> <span class="o">=</span> <span class="s2">"humor"</span>
+    <span class="n">ANSIEDADE</span> <span class="o">=</span> <span class="s2">"ansiedade"</span>
+    <span class="n">SONO</span> <span class="o">=</span> <span class="s2">"sono"</span>
+    <span class="n">ESTRESSE</span> <span class="o">=</span> <span class="s2">"estresse"</span>
+    <span class="n">BEM_ESTAR</span> <span class="o">=</span> <span class="s2">"bem_estar"</span>
+    <span class="n">AJUDA_PROFISSIONAL</span> <span class="o">=</span> <span class="s2">"ajuda_profissional"</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Nivel</span><span class="p">(</span><span class="n">StrEnum</span><span class="p">):</span>
+    <span class="n">AUTOCUIDADO</span> <span class="o">=</span> <span class="s2">"autocuidado"</span>
+    <span class="n">ATENCAO</span> <span class="o">=</span> <span class="s2">"atencao"</span>
+    <span class="n">PRIORITARIO</span> <span class="o">=</span> <span class="s2">"prioritario"</span>
+    <span class="n">CRISE</span> <span class="o">=</span> <span class="s2">"crise"</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># backend/app/api/schemas.py</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CheckinCreate</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="c1"># P1-P4 are optional: a missing answer is stored as null and triggers no rule.</span>
+    <span class="n">p1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># humor</span>
+    <span class="n">p2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># ansiedade</span>
+    <span class="n">p3</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># sono</span>
+    <span class="n">p4</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># sobrecarga</span>
+    <span class="n">p5</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1"># pensamento_risco</span>
+</code></pre></div>
+<p><strong>Frontend (TypeScript)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">// frontend/src/checkins/vocabulary.ts</span>
+<span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">Tag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'humor'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'ansiedade'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'sono'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'estresse'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'bem_estar'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'ajuda_profissional'</span>
+<span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">Nivel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'autocuidado'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'atencao'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'prioritario'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'crise'</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">CheckinAnswers</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">p1</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="c1">// humor</span>
+<span class="w">  </span><span class="nx">p2</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="c1">// ansiedade</span>
+<span class="w">  </span><span class="nx">p3</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="c1">// sono</span>
+<span class="w">  </span><span class="nx">p4</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="c1">// sobrecarga</span>
+<span class="w">  </span><span class="nx">p5</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="c1">// pensamento_risco</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">Option</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span>
+<span class="w">  </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="c1">// The stored value identifies the option; labels may change without a data migration.</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">QUALITY_SCALE</span><span class="o">:</span><span class="w"> </span><span class="kt">Option</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">'Muito ruim'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">2</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">'Ruim'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">3</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">'Regular'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">4</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">'Bom'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">5</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">'Muito bom'</span><span class="w"> </span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">INTENSITY_SCALE</span><span class="o">:</span><span class="w"> </span><span class="kt">Option</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">0</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">'Nada'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">1</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">'Um pouco'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">2</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">'Bastante'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">3</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">'Extremamente'</span><span class="w"> </span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">SKIP_LABEL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Prefiro não responder'</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">OPTIONAL_QUESTIONS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">'P1'</span><span class="p">,</span><span class="w"> </span><span class="nx">field</span><span class="o">:</span><span class="w"> </span><span class="s1">'p1'</span><span class="p">,</span><span class="w"> </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">'Como você avalia seu humor hoje?'</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="o">:</span><span class="w"> </span><span class="kt">QUALITY_SCALE</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">'P2'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">field</span><span class="o">:</span><span class="w"> </span><span class="s1">'p2'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">'Hoje, o quanto você se sentiu nervoso(a), ansioso(a) ou preocupado(a)?'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">options</span><span class="o">:</span><span class="w"> </span><span class="kt">INTENSITY_SCALE</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">'P3'</span><span class="p">,</span><span class="w"> </span><span class="nx">field</span><span class="o">:</span><span class="w"> </span><span class="s1">'p3'</span><span class="p">,</span><span class="w"> </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">'Como foi seu sono na última noite?'</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="o">:</span><span class="w"> </span><span class="kt">QUALITY_SCALE</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">'P4'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">field</span><span class="o">:</span><span class="w"> </span><span class="s1">'p4'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">'Hoje, o quanto você se sentiu sobrecarregado(a) com estudos, trabalho ou outras demandas?'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">options</span><span class="o">:</span><span class="w"> </span><span class="kt">INTENSITY_SCALE</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">]</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="kd">const</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">SAFETY_QUESTION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">'P5'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">field</span><span class="o">:</span><span class="w"> </span><span class="s1">'p5'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s1">'Hoje você teve pensamentos de se machucar ou de que seria melhor estar morto(a)?'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">options</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">false</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">'Não'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">value</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">'Sim'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="p">}</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="kd">const</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">TAG_LABELS</span><span class="o">:</span><span class="w"> </span><span class="kt">Record</span><span class="o">&lt;</span><span class="nx">Tag</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">humor</span><span class="o">:</span><span class="w"> </span><span class="s1">'Humor'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">ansiedade</span><span class="o">:</span><span class="w"> </span><span class="s1">'Ansiedade'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">sono</span><span class="o">:</span><span class="w"> </span><span class="s1">'Sono'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">estresse</span><span class="o">:</span><span class="w"> </span><span class="s1">'Estresse'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">bem_estar</span><span class="o">:</span><span class="w"> </span><span class="s1">'Bem-estar'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">ajuda_profissional</span><span class="o">:</span><span class="w"> </span><span class="s1">'Ajuda profissional'</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1">// Priority order of rule R-S1, also used to list themes in the interface.</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">TAG_ORDER</span><span class="o">:</span><span class="w"> </span><span class="kt">Tag</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s1">'ajuda_profissional'</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">'ansiedade'</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">'humor'</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">'estresse'</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">'sono'</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">'bem_estar'</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div>
+<h2 id="apendice-c-texto-sugerido-para-os-termos-de-uso">Apêndice C – Texto sugerido para os termos de uso<a class="headerlink" href="#apendice-c-texto-sugerido-para-os-termos-de-uso" title="Permanent link">&para;</a></h2>
+<p>Seção a acrescentar à página “Termos de uso e privacidade” antes de liberar o check-in, junto com a atualização de <code>TERMS_VERSION</code>:</p>
+<div class="admonition quote">
+<p class="admonition-title">Check-in diário</p>
+<ul>
+<li>Guardamos suas respostas ao check-in (humor, nervosismo ou preocupação, sono, sobrecarga e a pergunta sobre pensamentos de se machucar), a data, os temas e os conteúdos sugeridos a partir delas.</li>
+<li>Usamos essas respostas apenas para sugerir conteúdos de autocuidado de fontes oficiais e, se você indicar pensamentos de se machucar, para mostrar na hora contatos de ajuda.</li>
+<li>O check-in não tem campo de texto livre: você escolhe entre opções, e só a pergunta sobre pensamentos de se machucar é obrigatória.</li>
+<li>Essas respostas são dados sobre a sua saúde. O acesso a elas é restrito a você, e você pode pedir a exclusão delas a qualquer momento.</li>
+<li>O Sintoniza não acompanha suas respostas em tempo real e não avisa ninguém.</li>
+</ul>
+</div>
+<h2 id="referencias">Referências<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<p>BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD). <strong>Diário Oficial da União</strong>: seção 1, Brasília, DF, 15 ago. 2018.</p>
+<p>GRUPO LAMPORT. <strong>Documento de Arquitetura – Sintoniza</strong>. Versão 2.1. Brasília, DF: Universidade de Brasília, 2026.</p>
+<p>GRUPO LAMPORT. <strong>Visão do Produto e do Projeto – Sintoniza</strong>: aplicação web de apoio à saúde mental. Versão 2.1. Brasília, DF: Universidade de Brasília, 2026.</p>
+<p>KROENKE, K.; SPITZER, R. L.; WILLIAMS, J. B. W. The PHQ-9: validity of a brief depression severity measure. <strong>Journal of General Internal Medicine</strong>, v. 16, n. 9, p. 606-613, 2001.</p>
+<p>MELO, M. Q. <strong>[PO/UX] Definir vocabulário do check-in</strong>: categorias de humor, escala e fatores de contexto. Issue #3 do repositório FGA0138-MDS-Ajax/2026.2-T03-Lamport. GitHub, 14 out. 2026. Disponível em: <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/issues/3">https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/issues/3</a>. Acesso em: 28 out. 2026.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1854 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação do Sintoniza, aplicação web de apoio à saúde mental (MDS 2026 – Turma 03).">
+      
+      
+      
+      
+        <link rel="prev" href="../visao-produto-projeto/">
+      
+      
+        <link rel="next" href="../vocabulario-checkin/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Documento de Arquitetura - Sintoniza – Grupo Lamport</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#documento-de-arquitetura" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Sintoniza – Grupo Lamport" class="md-header__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sintoniza – Grupo Lamport
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Documento de Arquitetura
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Sintoniza – Grupo Lamport" class="md-nav__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Sintoniza – Grupo Lamport
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visao-produto-projeto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão do Produto e do Projeto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#integrantes-do-grupo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integrantes do grupo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historico-de-revisoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histórico de revisões
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 Introdução
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 Introdução">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Propósito
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Escopo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-representacao-arquitetural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 Representação arquitetural
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 Representação arquitetural">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-definicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Definições
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-justificativa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Justificativa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-detalhamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Detalhamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-metas-e-restricoes-arquiteturais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Metas e restrições arquiteturais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-visoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Visões
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5 Visões">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#251-visao-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.1 Visão de uso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#252-visao-de-organizacao-logica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.2 Visão de organização lógica
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#253-visao-estrutural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.3 Visão estrutural
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-visao-de-implantacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Visão de Implantação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-restricoes-adicionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Restrições adicionais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-rastreabilidade-com-a-visao-do-produto-e-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 Rastreabilidade com a Visão do Produto e do Projeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-bibliografia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Bibliografia
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vocabulario-checkin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vocabulário do check-in
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../historico-versoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Histórico de versões
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atas de Reunião
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Atas de Reunião
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../atas-reuniao/ata-reuniao-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ata 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#integrantes-do-grupo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integrantes do grupo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historico-de-revisoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histórico de revisões
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 Introdução
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 Introdução">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Propósito
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Escopo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-representacao-arquitetural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 Representação arquitetural
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 Representação arquitetural">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-definicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Definições
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-justificativa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Justificativa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-detalhamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Detalhamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-metas-e-restricoes-arquiteturais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Metas e restrições arquiteturais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-visoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Visões
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5 Visões">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#251-visao-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.1 Visão de uso
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#252-visao-de-organizacao-logica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.2 Visão de organização lógica
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#253-visao-estrutural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.3 Visão estrutural
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-visao-de-implantacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Visão de Implantação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-restricoes-adicionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Restrições adicionais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-rastreabilidade-com-a-visao-do-produto-e-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 Rastreabilidade com a Visão do Produto e do Projeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-bibliografia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Bibliografia
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="documento-de-arquitetura">Documento de Arquitetura<a class="headerlink" href="#documento-de-arquitetura" title="Permanent link">&para;</a></h1>
+<p><strong>Versão 2.2 – 29/10/2026</strong></p>
+<div class="admonition info">
+<p class="admonition-title">Versão vigente</p>
+<p>Esta página reproduz a versão 2.2, que substitui as anteriores. O que mudou em cada versão está no <a href="../historico-versoes/">Histórico de versões</a>. Este documento está alinhado à <a href="../visao-produto-projeto/">Visão do Produto e do Projeto v2.2</a>.</p>
+</div>
+<h2 id="integrantes-do-grupo">Integrantes do grupo<a class="headerlink" href="#integrantes-do-grupo" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Matrícula</th>
+<th style="text-align: left;">Nome</th>
+<th style="text-align: left;">Função (responsabilidade)</th>
+<th style="text-align: center;">Pontos de participação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">251026239</td>
+<td style="text-align: left;">Martin Quadros de Melo</td>
+<td style="text-align: left;">Product Owner</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr>
+<td style="text-align: center;">251012322</td>
+<td style="text-align: left;">Luiz Felipe Mendes Cordeiro Gomes</td>
+<td style="text-align: left;">Desenvolvedor backend</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr>
+<td style="text-align: center;">231026803</td>
+<td style="text-align: left;">Carlos Eduardo Pereira Alexandre</td>
+<td style="text-align: left;">Desenvolvedor backend</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr>
+<td style="text-align: center;">251010927</td>
+<td style="text-align: left;">Júlio Barros de Oliveira</td>
+<td style="text-align: left;">Desenvolvedor frontend</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr>
+<td style="text-align: center;">251040022</td>
+<td style="text-align: left;">Danilo Menezes Gomez</td>
+<td style="text-align: left;">Desenvolvedor frontend</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr>
+<td style="text-align: center;">251035784</td>
+<td style="text-align: left;">Vinícius Evangelista Borges Pinto</td>
+<td style="text-align: left;">UX/UI, conteúdo e documentação</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr>
+<td style="text-align: center;">251035274</td>
+<td style="text-align: left;">Hugo Sousa Rosa</td>
+<td style="text-align: left;">Infraestrutura e qualidade</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: center;"><strong>100</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="historico-de-revisoes">Histórico de revisões<a class="headerlink" href="#historico-de-revisoes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Data</th>
+<th style="text-align: center;">Versão</th>
+<th style="text-align: left;">Descrição</th>
+<th style="text-align: left;">Autor(es)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">05/10/2026</td>
+<td style="text-align: center;">1.0</td>
+<td style="text-align: left;">Elaboração inicial do Documento de Arquitetura do Sintoniza, alinhada à Visão do Produto e do Projeto.</td>
+<td style="text-align: left;">Grupo Lamport</td>
+</tr>
+<tr>
+<td style="text-align: center;">07/10/2026</td>
+<td style="text-align: center;">1.1</td>
+<td style="text-align: left;">Revisão conforme feedback: critérios de indicador crítico, fluxo de segurança, cliente web em React, dependências dos pacotes, modelo de classes, visão de implantação e rastreabilidade.</td>
+<td style="text-align: left;">Grupo Lamport</td>
+</tr>
+<tr>
+<td style="text-align: center;">15/10/2026</td>
+<td style="text-align: center;">2.0</td>
+<td style="text-align: left;">Alinhamento à Visão v2.0: remoção dos perfis Administrador e Curador e do componente de administração; módulo de regras como funções puras com contrato documentado; catálogo versionado em arquivo com carga por seed; avaliação quinzenal PHQ-9/GAD-7; dois diagramas de atividades (check-in e avaliação); contrato da API; restrições de segurança verificáveis por testes; Docker Compose como implantação obrigatória.</td>
+<td style="text-align: left;">Grupo Lamport</td>
+</tr>
+<tr>
+<td style="text-align: center;">18/10/2026</td>
+<td style="text-align: center;">2.1</td>
+<td style="text-align: left;">Alinhamento à Visão v2.1: remoção das metas de desempenho, capacidade e cobertura de código, da publicação em nuvem, do verificador automático de links, da auditoria de dependências e da avaliação de utilidade dos materiais; restrições de segurança limitadas ao que é verificado pelos testes TS-01 a TS-05; características de qualidade descritas sem metas numéricas.</td>
+<td style="text-align: left;">Grupo Lamport</td>
+</tr>
+<tr>
+<td style="text-align: center;">29/10/2026</td>
+<td style="text-align: center;">2.2</td>
+<td style="text-align: left;">Alinhamento à Visão v2.2: P1 a P4 do check-in opcionais (nulas quando sem resposta) na Figura 3, na Figura 6 e no contrato de <code>avaliar_checkin</code>; retirada do convite para avaliação (R07, R-D7), da função <code>deve_convidar_avaliacao</code> e do campo <code>convite</code>; regra de nomes das respostas do check-in na API (<code>p1</code> a <code>p5</code> na entrada e na saída); correção do prefixo <code>/api</code> nas rotas da Figura 3.</td>
+<td style="text-align: left;">Grupo Lamport</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-introducao">1 Introdução<a class="headerlink" href="#1-introducao" title="Permanent link">&para;</a></h2>
+<h3 id="11-proposito">1.1 Propósito<a class="headerlink" href="#11-proposito" title="Permanent link">&para;</a></h3>
+<p>Este documento descreve a arquitetura do Sintoniza, sistema desenvolvido pelo grupo Lamport na disciplina de Métodos de Desenvolvimento de Software (MDS) em 2026, a fim de fornecer uma visão abrangente do sistema para desenvolvedores, testadores e demais interessados. Ele registra as decisões arquiteturais, as tecnologias, as responsabilidades e interfaces de cada elemento, as restrições e o ambiente de implantação. Como na Visão do Produto e do Projeto, <strong>tudo o que está descrito aqui é compromisso de implementação</strong>; o que não será feito está explicitamente marcado como fora do escopo.</p>
+<h3 id="12-escopo">1.2 Escopo<a class="headerlink" href="#12-escopo" title="Permanent link">&para;</a></h3>
+<p>O detalhamento do escopo encontra-se na <a href="../visao-produto-projeto/">Visão do Produto e do Projeto</a>, versão 2.2 (GRUPO LAMPORT, 2026), seção 4. Em linhas gerais, o MVP compreende: cadastro, autenticação, termos de uso e exclusão de conta; check-in diário com cinco perguntas e recomendação de até três materiais oficiais com explicação; avaliação quinzenal com os instrumentos PHQ-9 e GAD-7 e orientação por nível; Tela de Ajuda Imediata acionada por indicador de risco ou por botão; histórico; e catálogo curado de links oficiais mantido no repositório.</p>
+<p>As partes da Visão usadas nas decisões deste documento são citadas explicitamente: a pilha tecnológica (Visão, seção 1.4), as regras de negócio do fluxo principal (Visão, seção 4.5), os requisitos Must (Visão, seção 4.4), as métricas do GQM (Visão, seção 5) e os riscos (Visão, seção 2.5). Ficam fora da arquitetura do MVP: aplicativo móvel nativo, notificações, painel administrativo, inteligência artificial, integração com APIs externas e publicação em nuvem.</p>
+<h2 id="2-representacao-arquitetural">2 Representação arquitetural<a class="headerlink" href="#2-representacao-arquitetural" title="Permanent link">&para;</a></h2>
+<h3 id="21-definicoes">2.1 Definições<a class="headerlink" href="#21-definicoes" title="Permanent link">&para;</a></h3>
+<p>O sistema seguirá o estilo arquitetural <strong>em camadas</strong> (<em>layered architecture</em>), implementado como um <strong>monólito modular</strong> no backend e um <strong>cliente web de página única</strong> (SPA) no frontend, que se comunicam por uma API REST. O backend é uma única unidade de implantação dividida em módulos coesos; a lógica de decisão fica isolada em um módulo de <strong>regras puras</strong>, sem acesso a banco ou rede.</p>
+<h3 id="22-justificativa">2.2 Justificativa<a class="headerlink" href="#22-justificativa" title="Permanent link">&para;</a></h3>
+<p>A escolha decorre do que está registrado na Visão do Produto e do Projeto (GRUPO LAMPORT, 2026):</p>
+<ol>
+<li><strong>pilha tecnológica</strong> (Visão, seção 1.4): cliente React, API em FastAPI e PostgreSQL se encaixam naturalmente nas camadas de apresentação, interface, serviços e persistência;</li>
+<li><strong>regras de negócio explícitas e testáveis</strong> (Visão, seção 4.5 e objetivo secundário 3): o encaminhamento depende de tabelas de decisão com valores-limite. Isolá-las em um módulo de funções puras permite testar cada linha com testes unitários rápidos, sem banco (Visão, métrica M1);</li>
+<li><strong>segurança e privacidade</strong> (Visão, requisito R14 e risco R4): autenticação, autorização e isolamento entre usuários ficam concentrados no backend, num único ponto de entrada, em conformidade com a LGPD (BRASIL, 2018);</li>
+<li><strong>equipe e prazo</strong> (Visão, seções 2.2 e 2.3): sete estudantes, quatro sprints restantes e pouca experiência com React. Um único código-base de backend e um único banco reduzem a complexidade operacional.</li>
+</ol>
+<p>Foram descartados, para o MVP: <strong>microsserviços</strong>, pelo custo de orquestração, comunicação entre serviços e observabilidade, desproporcional ao tamanho da equipe; <strong>aplicativo móvel nativo</strong>, porque um cliente web acessado pelo navegador exige um único código; <strong>integração com APIs externas de conteúdo</strong>, porque as APIs públicas da OMS e do Ministério da Saúde oferecem indicadores estatísticos, e não materiais educativos; e <strong>mecanismos de recomendação por aprendizado de máquina</strong>, por não serem explicáveis nem testáveis no nível exigido.</p>
+<h3 id="23-detalhamento">2.3 Detalhamento<a class="headerlink" href="#23-detalhamento" title="Permanent link">&para;</a></h3>
+<p>A Figura 1 apresenta a arquitetura lógica. O cliente acessa exclusivamente a API, por HTTP e com token JWT. A API valida as entradas, autentica o usuário e delega cada caso de uso à camada de serviços. Os serviços obtêm os dados necessários da persistência, chamam as funções do módulo de regras com esses dados já em memória e gravam o resultado. O PostgreSQL só é acessado pela camada de persistência. O catálogo de materiais é um arquivo versionado no Git, carregado no banco por um comando de <em>seed</em>.</p>
+<p><strong>Figura 1 – Arquitetura em camadas do Sintoniza</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    AP["&lt;b&gt;Camada de Apresentação&lt;/b&gt;&lt;br/&gt;SPA React + TypeScript (navegador)&lt;br/&gt;páginas, formulários, Tela de Ajuda Imediata (estática)"]
+    AP --- PROTO(["HTTP · REST · JSON&lt;br/&gt;Authorization: Bearer JWT"])
+    PROTO --&gt; API["&lt;b&gt;Camada de Interface (API)&lt;/b&gt;&lt;br/&gt;FastAPI: routers, schemas Pydantic,&lt;br/&gt;dependência de autenticação"]
+    API -- chamada de função --&gt; SV["&lt;b&gt;Camada de Serviços (casos de uso)&lt;/b&gt;&lt;br/&gt;contas · check-ins · avaliações · histórico"]
+    SV -- dados em memória --&gt; RG["&lt;b&gt;Regras (domínio puro)&lt;/b&gt;&lt;br/&gt;pontuação, faixas, tabela de decisão,&lt;br/&gt;seleção de conteúdo — sem I/O"]
+    SV -- repositórios --&gt; PE["&lt;b&gt;Camada de Persistência&lt;/b&gt;&lt;br/&gt;SQLAlchemy (repositórios) + Alembic"]
+    YAML["catalog/materiais.yaml&lt;br/&gt;(versionado no Git)"] -. comando seed .-&gt; PE
+    PE -- driver psycopg --&gt; DB[("PostgreSQL")]
+    style RG fill:#fff3cd,stroke:#d4a017</code></pre>
+<p>O Quadro 3 instancia cada elemento da figura: por que existe, qual sua responsabilidade e quais são as regras de uso de sua interface.</p>
+<p><strong>Quadro 3 – Elementos da arquitetura, responsabilidades e regras de uso das interfaces</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Elemento</th>
+<th style="text-align: left;">Responsabilidade (por que existe)</th>
+<th style="text-align: left;">Interface e regras de uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Apresentação (SPA React)</td>
+<td style="text-align: left;">Telas, navegação, formulários e acessibilidade. Contém a Tela de Ajuda Imediata como conteúdo estático, para funcionar mesmo sem a API. Não contém regras de negócio.</td>
+<td style="text-align: left;">Entrada: ações do usuário. Saída: requisições HTTP/JSON com cabeçalho <code>Authorization: Bearer &lt;token&gt;</code>. Nunca acessa o banco. Exibe os textos de orientação recebidos da API.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Interface (API FastAPI)</td>
+<td style="text-align: left;">Ponto único de entrada: rotas, validação de esquemas (Pydantic) e autenticação JWT.</td>
+<td style="text-align: left;">Entrada: JSON validado contra esquema; requisição inválida → 422. Saída: JSON e códigos HTTP. Contrato descrito em OpenAPI, gerado automaticamente pelo FastAPI.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Serviços (casos de uso)</td>
+<td style="text-align: left;">Orquestram cada caso de uso: cadastro, check-in, avaliação, histórico, exclusão. Garantem que toda consulta seja filtrada pelo usuário autenticado.</td>
+<td style="text-align: left;">Entrada: dados validados e identificador do usuário. Saída: objetos de resultado. Usam regras e persistência; executam a gravação em uma transação.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Regras (domínio puro)</td>
+<td style="text-align: left;">Pontuação do PHQ-9 e do GAD-7, faixas, tabela de decisão, regras do check-in e seleção de conteúdo. É o elemento que torna o encaminhamento verificável.</td>
+<td style="text-align: left;">Entrada: valores primitivos e listas em memória. Saída: resultados imutáveis. Sem I/O, sem data/hora do sistema e sem aleatoriedade: mesma entrada, mesma saída (contrato no Quadro 5).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Persistência</td>
+<td style="text-align: left;">Modelos SQLAlchemy, repositórios e migrações Alembic.</td>
+<td style="text-align: left;">Entrada: operações dos serviços. Saída: entidades. Único elemento que conhece o PostgreSQL.</td>
+</tr>
+<tr>
+<td style="text-align: left;">PostgreSQL</td>
+<td style="text-align: left;">Armazena usuários, check-ins, avaliações, materiais e recomendações.</td>
+<td style="text-align: left;">Acessado somente pela API.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Catálogo (<code>materiais.yaml</code> + seed)</td>
+<td style="text-align: left;">Fonte versionada dos materiais oficiais, revisada por pull request.</td>
+<td style="text-align: left;">Entrada: arquivo YAML validado (TU-07). Saída: carga na tabela Material; material marcado como inativo deixa de ser recomendado.</td>
+</tr>
+</tbody>
+</table>
+<p>Os conectores são: entre cliente e API, HTTP com JSON (REST); entre API e serviços, e entre serviços e regras, chamadas de função em memória; entre serviços e persistência, chamadas a repositórios; entre persistência e PostgreSQL, conexão pelo driver psycopg.</p>
+<h3 id="24-metas-e-restricoes-arquiteturais">2.4 Metas e restrições arquiteturais<a class="headerlink" href="#24-metas-e-restricoes-arquiteturais" title="Permanent link">&para;</a></h3>
+<p>As metas e restrições a seguir decorrem dos requisitos e dos riscos da Visão. Cada uma tem uma forma de verificação:</p>
+<ol>
+<li><strong>Regras determinísticas, puras e parametrizadas.</strong> O módulo <code>rules</code> não acessa banco, rede, relógio nem gerador aleatório; recebe tudo por parâmetro. Os limites (por exemplo, 10, 15 e 20) ficam em constantes de configuração, e alterá-los exige pull request, atualização de testes e aprovação do PO. <em>Justificativa:</em> permitir testar todas as linhas das tabelas (Visão, métrica M1) e evitar encaminhamento errado (risco R3). <em>Verificação:</em> testes TU-01 a TU-07;</li>
+<li><strong>Rastreabilidade de cada recomendação.</strong> Toda recomendação é gravada com o código da regra e o motivo exibido. <em>Justificativa:</em> explicar a sugestão ao usuário. <em>Verificação:</em> TI-03 e TI-06;</li>
+<li><strong>Ajuda Imediata independente do backend.</strong> A Tela de Ajuda é estática no frontend e acessível sem login. <em>Justificativa:</em> risco R1. <em>Verificação:</em> TSI-02 e TSI-04;</li>
+<li><strong>Interfaces.</strong> API REST com JSON e rotas sob <code>/api</code>. Recursos de outro usuário respondem 404, e não 403, para não revelar sua existência. <em>Justificativa:</em> contrato único entre frontend e backend, que evoluem em paralelo. <em>Verificação:</em> TS-03;</li>
+<li><strong>Segurança.</strong> Senhas com Argon2id; JWT assinado com validade de 60 min e segredo lido de variável de ambiente; toda rota privada protegida por dependência de autenticação; consultas sempre filtradas pelo usuário do token. <em>Justificativa:</em> dados de saúde são dados pessoais sensíveis (BRASIL, 2018, art. 5º, II). <em>Verificação:</em> TS-01 a TS-05;</li>
+<li><strong>Padrão de codificação.</strong> Backend em Python seguindo a PEP 8 (VAN ROSSUM; WARSAW; COGHLAN, 2001), verificada pelo Ruff; frontend em TypeScript verificado pelo ESLint. Nomes de pacotes e módulos em inglês (<code>api</code>, <code>services</code>, <code>rules</code>, <code>persistence</code>); entidades e campos do domínio em português sem acento (<code>Usuario</code>, <code>CheckinDiario</code>, <code>escore_phq9</code>), por serem termos do negócio; textos da interface em português. <em>Justificativa:</em> código uniforme reduz atrito nas revisões.</li>
+</ol>
+<p>Não foram definidas metas de desempenho, capacidade, disponibilidade ou compatibilidade com navegadores e tamanhos de tela: o sistema será usado apenas em testes e demonstrações da disciplina, e essas metas exigiriam testes que não fazem parte do escopo (Visão, seção 4.1).</p>
+<h3 id="25-visoes">2.5 Visões<a class="headerlink" href="#25-visoes" title="Permanent link">&para;</a></h3>
+<p>As visões a seguir comunicam o escopo funcional (visão de uso), as camadas e módulos (visão de organização lógica) e a composição do sistema (visão estrutural). A visão de implantação está na seção 2.6.</p>
+<h4 id="251-visao-de-uso">2.5.1 Visão de uso<a class="headerlink" href="#251-visao-de-uso" title="Permanent link">&para;</a></h4>
+<p>O ator principal é o Usuário, que especializa o Visitante (Figura 2). O Visitante pode cadastrar-se, entrar, ler os termos e acessar a Ajuda Imediata. O Usuário, além disso, responde o check-in diário e a avaliação quinzenal, vê conteúdos e resultados, consulta o histórico e exclui a conta. O caso "Exibir ajuda imediata" estende o check-in e a avaliação quando há indicador de risco. Não há atores administrativos: o catálogo é mantido pela equipe no repositório.</p>
+<p><strong>Figura 2 – Diagrama de casos de uso do Sintoniza</strong></p>
+<pre class="mermaid"><code>flowchart LR
+    V(("Visitante"))
+    U(("Usuário"))
+    U -. especializa .-&gt; V
+    subgraph S["Sintoniza"]
+        UC1(["Cadastrar-se"])
+        UC2(["Entrar (login)"])
+        UC3(["Ler termos de uso e privacidade"])
+        UC4(["Acessar ajuda imediata"])
+        UC5(["Responder check-in diário"])
+        UC6(["Responder avaliação quinzenal (PHQ-9 + GAD-7)"])
+        UC7(["Consultar histórico"])
+        UC8(["Excluir conta e dados"])
+        UC9(["Ver conteúdos recomendados"])
+        UC10(["Ver resultado da avaliação"])
+        UC11(["Exibir ajuda imediata (indicador de risco)"])
+    end
+    V --- UC1 &amp; UC2 &amp; UC3 &amp; UC4
+    U --- UC5 &amp; UC6 &amp; UC7 &amp; UC8
+    UC5 -. "«include»" .-&gt; UC9
+    UC6 -. "«include»" .-&gt; UC10
+    UC11 -. "«extend» [P5 = Sim]" .-&gt; UC5
+    UC11 -. "«extend» [item 9 ≥ 1]" .-&gt; UC6
+    style UC11 fill:#f8d7da,stroke:#c0392b</code></pre>
+<p>As funcionalidades mais complexas são o check-in diário e a avaliação quinzenal, detalhadas nos diagramas de atividades das Figuras 3 e 4. Os prefixos entre colchetes indicam o elemento da arquitetura que executa cada atividade.</p>
+<p><strong>Figura 3 – Diagrama de atividades do check-in diário</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    I((" ")) --&gt; A1["[Front] Abrir check-in&lt;br/&gt;GET /api/checkins/hoje"]
+    A1 --&gt; D1{"Já existe&lt;br/&gt;check-in hoje?"}
+    D1 -- sim --&gt; A2["[Front] Exibir resultado&lt;br/&gt;já registrado do dia"]
+    D1 -- não --&gt; A3["[Front] Responder P1–P5&lt;br/&gt;(P1–P4 opcionais, P5 obrigatória)"]
+    A3 --&gt; A4["[API] POST /api/checkins&lt;br/&gt;validar schema (faixas de valores)"]
+    A4 --&gt; D2{"Válido?"}
+    D2 -- não --&gt; A5["[API] 422 + mensagens&lt;br/&gt;de validação"]
+    A5 --&gt; A3
+    D2 -- sim --&gt; A6["[Regras] avaliar_checkin()&lt;br/&gt;R-D1: P5 = Sim?"]
+    A6 --&gt; D3{"P5 = Sim?"}
+    D3 -- sim --&gt; A7["[Serviço] nivel = CRISE&lt;br/&gt;salvar check-in sem recomendações"]
+    A7 --&gt; A8["[Front] Tela de Ajuda Imediata&lt;br/&gt;CVV 188 · SAMU 192 · UPA"]
+    D3 -- não --&gt; A9["[Regras] R-D2..R-D5&lt;br/&gt;calcular tags (ou BEM_ESTAR)&lt;br/&gt;resposta nula não aciona regra"]
+    A9 --&gt; A10["[Regras] selecionar_materiais()&lt;br/&gt;até 3, menos recentes, com motivo"]
+    A10 --&gt; A11["[Persistência] salvar check-in&lt;br/&gt;e recomendações (transação)"]
+    A11 --&gt; A13["[Front] Exibir materiais,&lt;br/&gt;motivos e link da fonte oficial"]
+    A2 --&gt; F(((" ")))
+    A8 --&gt; F
+    A13 --&gt; F
+    style A7 fill:#f8d7da,stroke:#c0392b
+    style A8 fill:#f8d7da,stroke:#c0392b</code></pre>
+<p><strong>Figura 4 – Diagrama de atividades da avaliação quinzenal</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    I((" ")) --&gt; B1["[Front] Responder PHQ-9 (9 itens)&lt;br/&gt;e GAD-7 (7 itens), escala 0–3"]
+    B1 --&gt; B2["[API] POST /avaliacoes&lt;br/&gt;validar 16 respostas inteiras 0–3"]
+    B2 --&gt; B3["[Regras] escore PHQ-9 (0–27), GAD-7 (0–21)&lt;br/&gt;e faixas de gravidade"]
+    B3 --&gt; D1{"R-A1: item 9&lt;br/&gt;do PHQ-9 ≥ 1?"}
+    D1 -- sim --&gt; N3["N3 CRISE&lt;br/&gt;sem recomendações"]
+    N3 --&gt; B4["[Persistência] salvar&lt;br/&gt;avaliação (nível N3)"]
+    B4 --&gt; B5["[Front] Tela de Ajuda Imediata"]
+    D1 -- não --&gt; D2{"R-A2: PHQ-9 ≥ 20&lt;br/&gt;ou GAD-7 ≥ 15?"}
+    D2 -- sim --&gt; N2["N2 PRIORITÁRIO"]
+    D2 -- não --&gt; D3{"R-A3: PHQ-9 ≥ 10&lt;br/&gt;ou GAD-7 ≥ 10?"}
+    D3 -- sim --&gt; N1["N1 ATENÇÃO"]
+    D3 -- não --&gt; N0["N0 AUTOCUIDADO (R-A4)"]
+    N2 &amp; N1 &amp; N0 --&gt; B6["[Regras] tags do nível&lt;br/&gt;(AJUDA_PROFISSIONAL, HUMOR,&lt;br/&gt;ANSIEDADE ou BEM_ESTAR)&lt;br/&gt;→ selecionar_materiais()"]
+    B6 --&gt; B7["[Persistência] salvar avaliação,&lt;br/&gt;escores, nível e recomendações"]
+    B7 --&gt; B8["[Front] Exibir escores, faixas,&lt;br/&gt;orientação do nível, materiais&lt;br/&gt;e aviso 'não é diagnóstico'"]
+    B5 --&gt; F(((" ")))
+    B8 --&gt; F
+    style N3 fill:#f8d7da,stroke:#c0392b
+    style B5 fill:#f8d7da,stroke:#c0392b</code></pre>
+<p>A arquitetura foi influenciada principalmente pelos requisitos Must de registro do check-in (R05), recomendação explicada (R06), avaliação e resultado (R08, R09), Ajuda Imediata (R10, R11) e proteção de dados (R14). A necessidade de testar as regras isoladamente levou ao módulo de regras puro; a necessidade de impedir acesso cruzado entre usuários levou a concentrar a autorização na API e nos serviços; e a necessidade de oferecer ajuda mesmo em caso de falha levou à Tela de Ajuda estática no cliente.</p>
+<p>A experiência da equipe também orientou a escolha, como evidência complementar. O Mapa de Competências da disciplina foi respondido por dois dos sete integrantes (escala de 1 a 5), razão pela qual não foi a base exclusiva da decisão. Nas respostas, Python aparece como a tecnologia de maior familiaridade, seguida de Git/GitHub e desenvolvimento backend; React, SQL, Docker e soluções móveis ainda demandam amadurecimento. Por isso: o backend em FastAPI aproveita a competência mais forte; o monólito modular reduz a curva de aprendizado; o acesso ao banco fica isolado em um único módulo; e o frontend usa React com telas simples, sem bibliotecas de componentes complexas (Visão, risco R7).</p>
+<h4 id="252-visao-de-organizacao-logica">2.5.2 Visão de organização lógica<a class="headerlink" href="#252-visao-de-organizacao-logica" title="Permanent link">&para;</a></h4>
+<p><strong>Quadro 4 – Módulos da organização lógica</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Módulo</th>
+<th style="text-align: left;">Razão lógica</th>
+<th style="text-align: left;">Comunicação / interface</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>frontend/pages</code></td>
+<td style="text-align: left;">Uma tela por caso de uso (login, cadastro, check-in, avaliação, resultado, histórico, termos, ajuda).</td>
+<td style="text-align: left;">Usa <code>components</code> e <code>services/api</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>frontend/components</code></td>
+<td style="text-align: left;">Elementos reutilizáveis: BotaoAjuda, TelaAjuda, CardMaterial, PerguntaEscala.</td>
+<td style="text-align: left;">Recebe dados por props; TelaAjuda não depende da API.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>frontend/services/api</code></td>
+<td style="text-align: left;">Cliente HTTP tipado; injeta o token e trata 401 (volta ao login).</td>
+<td style="text-align: left;">HTTP/JSON com o módulo <code>api</code> do backend.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>backend/api</code></td>
+<td style="text-align: left;">Rotas FastAPI, esquemas Pydantic e dependência de autenticação.</td>
+<td style="text-align: left;">Recebe HTTP; chama <code>services</code> e <code>security</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>backend/security</code></td>
+<td style="text-align: left;">Hash e verificação de senha (Argon2id); emissão e validação de JWT.</td>
+<td style="text-align: left;">Funções chamadas pela <code>api</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>backend/services</code></td>
+<td style="text-align: left;">Casos de uso; filtro por usuário em todas as consultas; transações.</td>
+<td style="text-align: left;">Chama <code>rules</code> (funções puras) e <code>persistence</code> (repositórios).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>backend/rules</code></td>
+<td style="text-align: left;">Pontuação, faixas, decisão, regras do check-in e seleção de conteúdo.</td>
+<td style="text-align: left;">Funções puras (Quadro 5); depende só de <code>domain</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>backend/domain</code></td>
+<td style="text-align: left;">Enumerações e tipos do negócio: Nivel, Tag, Faixa e objetos de resultado.</td>
+<td style="text-align: left;">Importado pelos demais módulos; não importa nenhum.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>backend/persistence</code></td>
+<td style="text-align: left;">Modelos SQLAlchemy, repositórios e migrações Alembic.</td>
+<td style="text-align: left;">Chamado por <code>services</code> e <code>catalog</code>; único a acessar o PostgreSQL.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>backend/catalog</code></td>
+<td style="text-align: left;"><code>materiais.yaml</code>, validação e comando seed.</td>
+<td style="text-align: left;">Usa <code>persistence</code> para a carga.</td>
+</tr>
+</tbody>
+</table>
+<p>As dependências de código seguem uma única direção (<code>pages</code> → <code>services/api</code> → <code>api</code> → <code>services</code> → <code>rules</code>/<code>persistence</code> → <code>domain</code>), como mostra a Figura 5. O módulo <code>rules</code> não depende de <code>persistence</code> nem de <code>api</code>, o que garante que pode ser testado sem banco e sem servidor. O módulo <code>domain</code> não depende de nenhum outro.</p>
+<p><strong>Figura 5 – Diagrama de pacotes da organização lógica</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    subgraph FE["frontend (React + TypeScript)"]
+        pages["pages&lt;br/&gt;&lt;small&gt;telas&lt;/small&gt;"]
+        components["components&lt;br/&gt;&lt;small&gt;TelaAjuda, CardMaterial…&lt;/small&gt;"]
+        sapi["services/api&lt;br/&gt;&lt;small&gt;cliente HTTP tipado&lt;/small&gt;"]
+        pages -.-&gt; components
+        pages -.-&gt; sapi
+    end
+    subgraph BE["backend (Python + FastAPI)"]
+        api["api&lt;br/&gt;&lt;small&gt;routers, schemas&lt;/small&gt;"]
+        security["security&lt;br/&gt;&lt;small&gt;Argon2, JWT&lt;/small&gt;"]
+        services["services&lt;br/&gt;&lt;small&gt;casos de uso&lt;/small&gt;"]
+        catalog["catalog&lt;br/&gt;&lt;small&gt;materiais.yaml, seed&lt;/small&gt;"]
+        persistence["persistence&lt;br/&gt;&lt;small&gt;modelos, repositórios, migrações&lt;/small&gt;"]
+        rules["rules&lt;br/&gt;&lt;small&gt;funções puras&lt;/small&gt;"]
+        domain["domain&lt;br/&gt;&lt;small&gt;enums e tipos&lt;/small&gt;"]
+        api -.-&gt; security
+        api -.-&gt; services
+        services -.-&gt; persistence
+        services -.-&gt; rules
+        services -.-&gt; domain
+        catalog -.-&gt; persistence
+        catalog -.-&gt; domain
+        persistence -.-&gt; domain
+        rules -.-&gt; domain
+    end
+    sapi -- HTTP/JSON --&gt; api
+    style rules fill:#fff3cd,stroke:#d4a017</code></pre>
+<p>O Quadro 5 define o contrato das funções do módulo de regras. É por meio dessas funções que <strong>o formulário é ligado ao conteúdo</strong>: os serviços passam as respostas e o histórico; as funções devolvem nível, tags e materiais com o motivo de cada um.</p>
+<p><strong>Quadro 5 – Contrato das funções do módulo de regras</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Função</th>
+<th style="text-align: left;">Entrada</th>
+<th style="text-align: left;">Saída</th>
+<th style="text-align: left;">Regras (Visão, seção 4.5)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>pontuar(respostas, n_itens)</code></td>
+<td style="text-align: left;">lista de inteiros 0–3; 9 itens (PHQ-9) ou 7 (GAD-7)</td>
+<td style="text-align: left;">inteiro (soma); <code>ValueError</code> se inválida</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>faixa_phq9(escore)</code> / <code>faixa_gad7(escore)</code></td>
+<td style="text-align: left;">inteiro 0–27 / 0–21</td>
+<td style="text-align: left;">Faixa</td>
+<td style="text-align: left;">Quadro de faixas</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>decidir_avaliacao(phq9, gad7)</code></td>
+<td style="text-align: left;">listas de respostas do PHQ-9 e do GAD-7</td>
+<td style="text-align: left;">ResultadoAvaliacao: escores, faixas, nível, tags</td>
+<td style="text-align: left;">R-A1 a R-A4</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>avaliar_checkin(p1, p2, p3, p4, p5)</code></td>
+<td style="text-align: left;">p1 a p4: inteiros nas faixas do check-in ou nulo (sem resposta); p5: booleano</td>
+<td style="text-align: left;">ResultadoCheckin: nível, tags, regras acionadas</td>
+<td style="text-align: left;">R-D1 a R-D6</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>selecionar_materiais(tags, catalogo, ultimas_exibicoes, limite)</code></td>
+<td style="text-align: left;">tags; materiais ativos; data da última exibição de cada material ao usuário; limite (3 ou 2)</td>
+<td style="text-align: left;">lista de Sugestao: material_id, regra, motivo</td>
+<td style="text-align: left;">R-S1 a R-S6</td>
+</tr>
+</tbody>
+</table>
+<p>O Quadro 6 apresenta o contrato da API. Todas as rotas, exceto as marcadas como públicas, exigem token, e o teste TS-01 verifica isso automaticamente para todas as rotas existentes. Nas rotas de check-in, as respostas às perguntas usam os identificadores <code>p1</code> a <code>p5</code> tanto na entrada quanto na saída; a camada de serviços converte esses identificadores nos campos do domínio (Figura 6).</p>
+<p><strong>Quadro 6 – Contrato da API REST</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Método e rota</th>
+<th style="text-align: left;">Acesso</th>
+<th style="text-align: left;">Entrada</th>
+<th style="text-align: left;">Saída (sucesso / erros)</th>
+<th style="text-align: left;">Req.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>POST /api/auth/cadastro</code></td>
+<td style="text-align: left;">Público</td>
+<td style="text-align: left;">email, senha, aceite_termos, maior_de_idade</td>
+<td style="text-align: left;">201 / 409 e-mail em uso; 422 inválido</td>
+<td style="text-align: left;">R01</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>POST /api/auth/login</code></td>
+<td style="text-align: left;">Público</td>
+<td style="text-align: left;">email, senha</td>
+<td style="text-align: left;">200 token / 401 genérico</td>
+<td style="text-align: left;">R02</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>GET /api/me</code></td>
+<td style="text-align: left;">Usuário</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">200 id, email, criado_em</td>
+<td style="text-align: left;">R02</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>DELETE /api/me</code></td>
+<td style="text-align: left;">Usuário</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">204 (apaga tudo)</td>
+<td style="text-align: left;">R04</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>GET /api/checkins/hoje</code></td>
+<td style="text-align: left;">Usuário</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">200 check-in do dia (p1 a p5, nível, tags) ou 404</td>
+<td style="text-align: left;">R05</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>POST /api/checkins</code></td>
+<td style="text-align: left;">Usuário</td>
+<td style="text-align: left;">p1, p2, p3, p4 (inteiro ou nulo), p5 (booleano, obrigatório)</td>
+<td style="text-align: left;">201 nível, tags, recomendações / 409 já existe; 422</td>
+<td style="text-align: left;">R05, R06, R10</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>GET /api/checkins</code></td>
+<td style="text-align: left;">Usuário</td>
+<td style="text-align: left;">limite (≤ 30)</td>
+<td style="text-align: left;">200 lista do próprio usuário (data, p1 a p5, tags)</td>
+<td style="text-align: left;">R12</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>GET /api/checkins/{id}</code></td>
+<td style="text-align: left;">Usuário (dono)</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">200 / 404 se não for do usuário</td>
+<td style="text-align: left;">R12</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>POST /api/avaliacoes</code></td>
+<td style="text-align: left;">Usuário</td>
+<td style="text-align: left;">phq9[9], gad7[7]</td>
+<td style="text-align: left;">201 escores, faixas, nível, orientação, recomendações / 422</td>
+<td style="text-align: left;">R08, R09, R10</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>GET /api/avaliacoes</code> e <code>GET /api/avaliacoes/{id}</code></td>
+<td style="text-align: left;">Usuário (dono)</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">200 / 404 se não for do usuário</td>
+<td style="text-align: left;">R12</td>
+</tr>
+</tbody>
+</table>
+<h4 id="253-visao-estrutural">2.5.3 Visão estrutural<a class="headerlink" href="#253-visao-estrutural" title="Permanent link">&para;</a></h4>
+<p>A estrutura do domínio está na Figura 6. Um Usuario possui, por composição, seus check-ins, avaliações e recomendações: ao excluir a conta, todos são removidos (<code>ON DELETE CASCADE</code>), atendendo ao requisito R04. Cada Recomendacao liga um Material a um CheckinDiario ou a uma Avaliacao e guarda a regra e o motivo. Material não pertence a usuário: é carregado do catálogo e, quando retirado, é apenas marcado como inativo, para preservar o histórico. O nível CRISE é registrado no próprio check-in ou avaliação, sem entidade separada e sem recomendações associadas.</p>
+<p><strong>Figura 6 – Diagrama de classes conceitual do Sintoniza</strong></p>
+<pre class="mermaid"><code>classDiagram
+    class Usuario {
+        id: UUID
+        email: str (único)
+        senha_hash: str (Argon2id)
+        declarou_maioridade: bool
+        termos_versao: str
+        termos_aceitos_em: datetime
+        criado_em: datetime
+    }
+    class CheckinDiario {
+        id: UUID
+        data: date (único por usuário)
+        humor: int 1..5 (opcional)
+        ansiedade: int 0..3 (opcional)
+        sono: int 1..5 (opcional)
+        sobrecarga: int 0..3 (opcional)
+        pensamento_risco: bool
+        tags: list~Tag~
+        nivel: Nivel
+    }
+    class Avaliacao {
+        id: UUID
+        respostas_phq9: int[9] (0..3)
+        respostas_gad7: int[7] (0..3)
+        escore_phq9: int 0..27
+        escore_gad7: int 0..21
+        faixa_phq9, faixa_gad7: Faixa
+        nivel: Nivel
+        criado_em: datetime
+    }
+    class Recomendacao {
+        id: UUID
+        regra: str (ex.: "R-D4")
+        motivo: str
+        criado_em: datetime
+    }
+    class Material {
+        id: int
+        slug: str (único)
+        titulo: str
+        url: str (https, domínio permitido)
+        fonte: str
+        resumo: str
+        tags: list~Tag~
+        ativo: bool
+        revisado_em: date
+    }
+    class Nivel {
+        &lt;&lt;enumeration&gt;&gt;
+        AUTOCUIDADO (N0)
+        ATENCAO (N1)
+        PRIORITARIO (N2)
+        CRISE (N3)
+    }
+    class Tag {
+        &lt;&lt;enumeration&gt;&gt;
+        HUMOR
+        ANSIEDADE
+        SONO
+        ESTRESSE
+        BEM_ESTAR
+        AJUDA_PROFISSIONAL
+    }
+    class Faixa {
+        &lt;&lt;enumeration&gt;&gt;
+        MINIMA
+        LEVE
+        MODERADA
+        MODERADAMENTE_GRAVE
+        GRAVE
+    }
+    Usuario "1" *-- "0..*" CheckinDiario
+    Usuario "1" *-- "0..*" Avaliacao
+    Usuario "1" *-- "0..*" Recomendacao
+    CheckinDiario "0..1" -- "0..*" Recomendacao
+    Avaliacao "0..1" -- "0..*" Recomendacao
+    Material "1" -- "0..*" Recomendacao</code></pre>
+<p>No banco de dados, três restrições reforçam as regras independentemente do código: unicidade de (<code>usuario_id</code>, <code>data</code>) em CheckinDiario, que garante um check-in por dia (a data é calculada no fuso <code>America/Sao_Paulo</code>); unicidade de <code>email</code> e de <code>slug</code>; e chaves estrangeiras com exclusão em cascata a partir de Usuario.</p>
+<p>Na visão de componentes (Figura 7), o cliente consome a API, que distribui as requisições aos componentes de autenticação, contas, check-in, avaliação e histórico. Check-in e avaliação usam o motor de regras e recomendação. Todo acesso persistente passa pelo componente de persistência. O backend não acessa os sites oficiais: os links dos materiais são abertos pelo navegador do usuário.</p>
+<p><strong>Figura 7 – Diagrama de componentes do Sintoniza</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    CLI["Cliente Sintoniza&lt;br/&gt;(SPA React)"] -- HTTP/REST --&gt; API["API Sintoniza&lt;br/&gt;(FastAPI · routers)"]
+    API --&gt; HIS["Histórico"]
+    API --&gt; AUT["Autenticação&lt;br/&gt;(Argon2 + JWT)"]
+    API --&gt; CON["Contas e&lt;br/&gt;Privacidade"]
+    API --&gt; CHK["Check-in&lt;br/&gt;Diário"]
+    API --&gt; AVA["Avaliação&lt;br/&gt;Quinzenal"]
+    CHK --&gt; MR["Motor de Regras e&lt;br/&gt;Recomendação (rules)"]
+    AVA --&gt; MR
+    HIS &amp; AUT &amp; CON &amp; CHK &amp; AVA --&gt; PER["Persistência&lt;br/&gt;(SQLAlchemy · repositórios)"]
+    CAT["Catálogo&lt;br/&gt;(materiais.yaml + seed)"] -. seed .-&gt; PER
+    PER --&gt; DB[("PostgreSQL")]
+    style MR fill:#fff3cd,stroke:#d4a017</code></pre>
+<p><strong>Quadro 7 – Componentes do sistema</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Componente</th>
+<th style="text-align: left;">Responsabilidade</th>
+<th style="text-align: left;">Conecta-se a</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Cliente Sintoniza (SPA React)</td>
+<td style="text-align: left;">Interface do usuário; Tela de Ajuda estática.</td>
+<td style="text-align: left;">API (HTTP/REST).</td>
+</tr>
+<tr>
+<td style="text-align: left;">API Sintoniza (FastAPI)</td>
+<td style="text-align: left;">Rotas, validação e autenticação.</td>
+<td style="text-align: left;">Cliente; componentes de negócio.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Autenticação</td>
+<td style="text-align: left;">Argon2id e JWT.</td>
+<td style="text-align: left;">API; Persistência.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Contas e Privacidade</td>
+<td style="text-align: left;">Cadastro, aceite de termos, maioridade e exclusão de conta.</td>
+<td style="text-align: left;">API; Persistência.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Check-in Diário</td>
+<td style="text-align: left;">Registro do check-in e montagem da resposta.</td>
+<td style="text-align: left;">API; Motor de Regras; Persistência.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Avaliação Quinzenal</td>
+<td style="text-align: left;">Registro da avaliação e montagem do resultado.</td>
+<td style="text-align: left;">API; Motor de Regras; Persistência.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Motor de Regras e Recomendação</td>
+<td style="text-align: left;">Funções puras do Quadro 5.</td>
+<td style="text-align: left;">Chamado por Check-in e Avaliação.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Histórico</td>
+<td style="text-align: left;">Consultas do próprio usuário.</td>
+<td style="text-align: left;">API; Persistência.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Persistência</td>
+<td style="text-align: left;">Repositórios, transações e migrações.</td>
+<td style="text-align: left;">Componentes de negócio; PostgreSQL; Catálogo.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Catálogo</td>
+<td style="text-align: left;"><code>materiais.yaml</code>, validação e seed.</td>
+<td style="text-align: left;">Persistência.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="26-visao-de-implantacao">2.6 Visão de Implantação<a class="headerlink" href="#26-visao-de-implantacao" title="Permanent link">&para;</a></h3>
+<p>Para desenvolvimento, testes de sistema e demonstração, o software é executado com <strong>Docker Compose</strong> em máquina da equipe, em três contêineres (Figura 8): <strong>web</strong>, com Nginx servindo o build estático do React e encaminhando <code>/api</code> para a API; <strong>api</strong>, com Uvicorn executando o FastAPI em Python 3.12; e <strong>db</strong>, com PostgreSQL 16 e volume persistente. Configurações sensíveis (segredo do JWT e senha do banco) são lidas de variáveis de ambiente em arquivo <code>.env</code>, que não é versionado.</p>
+<p><strong>Figura 8 – Diagrama de implantação do Sintoniza</strong></p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph DEV["«device» Dispositivo do usuário"]
+        NAV["Navegador web&lt;br/&gt;(Chrome/Firefox, celular ou desktop)"]
+    end
+    subgraph HOST["«node» Host Docker — Docker Compose&lt;br/&gt;máquina da equipe (desenvolvimento, testes de sistema e demonstração)"]
+        WEB["«container» web&lt;br/&gt;Nginx + build estático React"]
+        APIC["«container» api&lt;br/&gt;Uvicorn + FastAPI (Python 3.12)&lt;br/&gt;(rede interna)"]
+        DBC[("«container» db&lt;br/&gt;PostgreSQL 16&lt;br/&gt;(rede interna) + volume")]
+        WEB -- proxy /api --&gt; APIC
+        APIC -- TCP 5432 --&gt; DBC
+    end
+    subgraph GH["«node» GitHub"]
+        REPO["Repositório&lt;br/&gt;(código, docs, materiais.yaml)"]
+        GA["GitHub Actions&lt;br/&gt;testes automatizados (pytest)"]
+        REPO --&gt; GA
+    end
+    SITES["Sites oficiais&lt;br/&gt;(gov.br, paho.org, cvv.org.br)"]
+    NAV -- HTTP --&gt; WEB
+    NAV -. links dos materiais .-&gt; SITES
+    REPO -. docker compose build .-&gt; HOST</code></pre>
+<p><strong>Infraestrutura.</strong> A escolha de contêineres padroniza o ambiente entre as máquinas da equipe, que possuem sistemas operacionais diferentes, e permite subir os três serviços juntos para a demonstração. A publicação em nuvem não faz parte do escopo do MVP (Visão, seção 4.1).</p>
+<p><strong>Banco de dados.</strong> O PostgreSQL foi escolhido por ser relacional, com consistência transacional e restrições declarativas (UNIQUE e FOREIGN KEY), adequado a dados estruturados como usuários, check-ins, avaliações e recomendações, e por ser gratuito e amplamente documentado. O esquema é versionado por migrações Alembic.</p>
+<p><strong>Integração contínua.</strong> O GitHub Actions executa os testes automatizados (pytest, com um PostgreSQL de teste) a cada pull request; se algum teste falhar, o merge é bloqueado.</p>
+<h3 id="27-restricoes-adicionais">2.7 Restrições adicionais<a class="headerlink" href="#27-restricoes-adicionais" title="Permanent link">&para;</a></h3>
+<p><strong>Restrições de negócio.</strong> O Sintoniza é acessível pela internet, mas dados pessoais, check-ins, avaliações e histórico exigem login. O uso é restrito a adultos (declaração de maioridade obrigatória). No contexto da disciplina, o sistema será usado apenas por usuários de teste (integrantes, colegas e avaliadores), com respostas fictícias. O sistema não monitora respostas em tempo real nem contata terceiros.</p>
+<p><strong>Capacidade e desempenho.</strong> Não há requisito de capacidade nem de desempenho: o sistema é usado apenas em testes e demonstrações da disciplina, com poucos usuários simultâneos.</p>
+<p><strong>Características de qualidade relevantes</strong>, cada uma ligada a uma decisão já descrita neste documento:</p>
+<ol>
+<li><strong>Confiabilidade do encaminhamento:</strong> regras em funções puras, com ao menos um teste automatizado por linha das tabelas de regras (Visão, métricas M1 e M2);</li>
+<li><strong>Segurança e privacidade:</strong> autenticação obrigatória, isolamento entre usuários e hash de senhas, verificados pelos casos TS-01 a TS-05 (Visão, métrica M3), e exclusão total da conta (TI-07);</li>
+<li><strong>Usabilidade:</strong> perguntas fechadas, poucas telas e linguagem simples. É acompanhada qualitativamente pelo PO nas revisões de sprint, sem meta numérica;</li>
+<li><strong>Manutenibilidade:</strong> módulos com dependências em uma única direção, regras isoladas e padrão de código verificado pelo Ruff e pelo ESLint;</li>
+<li><strong>Portabilidade:</strong> execução em contêineres Docker; acesso por navegador web.</li>
+</ol>
+<p><strong>Segurança e perfis.</strong> A autorização segue o princípio do menor privilégio (Quadro 8). Como dados de saúde são dados pessoais sensíveis (BRASIL, 2018, art. 5º, II, e art. 11), o tratamento se baseia em consentimento específico e destacado no cadastro, com finalidade informada nos termos, e o titular pode eliminar seus dados a qualquer momento (art. 18, VI), o que é implementado pela exclusão física da conta.</p>
+<p><strong>Quadro 8 – Perfis de acesso e permissões</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Perfil</th>
+<th style="text-align: left;">Permissões</th>
+<th style="text-align: left;">Restrições</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Visitante</td>
+<td style="text-align: left;">Cadastrar-se, entrar, ler os termos e acessar a Ajuda Imediata.</td>
+<td style="text-align: left;">Nenhum acesso a dados de usuários.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Usuário</td>
+<td style="text-align: left;">Tudo do Visitante, mais: check-in, avaliação, resultados, histórico e excluir a própria conta.</td>
+<td style="text-align: left;">Acessa somente os próprios registros (verificado por TS-03); não altera o catálogo.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Equipe mantenedora (fora do sistema)</td>
+<td style="text-align: left;">Alterar o catálogo por pull request revisado pelo PO.</td>
+<td style="text-align: left;">Não é um perfil da aplicação.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="28-rastreabilidade-com-a-visao-do-produto-e-do-projeto">2.8 Rastreabilidade com a Visão do Produto e do Projeto<a class="headerlink" href="#28-rastreabilidade-com-a-visao-do-produto-e-do-projeto" title="Permanent link">&para;</a></h3>
+<p><strong>Quadro 9 – Rastreabilidade entre a Visão do Produto e do Projeto e a arquitetura</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Requisito da Visão</th>
+<th style="text-align: left;">Decisão arquitetural</th>
+<th style="text-align: left;">Evidência neste documento</th>
+<th style="text-align: left;">Testes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">R01–R03 Conta e termos</td>
+<td style="text-align: left;">API com Argon2id e JWT; componente Contas e Privacidade.</td>
+<td style="text-align: left;">Quadro 3; Quadro 6; seção 2.4</td>
+<td style="text-align: left;">TI-01, TI-02, TS-02, TS-05</td>
+</tr>
+<tr>
+<td style="text-align: left;">R04 Exclusão de conta</td>
+<td style="text-align: left;">Composição com <code>ON DELETE CASCADE</code> a partir de Usuario.</td>
+<td style="text-align: left;">Figura 6; seção 2.5.3</td>
+<td style="text-align: left;">TI-07, TSI-05</td>
+</tr>
+<tr>
+<td style="text-align: left;">R05–R06 Check-in e conteúdos</td>
+<td style="text-align: left;">Serviço de check-in + funções <code>avaliar_checkin</code> e <code>selecionar_materiais</code>.</td>
+<td style="text-align: left;">Figura 3; Quadro 5</td>
+<td style="text-align: left;">TU-05, TU-06, TI-03, TI-04</td>
+</tr>
+<tr>
+<td style="text-align: left;">R08–R09 Avaliação e resultado</td>
+<td style="text-align: left;">Serviço de avaliação + funções <code>pontuar</code>, <code>faixa_*</code> e <code>decidir_avaliacao</code>.</td>
+<td style="text-align: left;">Figura 4; Quadro 5</td>
+<td style="text-align: left;">TU-01 a TU-04, TI-06</td>
+</tr>
+<tr>
+<td style="text-align: left;">R10–R11 Ajuda Imediata</td>
+<td style="text-align: left;">Tela estática no cliente; nível CRISE suprime recomendações.</td>
+<td style="text-align: left;">Seção 2.4; Figura 1</td>
+<td style="text-align: left;">TI-05, TSI-02, TSI-04</td>
+</tr>
+<tr>
+<td style="text-align: left;">R12 Histórico</td>
+<td style="text-align: left;">Consultas filtradas pelo usuário do token.</td>
+<td style="text-align: left;">Quadro 6</td>
+<td style="text-align: left;">TS-03, TSI-01</td>
+</tr>
+<tr>
+<td style="text-align: left;">R13 Catálogo</td>
+<td style="text-align: left;">Arquivo versionado + comando seed.</td>
+<td style="text-align: left;">Figura 7; Quadro 4</td>
+<td style="text-align: left;">TU-07</td>
+</tr>
+<tr>
+<td style="text-align: left;">R14 Proteção de dados</td>
+<td style="text-align: left;">Ponto único de entrada, autenticação obrigatória, filtro por usuário, hash de senhas.</td>
+<td style="text-align: left;">Seções 2.4 e 2.7; Quadro 8</td>
+<td style="text-align: left;">TS-01 a TS-05</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-bibliografia">3 Bibliografia<a class="headerlink" href="#3-bibliografia" title="Permanent link">&para;</a></h2>
+<p>BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD). <strong>Diário Oficial da União</strong>: seção 1, Brasília, DF, 15 ago. 2018.</p>
+<p>GRUPO LAMPORT. <strong>Visão do Produto e do Projeto – Sintoniza</strong>: aplicação web de apoio à saúde mental. Versão 2.2. Brasília, DF: Universidade de Brasília, 2026.</p>
+<p>SCHWABER, K.; SUTHERLAND, J. <strong>The Scrum Guide</strong>: the definitive guide to Scrum: the rules of the game. [S. l.]: Scrum.org, 2020.</p>
+<p>VAN ROSSUM, G.; WARSAW, B.; COGHLAN, A. <strong>PEP 8</strong>: style guide for Python code. [S. l.]: Python Software Foundation, 2001. Disponível em: <a href="https://peps.python.org/pep-0008/">https://peps.python.org/pep-0008/</a>. Acesso em: 15 out. 2026.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

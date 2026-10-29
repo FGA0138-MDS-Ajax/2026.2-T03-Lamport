@@ -1,0 +1,3105 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação do Sintoniza, aplicação web de apoio à saúde mental (MDS 2026 – Turma 03).">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../arquitetura/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Visão do Produto e do Projeto - Sintoniza – Grupo Lamport</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#visao-do-produto-e-do-projeto" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Sintoniza – Grupo Lamport" class="md-header__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sintoniza – Grupo Lamport
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Visão do Produto e do Projeto
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Sintoniza – Grupo Lamport" class="md-nav__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Sintoniza – Grupo Lamport
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão do Produto e do Projeto
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão do Produto e do Projeto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#integrantes-do-grupo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integrantes do grupo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historico-de-revisoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histórico de revisões
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-visao-geral-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 Visão geral do produto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 Visão geral do produto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-problema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Problema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-declaracao-de-posicao-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Declaração de Posição do Produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-objetivos-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Objetivos do Produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-tecnologias-a-serem-utilizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Tecnologias a Serem Utilizadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-visao-geral-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 Visão geral do projeto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 Visão geral do projeto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-ciclo-de-vida-do-projeto-de-desenvolvimento-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Ciclo de vida do projeto de desenvolvimento de software
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-organizacao-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Organização do Projeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-planejamento-das-fases-eou-iteracoes-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Planejamento das Fases e/ou Iterações do Projeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-matriz-de-comunicacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Matriz de Comunicação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-gerenciamento-de-riscos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Gerenciamento de Riscos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-criterios-de-replanejamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Critérios de Replanejamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-processo-de-desenvolvimento-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Processo de desenvolvimento de software
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-declaracao-de-escopo-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 Declaração de escopo do projeto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 Declaração de escopo do projeto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-backlog-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Backlog do produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-perfis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Perfis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-cenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Cenários
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-tabela-de-backlog-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Tabela de Backlog do produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-especificacao-do-fluxo-principal-do-formulario-ao-conteudo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Especificação do fluxo principal: do formulário ao conteúdo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.5 Especificação do fluxo principal: do formulário ao conteúdo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#451-check-in-diario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.1 Check-in diário
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#452-avaliacao-quinzenal-phq-9-e-gad-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.2 Avaliação quinzenal (PHQ-9 e GAD-7)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#453-selecao-de-conteudo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.3 Seleção de conteúdo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#454-catalogo-de-conteudos-oficiais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.4 Catálogo de conteúdos oficiais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#455-tela-de-ajuda-imediata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.5 Tela de Ajuda Imediata
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-metricas-e-medicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 Métricas e medições
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 Métricas e medições">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-gqm-de-medicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 GQM de medições
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-testes-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 Testes de software
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6 Testes de software">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-estrategia-de-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Estratégia de testes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-roteiro-de-teste" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Roteiro de teste
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-referencias-bibliograficas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7 Referências bibliográficas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vocabulario-checkin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vocabulário do check-in
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../historico-versoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Histórico de versões
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atas de Reunião
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Atas de Reunião
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../atas-reuniao/ata-reuniao-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ata 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#integrantes-do-grupo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integrantes do grupo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historico-de-revisoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histórico de revisões
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-visao-geral-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 Visão geral do produto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 Visão geral do produto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-problema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Problema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-declaracao-de-posicao-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Declaração de Posição do Produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-objetivos-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Objetivos do Produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-tecnologias-a-serem-utilizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Tecnologias a Serem Utilizadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-visao-geral-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 Visão geral do projeto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 Visão geral do projeto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-ciclo-de-vida-do-projeto-de-desenvolvimento-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Ciclo de vida do projeto de desenvolvimento de software
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-organizacao-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Organização do Projeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-planejamento-das-fases-eou-iteracoes-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Planejamento das Fases e/ou Iterações do Projeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-matriz-de-comunicacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Matriz de Comunicação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-gerenciamento-de-riscos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Gerenciamento de Riscos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-criterios-de-replanejamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Critérios de Replanejamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-processo-de-desenvolvimento-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Processo de desenvolvimento de software
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-declaracao-de-escopo-do-projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 Declaração de escopo do projeto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 Declaração de escopo do projeto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-backlog-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Backlog do produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-perfis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Perfis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-cenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Cenários
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-tabela-de-backlog-do-produto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Tabela de Backlog do produto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-especificacao-do-fluxo-principal-do-formulario-ao-conteudo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Especificação do fluxo principal: do formulário ao conteúdo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.5 Especificação do fluxo principal: do formulário ao conteúdo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#451-check-in-diario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.1 Check-in diário
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#452-avaliacao-quinzenal-phq-9-e-gad-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.2 Avaliação quinzenal (PHQ-9 e GAD-7)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#453-selecao-de-conteudo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.3 Seleção de conteúdo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#454-catalogo-de-conteudos-oficiais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.4 Catálogo de conteúdos oficiais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#455-tela-de-ajuda-imediata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.5 Tela de Ajuda Imediata
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-metricas-e-medicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 Métricas e medições
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 Métricas e medições">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-gqm-de-medicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 GQM de medições
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-testes-de-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 Testes de software
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6 Testes de software">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-estrategia-de-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Estratégia de testes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-roteiro-de-teste" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Roteiro de teste
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-referencias-bibliograficas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7 Referências bibliográficas
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="visao-do-produto-e-do-projeto">Visão do Produto e do Projeto<a class="headerlink" href="#visao-do-produto-e-do-projeto" title="Permanent link">&para;</a></h1>
+<p><strong>Versão 2.2 – 29/10/2026</strong> · Aplicação web de apoio à saúde mental: check-in diário, rastreio com instrumentos validados e encaminhamento a conteúdos e serviços oficiais.</p>
+<div class="admonition info">
+<p class="admonition-title">Versão vigente</p>
+<p>Esta página reproduz a versão 2.2, que substitui as anteriores. O que mudou em cada versão está no <a href="../historico-versoes/">Histórico de versões</a>.</p>
+</div>
+<h2 id="integrantes-do-grupo">Integrantes do grupo<a class="headerlink" href="#integrantes-do-grupo" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Matrícula</th>
+<th style="text-align: left;">Nome</th>
+<th style="text-align: left;">Função (responsabilidade)</th>
+<th style="text-align: center;">Pontos de participação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">251026239</td>
+<td style="text-align: left;">Martin Quadros de Melo</td>
+<td style="text-align: left;">Product Owner</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr>
+<td style="text-align: center;">251012322</td>
+<td style="text-align: left;">Luiz Felipe Mendes Cordeiro Gomes</td>
+<td style="text-align: left;">Desenvolvedor backend</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr>
+<td style="text-align: center;">231026803</td>
+<td style="text-align: left;">Carlos Eduardo Pereira Alexandre</td>
+<td style="text-align: left;">Desenvolvedor backend</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr>
+<td style="text-align: center;">251010927</td>
+<td style="text-align: left;">Júlio Barros de Oliveira</td>
+<td style="text-align: left;">Desenvolvedor frontend</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr>
+<td style="text-align: center;">251040022</td>
+<td style="text-align: left;">Danilo Menezes Gomez</td>
+<td style="text-align: left;">Desenvolvedor frontend</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr>
+<td style="text-align: center;">251035784</td>
+<td style="text-align: left;">Vinícius Evangelista Borges Pinto</td>
+<td style="text-align: left;">UX/UI, conteúdo e documentação</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr>
+<td style="text-align: center;">251035274</td>
+<td style="text-align: left;">Hugo Sousa Rosa</td>
+<td style="text-align: left;">Infraestrutura e qualidade</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: center;"><strong>100</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="historico-de-revisoes">Histórico de revisões<a class="headerlink" href="#historico-de-revisoes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Data</th>
+<th style="text-align: center;">Versão</th>
+<th style="text-align: left;">Descrição</th>
+<th style="text-align: left;">Autor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">30/09/2026</td>
+<td style="text-align: center;">1.0</td>
+<td style="text-align: left;">Atualização do nome do produto para Sintoniza e definição das responsabilidades iniciais da equipe.</td>
+<td style="text-align: left;">Equipe do projeto</td>
+</tr>
+<tr>
+<td style="text-align: center;">15/10/2026</td>
+<td style="text-align: center;">2.0</td>
+<td style="text-align: left;">Reformulação após o feedback da apresentação: fluxo principal especificado (check-in diário, avaliação quinzenal com PHQ-9 e GAD-7, tabela de decisão, regras de seleção e catálogo curado de fontes oficiais); redução de escopo (remoção dos perfis Administrador e Curador, de lembretes e de IA); estratégia e roteiro de testes detalhados, incluindo testes de vazamento de dados; GQM revisado; replanejamento das sprints 3 a 6.</td>
+<td style="text-align: left;">Grupo Lamport</td>
+</tr>
+<tr>
+<td style="text-align: center;">18/10/2026</td>
+<td style="text-align: center;">2.1</td>
+<td style="text-align: left;">Revisão de escopo para manter apenas compromissos essenciais: remoção dos requisitos não funcionais de interface responsiva, execução com Docker Compose, publicação em nuvem e verificação automática de links; remoção das metas de usabilidade, desempenho, capacidade e cobertura de código e dos testes associados; remoção dos itens Should e Could não essenciais; testes de segurança concentrados em cinco casos; requisitos e roteiro de testes renumerados.</td>
+<td style="text-align: left;">Grupo Lamport</td>
+</tr>
+<tr>
+<td style="text-align: center;">29/10/2026</td>
+<td style="text-align: center;">2.2</td>
+<td style="text-align: left;">Replanejamento ao fim da Sprint 3 pelo critério 1 da seção 2.6: itens Must não concluídos (módulo de regras, catálogo, termos, Tela de Ajuda e botão, pendências da Sprint 2) passam à Sprint 4, e o único item Should (R07, convite para avaliação, com a regra R-D7 e o teste TU-08) sai do escopo. Decisão do PO sobre o check-in: P1 a P4 passam a ser opcionais (sem resposta, o valor é nulo e a regra correspondente não é acionada); P5 continua obrigatória.</td>
+<td style="text-align: left;">Grupo Lamport</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>Este documento registra a visão do produto Sintoniza e o planejamento do projeto. A equipe adotou uma regra explícita na sua elaboração: <strong>tudo o que está escrito aqui é compromisso de entrega</strong>. Por isso, o documento descreve apenas o que é necessário ao fluxo principal do produto; o que não será feito está listado como fora do escopo (seção 4.1), e cada funcionalidade tem regras e casos de teste descritos de forma verificável.</p>
+<h2 id="1-visao-geral-do-produto">1 Visão geral do produto<a class="headerlink" href="#1-visao-geral-do-produto" title="Permanent link">&para;</a></h2>
+<h3 id="11-problema">1.1 Problema<a class="headerlink" href="#11-problema" title="Permanent link">&para;</a></h3>
+<p><strong>Contexto.</strong> Quem busca apoio em saúde mental no Brasil encontra, de um lado, muita informação dispersa na internet, de confiabilidade difícil de avaliar; de outro, uma rede pública estruturada — Unidades Básicas de Saúde (UBS) como porta de entrada, Centros de Atenção Psicossocial (CAPS) na Rede de Atenção Psicossocial (RAPS) e o Centro de Valorização da Vida (CVV, telefone 188) — que muitas pessoas não sabem quando nem como procurar (BRASIL, 2026a; 2026b). Também existem instrumentos curtos e validados para rastrear sintomas de depressão e ansiedade, como o PHQ-9 e o GAD-7, usados inclusive na Pesquisa Nacional de Saúde 2019 (MELO et al., 2023), mas eles são pouco conhecidos fora dos serviços de saúde. O público inicial do produto são adultos, com foco em estudantes universitários, contexto em que a equipe está inserida.</p>
+<p><strong>Problema encontrado.</strong> A dificuldade de transformar a percepção cotidiana do próprio estado emocional em uma orientação adequada e confiável: saber se basta uma prática de autocuidado, se é recomendável procurar um serviço de saúde ou se é preciso ajuda imediata. A questão que orienta o projeto é: <em>"Como ajudar adultos a acompanhar o próprio estado emocional e a chegar, de forma rápida e segura, a conteúdos oficiais ou a serviços de saúde adequados ao momento?"</em></p>
+<p><strong>Quadro 3 – Síntese das causas do problema e resposta do produto</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Dimensão</th>
+<th style="text-align: left;">Causa observada</th>
+<th style="text-align: left;">Resposta do Sintoniza</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Informação</td>
+<td style="text-align: left;">Conteúdo disperso, linguagem técnica e confiabilidade incerta das fontes.</td>
+<td style="text-align: left;">Catálogo curado apenas com links de fontes oficiais (Ministério da Saúde, OPAS/OMS, CVV), com resumo em linguagem simples.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Autopercepção</td>
+<td style="text-align: left;">Dificuldade de interpretar o próprio estado; instrumentos validados pouco conhecidos.</td>
+<td style="text-align: left;">Check-in diário curto e avaliação quinzenal com PHQ-9 e GAD-7, com explicação das faixas e aviso de que não é diagnóstico.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Acesso</td>
+<td style="text-align: left;">Não sabe onde procurar ajuda; terapia paga é inacessível para muitos.</td>
+<td style="text-align: left;">Orientação por nível (autocuidado, UBS, atendimento prioritário, ajuda imediata) com canais públicos e gratuitos.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Acompanhamento</td>
+<td style="text-align: left;">Ausência de registro ao longo do tempo; mudanças percebidas tarde.</td>
+<td style="text-align: left;">Histórico de check-ins e avaliações.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Privacidade</td>
+<td style="text-align: left;">Receio de registrar dados emocionais; tratamento de dados pouco claro.</td>
+<td style="text-align: left;">Coleta mínima, termo de uso claro, isolamento entre usuários e exclusão total da conta.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Figura 1 – Diagrama de Ishikawa das causas do problema</strong></p>
+<pre class="mermaid"><code>flowchart LR
+    INF["&lt;b&gt;Informação&lt;/b&gt;&lt;br/&gt;Conteúdo disperso&lt;br/&gt;Fonte de confiabilidade incerta&lt;br/&gt;Linguagem técnica"] --&gt; E
+    AUT["&lt;b&gt;Autopercepção&lt;/b&gt;&lt;br/&gt;Dificuldade de interpretar o próprio estado&lt;br/&gt;Instrumentos validados pouco conhecidos"] --&gt; E
+    PRI["&lt;b&gt;Privacidade&lt;/b&gt;&lt;br/&gt;Receio de registrar dados emocionais&lt;br/&gt;Tratamento de dados pouco claro"] --&gt; E
+    ACE["&lt;b&gt;Acesso&lt;/b&gt;&lt;br/&gt;Não sabe onde procurar (UBS, CAPS, CVV)&lt;br/&gt;Terapia paga inacessível"] --&gt; E
+    ACO["&lt;b&gt;Acompanhamento&lt;/b&gt;&lt;br/&gt;Sem registro ao longo do tempo&lt;br/&gt;Mudanças percebidas tarde"] --&gt; E
+    E(["Dificuldade de chegar à orientação&lt;br/&gt;adequada ao próprio estado emocional"])</code></pre>
+<p>As cinco causas convergem para o efeito central. Informação e acesso explicam por que a pessoa não chega ao recurso certo; autopercepção e acompanhamento explicam por que ela não sabe qual recurso precisa; privacidade explica por que ela evita registrar o que sente. Por isso o produto combina registro simples, rastreio validado, encaminhamento por regras explícitas e proteção de dados — e não apenas uma lista de conteúdos.</p>
+<p><strong>Solução proposta.</strong> O Sintoniza é uma aplicação web, acessada pelo navegador, com dois formulários e um mecanismo de encaminhamento por regras, mostrados na Figura 2:</p>
+<ol>
+<li><strong>Check-in diário:</strong> cinco perguntas fechadas sobre humor, ansiedade, sono, sobrecarga e uma pergunta de segurança. As quatro primeiras são perguntas próprias da equipe, não clínicas, e servem <strong>apenas para escolher conteúdos de autocuidado</strong>. A quinta identifica risco e, se respondida "Sim", leva direto à Tela de Ajuda Imediata;</li>
+<li><strong>Avaliação quinzenal:</strong> os instrumentos PHQ-9 (depressão) e GAD-7 (ansiedade), validados no Brasil (SANTOS et al., 2013; MORENO et al., 2016) e de uso livre. Eles perguntam sobre as <strong>últimas duas semanas</strong> e, por isso, não são aplicados diariamente. A pontuação, com os pontos de corte publicados (KROENKE; SPITZER; WILLIAMS, 2001; SPITZER et al., 2006), define o nível de orientação: N0 autocuidado, N1 procurar a UBS, N2 procurar atendimento nos próximos dias ou N3 ajuda imediata;</li>
+<li><strong>Encaminhamento a conteúdo:</strong> as respostas geram <em>tags</em> (HUMOR, ANSIEDADE, SONO, ESTRESSE, BEM_ESTAR, AJUDA_PROFISSIONAL) e cada material do catálogo possui tags. O sistema seleciona até três materiais compatíveis e mostra o motivo de cada sugestão. As regras completas estão na seção 4.5.</li>
+</ol>
+<p><strong>Figura 2 – Fluxo principal do Sintoniza: do formulário ao conteúdo ou à ajuda imediata</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    subgraph CD["Check-in diário (1 vez por dia)"]
+        C1["5 perguntas fechadas&lt;br/&gt;(humor, ansiedade, sono,&lt;br/&gt;sobrecarga, segurança)"] --&gt; C2{"P5 = Sim?&lt;br/&gt;(pensamentos de&lt;br/&gt;se machucar)"}
+        C2 -- não --&gt; C3["Regras R-D2 a R-D6&lt;br/&gt;geram as tags do dia"]
+        C3 --&gt; C4["Até 3 materiais oficiais&lt;br/&gt;com o motivo da sugestão"]
+    end
+    subgraph AQ["Avaliação quinzenal (PHQ-9 + GAD-7)"]
+        A1["16 itens validados&lt;br/&gt;(últimas 2 semanas)"] --&gt; A2{"Item 9 do&lt;br/&gt;PHQ-9 ≥ 1?"}
+        A2 -- não --&gt; A3["Escores e faixas&lt;br/&gt;(pontos de corte publicados)"]
+        A3 --&gt; A4["Nível N0, N1 ou N2&lt;br/&gt;+ orientação + materiais"]
+    end
+    C2 -- sim --&gt; H["Tela de Ajuda Imediata (N3)&lt;br/&gt;CVV 188 · SAMU 192 · UPA&lt;br/&gt;recomendações comuns suspensas"]
+    A2 -- sim --&gt; H
+    CAT[("Catálogo curado&lt;br/&gt;(links gov.br, OPAS/OMS, CVV)")] -.-&gt; C4
+    CAT -.-&gt; A4
+    style H fill:#f8d7da,stroke:#c0392b</code></pre>
+<p>Duas decisões tornam o fluxo verificável. Primeiro, o vínculo entre formulário e material não depende de interpretação livre: é uma tabela de regras com valores-limite definidos, implementada como funções puras e coberta por testes automatizados (seção 6). Segundo, não há API externa no fluxo: as APIs públicas da OMS e do Ministério da Saúde disponibilizam indicadores estatísticos, não materiais educativos. Os materiais são, portanto, <strong>links para páginas oficiais</strong>, cadastrados em um arquivo versionado no repositório.</p>
+<p><strong>O que o Sintoniza não faz</strong>, e que, por isso, não será cobrado como entrega: não realiza diagnóstico; não substitui psicólogo, psiquiatra ou serviço de urgência; não acompanha respostas em tempo real nem avisa terceiros ou serviços de emergência; não usa inteligência artificial; não cria pontos de corte próprios para os instrumentos clínicos.</p>
+<h3 id="12-declaracao-de-posicao-do-produto">1.2 Declaração de Posição do Produto<a class="headerlink" href="#12-declaracao-de-posicao-do-produto" title="Permanent link">&para;</a></h3>
+<p><strong>Qual é o produto?</strong> Uma aplicação web gratuita de apoio à saúde mental que combina registro diário, rastreio periódico validado e encaminhamento explicável a conteúdos oficiais ou a serviços públicos de saúde.</p>
+<p><strong>O que o diferencia?</strong> O Quadro 4 compara alternativas existentes. Plataformas como Vittude e Zenklub focam na contratação de sessões de terapia pagas; diários de humor como o Daylio registram o estado emocional sem encaminhar a recursos; o app Saúde da Apple aplica PHQ-9 e GAD-7 e indica recursos locais, mas está restrito ao ecossistema da Apple (APPLE, 2026). O Sintoniza funciona em qualquer navegador, é gratuito, encaminha especificamente para a rede pública brasileira (UBS, CAPS, CVV, SAMU) e mostra a regra que gerou cada sugestão.</p>
+<p><strong>Quadro 4 – Comparação com alternativas existentes</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Alternativa</th>
+<th style="text-align: left;">O que oferece</th>
+<th style="text-align: left;">Limitação para o problema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Vittude, Zenklub</td>
+<td style="text-align: left;">Agendamento de terapia on-line.</td>
+<td style="text-align: left;">Serviço pago; não ajuda a decidir se e quando procurar ajuda.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Daylio e diários de humor</td>
+<td style="text-align: left;">Registro diário de humor e atividades.</td>
+<td style="text-align: left;">Sem rastreio validado e sem encaminhamento a recursos.</td>
+</tr>
+<tr>
+<td style="text-align: left;">App Saúde (Apple)</td>
+<td style="text-align: left;">PHQ-9 e GAD-7 com nível de risco e recursos locais.</td>
+<td style="text-align: left;">Disponível apenas em dispositivos Apple; sem check-in diário integrado a conteúdo.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Busca na internet</td>
+<td style="text-align: left;">Grande volume de conteúdo.</td>
+<td style="text-align: left;">Confiabilidade incerta; não considera o estado do usuário.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quem são os usuários-alvo?</strong> Adultos (18 anos ou mais) que querem acompanhar o próprio bem-estar emocional; no contexto da disciplina, estudantes universitários. São pessoas que usam o celular diariamente, têm pouco tempo e, muitas vezes, não sabem que podem procurar a UBS por questões de saúde mental. <strong>Por que usariam o produto?</strong> Porque recebem uma orientação clara e de fonte confiável, sem custo e sem precisar saber de antemão o que procurar.</p>
+<p><strong>Quadro 5 – Declaração de posição do produto</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Item</th>
+<th style="text-align: left;">Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Para:</strong></td>
+<td style="text-align: left;">Adultos, com foco inicial em estudantes universitários, que desejam acompanhar seu bem-estar emocional.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Necessidade:</strong></td>
+<td style="text-align: left;">Saber, a partir de como se sentem, se basta autocuidado, se devem procurar um serviço de saúde ou se precisam de ajuda imediata.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>O Sintoniza:</strong></td>
+<td style="text-align: left;">É uma aplicação web de apoio à saúde mental.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Que:</strong></td>
+<td style="text-align: left;">Transforma respostas de um check-in diário e de uma avaliação quinzenal validada em conteúdos oficiais e orientações de encaminhamento, explicando o motivo de cada sugestão.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ao contrário de:</strong></td>
+<td style="text-align: left;">Buscas genéricas na internet ou aplicativos de terapia paga, que exigem saber previamente o que procurar ou ter recursos para pagar; sem o produto, a pessoa tende a adiar a busca de ajuda ou a se basear em fontes pouco confiáveis.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Nosso produto:</strong></td>
+<td style="text-align: left;">Usa instrumentos validados e regras públicas e testadas, encaminha para a rede pública brasileira e oferece Ajuda Imediata acessível em um clique, inclusive sem login.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-objetivos-do-produto">1.3 Objetivos do Produto<a class="headerlink" href="#13-objetivos-do-produto" title="Permanent link">&para;</a></h3>
+<p><strong>Objetivo principal:</strong> entregar, até 09/12/2026, um MVP web que permita ao usuário registrar diariamente como está, responder periodicamente instrumentos validados de rastreio e receber, por regras explícitas e testadas, conteúdos de fontes oficiais ou orientação para procurar atendimento, incluindo ajuda imediata em situações de risco.</p>
+<p>Os objetivos secundários detalham o principal e cada um está ligado a requisitos do backlog (seção 4.4) e a métricas (seção 5):</p>
+<ol>
+<li>recomendar materiais oficiais a partir do check-in diário, por regras explícitas e com o motivo de cada sugestão — requisitos R05 e R06;</li>
+<li>aplicar PHQ-9 e GAD-7 com pontuação e pontos de corte publicados, sem pontos de corte criados pela equipe — R08 e R09;</li>
+<li>garantir que todas as linhas das tabelas de regras tenham ao menos um teste automatizado — R06, R09 e R10;</li>
+<li>manter um catálogo com pelo menos um material de fonte oficial para cada tag — R13;</li>
+<li>exibir a Ajuda Imediata sempre que houver indicador de risco e a partir de qualquer tela — R10 e R11;</li>
+<li>tratar os dados conforme a LGPD (BRASIL, 2018): consentimento, isolamento entre usuários e exclusão total — R03, R04 e R14;</li>
+<li>oferecer histórico simples dos registros do próprio usuário — R12.</li>
+</ol>
+<h3 id="14-tecnologias-a-serem-utilizadas">1.4 Tecnologias a Serem Utilizadas<a class="headerlink" href="#14-tecnologias-a-serem-utilizadas" title="Permanent link">&para;</a></h3>
+<p>A escolha prioriza o que a equipe já conhece (Python) e ferramentas gratuitas com documentação ampla; o <a href="../arquitetura/">Documento de Arquitetura</a> detalha como cada uma é aplicada.</p>
+<p><strong>Quadro 6 – Tecnologias adotadas</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Área</th>
+<th style="text-align: left;">Tecnologia</th>
+<th style="text-align: left;">Uso no projeto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Frontend</td>
+<td style="text-align: left;">React 18, TypeScript, Vite, React Router</td>
+<td style="text-align: left;">Aplicação web de página única (SPA). Não haverá app móvel nativo.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Backend</td>
+<td style="text-align: left;">Python 3.12, FastAPI, Pydantic v2</td>
+<td style="text-align: left;">API REST, validação de entrada, autenticação e regras.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Persistência</td>
+<td style="text-align: left;">PostgreSQL 16, SQLAlchemy 2, Alembic</td>
+<td style="text-align: left;">Banco relacional, mapeamento objeto-relacional e migrações.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Segurança</td>
+<td style="text-align: left;">argon2-cffi (Argon2id), PyJWT</td>
+<td style="text-align: left;">Hash de senhas e tokens de acesso com validade de 60 min.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Testes</td>
+<td style="text-align: left;">pytest, httpx</td>
+<td style="text-align: left;">Testes unitários e de integração do backend.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Qualidade</td>
+<td style="text-align: left;">Ruff; ESLint</td>
+<td style="text-align: left;">Padrão de código do backend e do frontend.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Infraestrutura</td>
+<td style="text-align: left;">Docker, Docker Compose, GitHub Actions</td>
+<td style="text-align: left;">Execução local dos serviços; execução dos testes a cada pull request.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Gestão</td>
+<td style="text-align: left;">GitHub (Issues, Projects), Figma</td>
+<td style="text-align: left;">Backlog, quadro Kanban e protótipos.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-visao-geral-do-projeto">2 Visão geral do projeto<a class="headerlink" href="#2-visao-geral-do-projeto" title="Permanent link">&para;</a></h2>
+<h3 id="21-ciclo-de-vida-do-projeto-de-desenvolvimento-de-software">2.1 Ciclo de vida do projeto de desenvolvimento de software<a class="headerlink" href="#21-ciclo-de-vida-do-projeto-de-desenvolvimento-de-software" title="Permanent link">&para;</a></h3>
+<p><strong>Figura 3 – Instanciação da metodologia, processo, procedimentos, métodos e ferramentas do projeto</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    M["&lt;b&gt;Metodologia&lt;/b&gt;&lt;br/&gt;Ágil: iterativa e incremental"] -- suporta a escolha do --&gt; P["&lt;b&gt;Processo&lt;/b&gt;&lt;br/&gt;Scrum: sprints de 2 semanas"]
+    P -- orientado por --&gt; PR["&lt;b&gt;Procedimentos&lt;/b&gt;&lt;br/&gt;Planejamento, revisão e retrospectiva&lt;br/&gt;Definição de Pronto (DoD)&lt;br/&gt;Fluxo de branches e pull requests"]
+    PR -- suportado por --&gt; ME["&lt;b&gt;Métodos&lt;/b&gt;&lt;br/&gt;XP: testes automatizados, revisão&lt;br/&gt;de código, integração contínua&lt;br/&gt;MoSCoW, histórias de usuário, GQM"]
+    PR -- suportado por --&gt; F["&lt;b&gt;Ferramentas&lt;/b&gt;&lt;br/&gt;GitHub (Issues, Projects, Actions)&lt;br/&gt;Figma, Docker, pytest"]</code></pre>
+<ol>
+<li><strong>Metodologia — ágil, iterativa e incremental.</strong> O produto lida com um tema sensível, e as regras e os textos de orientação precisam ser validados com frequência pelo Product Owner e pelo professor. Entregas a cada duas semanas permitem corrigir o rumo cedo, como ocorreu após a apresentação que motivou esta versão;</li>
+<li><strong>Processo — Scrum com sprints de duas semanas.</strong> Com sete integrantes e prazo até 09/12/2026, o Scrum dá cadência fixa de planejamento, revisão e retrospectiva e torna o progresso visível para o cliente;</li>
+<li><strong>Procedimentos.</strong> Planejamento, revisão e retrospectiva em cada sprint; Definição de Pronto única (seção 3); fluxo de branches e pull requests com revisão obrigatória;</li>
+<li><strong>Métodos — práticas do XP e técnicas de engenharia de requisitos.</strong> Testes automatizados escritos junto com o código, com prioridade para o módulo de regras, cujo comportamento já está todo especificado em tabelas; revisão de código; integração contínua; priorização MoSCoW; histórias de usuário; GQM para métricas;</li>
+<li><strong>Ferramentas.</strong> GitHub (Issues, Projects e Actions), Figma, Docker e pytest.</li>
+</ol>
+<p>A combinação é adequada porque o maior risco técnico do produto é encaminhar o usuário de forma errada. Ao especificar as regras antes (seção 4.5), implementá-las antes das telas que dependem delas (Sprint 3, replanejada para a Sprint 4 na versão 2.2) e protegê-las com testes que rodam a cada pull request, a equipe reduz esse risco antes de construir as telas.</p>
+<h3 id="22-organizacao-do-projeto">2.2 Organização do Projeto<a class="headerlink" href="#22-organizacao-do-projeto" title="Permanent link">&para;</a></h3>
+<p>As atribuições foram divididas sem hierarquia entre os integrantes. Todos participam do planejamento e das revisões, e todo desenvolvedor escreve os testes do próprio código.</p>
+<p><strong>Quadro 7 – Papéis e responsabilidades</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Papel</th>
+<th style="text-align: left;">Atribuições</th>
+<th style="text-align: left;">Responsável</th>
+<th style="text-align: left;">Participantes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Product Owner (PO)</td>
+<td style="text-align: left;">Priorizar o backlog; validar a tabela de decisão, os textos de orientação e o catálogo; aceitar ou rejeitar histórias na revisão.</td>
+<td style="text-align: left;">Martin</td>
+<td style="text-align: left;">Equipe e cliente</td>
+</tr>
+<tr>
+<td style="text-align: left;">Desenvolvedor backend (BE)</td>
+<td style="text-align: left;">Implementar API, módulo de regras, persistência e testes unitários, de integração e de segurança.</td>
+<td style="text-align: left;">Luiz Felipe, Carlos Eduardo</td>
+<td style="text-align: left;">Equipe técnica</td>
+</tr>
+<tr>
+<td style="text-align: left;">Desenvolvedor frontend (FE)</td>
+<td style="text-align: left;">Implementar telas, Tela de Ajuda Imediata e integração com a API.</td>
+<td style="text-align: left;">Júlio, Danilo</td>
+<td style="text-align: left;">Equipe técnica</td>
+</tr>
+<tr>
+<td style="text-align: left;">UX/UI, conteúdo e documentação (UX)</td>
+<td style="text-align: left;">Protótipos no Figma, textos da interface, curadoria do catálogo com o PO, documentação.</td>
+<td style="text-align: left;">Vinícius</td>
+<td style="text-align: left;">Equipe e PO</td>
+</tr>
+<tr>
+<td style="text-align: left;">Infraestrutura e qualidade (QA)</td>
+<td style="text-align: left;">Docker Compose, CI, execução do roteiro de testes de sistema, registro de defeitos e coleta das métricas.</td>
+<td style="text-align: left;">Hugo</td>
+<td style="text-align: left;">Equipe técnica</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cliente</td>
+<td style="text-align: left;">Avaliar entregas e dar feedback nas apresentações.</td>
+<td style="text-align: left;">Professor e monitores</td>
+<td style="text-align: left;">Equipe</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-planejamento-das-fases-eou-iteracoes-do-projeto">2.3 Planejamento das Fases e/ou Iterações do Projeto<a class="headerlink" href="#23-planejamento-das-fases-eou-iteracoes-do-projeto" title="Permanent link">&para;</a></h3>
+<p>A partir da Sprint 3 o plano foi refeito para colocar primeiro o que é mais arriscado (regras e catálogo) e deixar o único item Should para depois dos Must. Na versão 2.2, ao fim da Sprint 3, foi aplicado o critério 1 da seção 2.6: os itens Must não concluídos passaram à Sprint 4, antes do check-in, que depende deles, e o item Should (R07) saiu do escopo. O percentual de conclusão é atualizado ao fim de cada sprint, em intervalos de 10%.</p>
+<p><strong>Quadro 8 – Planejamento das sprints</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Sprint</th>
+<th style="text-align: left;">Produto (entrega)</th>
+<th style="text-align: center;">Início</th>
+<th style="text-align: center;">Fim</th>
+<th style="text-align: left;">Entregáveis</th>
+<th style="text-align: center;">Resp.</th>
+<th style="text-align: center;">% concl.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Definição do produto</td>
+<td style="text-align: center;">15/09/2026</td>
+<td style="text-align: center;">30/09/2026</td>
+<td style="text-align: left;">Visão do Produto e do Projeto v1.0; backlog inicial; protótipo de baixa fidelidade.</td>
+<td style="text-align: center;">Todos</td>
+<td style="text-align: center;">100%</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Base do MVP</td>
+<td style="text-align: center;">01/10/2026</td>
+<td style="text-align: center;">14/10/2026</td>
+<td style="text-align: left;">Documento de Arquitetura v1.1; estrutura dos repositórios; cadastro e login (R01, R02).</td>
+<td style="text-align: center;">BE, FE, QA</td>
+<td style="text-align: center;">[atualizar]</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">Regras e catálogo</td>
+<td style="text-align: center;">15/10/2026</td>
+<td style="text-align: center;">28/10/2026</td>
+<td style="text-align: left;">Visão e Arquitetura v2.1; módulo de regras com TU-01 a TU-07; catálogo inicial (R13); termos (R03); Tela de Ajuda e botão (R10 no frontend, R11); CI executando os testes; pendências da Sprint 2.</td>
+<td style="text-align: center;">Todos</td>
+<td style="text-align: center;">[atualizar]</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Pendências da Sprint 3 e check-in diário</td>
+<td style="text-align: center;">29/10/2026</td>
+<td style="text-align: center;">11/11/2026</td>
+<td style="text-align: left;">Pendências da Sprint 3 (replanejamento da v2.2): módulo de regras com TU-01 a TU-07; catálogo inicial (R13); termos (R03); Tela de Ajuda e botão (R10 no frontend, R11); pendências da Sprint 2. Check-in completo com conteúdos (R05, R06, R10); TI-03 a TI-05; TS-01 a TS-05.</td>
+<td style="text-align: center;">Todos</td>
+<td style="text-align: center;">0%</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Avaliação e histórico</td>
+<td style="text-align: center;">12/11/2026</td>
+<td style="text-align: center;">25/11/2026</td>
+<td style="text-align: left;">Avaliação quinzenal e resultado (R08, R09); histórico (R12); exclusão de conta (R04); TI-06, TI-07; roteiro de sistema, ciclo 1.</td>
+<td style="text-align: center;">BE, FE, QA</td>
+<td style="text-align: center;">0%</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td style="text-align: left;">Qualidade e entrega</td>
+<td style="text-align: center;">26/11/2026</td>
+<td style="text-align: center;">09/12/2026</td>
+<td style="text-align: left;">Correções; ciclo final do roteiro de sistema; atualização dos documentos; demonstração.</td>
+<td style="text-align: center;">Todos</td>
+<td style="text-align: center;">0%</td>
+</tr>
+</tbody>
+</table>
+<p>Legenda dos responsáveis: PO = Martin Quadros de Melo; BE = Luiz Felipe Mendes Cordeiro Gomes e Carlos Eduardo Pereira Alexandre; FE = Júlio Barros de Oliveira e Danilo Menezes Gomez; UX = Vinícius Evangelista Borges Pinto; QA = Hugo Sousa Rosa. Os percentuais das Sprints 2 e 3 serão registrados na revisão dessas sprints.</p>
+<h3 id="24-matriz-de-comunicacao">2.4 Matriz de Comunicação<a class="headerlink" href="#24-matriz-de-comunicacao" title="Permanent link">&para;</a></h3>
+<p>Todos os registros ficam no repositório do GitHub, que é a fonte oficial auditada pelos monitores.</p>
+<p><strong>Quadro 9 – Matriz de comunicação</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Descrição</th>
+<th style="text-align: left;">Área / envolvidos</th>
+<th style="text-align: left;">Periodicidade</th>
+<th style="text-align: left;">Produtos gerados</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Acompanhamento das atividades e impedimentos</td>
+<td style="text-align: left;">Equipe</td>
+<td style="text-align: left;">Semanal</td>
+<td style="text-align: left;">Quadro Kanban atualizado; impedimentos registrados nas issues.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Planejamento da sprint</td>
+<td style="text-align: left;">Equipe e PO</td>
+<td style="text-align: left;">Início de cada sprint</td>
+<td style="text-align: left;">Sprint backlog no GitHub Projects.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Revisão e retrospectiva</td>
+<td style="text-align: left;">Equipe e PO</td>
+<td style="text-align: left;">Fim de cada sprint</td>
+<td style="text-align: left;">Registro das histórias aceitas e rejeitadas e do resultado do roteiro de testes; ações de melhoria.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Acompanhamento de riscos, defeitos e métricas</td>
+<td style="text-align: left;">Equipe e QA</td>
+<td style="text-align: left;">A cada sprint (na retrospectiva)</td>
+<td style="text-align: left;">Quadro de riscos atualizado; issues de defeito; métricas GQM.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Comunicação da situação do projeto</td>
+<td style="text-align: left;">Equipe, professor e monitores</td>
+<td style="text-align: left;">Conforme calendário da disciplina</td>
+<td style="text-align: left;">Apresentações; documentos versionados no GitHub e no Aprender3.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="25-gerenciamento-de-riscos">2.5 Gerenciamento de Riscos<a class="headerlink" href="#25-gerenciamento-de-riscos" title="Permanent link">&para;</a></h3>
+<p>Os riscos são revisados em toda retrospectiva. A exposição combina probabilidade e impacto. Para cada risco há um plano de mitigação, que busca evitar que ele ocorra, e um plano de contingência, aplicado se ele ocorrer.</p>
+<p><strong>Quadro 10 – Gerenciamento de riscos</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Risco</th>
+<th style="text-align: center;">Exposição</th>
+<th style="text-align: left;">Mitigação</th>
+<th style="text-align: left;">Contingência</th>
+<th style="text-align: center;">Resp.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">R1. Usuário em crise real utiliza o app</td>
+<td style="text-align: center;">Alta</td>
+<td style="text-align: left;">Pergunta de segurança diária e item 9 do PHQ-9 acionam a Tela de Ajuda; botão de ajuda acessível sem login; termos informam que não há monitoramento.</td>
+<td style="text-align: left;">Tela de Ajuda já exibida; revisar textos com base nas orientações do CVV e do Ministério da Saúde.</td>
+<td style="text-align: center;">PO, FE</td>
+</tr>
+<tr>
+<td style="text-align: left;">R2. Resultado interpretado como diagnóstico</td>
+<td style="text-align: center;">Alta</td>
+<td style="text-align: left;">Aviso "não é diagnóstico" em todo resultado; apenas pontos de corte publicados; textos revisados pelo PO.</td>
+<td style="text-align: left;">Ocultar escores numéricos e manter só a orientação do nível.</td>
+<td style="text-align: center;">PO, UX</td>
+</tr>
+<tr>
+<td style="text-align: left;">R3. Erro nas regras gera encaminhamento errado</td>
+<td style="text-align: center;">Alta</td>
+<td style="text-align: left;">Um teste por linha das tabelas de regras, com valores-limite; revisão de código em todo pull request.</td>
+<td style="text-align: left;">Correção imediata; até a correção, exibir só orientação genérica e Ajuda Imediata.</td>
+<td style="text-align: center;">BE, QA</td>
+</tr>
+<tr>
+<td style="text-align: left;">R4. Vazamento de dados sensíveis</td>
+<td style="text-align: center;">Média</td>
+<td style="text-align: left;">Testes TS-01 a TS-05 na CI; coleta mínima; uso apenas com usuários de teste.</td>
+<td style="text-align: left;">Trocar a chave de assinatura (invalida todos os tokens), corrigir e registrar o incidente.</td>
+<td style="text-align: center;">BE, QA</td>
+</tr>
+<tr>
+<td style="text-align: left;">R5. Links do catálogo quebram ou o conteúdo muda</td>
+<td style="text-align: center;">Média</td>
+<td style="text-align: left;">Somente fontes oficiais; link conferido na inclusão do material; data de revisão por material.</td>
+<td style="text-align: left;">Marcar o material como inativo e substituí-lo na mesma sprint.</td>
+<td style="text-align: center;">UX</td>
+</tr>
+<tr>
+<td style="text-align: left;">R6. Atraso em itens Must</td>
+<td style="text-align: center;">Alta</td>
+<td style="text-align: left;">Escopo enxuto; regras antes do check-in; item Should só após os Must.</td>
+<td style="text-align: left;">Replanejar: retirar primeiro o item Should (aplicado na versão 2.2, com a retirada do R07).</td>
+<td style="text-align: center;">PO</td>
+</tr>
+<tr>
+<td style="text-align: left;">R7. Pouca experiência da equipe com React</td>
+<td style="text-align: center;">Alta</td>
+<td style="text-align: left;">Telas simples, sem biblioteca de componentes complexa; apoio entre integrantes quando necessário.</td>
+<td style="text-align: left;">Desenvolvedores backend apoiam o frontend; simplificar telas.</td>
+<td style="text-align: center;">FE</td>
+</tr>
+<tr>
+<td style="text-align: left;">R8. Indisponibilidade de integrante</td>
+<td style="text-align: center;">Média</td>
+<td style="text-align: left;">Issues pequenas; todo PR revisado por outra pessoa; conhecimento compartilhado.</td>
+<td style="text-align: left;">Redistribuir tarefas no acompanhamento seguinte.</td>
+<td style="text-align: center;">Equipe</td>
+</tr>
+<tr>
+<td style="text-align: left;">R9. Uso por menores de idade</td>
+<td style="text-align: center;">Baixa</td>
+<td style="text-align: left;">Declaração de maioridade obrigatória no cadastro; uso restrito a usuários de teste.</td>
+<td style="text-align: left;">Excluir a conta.</td>
+<td style="text-align: center;">PO</td>
+</tr>
+</tbody>
+</table>
+<h3 id="26-criterios-de-replanejamento">2.6 Critérios de Replanejamento<a class="headerlink" href="#26-criterios-de-replanejamento" title="Permanent link">&para;</a></h3>
+<p>O replanejamento é acionado quando ocorre qualquer um dos critérios abaixo. Em todos os casos, o PO e a equipe revisam backlog, cronograma, riscos e Definição de Pronto, e a alteração gera nova versão deste documento:</p>
+<ol>
+<li>um item Must não concluído ao fim da sprint planejada (risco R6) — o item passa à sprint seguinte e o item Should sai do escopo para abrir espaço;</li>
+<li>um risco de exposição alta se concretiza (R1, R2, R3 ou R4) — as correções passam à frente de qualquer outra tarefa;</li>
+<li>conclusão abaixo de 80% dos itens comprometidos em duas sprints seguidas (métrica M4) — a capacidade planejada é reduzida;</li>
+<li>mudança de requisito pedida pelo cliente ou pelo PO após a revisão da sprint.</li>
+</ol>
+<h2 id="3-processo-de-desenvolvimento-de-software">3 Processo de desenvolvimento de software<a class="headerlink" href="#3-processo-de-desenvolvimento-de-software" title="Permanent link">&para;</a></h2>
+<p>O processo segue o Scrum (SCHWABER; SUTHERLAND, 2020) com práticas do XP, conforme justificado na seção 2.1. A Figura 4 mostra o fluxo de trabalho de cada item do backlog dentro de uma sprint.</p>
+<p><strong>Figura 4 – Fluxo de trabalho dentro de cada sprint</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    A["1. Planejamento&lt;br/&gt;PO + equipe: sprint backlog&lt;br/&gt;e critérios de aceite"] --&gt; B["2. Desenvolvimento&lt;br/&gt;Desenvolvedores: branch,&lt;br/&gt;código + testes"]
+    B --&gt; C["3. Pull request&lt;br/&gt;testes na CI + 1 revisão"]
+    C -. reprovado .-&gt; B
+    C --&gt; D["4. Teste de sistema&lt;br/&gt;QA: roteiro de sistema,&lt;br/&gt;registro de defeitos"]
+    D -. defeito .-&gt; B
+    D --&gt; E["5. Revisão&lt;br/&gt;PO aceita ou rejeita&lt;br/&gt;cada história"]
+    E --&gt; F["6. Retrospectiva&lt;br/&gt;Equipe: ações de melhoria"]
+    F -- próxima sprint --&gt; A</code></pre>
+<ol>
+<li><strong>Planejamento</strong> (PO e equipe): seleção dos itens priorizados, quebra em issues pequenas e definição dos critérios de aceite;</li>
+<li><strong>Desenvolvimento</strong> (desenvolvedores): uma branch por issue; testes automatizados escritos junto com o código;</li>
+<li><strong>Pull request</strong> (desenvolvedores e QA): o merge na branch <code>main</code> exige que os testes automatizados passem na CI e a revisão de outro integrante;</li>
+<li><strong>Teste de sistema</strong> (QA): execução do roteiro de sistema sobre a branch <code>main</code>, no ambiente de demonstração; defeitos viram issues com o rótulo <code>bug</code>;</li>
+<li><strong>Revisão</strong> (PO e equipe): o PO aceita ou rejeita cada história segundo seus critérios de aceite;</li>
+<li><strong>Retrospectiva</strong> (equipe): ações de melhoria registradas para a sprint seguinte.</li>
+</ol>
+<p><strong>Definição de Pronto.</strong> Um item só é considerado concluído quando: o código foi revisado por outro integrante; os testes automatizados do item passam na CI; os critérios de aceite foram validados pelo PO; e não há defeito crítico aberto relacionado ao item.</p>
+<h2 id="4-declaracao-de-escopo-do-projeto">4 Declaração de escopo do projeto<a class="headerlink" href="#4-declaracao-de-escopo-do-projeto" title="Permanent link">&para;</a></h2>
+<h3 id="41-backlog-do-produto">4.1 Backlog do produto<a class="headerlink" href="#41-backlog-do-produto" title="Permanent link">&para;</a></h3>
+<p>O backlog foi revisado nas versões 2.0 e 2.1 a partir do feedback da apresentação. As classes de prioridade significam, para este projeto:</p>
+<ul>
+<li><strong>Must:</strong> necessário para que o fluxo principal funcione com segurança. É compromisso de entrega;</li>
+<li><strong>Should:</strong> agrega valor e será entregue se todos os Must da sprint estiverem prontos. É declaradamente condicional. Não há itens Should desde a versão 2.2: o único (R07, convite para avaliação) saiu do escopo no replanejamento ao fim da Sprint 3 (seção 2.6, critério 1);</li>
+<li><strong>Could:</strong> não há itens Could nesta versão; ideias sem compromisso de entrega não são registradas no backlog.</li>
+</ul>
+<p><strong>Quadro 11 – Técnicas de elicitação</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Técnica</th>
+<th style="text-align: left;">Como foi ou será usada</th>
+<th style="text-align: left;">Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Brainstorming da equipe</td>
+<td style="text-align: left;">Sessões da equipe.</td>
+<td style="text-align: left;">Ideia inicial do produto e cortes de escopo da versão 2.0.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Pesquisa documental</td>
+<td style="text-align: left;">Leitura de materiais do Ministério da Saúde, da OPAS/OMS e dos artigos de validação do PHQ-9 e do GAD-7.</td>
+<td style="text-align: left;">Instrumentos, pontos de corte, canais de ajuda e fontes do catálogo.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Análise de soluções similares</td>
+<td style="text-align: left;">Comparação com Vittude, Zenklub, Daylio e app Saúde da Apple.</td>
+<td style="text-align: left;">Diferenciais e funcionalidades fora do escopo.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Feedback do cliente</td>
+<td style="text-align: left;">Questionamentos do professor na apresentação.</td>
+<td style="text-align: left;">Especificação do fluxo principal e da estratégia de testes.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Fora do escopo do MVP</p>
+<p>Não entregue nesta disciplina: aplicativo móvel nativo; notificações ou lembretes; convite para a avaliação após dias seguidos de dificuldade (R07, retirado na versão 2.2); perfis administrativos e painel de curadoria; inteligência artificial; chat ou atendimento por profissionais; contato com terceiros ou com serviços de emergência; localização da UBS ou do CAPS mais próximos; integração com APIs externas; exportação de dados; uso por menores de 18 anos; publicação em nuvem; testes de desempenho, de carga ou de usabilidade com participantes; garantia de compatibilidade com navegadores ou tamanhos de tela específicos.</p>
+</div>
+<h3 id="42-perfis">4.2 Perfis<a class="headerlink" href="#42-perfis" title="Permanent link">&para;</a></h3>
+<p>O sistema possui apenas dois perfis de acesso. Os perfis Administrador e Curador da versão 1.0 foram removidos: o catálogo passa a ser mantido pela equipe por meio de pull requests no repositório, o que elimina um painel administrativo inteiro e as regras de permissão associadas.</p>
+<p><strong>Quadro 12 – Perfis de acesso</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">#</th>
+<th style="text-align: left;">Nome do perfil</th>
+<th style="text-align: left;">Características do perfil</th>
+<th style="text-align: left;">Permissões de acesso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">P01</td>
+<td style="text-align: left;">Visitante</td>
+<td style="text-align: left;">Pessoa não autenticada.</td>
+<td style="text-align: left;">Páginas públicas: início, cadastro, login, termos de uso e privacidade, e Ajuda Imediata.</td>
+</tr>
+<tr>
+<td style="text-align: center;">P02</td>
+<td style="text-align: left;">Usuário</td>
+<td style="text-align: left;">Adulto cadastrado e autenticado.</td>
+<td style="text-align: left;">Tudo do Visitante, mais: check-in diário, avaliação quinzenal, resultados, histórico e excluir a própria conta. Acessa apenas os próprios dados.</td>
+</tr>
+</tbody>
+</table>
+<p>A equipe mantenedora não é um perfil do sistema: altera o catálogo por pull request revisado pelo PO. Para os dois perfis a elicitação é a mesma (Quadro 11).</p>
+<h3 id="43-cenarios">4.3 Cenários<a class="headerlink" href="#43-cenarios" title="Permanent link">&para;</a></h3>
+<p><strong>Quadro 13 – Cenários funcionais</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Cenário</th>
+<th style="text-align: left;">Nome do cenário</th>
+<th style="text-align: center;">Sprints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">C01</td>
+<td style="text-align: left;">Conta e privacidade (cadastro, login, termos, exclusão)</td>
+<td style="text-align: center;">2, 4, 5</td>
+</tr>
+<tr>
+<td style="text-align: center;">C02</td>
+<td style="text-align: left;">Check-in diário e conteúdos do dia</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: center;">C03</td>
+<td style="text-align: left;">Avaliação quinzenal e resultado</td>
+<td style="text-align: center;">4, 5</td>
+</tr>
+<tr>
+<td style="text-align: center;">C04</td>
+<td style="text-align: left;">Ajuda Imediata</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: center;">C05</td>
+<td style="text-align: left;">Histórico</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr>
+<td style="text-align: center;">C06</td>
+<td style="text-align: left;">Catálogo de conteúdos oficiais</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: center;">C07</td>
+<td style="text-align: left;">Segurança dos dados</td>
+<td style="text-align: center;">4, 5</td>
+</tr>
+</tbody>
+</table>
+<h3 id="44-tabela-de-backlog-do-produto">4.4 Tabela de Backlog do produto<a class="headerlink" href="#44-tabela-de-backlog-do-produto" title="Permanent link">&para;</a></h3>
+<p>Regras R-D, R-A e R-S na seção 4.5; testes na seção 6.2. F = funcional; NF = não funcional. A coluna Sprint reflete o replanejamento da versão 2.2. O requisito R07 foi retirado nessa versão; a numeração dos demais foi mantida.</p>
+<p><strong>Quadro 14 – Backlog do produto</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Cenário / req.</th>
+<th style="text-align: center;">Sprint</th>
+<th style="text-align: left;">Nome do requisito</th>
+<th style="text-align: center;">Tipo</th>
+<th style="text-align: center;">Prioridade</th>
+<th style="text-align: left;">Descrição sucinta e critério de aceite</th>
+<th style="text-align: left;">História de usuário</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">C01/R01</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Cadastrar usuário</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">E-mail único, senha com 8 ou mais caracteres, aceite dos termos e declaração de maioridade obrigatórios; senha guardada com Argon2id. Testes: TI-01, TS-05.</td>
+<td style="text-align: left;">Como visitante, quero criar uma conta para registrar como estou.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C01/R02</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Autenticar usuário</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">Login retorna token válido por 60 min; mensagem de erro genérica; sair descarta o token. Testes: TI-02, TS-02.</td>
+<td style="text-align: left;">Como usuário, quero entrar e sair da minha conta com segurança.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C01/R03</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Termos de uso e privacidade</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">Página pública informa dados coletados, finalidade, que não há diagnóstico nem monitoramento e como excluir a conta.</td>
+<td style="text-align: left;">Como visitante, quero saber como meus dados serão usados antes de me cadastrar.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C01/R04</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Excluir conta e dados</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">Após confirmação, remove usuário, check-ins, avaliações e recomendações (exclusão física). Testes: TI-07, TSI-05.</td>
+<td style="text-align: left;">Como usuário, quero apagar todos os meus dados.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C02/R05</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Responder check-in diário</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">Perguntas P1 a P5 (Quadro 15); P1 a P4 opcionais; P5 obrigatória; um check-in por dia. Testes: TI-03, TI-04.</td>
+<td style="text-align: left;">Como usuário, quero registrar como estou hoje.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C02/R06</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Receber conteúdos do dia</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">Aplica R-D2 a R-D6 e R-S1 a R-S5; exibe até 3 materiais com título, fonte, resumo, link e motivo. Testes: TU-05, TU-06, TI-03.</td>
+<td style="text-align: left;">Como usuário, quero receber materiais oficiais ligados ao que respondi e entender por quê.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C03/R08</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Responder avaliação quinzenal</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">PHQ-9 e GAD-7 com texto oficial em português do Brasil; 16 respostas obrigatórias, de 0 a 3. Testes: TU-01, TI-06.</td>
+<td style="text-align: left;">Como usuário, quero responder um questionário validado sobre as últimas duas semanas.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C03/R09</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Ver resultado e orientação</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">Exibe escores, faixas (Quadro 17), nível (R-A1 a R-A4), orientação e materiais, com aviso de que não é diagnóstico. Testes: TU-02 a TU-04, TI-06, TSI-03.</td>
+<td style="text-align: left;">Como usuário, quero entender meu resultado e saber o que fazer.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C04/R10</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Ajuda Imediata por indicador de risco</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">R-D1 ou R-A1 exibem a Tela de Ajuda (seção 4.5.5) e nenhuma recomendação. Testes: TU-04, TU-05, TI-05, TSI-02.</td>
+<td style="text-align: left;">Como usuário em sofrimento intenso, quero ver imediatamente onde conseguir ajuda humana.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C04/R11</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Botão "Preciso de ajuda agora"</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">Visível em todas as páginas, inclusive sem login; abre a Tela de Ajuda. Teste: TSI-04.</td>
+<td style="text-align: left;">Como qualquer pessoa, quero achar ajuda sem precisar entrar na conta.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C05/R12</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Consultar histórico</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">Lista os últimos 30 check-ins (data, humor, tags) e todas as avaliações (data, escores, faixas, nível) do próprio usuário. Testes: TS-03, TSI-01.</td>
+<td style="text-align: left;">Como usuário, quero rever meus registros para perceber padrões.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C06/R13</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Catálogo curado</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">Arquivo <code>materiais.yaml</code> com pelo menos 1 material ativo por tag, apenas de domínios permitidos, carregado no banco por comando seed. Teste: TU-07.</td>
+<td style="text-align: left;">Como usuário, quero que os conteúdos venham de fontes oficiais.</td>
+</tr>
+<tr>
+<td style="text-align: left;">C07/R14</td>
+<td style="text-align: center;">4–5</td>
+<td style="text-align: left;">Proteção de dados</td>
+<td style="text-align: center;">NF</td>
+<td style="text-align: center;">Must</td>
+<td style="text-align: left;">Casos TS-01 a TS-05 aprovados na CI.</td>
+<td style="text-align: left;">Como usuário, quero que minhas informações emocionais fiquem protegidas.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="45-especificacao-do-fluxo-principal-do-formulario-ao-conteudo">4.5 Especificação do fluxo principal: do formulário ao conteúdo<a class="headerlink" href="#45-especificacao-do-fluxo-principal-do-formulario-ao-conteudo" title="Permanent link">&para;</a></h3>
+<p>Esta seção responde objetivamente a <em>como o formulário leva o usuário ao conteúdo certo</em>. Tudo o que está aqui é implementado no módulo de regras do backend, como funções sem acesso a banco ou rede, e cada linha das tabelas tem ao menos um caso de teste automatizado (seção 6.2).</p>
+<h4 id="451-check-in-diario">4.5.1 Check-in diário<a class="headerlink" href="#451-check-in-diario" title="Permanent link">&para;</a></h4>
+<p>P1 a P4 são perguntas próprias, <strong>não validadas</strong> e <strong>não usadas para classificar a saúde do usuário</strong>: servem apenas para escolher conteúdos de autocuidado. P5 adapta para o dia o item 9 do PHQ-9 e tem a função exclusiva de detectar risco; a literatura indica que perguntar sobre ideação suicida não aumenta essa ideação (DAZZI et al., 2014).</p>
+<p><strong>Quadro 15 – Perguntas do check-in diário</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ID</th>
+<th style="text-align: left;">Pergunta</th>
+<th style="text-align: left;">Opções (valor gravado)</th>
+<th style="text-align: center;">Regra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">P1</td>
+<td style="text-align: left;">Como você avalia seu humor hoje?</td>
+<td style="text-align: left;">1 Muito ruim · 2 Ruim · 3 Regular · 4 Bom · 5 Muito bom</td>
+<td style="text-align: center;">R-D2</td>
+</tr>
+<tr>
+<td style="text-align: center;">P2</td>
+<td style="text-align: left;">Hoje, o quanto você se sentiu nervoso(a), ansioso(a) ou preocupado(a)?</td>
+<td style="text-align: left;">0 Nada · 1 Um pouco · 2 Bastante · 3 Extremamente</td>
+<td style="text-align: center;">R-D3</td>
+</tr>
+<tr>
+<td style="text-align: center;">P3</td>
+<td style="text-align: left;">Como foi seu sono na última noite?</td>
+<td style="text-align: left;">1 Muito ruim · 2 Ruim · 3 Regular · 4 Bom · 5 Muito bom</td>
+<td style="text-align: center;">R-D4</td>
+</tr>
+<tr>
+<td style="text-align: center;">P4</td>
+<td style="text-align: left;">Hoje, o quanto você se sentiu sobrecarregado(a) com estudos, trabalho ou outras demandas?</td>
+<td style="text-align: left;">0 Nada · 1 Um pouco · 2 Bastante · 3 Extremamente</td>
+<td style="text-align: center;">R-D5</td>
+</tr>
+<tr>
+<td style="text-align: center;">P5</td>
+<td style="text-align: left;">Hoje você teve pensamentos de se machucar ou de que seria melhor estar morto(a)?</td>
+<td style="text-align: left;">Não · Sim (resposta obrigatória)</td>
+<td style="text-align: center;">R-D1</td>
+</tr>
+</tbody>
+</table>
+<p>P1 a P4 são opcionais: quando o usuário não responde a uma delas, o valor é gravado como nulo e a regra correspondente não é acionada. P5 é obrigatória: sem ela, o check-in não é registrado.</p>
+<p>As regras do Quadro 16 são avaliadas em ordem. O check-in sem risco recebe sempre o nível N0 (autocuidado): o check-in diário nunca produz N1 ou N2, porque suas perguntas não são instrumento de rastreio.</p>
+<p><strong>Quadro 16 – Regras do check-in diário</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Regra</th>
+<th style="text-align: left;">Condição</th>
+<th style="text-align: left;">Efeito</th>
+<th style="text-align: left;">Motivo exibido ao usuário</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">R-D1</td>
+<td style="text-align: left;">P5 = Sim</td>
+<td style="text-align: left;">Nível CRISE: exibe a Tela de Ajuda Imediata; nenhuma recomendação é gerada. Tem precedência sobre todas as demais regras.</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-D2</td>
+<td style="text-align: left;">P1 ≤ 2</td>
+<td style="text-align: left;">Adiciona a tag HUMOR.</td>
+<td style="text-align: left;">"Você indicou humor ruim ou muito ruim hoje."</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-D3</td>
+<td style="text-align: left;">P2 ≥ 2</td>
+<td style="text-align: left;">Adiciona a tag ANSIEDADE.</td>
+<td style="text-align: left;">"Você indicou ter se sentido bastante ou extremamente ansioso(a) hoje."</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-D4</td>
+<td style="text-align: left;">P3 ≤ 2</td>
+<td style="text-align: left;">Adiciona a tag SONO.</td>
+<td style="text-align: left;">"Você indicou que dormiu mal na última noite."</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-D5</td>
+<td style="text-align: left;">P4 ≥ 2</td>
+<td style="text-align: left;">Adiciona a tag ESTRESSE.</td>
+<td style="text-align: left;">"Você indicou ter se sentido bastante ou extremamente sobrecarregado(a)."</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-D6</td>
+<td style="text-align: left;">Nenhuma das regras R-D2 a R-D5 acionada</td>
+<td style="text-align: left;">Adiciona a tag BEM_ESTAR.</td>
+<td style="text-align: left;">"Você não indicou dificuldades marcantes hoje."</td>
+</tr>
+</tbody>
+</table>
+<h4 id="452-avaliacao-quinzenal-phq-9-e-gad-7">4.5.2 Avaliação quinzenal (PHQ-9 e GAD-7)<a class="headerlink" href="#452-avaliacao-quinzenal-phq-9-e-gad-7" title="Permanent link">&para;</a></h4>
+<p>A avaliação usa o PHQ-9 (9 itens) e o GAD-7 (7 itens), ambos com a pergunta "Nas últimas 2 semanas, com que frequência você foi incomodado(a) por…" e a escala 0 = nenhuma vez, 1 = vários dias, 2 = mais da metade dos dias, 3 = quase todos os dias. Os textos utilizados serão os das versões oficiais em português do Brasil disponibilizadas pelos autores, cuja reprodução não exige permissão (PHQ SCREENERS, 2026). A avaliação pode ser respondida a qualquer momento; a tela da avaliação informa que o recomendado é respondê-la a cada duas semanas, período a que os instrumentos se referem. O sistema não envia lembretes nem convites para a avaliação. O escore é a soma dos itens (PHQ-9: 0 a 27; GAD-7: 0 a 21).</p>
+<p><strong>Quadro 17 – Faixas de gravidade do PHQ-9 e do GAD-7</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Instrumento</th>
+<th style="text-align: center;">Escore</th>
+<th style="text-align: left;">Faixa de gravidade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">PHQ-9 (depressão)</td>
+<td style="text-align: center;">0–4</td>
+<td style="text-align: left;">Mínima</td>
+</tr>
+<tr>
+<td style="text-align: left;">PHQ-9 (depressão)</td>
+<td style="text-align: center;">5–9</td>
+<td style="text-align: left;">Leve</td>
+</tr>
+<tr>
+<td style="text-align: left;">PHQ-9 (depressão)</td>
+<td style="text-align: center;">10–14</td>
+<td style="text-align: left;">Moderada</td>
+</tr>
+<tr>
+<td style="text-align: left;">PHQ-9 (depressão)</td>
+<td style="text-align: center;">15–19</td>
+<td style="text-align: left;">Moderadamente grave</td>
+</tr>
+<tr>
+<td style="text-align: left;">PHQ-9 (depressão)</td>
+<td style="text-align: center;">20–27</td>
+<td style="text-align: left;">Grave</td>
+</tr>
+<tr>
+<td style="text-align: left;">GAD-7 (ansiedade)</td>
+<td style="text-align: center;">0–4</td>
+<td style="text-align: left;">Mínima</td>
+</tr>
+<tr>
+<td style="text-align: left;">GAD-7 (ansiedade)</td>
+<td style="text-align: center;">5–9</td>
+<td style="text-align: left;">Leve</td>
+</tr>
+<tr>
+<td style="text-align: left;">GAD-7 (ansiedade)</td>
+<td style="text-align: center;">10–14</td>
+<td style="text-align: left;">Moderada</td>
+</tr>
+<tr>
+<td style="text-align: left;">GAD-7 (ansiedade)</td>
+<td style="text-align: center;">15–21</td>
+<td style="text-align: left;">Grave</td>
+</tr>
+</tbody>
+</table>
+<p><em>Fonte: Kroenke, Spitzer e Williams (2001); Spitzer et al. (2006).</em></p>
+<p>O nível de orientação é definido pela tabela de decisão do Quadro 18, avaliada de cima para baixo: a primeira regra verdadeira define o nível.</p>
+<p><strong>Quadro 18 – Tabela de decisão da avaliação quinzenal</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Regra</th>
+<th style="text-align: left;">Condição</th>
+<th style="text-align: left;">Nível</th>
+<th style="text-align: left;">O que o usuário vê</th>
+<th style="text-align: left;">Tags usadas para o conteúdo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">R-A1</td>
+<td style="text-align: left;">Item 9 do PHQ-9 ≥ 1 (qualquer pontuação total)</td>
+<td style="text-align: left;">N3 – CRISE</td>
+<td style="text-align: left;">Tela de Ajuda Imediata. Nenhum material é exibido.</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-A2</td>
+<td style="text-align: left;">PHQ-9 ≥ 20 ou GAD-7 ≥ 15</td>
+<td style="text-align: left;">N2 – PRIORITÁRIO</td>
+<td style="text-align: left;">"Suas respostas indicam sintomas intensos. Recomendamos procurar atendimento em saúde nos próximos dias, na sua UBS de referência ou em um CAPS. Se piorar, use a Ajuda Imediata."</td>
+<td style="text-align: left;">AJUDA_PROFISSIONAL (até 2 materiais)</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-A3</td>
+<td style="text-align: left;">PHQ-9 ≥ 10 ou GAD-7 ≥ 10</td>
+<td style="text-align: left;">N1 – ATENÇÃO</td>
+<td style="text-align: left;">"Recomendamos conversar com um profissional de saúde. No SUS, a porta de entrada é a Unidade Básica de Saúde (UBS)."</td>
+<td style="text-align: left;">AJUDA_PROFISSIONAL + HUMOR (se PHQ-9 ≥ 10) + ANSIEDADE (se GAD-7 ≥ 10)</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-A4</td>
+<td style="text-align: left;">Nenhuma das anteriores</td>
+<td style="text-align: left;">N0 – AUTOCUIDADO</td>
+<td style="text-align: left;">"Continue acompanhando como você está. Seguem materiais de autocuidado."</td>
+<td style="text-align: left;">HUMOR (se PHQ-9 5–9) + ANSIEDADE (se GAD-7 5–9); BEM_ESTAR se ambos ≤ 4</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Justificativa dos limites.</strong> O ponto de corte 10 é o usual para ambos os instrumentos (KROENKE; SPITZER; WILLIAMS, 2001; SPITZER et al., 2006) e foi o adotado na análise da Pesquisa Nacional de Saúde 2019 (MELO et al., 2023). O estudo brasileiro de Santos et al. (2013) encontrou desempenho semelhante com o corte 9; a equipe mantém os valores internacionais porque coincidem com as faixas publicadas e <strong>não cria limites próprios</strong>. O item 9 do PHQ-9 é tratado isoladamente, com qualquer resposta diferente de "nenhuma vez", porque indica pensamentos de morte ou de autoagressão. Os limites ficam em constantes de configuração do módulo de regras; alterá-los exige pull request, atualização dos testes e aprovação do PO.</p>
+<p>O Quadro 19 define perfis de respostas usados como dados de teste nos níveis de integração (TI-06) e de sistema (TSI-03).</p>
+<p><strong>Quadro 19 – Perfis de respostas de referência para testes</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Perfil</th>
+<th style="text-align: left;">PHQ-9 (itens 1–9)</th>
+<th style="text-align: left;">GAD-7 (itens 1–7)</th>
+<th style="text-align: center;">Escores PHQ / GAD</th>
+<th style="text-align: left;">Faixas</th>
+<th style="text-align: left;">Nível esperado</th>
+<th style="text-align: left;">Tags esperadas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">A</td>
+<td style="text-align: left;">0,0,0,0,0,0,0,0,0</td>
+<td style="text-align: left;">0,0,0,0,0,0,0</td>
+<td style="text-align: center;">0 / 0</td>
+<td style="text-align: left;">Mínima / Mínima</td>
+<td style="text-align: left;">N0 (R-A4)</td>
+<td style="text-align: left;">BEM_ESTAR</td>
+</tr>
+<tr>
+<td style="text-align: center;">B</td>
+<td style="text-align: left;">2,2,1,1,1,1,1,1,0</td>
+<td style="text-align: left;">1,1,1,1,1,0,0</td>
+<td style="text-align: center;">10 / 5</td>
+<td style="text-align: left;">Moderada / Leve</td>
+<td style="text-align: left;">N1 (R-A3)</td>
+<td style="text-align: left;">AJUDA_PROFISSIONAL, HUMOR</td>
+</tr>
+<tr>
+<td style="text-align: center;">C</td>
+<td style="text-align: left;">3,3,2,2,2,2,2,2,0</td>
+<td style="text-align: left;">3,3,2,2,2,2,1</td>
+<td style="text-align: center;">18 / 15</td>
+<td style="text-align: left;">Mod. grave / Grave</td>
+<td style="text-align: left;">N2 (R-A2)</td>
+<td style="text-align: left;">AJUDA_PROFISSIONAL</td>
+</tr>
+<tr>
+<td style="text-align: center;">D</td>
+<td style="text-align: left;">0,0,0,0,0,0,0,0,1</td>
+<td style="text-align: left;">0,0,0,0,0,0,0</td>
+<td style="text-align: center;">1 / 0</td>
+<td style="text-align: left;">Mínima / Mínima</td>
+<td style="text-align: left;">N3 (R-A1)</td>
+<td style="text-align: left;">— (Tela de Ajuda)</td>
+</tr>
+<tr>
+<td style="text-align: center;">E</td>
+<td style="text-align: left;">1,1,1,1,1,0,0,0,0</td>
+<td style="text-align: left;">1,1,1,1,1,1,0</td>
+<td style="text-align: center;">5 / 6</td>
+<td style="text-align: left;">Leve / Leve</td>
+<td style="text-align: left;">N0 (R-A4)</td>
+<td style="text-align: left;">ANSIEDADE, HUMOR</td>
+</tr>
+</tbody>
+</table>
+<h4 id="453-selecao-de-conteudo">4.5.3 Seleção de conteúdo<a class="headerlink" href="#453-selecao-de-conteudo" title="Permanent link">&para;</a></h4>
+<p>Depois de calculadas as tags, a escolha dos materiais segue as regras do Quadro 20. Não há aleatoriedade nem aprendizado de máquina: as mesmas respostas, com o mesmo histórico, produzem sempre a mesma sugestão, o que torna o comportamento testável.</p>
+<p><strong>Quadro 20 – Regras de seleção de conteúdo</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Regra</th>
+<th style="text-align: left;">Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">R-S1</td>
+<td style="text-align: left;">Para cada tag gerada, na ordem de prioridade AJUDA_PROFISSIONAL → ANSIEDADE → HUMOR → ESTRESSE → SONO → BEM_ESTAR, buscar os materiais <strong>ativos</strong> do catálogo que possuem a tag.</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-S2</td>
+<td style="text-align: left;">Entre os candidatos de uma tag, escolher o material recomendado <strong>há mais tempo</strong> a esse usuário (material nunca recomendado vem primeiro). Empate: menor identificador.</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-S3</td>
+<td style="text-align: left;">Um mesmo material não aparece duas vezes na mesma resposta.</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-S4</td>
+<td style="text-align: left;">No máximo <strong>3 materiais</strong> por check-in ou avaliação (2 para N2). Tags excedentes são descartadas pela ordem de prioridade.</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-S5</td>
+<td style="text-align: left;">Cada recomendação é salva com o código da regra que a gerou (ex.: R-D4) e o texto do motivo, exibido ao usuário em "Por que estou vendo isto?".</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-S6</td>
+<td style="text-align: left;">Se nenhuma tag tiver material disponível, exibe-se apenas a orientação do nível. A situação é evitada pelo teste de integridade do catálogo (TU-07), que exige ao menos 1 material ativo por tag.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="454-catalogo-de-conteudos-oficiais">4.5.4 Catálogo de conteúdos oficiais<a class="headerlink" href="#454-catalogo-de-conteudos-oficiais" title="Permanent link">&para;</a></h4>
+<p>Os materiais ficam no arquivo <code>catalog/materiais.yaml</code> do repositório. Cada material possui: slug (identificador único), título, URL, fonte, resumo escrito pela equipe em até duas frases, lista de tags, indicador de ativo e data da última revisão. O Sintoniza <strong>não copia</strong> o conteúdo das fontes: exibe título, fonte e resumo e abre a página oficial em nova aba. As regras do catálogo são:</p>
+<ol>
+<li>somente domínios permitidos: <code>gov.br</code> e seus subdomínios, <code>paho.org</code>, <code>who.int</code> e <code>cvv.org.br</code>. A regra é verificada pelo teste TU-07;</li>
+<li>pelo menos 1 material ativo para cada uma das 6 tags;</li>
+<li>inclusão ou alteração apenas por pull request revisado pelo PO, conferindo se a fonte é oficial, se o link abre e se a tag é adequada;</li>
+<li>o comando seed carrega o arquivo no banco; para retirar um material, ele é marcado como inativo no arquivo, o que preserva o histórico de recomendações.</li>
+</ol>
+<p>O Quadro 21 mostra os materiais já identificados para o catálogo inicial. Para completar o mínimo de 1 material por tag, falta incluir um material com a tag SONO, previsto para a Sprint 4 (replanejamento da versão 2.2) sob as mesmas regras.</p>
+<p><strong>Quadro 21 – Amostra do catálogo inicial</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Slug</th>
+<th style="text-align: left;">Título</th>
+<th style="text-align: left;">Fonte</th>
+<th style="text-align: left;">URL</th>
+<th style="text-align: left;">Tags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">saude-mental-ms</td>
+<td style="text-align: left;">Saúde Mental – Saúde de A a Z</td>
+<td style="text-align: left;">Ministério da Saúde</td>
+<td style="text-align: left;"><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental">https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental</a></td>
+<td style="text-align: left;">AJUDA_PROFISSIONAL, BEM_ESTAR</td>
+</tr>
+<tr>
+<td style="text-align: left;">sus-saude-mental-ms</td>
+<td style="text-align: left;">SUS e a Saúde Mental</td>
+<td style="text-align: left;">Ministério da Saúde</td>
+<td style="text-align: left;"><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental/sus-e-a-saude-mental">https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental/sus-e-a-saude-mental</a></td>
+<td style="text-align: left;">AJUDA_PROFISSIONAL</td>
+</tr>
+<tr>
+<td style="text-align: left;">raps-ms</td>
+<td style="text-align: left;">Rede de Atenção Psicossocial (RAPS)</td>
+<td style="text-align: left;">Ministério da Saúde</td>
+<td style="text-align: left;"><a href="https://www.gov.br/saude/pt-br/composicao/saes/desmad/raps">https://www.gov.br/saude/pt-br/composicao/saes/desmad/raps</a></td>
+<td style="text-align: left;">AJUDA_PROFISSIONAL</td>
+</tr>
+<tr>
+<td style="text-align: left;">depressao-ms</td>
+<td style="text-align: left;">Depressão – Saúde de A a Z</td>
+<td style="text-align: left;">Ministério da Saúde</td>
+<td style="text-align: left;"><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao">https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao</a></td>
+<td style="text-align: left;">HUMOR</td>
+</tr>
+<tr>
+<td style="text-align: left;">suicidio-prevencao-ms</td>
+<td style="text-align: left;">Suicídio (Prevenção) – sinais de alerta e onde pedir ajuda</td>
+<td style="text-align: left;">Ministério da Saúde</td>
+<td style="text-align: left;"><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/suicidio-prevencao">https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/suicidio-prevencao</a></td>
+<td style="text-align: left;">AJUDA_PROFISSIONAL</td>
+</tr>
+<tr>
+<td style="text-align: left;">faca-o-que-importa-opas</td>
+<td style="text-align: left;">Faça o que importa em tempos de estresse: guia ilustrado (versão para o Brasil)</td>
+<td style="text-align: left;">OPAS/OMS</td>
+<td style="text-align: left;"><a href="https://www.paho.org/pt/documentos/faca-que-importa-em-tempos-estresse-guia-ilustrado-versao-adaptada-para-brasil">https://www.paho.org/pt/documentos/faca-que-importa-em-tempos-estresse-guia-ilustrado-versao-adaptada-para-brasil</a></td>
+<td style="text-align: left;">ESTRESSE, ANSIEDADE</td>
+</tr>
+</tbody>
+</table>
+<h4 id="455-tela-de-ajuda-imediata">4.5.5 Tela de Ajuda Imediata<a class="headerlink" href="#455-tela-de-ajuda-imediata" title="Permanent link">&para;</a></h4>
+<p>A Tela de Ajuda Imediata é exibida quando a regra R-D1 ou a R-A1 é acionada e também pelo botão "Preciso de ajuda agora", presente em todas as páginas. O conteúdo é fixo no frontend, para funcionar mesmo que a API esteja indisponível, e contém:</p>
+<ol>
+<li><strong>CVV – Centro de Valorização da Vida:</strong> ligue <strong>188</strong>, gratuito, 24 horas por dia, com link <code>tel:188</code>, e atendimento por chat no site cvv.org.br (CVV, 2026);</li>
+<li><strong>SAMU:</strong> ligue <strong>192</strong>, com link <code>tel:192</code>;</li>
+<li>em perigo imediato, procure a UPA ou o pronto-socorro mais próximo;</li>
+<li>orientação para procurar alguém de confiança e não ficar sozinho(a);</li>
+<li>aviso: "O Sintoniza não acompanha suas respostas em tempo real e não avisa ninguém. Se você precisa de ajuda agora, use os contatos acima."</li>
+</ol>
+<p>Quando a tela é aberta por indicador de risco, o check-in ou a avaliação é salvo com o nível CRISE e nenhuma recomendação comum é gerada.</p>
+<h2 id="5-metricas-e-medicoes">5 Métricas e medições<a class="headerlink" href="#5-metricas-e-medicoes" title="Permanent link">&para;</a></h2>
+<h3 id="51-gqm-de-medicoes">5.1 GQM de medições<a class="headerlink" href="#51-gqm-de-medicoes" title="Permanent link">&para;</a></h3>
+<p>O GQM (<em>Goal, Question, Metric</em>) avalia ao mesmo tempo a qualidade do produto e o andamento do projeto.</p>
+<p><strong>Quadro 22 – Objetivos de medição (GQM)</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Elemento</th>
+<th style="text-align: left;">Objetivo G1 – produto</th>
+<th style="text-align: left;">Objetivo G2 – processo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Analisar</td>
+<td style="text-align: left;">o MVP do Sintoniza</td>
+<td style="text-align: left;">o processo de desenvolvimento do grupo</td>
+</tr>
+<tr>
+<td style="text-align: left;">Com o propósito de</td>
+<td style="text-align: left;">avaliar</td>
+<td style="text-align: left;">monitorar</td>
+</tr>
+<tr>
+<td style="text-align: left;">Com respeito a</td>
+<td style="text-align: left;">corretude do encaminhamento e proteção de dados</td>
+<td style="text-align: left;">cumprimento do planejado e controle de defeitos</td>
+</tr>
+<tr>
+<td style="text-align: left;">Do ponto de vista</td>
+<td style="text-align: left;">da equipe e do PO</td>
+<td style="text-align: left;">da equipe e do professor</td>
+</tr>
+<tr>
+<td style="text-align: left;">No contexto</td>
+<td style="text-align: left;">do projeto da disciplina MDS 2026, sprints 3 a 6</td>
+<td style="text-align: left;">do projeto da disciplina MDS 2026, sprints 3 a 6</td>
+</tr>
+</tbody>
+</table>
+<p>Todas as métricas são coletadas por ferramenta ou por procedimento definido; o QA consolida os valores na revisão de cada sprint e os registra no repositório.</p>
+<p><strong>Quadro 23 – Questões e métricas do GQM</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Questão</th>
+<th style="text-align: left;">Métrica</th>
+<th style="text-align: left;">Cálculo / unidade</th>
+<th style="text-align: left;">Coleta (como, quando, quem)</th>
+<th style="text-align: center;">Valor esperado</th>
+<th style="text-align: left;">Análise</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">G1-Q1. As regras encaminham corretamente?</td>
+<td style="text-align: left;">M1. Cobertura das tabelas de regras por testes</td>
+<td style="text-align: left;">linhas de R-D, R-A e R-S com ≥ 1 teste ÷ total de linhas × 100 (%)</td>
+<td style="text-align: left;">Conferência da matriz regra × teste na revisão de cada sprint (QA)</td>
+<td style="text-align: center;">100%</td>
+<td style="text-align: left;">&lt; 100%: criar o teste que falta antes de novas funcionalidades.</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">M2. Aprovação dos testes automatizados</td>
+<td style="text-align: left;">testes TU e TI aprovados ÷ executados × 100 (%)</td>
+<td style="text-align: left;">CI, a cada pull request</td>
+<td style="text-align: center;">100% na main</td>
+<td style="text-align: left;">Falha bloqueia o merge.</td>
+</tr>
+<tr>
+<td style="text-align: left;">G1-Q2. Os dados estão protegidos contra vazamento?</td>
+<td style="text-align: left;">M3. Testes de segurança aprovados</td>
+<td style="text-align: left;">casos TS-01 a TS-05 aprovados ÷ 5 × 100 (%)</td>
+<td style="text-align: left;">CI, a cada pull request</td>
+<td style="text-align: center;">100%</td>
+<td style="text-align: left;">Falha é defeito crítico (risco R4).</td>
+</tr>
+<tr>
+<td style="text-align: left;">G2-Q3. A equipe cumpre o planejado?</td>
+<td style="text-align: left;">M4. Conclusão da sprint</td>
+<td style="text-align: left;">itens concluídos ÷ comprometidos × 100 (%)</td>
+<td style="text-align: left;">GitHub Projects, fim de cada sprint (QA)</td>
+<td style="text-align: center;">≥ 80% (referência)</td>
+<td style="text-align: left;">Duas sprints abaixo: replanejar (seção 2.6).</td>
+</tr>
+<tr>
+<td style="text-align: left;">G2-Q4. A qualidade está sob controle?</td>
+<td style="text-align: left;">M5. Defeitos abertos por severidade</td>
+<td style="text-align: left;">nº de issues <code>bug</code> abertas, por severidade</td>
+<td style="text-align: left;">GitHub Issues, a cada sprint (QA)</td>
+<td style="text-align: center;">0 críticos na entrega final</td>
+<td style="text-align: left;">Críticos têm prioridade sobre novas funcionalidades.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-testes-de-software">6 Testes de software<a class="headerlink" href="#6-testes-de-software" title="Permanent link">&para;</a></h2>
+<h3 id="61-estrategia-de-testes">6.1 Estratégia de testes<a class="headerlink" href="#61-estrategia-de-testes" title="Permanent link">&para;</a></h3>
+<p><strong>1. Níveis de teste.</strong></p>
+<p><strong>Quadro 24 – Níveis de teste</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Nível</th>
+<th style="text-align: left;">O que cobre</th>
+<th style="text-align: left;">Ferramenta e forma</th>
+<th style="text-align: left;">Responsável</th>
+<th style="text-align: left;">Quando</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Unitário</td>
+<td style="text-align: left;">Regras (pontuação, faixas, tabela de decisão, regras do check-in e seleção) e integridade do catálogo.</td>
+<td style="text-align: left;">pytest. Automático.</td>
+<td style="text-align: left;">Desenvolvedor do item</td>
+<td style="text-align: left;">A cada pull request</td>
+</tr>
+<tr>
+<td style="text-align: left;">Integração</td>
+<td style="text-align: left;">API + regras + banco PostgreSQL de teste: cadastro, login, check-in, avaliação, exclusão e segurança.</td>
+<td style="text-align: left;">pytest + cliente httpx do FastAPI; PostgreSQL de teste. Automático.</td>
+<td style="text-align: left;">Desenvolvedores backend</td>
+<td style="text-align: left;">A cada pull request</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sistema</td>
+<td style="text-align: left;">Jornadas completas pela interface, no navegador.</td>
+<td style="text-align: left;">Roteiro manual com evidências (capturas de tela).</td>
+<td style="text-align: left;">QA</td>
+<td style="text-align: left;">Fim das sprints 5 e 6</td>
+</tr>
+<tr>
+<td style="text-align: left;">Aceitação</td>
+<td style="text-align: left;">Critérios de aceite de cada história.</td>
+<td style="text-align: left;">Demonstração na revisão da sprint.</td>
+<td style="text-align: left;">PO</td>
+<td style="text-align: left;">Fim de cada sprint</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2. Tipos de teste.</strong> Funcionais: regras, API e jornadas pela interface. Não funcionais: apenas segurança contra vazamento de dados (TS-01 a TS-05), por ser o único requisito não funcional do MVP (R14). Testes de desempenho, de carga, de usabilidade com participantes e de compatibilidade entre navegadores não fazem parte do escopo, porque o produto não assume metas nessas características.</p>
+<p><strong>Como se verifica que o formulário leva ao conteúdo certo.</strong> O oráculo dos testes são as tabelas da seção 4.5. Cada linha das tabelas de regras vira ao menos um caso parametrizado no pytest (TU-04, TU-05, TU-06), sempre com os dois lados de cada limite (por exemplo, P1 = 2 aciona HUMOR e P1 = 3 não aciona). No nível de integração, TI-03 e TI-06 enviam respostas conhecidas pela API e conferem no banco quais materiais e quais regras foram gravados. No nível de sistema, TSI-01 e TSI-03 repetem a verificação pela interface. Assim, uma mudança que altere o encaminhamento quebra pelo menos um teste antes de chegar à <code>main</code>.</p>
+<p><strong>Como se testa vazamento de dados da API.</strong> Os cinco casos TS-01 a TS-05, todos automatizados no pytest, verificam que: nenhuma rota privada responde sem token (o teste percorre todas as rotas da aplicação, então uma rota nova sem proteção é detectada); tokens inválidos são rejeitados; um usuário não acessa dados de outro, recebendo 404 para não revelar que o registro existe; nenhuma resposta da API contém senha ou hash; e a senha é guardada com Argon2id, nunca em texto. O teste TI-07 completa o conjunto, confirmando que a exclusão da conta remove todos os dados do usuário.</p>
+<p><strong>3. Ambientes de teste.</strong></p>
+<p><strong>Quadro 25 – Ambientes de teste</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Ambiente</th>
+<th style="text-align: left;">Branch</th>
+<th style="text-align: left;">Descrição</th>
+<th style="text-align: left;">Testes executados</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Local</td>
+<td style="text-align: left;">Branch da issue</td>
+<td style="text-align: left;">Máquina do desenvolvedor.</td>
+<td style="text-align: left;">Unitários e de integração do item</td>
+</tr>
+<tr>
+<td style="text-align: left;">Integração contínua</td>
+<td style="text-align: left;">Pull request para <code>main</code></td>
+<td style="text-align: left;">GitHub Actions com PostgreSQL de teste executando o pytest. Merge bloqueado se algum teste falhar.</td>
+<td style="text-align: left;">Todos os automatizados (TU, TI, TS)</td>
+</tr>
+<tr>
+<td style="text-align: left;">Demonstração</td>
+<td style="text-align: left;"><code>main</code></td>
+<td style="text-align: left;">Sistema completo executado com Docker Compose em máquina da equipe, com catálogo real e usuários fictícios.</td>
+<td style="text-align: left;">Sistema (TSI)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>4. Formas de análise.</strong> O resultado previsto de cada caso está no roteiro (seção 6.2). Testes automatizados são analisados pela CI: qualquer falha bloqueia o merge. Testes manuais são executados pelo QA, que registra o resultado obtido e a evidência. Quando o obtido difere do previsto, abre-se uma issue com o rótulo <code>bug</code> e a severidade (crítica, alta, média ou baixa); após o reparo, o caso é executado novamente e o número de ciclos é atualizado. Os totais alimentam as métricas M2, M3 e M5.</p>
+<p><strong>5. Resultados obtidos.</strong> Nesta versão os casos ainda não foram executados (status "Não executado"). A cada revisão de sprint, o QA atualiza no roteiro o resultado obtido, o status, a evidência (link da execução na CI ou captura de tela), os reparos feitos e a quantidade de ciclos, gerando nova versão deste documento.</p>
+<h3 id="62-roteiro-de-teste">6.2 Roteiro de teste<a class="headerlink" href="#62-roteiro-de-teste" title="Permanent link">&para;</a></h3>
+<p>"Req." indica os requisitos cobertos e "Sprint", quando o caso passa a ser executado. Os casos automatizados continuam rodando em todas as sprints seguintes. Colunas de acompanhamento: Status, Evidência, Reparos e Ciclos (atualmente "Não executado", —, —, 0 para todos os casos).</p>
+<p><strong>Quadro 26 – Roteiro de testes</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">ID</th>
+<th style="text-align: left;">Caso de teste e objetivo</th>
+<th style="text-align: left;">Nível / tipo</th>
+<th style="text-align: left;">Req.</th>
+<th style="text-align: left;">Pré-condições e entradas</th>
+<th style="text-align: left;">Resultado esperado (critério de aceite)</th>
+<th style="text-align: center;">Sprint</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TU-01</td>
+<td style="text-align: left;">Pontuação do PHQ-9 e do GAD-7: verificar a soma dos itens e a rejeição de entradas inválidas.</td>
+<td style="text-align: left;">Unitário / Funcional</td>
+<td style="text-align: left;">R08, R09</td>
+<td style="text-align: left;">Respostas: todas 0; todas 3; PHQ-9 misto [0,1,2,3,0,1,2,3,1]; inválidas: tamanho diferente de 9 (ou 7), valor 4 ou −1.</td>
+<td style="text-align: left;">Escores 0; 27 (PHQ-9) e 21 (GAD-7); 13 no misto. Entradas inválidas lançam <code>ValueError</code>.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-02</td>
+<td style="text-align: left;">Faixas do PHQ-9 nos valores-limite.</td>
+<td style="text-align: left;">Unitário / Funcional</td>
+<td style="text-align: left;">R09</td>
+<td style="text-align: left;">Escores 0, 4, 5, 9, 10, 14, 15, 19, 20, 27.</td>
+<td style="text-align: left;">Mínima, Mínima, Leve, Leve, Moderada, Moderada, Mod. grave, Mod. grave, Grave, Grave.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-03</td>
+<td style="text-align: left;">Faixas do GAD-7 nos valores-limite.</td>
+<td style="text-align: left;">Unitário / Funcional</td>
+<td style="text-align: left;">R09</td>
+<td style="text-align: left;">Escores 0, 4, 5, 9, 10, 14, 15, 21.</td>
+<td style="text-align: left;">Mínima, Mínima, Leve, Leve, Moderada, Moderada, Grave, Grave.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-04</td>
+<td style="text-align: left;">Tabela de decisão da avaliação: um caso por regra, incluindo precedência.</td>
+<td style="text-align: left;">Unitário / Funcional</td>
+<td style="text-align: left;">R09, R10</td>
+<td style="text-align: left;">(item 9 = 1, PHQ-9 = 3, GAD-7 = 0); (PHQ-9 = 20, GAD-7 = 0); (5, 15); (10, 0); (0, 10); (19, 14); (9, 9); (4, 4).</td>
+<td style="text-align: left;">N3; N2; N2; N1 [AJUDA, HUMOR]; N1 [AJUDA, ANSIEDADE]; N1 [AJUDA, ANSIEDADE, HUMOR]; N0 [ANSIEDADE, HUMOR]; N0 [BEM_ESTAR]. R-A1 prevalece sobre as demais.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-05</td>
+<td style="text-align: left;">Regras do check-in diário nos limites.</td>
+<td style="text-align: left;">Unitário / Funcional</td>
+<td style="text-align: left;">R06, R10</td>
+<td style="text-align: left;">P5 = Sim com P1–P4 favoráveis; P1 = 2 e 3; P2 = 1 e 2; P3 = 2 e 3; P4 = 1 e 2; todas favoráveis; P1 a P4 sem resposta (nulas).</td>
+<td style="text-align: left;">CRISE sem tags; HUMOR só com P1 = 2; ANSIEDADE só com P2 = 2; SONO só com P3 = 2; ESTRESSE só com P4 = 2; BEM_ESTAR quando nenhuma; resposta nula não aciona a regra da pergunta.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-06</td>
+<td style="text-align: left;">Seleção de conteúdo (R-S1 a R-S5).</td>
+<td style="text-align: left;">Unitário / Funcional</td>
+<td style="text-align: left;">R06, R09</td>
+<td style="text-align: left;">Catálogo de teste fixo (2 materiais por tag, 1 inativo) e histórico de exibições do usuário.</td>
+<td style="text-align: left;">Ordem de prioridade respeitada; material menos recente escolhido; sem repetição; máximo 3; nenhum inativo; cada item com regra e motivo.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-07</td>
+<td style="text-align: left;">Integridade do catálogo real (<code>materiais.yaml</code>).</td>
+<td style="text-align: left;">Unitário / Funcional</td>
+<td style="text-align: left;">R13</td>
+<td style="text-align: left;">Arquivo <code>materiais.yaml</code> do repositório.</td>
+<td style="text-align: left;">Esquema válido; slugs únicos; URLs https; domínio na lista permitida; ≥ 1 material ativo por tag.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI-01</td>
+<td style="text-align: left;">Cadastro de usuário.</td>
+<td style="text-align: left;">Integração / Funcional</td>
+<td style="text-align: left;">R01</td>
+<td style="text-align: left;">Banco de teste vazio.</td>
+<td style="text-align: left;">Dados válidos → 201; e-mail repetido → 409; sem aceite dos termos ou sem declaração 18+ → 422; senha &lt; 8 caracteres → 422.</td>
+<td style="text-align: center;">S2</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI-02</td>
+<td style="text-align: left;">Login.</td>
+<td style="text-align: left;">Integração / Funcional</td>
+<td style="text-align: left;">R02</td>
+<td style="text-align: left;">Usuário cadastrado.</td>
+<td style="text-align: left;">Credenciais corretas → 200 com token; senha errada e e-mail inexistente → 401 com a mesma mensagem.</td>
+<td style="text-align: center;">S2</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI-03</td>
+<td style="text-align: left;">Check-in gera e persiste recomendações corretas.</td>
+<td style="text-align: left;">Integração / Funcional</td>
+<td style="text-align: left;">R05, R06</td>
+<td style="text-align: left;">Usuário autenticado; catálogo de teste; P1 = 4, P2 = 3, P3 = 1, P4 = 0, P5 = Não.</td>
+<td style="text-align: left;">201; check-in salvo com tags [ANSIEDADE, SONO]; 2 recomendações persistidas com materiais dessas tags e regras R-D3 e R-D4.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI-04</td>
+<td style="text-align: left;">Check-in duplicado no mesmo dia.</td>
+<td style="text-align: left;">Integração / Funcional</td>
+<td style="text-align: left;">R05</td>
+<td style="text-align: left;">Usuário já fez check-in hoje.</td>
+<td style="text-align: left;">409; nenhum registro novo.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI-05</td>
+<td style="text-align: left;">Check-in com indicador de risco.</td>
+<td style="text-align: left;">Integração / Funcional</td>
+<td style="text-align: left;">R10</td>
+<td style="text-align: left;">P5 = Sim.</td>
+<td style="text-align: left;">201; nível CRISE; lista de recomendações vazia; nenhuma linha nova em Recomendacao.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI-06</td>
+<td style="text-align: left;">Avaliação ponta a ponta.</td>
+<td style="text-align: left;">Integração / Funcional</td>
+<td style="text-align: left;">R08, R09</td>
+<td style="text-align: left;">Perfis de respostas A a E (Quadro 19).</td>
+<td style="text-align: left;">Escores, faixas, nível e tags iguais aos do Quadro 19; recomendações persistidas conforme R-S.</td>
+<td style="text-align: center;">S5</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI-07</td>
+<td style="text-align: left;">Exclusão de conta e dados.</td>
+<td style="text-align: left;">Integração / Funcional</td>
+<td style="text-align: left;">R04</td>
+<td style="text-align: left;">Usuário com check-ins, avaliações e recomendações.</td>
+<td style="text-align: left;">204; zero linhas do usuário em todas as tabelas; token antigo → 401.</td>
+<td style="text-align: center;">S5</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TS-01</td>
+<td style="text-align: left;">Rotas protegidas exigem autenticação (verificação automática de todas as rotas).</td>
+<td style="text-align: left;">Integração / Segurança</td>
+<td style="text-align: left;">R14</td>
+<td style="text-align: left;">Teste percorre <code>app.routes</code>; rotas públicas: <code>/api/auth/cadastro</code> e <code>/api/auth/login</code>.</td>
+<td style="text-align: left;">Toda rota fora da lista pública responde 401 sem token. Uma rota nova sem proteção faz o teste falhar.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TS-02</td>
+<td style="text-align: left;">Tokens inválidos são rejeitados.</td>
+<td style="text-align: left;">Integração / Segurança</td>
+<td style="text-align: left;">R14</td>
+<td style="text-align: left;">Token expirado, assinado com outra chave, malformado e de usuário excluído.</td>
+<td style="text-align: left;">401 em todos os casos.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TS-03</td>
+<td style="text-align: left;">Isolamento entre usuários (acesso a dado de outro usuário).</td>
+<td style="text-align: left;">Integração / Segurança</td>
+<td style="text-align: left;">R14</td>
+<td style="text-align: left;">Usuários A e B; A cria check-in e avaliação.</td>
+<td style="text-align: left;">B recebe 404 em <code>GET /api/checkins/{id de A}</code> e <code>GET /api/avaliacoes/{id de A}</code>; listagens de B não contêm dados de A.</td>
+<td style="text-align: center;">S4–S5</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TS-04</td>
+<td style="text-align: left;">Respostas da API não expõem campos sensíveis.</td>
+<td style="text-align: left;">Integração / Segurança</td>
+<td style="text-align: left;">R14</td>
+<td style="text-align: left;">Verificação aplicada a todas as respostas JSON produzidas pela suíte de integração.</td>
+<td style="text-align: left;">Nenhuma chave <code>senha</code>, <code>senha_hash</code>, <code>password</code> ou <code>hash</code> em qualquer nível; <code>GET /api/me</code> retorna apenas id, email e criado_em.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TS-05</td>
+<td style="text-align: left;">Senha armazenada com hash.</td>
+<td style="text-align: left;">Integração / Segurança</td>
+<td style="text-align: left;">R01, R14</td>
+<td style="text-align: left;">Cadastrar usuário com senha conhecida.</td>
+<td style="text-align: left;">Coluna <code>senha_hash</code> começa com <code>$argon2id$</code> e não contém a senha.</td>
+<td style="text-align: center;">S4</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSI-01</td>
+<td style="text-align: left;">Jornada principal do check-in.</td>
+<td style="text-align: left;">Sistema / Funcional</td>
+<td style="text-align: left;">R01, R02, R05, R06, R12</td>
+<td style="text-align: left;">Ambiente de demonstração; usuário novo; P1 = 2, demais favoráveis.</td>
+<td style="text-align: left;">Cadastro → login → check-in → materiais de HUMOR com motivo → link abre a fonte oficial → histórico mostra o check-in.</td>
+<td style="text-align: center;">S5</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSI-02</td>
+<td style="text-align: left;">Jornada de risco no check-in.</td>
+<td style="text-align: left;">Sistema / Funcional</td>
+<td style="text-align: left;">R10</td>
+<td style="text-align: left;">P5 = Sim.</td>
+<td style="text-align: left;">Tela de Ajuda Imediata exibida com CVV 188 e SAMU 192; nenhum material recomendado.</td>
+<td style="text-align: center;">S5</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSI-03</td>
+<td style="text-align: left;">Avaliação com resultado N1.</td>
+<td style="text-align: left;">Sistema / Funcional</td>
+<td style="text-align: left;">R08, R09</td>
+<td style="text-align: left;">Perfil de respostas B.</td>
+<td style="text-align: left;">Escores 10/5, faixa moderada, orientação de procurar a UBS, aviso "não é diagnóstico" e 2 materiais.</td>
+<td style="text-align: center;">S5</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSI-04</td>
+<td style="text-align: left;">Ajuda Imediata sem login.</td>
+<td style="text-align: left;">Sistema / Funcional</td>
+<td style="text-align: left;">R11</td>
+<td style="text-align: left;">Navegador sem sessão iniciada.</td>
+<td style="text-align: left;">Botão "Preciso de ajuda agora" visível na tela de login; Tela de Ajuda abre ao clicar.</td>
+<td style="text-align: center;">S5</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+<tr>
+<td style="text-align: left;">TSI-05</td>
+<td style="text-align: left;">Exclusão de conta pela interface.</td>
+<td style="text-align: left;">Sistema / Funcional</td>
+<td style="text-align: left;">R04</td>
+<td style="text-align: left;">Usuário com dados.</td>
+<td style="text-align: left;">Após confirmar, o usuário sai da conta e o login com as mesmas credenciais falha.</td>
+<td style="text-align: center;">S6</td>
+<td style="text-align: left;">Não executado</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-referencias-bibliograficas">7 Referências bibliográficas<a class="headerlink" href="#7-referencias-bibliograficas" title="Permanent link">&para;</a></h2>
+<p>APPLE. <strong>Understand and use mental health assessments in the Health app</strong>. [S. l.]: Apple Support, 2026. Disponível em: <a href="https://support.apple.com/105070">https://support.apple.com/105070</a>. Acesso em: 15 out. 2026.</p>
+<p>BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD). <strong>Diário Oficial da União</strong>: seção 1, Brasília, DF, 15 ago. 2018.</p>
+<p>BRASIL. Ministério da Saúde. <strong>Saúde mental</strong>. Brasília, DF, 2026a. Disponível em: <a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental">https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental</a>. Acesso em: 15 out. 2026.</p>
+<p>BRASIL. Ministério da Saúde. <strong>Rede de Atenção Psicossocial (RAPS)</strong>. Brasília, DF, 2026b. Disponível em: <a href="https://www.gov.br/saude/pt-br/composicao/saes/desmad/raps">https://www.gov.br/saude/pt-br/composicao/saes/desmad/raps</a>. Acesso em: 15 out. 2026.</p>
+<p>BRASIL. Ministério da Saúde. <strong>SUS e a saúde mental</strong>. Brasília, DF, 2026c. Disponível em: <a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental/sus-e-a-saude-mental">https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental/sus-e-a-saude-mental</a>. Acesso em: 15 out. 2026.</p>
+<p>BRASIL. Ministério da Saúde. <strong>Depressão</strong>. Brasília, DF, 2026d. Disponível em: <a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao">https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao</a>. Acesso em: 15 out. 2026.</p>
+<p>BRASIL. Ministério da Saúde. <strong>Suicídio (prevenção)</strong>. Brasília, DF, 2026e. Disponível em: <a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/suicidio-prevencao">https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/suicidio-prevencao</a>. Acesso em: 15 out. 2026.</p>
+<p>CVV – CENTRO DE VALORIZAÇÃO DA VIDA. <strong>Como conversar com o CVV</strong>. [S. l.], 2026. Disponível em: <a href="https://cvv.org.br">https://cvv.org.br</a>. Acesso em: 15 out. 2026.</p>
+<p>DAZZI, T. et al. Does asking about suicide and related behaviours induce suicidal ideation? What is the evidence? <strong>Psychological Medicine</strong>, v. 44, n. 16, p. 3361-3363, 2014.</p>
+<p>KROENKE, K.; SPITZER, R. L.; WILLIAMS, J. B. W. The PHQ-9: validity of a brief depression severity measure. <strong>Journal of General Internal Medicine</strong>, v. 16, n. 9, p. 606-613, 2001.</p>
+<p>MELO, A. P. S. et al. Rastreamento de sintomas depressivos em um estudo de base populacional: Pesquisa Nacional de Saúde 2019. <strong>Ciência &amp; Saúde Coletiva</strong>, v. 28, n. 4, p. 1163-1174, 2023. DOI: 10.1590/1413-81232023284.14912022.</p>
+<p>MORENO, A. L. et al. Factor structure, reliability, and item parameters of the Brazilian-Portuguese version of the GAD-7 questionnaire. <strong>Temas em Psicologia</strong>, v. 24, n. 1, p. 367-376, 2016. DOI: 10.9788/TP2016.1-25.</p>
+<p>OPAS – ORGANIZAÇÃO PAN-AMERICANA DA SAÚDE. <strong>Faça o que importa em tempos de estresse</strong>: guia ilustrado – versão adaptada para o Brasil. Brasília, DF: OPAS, 2022. Disponível em: <a href="https://www.paho.org/pt/documentos/faca-que-importa-em-tempos-estresse-guia-ilustrado-versao-adaptada-para-brasil">https://www.paho.org/pt/documentos/faca-que-importa-em-tempos-estresse-guia-ilustrado-versao-adaptada-para-brasil</a>. Acesso em: 15 out. 2026.</p>
+<p>PHQ SCREENERS. <strong>Patient Health Questionnaire (PHQ) screeners</strong>: instructions and translations. [S. l.], 2026. Disponível em: <a href="https://www.phqscreeners.com">https://www.phqscreeners.com</a>. Acesso em: 15 out. 2026.</p>
+<p>SANTOS, I. S. et al. Sensibilidade e especificidade do Patient Health Questionnaire-9 (PHQ-9) entre adultos da população geral. <strong>Cadernos de Saúde Pública</strong>, v. 29, n. 8, p. 1533-1543, 2013. DOI: 10.1590/0102-311X00144612.</p>
+<p>SCHWABER, K.; SUTHERLAND, J. <strong>The Scrum Guide</strong>: the definitive guide to Scrum: the rules of the game. [S. l.]: Scrum.org, 2020.</p>
+<p>SPITZER, R. L. et al. A brief measure for assessing generalized anxiety disorder: the GAD-7. <strong>Archives of Internal Medicine</strong>, v. 166, n. 10, p. 1092-1097, 2006.</p>
+<p><em>Nota de escopo: o Sintoniza é uma ferramenta de apoio e educação em saúde mental. O sistema não realiza diagnóstico clínico e não substitui avaliação ou tratamento profissional.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>
