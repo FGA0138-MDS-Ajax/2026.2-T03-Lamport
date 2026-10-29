@@ -6,6 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.core.config import get_settings
 from app.domain.errors import (
+    CheckinNotFoundError,
     DomainError,
     EmailAlreadyRegisteredError,
     InvalidCredentialsError,
@@ -28,6 +29,7 @@ _DOMAIN_ERRORS: dict[type[DomainError], tuple[int, str]] = {
         status.HTTP_429_TOO_MANY_REQUESTS,
         "Too many login attempts, try again later",
     ),
+    CheckinNotFoundError: (status.HTTP_404_NOT_FOUND, "Check-in not found"),
 }
 
 
