@@ -114,6 +114,7 @@ class SqlLoginAttemptRepository:
         self.session.execute(delete(LoginAttemptModel).where(LoginAttemptModel.key == key))
         self.session.commit()
 
+
 class SqlCheckinRepository:
     def __init__(self, session: Session) -> None:
         self.session = session

@@ -23,8 +23,6 @@ def _today() -> str:
     return datetime.now(CHECKIN_TIMEZONE).date().isoformat()
 
 
-
-
 def test_avaliar_checkin_example_from_vision():
     assert avaliar_checkin(4, 3, 1, 0, False) == (Nivel.AUTOCUIDADO, [Tag.ANSIEDADE, Tag.SONO])
 
@@ -53,8 +51,6 @@ def test_avaliar_checkin_thresholds(answers, tags):
 
     assert nivel == Nivel.AUTOCUIDADO
     assert result == tags
-
-
 
 
 def test_create_checkin_returns_201(client, auth_headers):
@@ -225,7 +221,7 @@ def test_checkin_content_is_not_logged(client, auth_headers, caplog):
         response = client.post(URL, json=VALID_PAYLOAD, headers=auth_headers)
 
     assert response.status_code == 201
-    assert response.json()["id"] in caplog.text 
+    assert response.json()["id"] in caplog.text
     sensitive = ("humor", "ansiedade", "sono", "sobrecarga", "pensamento_risco", "autocuidado")
     assert not any(word in caplog.text for word in sensitive)
 

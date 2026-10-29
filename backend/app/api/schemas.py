@@ -44,6 +44,7 @@ class UserResponse(BaseModel):
 class TermsResponse(BaseModel):
     version: str
 
+
 class CheckinCreate(BaseModel):
     model_config = ConfigDict(extra="forbid")
 

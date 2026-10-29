@@ -79,6 +79,8 @@ class LoginAttemptModel(Base):
     attempted_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), index=True
     )
+
+
 class CheckinModel(Base):
     __tablename__ = "checkins"
     __table_args__ = (UniqueConstraint("user_id", "data"),)

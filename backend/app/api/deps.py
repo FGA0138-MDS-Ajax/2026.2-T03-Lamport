@@ -37,6 +37,8 @@ def get_auth_service(session: DbSession) -> AuthService:
 
 
 AuthServiceDep = Annotated[AuthService, Depends(get_auth_service)]
+
+
 def get_checkin_service(session: DbSession) -> CheckinService:
     return CheckinService(checkins=SqlCheckinRepository(session))
 
