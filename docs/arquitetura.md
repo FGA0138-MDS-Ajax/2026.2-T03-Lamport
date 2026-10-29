@@ -1,9 +1,9 @@
 # Documento de Arquitetura
 
-**Versão 2.1 – 18/10/2026**
+**Versão 2.2 – 29/10/2026**
 
 !!! info "Versão vigente"
-    Esta página reproduz a versão 2.1, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md). Este documento está alinhado à [Visão do Produto e do Projeto v2.1](visao-produto-projeto.md).
+    Esta página reproduz a versão 2.2, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md). Este documento está alinhado à [Visão do Produto e do Projeto v2.2](visao-produto-projeto.md).
 
 ## Integrantes do grupo
 
@@ -26,6 +26,7 @@
 | 07/10/2026 | 1.1 | Revisão conforme feedback: critérios de indicador crítico, fluxo de segurança, cliente web em React, dependências dos pacotes, modelo de classes, visão de implantação e rastreabilidade. | Grupo Lamport |
 | 15/10/2026 | 2.0 | Alinhamento à Visão v2.0: remoção dos perfis Administrador e Curador e do componente de administração; módulo de regras como funções puras com contrato documentado; catálogo versionado em arquivo com carga por seed; avaliação quinzenal PHQ-9/GAD-7; dois diagramas de atividades (check-in e avaliação); contrato da API; restrições de segurança verificáveis por testes; Docker Compose como implantação obrigatória. | Grupo Lamport |
 | 18/10/2026 | 2.1 | Alinhamento à Visão v2.1: remoção das metas de desempenho, capacidade e cobertura de código, da publicação em nuvem, do verificador automático de links, da auditoria de dependências e da avaliação de utilidade dos materiais; restrições de segurança limitadas ao que é verificado pelos testes TS-01 a TS-05; características de qualidade descritas sem metas numéricas. | Grupo Lamport |
+| 29/10/2026 | 2.2 | Alinhamento à Visão v2.2: P1 a P4 do check-in opcionais (nulas quando sem resposta) na Figura 3, na Figura 6 e no contrato de `avaliar_checkin`; retirada do convite para avaliação (R07, R-D7), da função `deve_convidar_avaliacao` e do campo `convite`; regra de nomes das respostas do check-in na API (`p1` a `p5` na entrada e na saída); correção do prefixo `/api` nas rotas da Figura 3. | Grupo Lamport |
 
 ---
 
@@ -37,7 +38,7 @@ Este documento descreve a arquitetura do Sintoniza, sistema desenvolvido pelo gr
 
 ### 1.2 Escopo
 
-O detalhamento do escopo encontra-se na [Visão do Produto e do Projeto](visao-produto-projeto.md), versão 2.1 (GRUPO LAMPORT, 2026), seção 4. Em linhas gerais, o MVP compreende: cadastro, autenticação, termos de uso e exclusão de conta; check-in diário com cinco perguntas e recomendação de até três materiais oficiais com explicação; avaliação quinzenal com os instrumentos PHQ-9 e GAD-7 e orientação por nível; Tela de Ajuda Imediata acionada por indicador de risco ou por botão; histórico; e catálogo curado de links oficiais mantido no repositório.
+O detalhamento do escopo encontra-se na [Visão do Produto e do Projeto](visao-produto-projeto.md), versão 2.2 (GRUPO LAMPORT, 2026), seção 4. Em linhas gerais, o MVP compreende: cadastro, autenticação, termos de uso e exclusão de conta; check-in diário com cinco perguntas e recomendação de até três materiais oficiais com explicação; avaliação quinzenal com os instrumentos PHQ-9 e GAD-7 e orientação por nível; Tela de Ajuda Imediata acionada por indicador de risco ou por botão; histórico; e catálogo curado de links oficiais mantido no repositório.
 
 As partes da Visão usadas nas decisões deste documento são citadas explicitamente: a pilha tecnológica (Visão, seção 1.4), as regras de negócio do fluxo principal (Visão, seção 4.5), os requisitos Must (Visão, seção 4.4), as métricas do GQM (Visão, seção 5) e os riscos (Visão, seção 2.5). Ficam fora da arquitetura do MVP: aplicativo móvel nativo, notificações, painel administrativo, inteligência artificial, integração com APIs externas e publicação em nuvem.
 
@@ -86,7 +87,7 @@ O Quadro 3 instancia cada elemento da figura: por que existe, qual sua responsab
 | Apresentação (SPA React) | Telas, navegação, formulários e acessibilidade. Contém a Tela de Ajuda Imediata como conteúdo estático, para funcionar mesmo sem a API. Não contém regras de negócio. | Entrada: ações do usuário. Saída: requisições HTTP/JSON com cabeçalho `Authorization: Bearer <token>`. Nunca acessa o banco. Exibe os textos de orientação recebidos da API. |
 | Interface (API FastAPI) | Ponto único de entrada: rotas, validação de esquemas (Pydantic) e autenticação JWT. | Entrada: JSON validado contra esquema; requisição inválida → 422. Saída: JSON e códigos HTTP. Contrato descrito em OpenAPI, gerado automaticamente pelo FastAPI. |
 | Serviços (casos de uso) | Orquestram cada caso de uso: cadastro, check-in, avaliação, histórico, exclusão. Garantem que toda consulta seja filtrada pelo usuário autenticado. | Entrada: dados validados e identificador do usuário. Saída: objetos de resultado. Usam regras e persistência; executam a gravação em uma transação. |
-| Regras (domínio puro) | Pontuação do PHQ-9 e do GAD-7, faixas, tabela de decisão, regras do check-in, seleção de conteúdo e convite. É o elemento que torna o encaminhamento verificável. | Entrada: valores primitivos e listas em memória. Saída: resultados imutáveis. Sem I/O, sem data/hora do sistema e sem aleatoriedade: mesma entrada, mesma saída (contrato no Quadro 5). |
+| Regras (domínio puro) | Pontuação do PHQ-9 e do GAD-7, faixas, tabela de decisão, regras do check-in e seleção de conteúdo. É o elemento que torna o encaminhamento verificável. | Entrada: valores primitivos e listas em memória. Saída: resultados imutáveis. Sem I/O, sem data/hora do sistema e sem aleatoriedade: mesma entrada, mesma saída (contrato no Quadro 5). |
 | Persistência | Modelos SQLAlchemy, repositórios e migrações Alembic. | Entrada: operações dos serviços. Saída: entidades. Único elemento que conhece o PostgreSQL. |
 | PostgreSQL | Armazena usuários, check-ins, avaliações, materiais e recomendações. | Acessado somente pela API. |
 | Catálogo (`materiais.yaml` + seed) | Fonte versionada dos materiais oficiais, revisada por pull request. | Entrada: arquivo YAML validado (TU-07). Saída: carga na tabela Material; material marcado como inativo deixa de ser recomendado. |
@@ -97,7 +98,7 @@ Os conectores são: entre cliente e API, HTTP com JSON (REST); entre API e servi
 
 As metas e restrições a seguir decorrem dos requisitos e dos riscos da Visão. Cada uma tem uma forma de verificação:
 
-1. **Regras determinísticas, puras e parametrizadas.** O módulo `rules` não acessa banco, rede, relógio nem gerador aleatório; recebe tudo por parâmetro. Os limites (por exemplo, 10, 15 e 20) ficam em constantes de configuração, e alterá-los exige pull request, atualização de testes e aprovação do PO. *Justificativa:* permitir testar todas as linhas das tabelas (Visão, métrica M1) e evitar encaminhamento errado (risco R3). *Verificação:* testes TU-01 a TU-08;
+1. **Regras determinísticas, puras e parametrizadas.** O módulo `rules` não acessa banco, rede, relógio nem gerador aleatório; recebe tudo por parâmetro. Os limites (por exemplo, 10, 15 e 20) ficam em constantes de configuração, e alterá-los exige pull request, atualização de testes e aprovação do PO. *Justificativa:* permitir testar todas as linhas das tabelas (Visão, métrica M1) e evitar encaminhamento errado (risco R3). *Verificação:* testes TU-01 a TU-07;
 2. **Rastreabilidade de cada recomendação.** Toda recomendação é gravada com o código da regra e o motivo exibido. *Justificativa:* explicar a sugestão ao usuário. *Verificação:* TI-03 e TI-06;
 3. **Ajuda Imediata independente do backend.** A Tela de Ajuda é estática no frontend e acessível sem login. *Justificativa:* risco R1. *Verificação:* TSI-02 e TSI-04;
 4. **Interfaces.** API REST com JSON e rotas sob `/api`. Recursos de outro usuário respondem 404, e não 403, para não revelar sua existência. *Justificativa:* contrato único entre frontend e backend, que evoluem em paralelo. *Verificação:* TS-03;
@@ -149,11 +150,11 @@ As funcionalidades mais complexas são o check-in diário e a avaliação quinze
 
 ```mermaid
 flowchart TB
-    I((" ")) --> A1["[Front] Abrir check-in<br/>GET /checkins/hoje"]
+    I((" ")) --> A1["[Front] Abrir check-in<br/>GET /api/checkins/hoje"]
     A1 --> D1{"Já existe<br/>check-in hoje?"}
     D1 -- sim --> A2["[Front] Exibir resultado<br/>já registrado do dia"]
-    D1 -- não --> A3["[Front] Responder P1–P5<br/>(P5 obrigatória)"]
-    A3 --> A4["[API] POST /checkins<br/>validar schema (faixas de valores)"]
+    D1 -- não --> A3["[Front] Responder P1–P5<br/>(P1–P4 opcionais, P5 obrigatória)"]
+    A3 --> A4["[API] POST /api/checkins<br/>validar schema (faixas de valores)"]
     A4 --> D2{"Válido?"}
     D2 -- não --> A5["[API] 422 + mensagens<br/>de validação"]
     A5 --> A3
@@ -161,13 +162,10 @@ flowchart TB
     A6 --> D3{"P5 = Sim?"}
     D3 -- sim --> A7["[Serviço] nivel = CRISE<br/>salvar check-in sem recomendações"]
     A7 --> A8["[Front] Tela de Ajuda Imediata<br/>CVV 188 · SAMU 192 · UPA"]
-    D3 -- não --> A9["[Regras] R-D2..R-D5<br/>calcular tags (ou BEM_ESTAR)"]
+    D3 -- não --> A9["[Regras] R-D2..R-D5<br/>calcular tags (ou BEM_ESTAR)<br/>resposta nula não aciona regra"]
     A9 --> A10["[Regras] selecionar_materiais()<br/>até 3, menos recentes, com motivo"]
     A10 --> A11["[Persistência] salvar check-in<br/>e recomendações (transação)"]
-    A11 --> D4{"3 check-ins seguidos<br/>com HUMOR ou ANSIEDADE?"}
-    D4 -- sim --> A12["[Serviço] incluir convite<br/>para avaliação quinzenal"]
-    A12 --> A13["[Front] Exibir materiais,<br/>motivos e link da fonte oficial"]
-    D4 -- não --> A13
+    A11 --> A13["[Front] Exibir materiais,<br/>motivos e link da fonte oficial"]
     A2 --> F(((" ")))
     A8 --> F
     A13 --> F
@@ -216,7 +214,7 @@ A experiência da equipe também orientou a escolha, como evidência complementa
 | `backend/api` | Rotas FastAPI, esquemas Pydantic e dependência de autenticação. | Recebe HTTP; chama `services` e `security`. |
 | `backend/security` | Hash e verificação de senha (Argon2id); emissão e validação de JWT. | Funções chamadas pela `api`. |
 | `backend/services` | Casos de uso; filtro por usuário em todas as consultas; transações. | Chama `rules` (funções puras) e `persistence` (repositórios). |
-| `backend/rules` | Pontuação, faixas, decisão, regras do check-in, seleção de conteúdo e convite. | Funções puras (Quadro 5); depende só de `domain`. |
+| `backend/rules` | Pontuação, faixas, decisão, regras do check-in e seleção de conteúdo. | Funções puras (Quadro 5); depende só de `domain`. |
 | `backend/domain` | Enumerações e tipos do negócio: Nivel, Tag, Faixa e objetos de resultado. | Importado pelos demais módulos; não importa nenhum. |
 | `backend/persistence` | Modelos SQLAlchemy, repositórios e migrações Alembic. | Chamado por `services` e `catalog`; único a acessar o PostgreSQL. |
 | `backend/catalog` | `materiais.yaml`, validação e comando seed. | Usa `persistence` para a carga. |
@@ -265,11 +263,10 @@ O Quadro 5 define o contrato das funções do módulo de regras. É por meio des
 | `pontuar(respostas, n_itens)` | lista de inteiros 0–3; 9 itens (PHQ-9) ou 7 (GAD-7) | inteiro (soma); `ValueError` se inválida | — |
 | `faixa_phq9(escore)` / `faixa_gad7(escore)` | inteiro 0–27 / 0–21 | Faixa | Quadro de faixas |
 | `decidir_avaliacao(phq9, gad7)` | listas de respostas do PHQ-9 e do GAD-7 | ResultadoAvaliacao: escores, faixas, nível, tags | R-A1 a R-A4 |
-| `avaliar_checkin(p1, p2, p3, p4, p5)` | inteiros nas faixas do check-in e booleano | ResultadoCheckin: nível, tags, regras acionadas | R-D1 a R-D6 |
-| `deve_convidar_avaliacao(tags_recentes)` | tags dos 3 últimos check-ins | booleano | R-D7 |
+| `avaliar_checkin(p1, p2, p3, p4, p5)` | p1 a p4: inteiros nas faixas do check-in ou nulo (sem resposta); p5: booleano | ResultadoCheckin: nível, tags, regras acionadas | R-D1 a R-D6 |
 | `selecionar_materiais(tags, catalogo, ultimas_exibicoes, limite)` | tags; materiais ativos; data da última exibição de cada material ao usuário; limite (3 ou 2) | lista de Sugestao: material_id, regra, motivo | R-S1 a R-S6 |
 
-O Quadro 6 apresenta o contrato da API. Todas as rotas, exceto as marcadas como públicas, exigem token, e o teste TS-01 verifica isso automaticamente para todas as rotas existentes.
+O Quadro 6 apresenta o contrato da API. Todas as rotas, exceto as marcadas como públicas, exigem token, e o teste TS-01 verifica isso automaticamente para todas as rotas existentes. Nas rotas de check-in, as respostas às perguntas usam os identificadores `p1` a `p5` tanto na entrada quanto na saída; a camada de serviços converte esses identificadores nos campos do domínio (Figura 6).
 
 **Quadro 6 – Contrato da API REST**
 
@@ -279,9 +276,9 @@ O Quadro 6 apresenta o contrato da API. Todas as rotas, exceto as marcadas como 
 | `POST /api/auth/login` | Público | email, senha | 200 token / 401 genérico | R02 |
 | `GET /api/me` | Usuário | — | 200 id, email, criado_em | R02 |
 | `DELETE /api/me` | Usuário | — | 204 (apaga tudo) | R04 |
-| `GET /api/checkins/hoje` | Usuário | — | 200 check-in do dia ou 404 | R05 |
-| `POST /api/checkins` | Usuário | p1, p2, p3, p4, p5 | 201 nível, tags, recomendações, convite / 409 já existe; 422 | R05, R06, R07, R10 |
-| `GET /api/checkins` | Usuário | limite (≤ 30) | 200 lista do próprio usuário | R12 |
+| `GET /api/checkins/hoje` | Usuário | — | 200 check-in do dia (p1 a p5, nível, tags) ou 404 | R05 |
+| `POST /api/checkins` | Usuário | p1, p2, p3, p4 (inteiro ou nulo), p5 (booleano, obrigatório) | 201 nível, tags, recomendações / 409 já existe; 422 | R05, R06, R10 |
+| `GET /api/checkins` | Usuário | limite (≤ 30) | 200 lista do próprio usuário (data, p1 a p5, tags) | R12 |
 | `GET /api/checkins/{id}` | Usuário (dono) | — | 200 / 404 se não for do usuário | R12 |
 | `POST /api/avaliacoes` | Usuário | phq9[9], gad7[7] | 201 escores, faixas, nível, orientação, recomendações / 422 | R08, R09, R10 |
 | `GET /api/avaliacoes` e `GET /api/avaliacoes/{id}` | Usuário (dono) | — | 200 / 404 se não for do usuário | R12 |
@@ -306,10 +303,10 @@ classDiagram
     class CheckinDiario {
         id: UUID
         data: date (único por usuário)
-        humor: int 1..5
-        ansiedade: int 0..3
-        sono: int 1..5
-        sobrecarga: int 0..3
+        humor: int 1..5 (opcional)
+        ansiedade: int 0..3 (opcional)
+        sono: int 1..5 (opcional)
+        sobrecarga: int 0..3 (opcional)
         pensamento_risco: bool
         tags: list~Tag~
         nivel: Nivel
@@ -477,7 +474,7 @@ flowchart LR
 | :-- | :-- | :-- | :-- |
 | R01–R03 Conta e termos | API com Argon2id e JWT; componente Contas e Privacidade. | Quadro 3; Quadro 6; seção 2.4 | TI-01, TI-02, TS-02, TS-05 |
 | R04 Exclusão de conta | Composição com `ON DELETE CASCADE` a partir de Usuario. | Figura 6; seção 2.5.3 | TI-07, TSI-05 |
-| R05–R07 Check-in e conteúdos | Serviço de check-in + funções `avaliar_checkin`, `selecionar_materiais` e `deve_convidar_avaliacao`. | Figura 3; Quadro 5 | TU-05, TU-06, TU-08, TI-03, TI-04 |
+| R05–R06 Check-in e conteúdos | Serviço de check-in + funções `avaliar_checkin` e `selecionar_materiais`. | Figura 3; Quadro 5 | TU-05, TU-06, TI-03, TI-04 |
 | R08–R09 Avaliação e resultado | Serviço de avaliação + funções `pontuar`, `faixa_*` e `decidir_avaliacao`. | Figura 4; Quadro 5 | TU-01 a TU-04, TI-06 |
 | R10–R11 Ajuda Imediata | Tela estática no cliente; nível CRISE suprime recomendações. | Seção 2.4; Figura 1 | TI-05, TSI-02, TSI-04 |
 | R12 Histórico | Consultas filtradas pelo usuário do token. | Quadro 6 | TS-03, TSI-01 |
@@ -488,7 +485,7 @@ flowchart LR
 
 BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD). **Diário Oficial da União**: seção 1, Brasília, DF, 15 ago. 2018.
 
-GRUPO LAMPORT. **Visão do Produto e do Projeto – Sintoniza**: aplicação web de apoio à saúde mental. Versão 2.1. Brasília, DF: Universidade de Brasília, 2026.
+GRUPO LAMPORT. **Visão do Produto e do Projeto – Sintoniza**: aplicação web de apoio à saúde mental. Versão 2.2. Brasília, DF: Universidade de Brasília, 2026.
 
 SCHWABER, K.; SUTHERLAND, J. **The Scrum Guide**: the definitive guide to Scrum: the rules of the game. [S. l.]: Scrum.org, 2020.
 
