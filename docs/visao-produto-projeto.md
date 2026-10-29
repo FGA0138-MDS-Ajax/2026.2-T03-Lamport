@@ -1,9 +1,9 @@
 # Visão do Produto e do Projeto
 
-**Versão 2.1 – 18/10/2026** · Aplicação web de apoio à saúde mental: check-in diário, rastreio com instrumentos validados e encaminhamento a conteúdos e serviços oficiais.
+**Versão 2.2 – 29/10/2026** · Aplicação web de apoio à saúde mental: check-in diário, rastreio com instrumentos validados e encaminhamento a conteúdos e serviços oficiais.
 
 !!! info "Versão vigente"
-    Esta página reproduz a versão 2.1, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md).
+    Esta página reproduz a versão 2.2, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md).
 
 ## Integrantes do grupo
 
@@ -25,6 +25,7 @@
 | 30/09/2026 | 1.0 | Atualização do nome do produto para Sintoniza e definição das responsabilidades iniciais da equipe. | Equipe do projeto |
 | 15/10/2026 | 2.0 | Reformulação após o feedback da apresentação: fluxo principal especificado (check-in diário, avaliação quinzenal com PHQ-9 e GAD-7, tabela de decisão, regras de seleção e catálogo curado de fontes oficiais); redução de escopo (remoção dos perfis Administrador e Curador, de lembretes e de IA); estratégia e roteiro de testes detalhados, incluindo testes de vazamento de dados; GQM revisado; replanejamento das sprints 3 a 6. | Grupo Lamport |
 | 18/10/2026 | 2.1 | Revisão de escopo para manter apenas compromissos essenciais: remoção dos requisitos não funcionais de interface responsiva, execução com Docker Compose, publicação em nuvem e verificação automática de links; remoção das metas de usabilidade, desempenho, capacidade e cobertura de código e dos testes associados; remoção dos itens Should e Could não essenciais; testes de segurança concentrados em cinco casos; requisitos e roteiro de testes renumerados. | Grupo Lamport |
+| 29/10/2026 | 2.2 | Replanejamento ao fim da Sprint 3 pelo critério 1 da seção 2.6: itens Must não concluídos (módulo de regras, catálogo, termos, Tela de Ajuda e botão, pendências da Sprint 2) passam à Sprint 4, e o único item Should (R07, convite para avaliação, com a regra R-D7 e o teste TU-08) sai do escopo. Decisão do PO sobre o check-in: P1 a P4 passam a ser opcionais (sem resposta, o valor é nulo e a regra correspondente não é acionada); P5 continua obrigatória. | Grupo Lamport |
 
 ---
 
@@ -45,7 +46,7 @@ Este documento registra a visão do produto Sintoniza e o planejamento do projet
 | Informação | Conteúdo disperso, linguagem técnica e confiabilidade incerta das fontes. | Catálogo curado apenas com links de fontes oficiais (Ministério da Saúde, OPAS/OMS, CVV), com resumo em linguagem simples. |
 | Autopercepção | Dificuldade de interpretar o próprio estado; instrumentos validados pouco conhecidos. | Check-in diário curto e avaliação quinzenal com PHQ-9 e GAD-7, com explicação das faixas e aviso de que não é diagnóstico. |
 | Acesso | Não sabe onde procurar ajuda; terapia paga é inacessível para muitos. | Orientação por nível (autocuidado, UBS, atendimento prioritário, ajuda imediata) com canais públicos e gratuitos. |
-| Acompanhamento | Ausência de registro ao longo do tempo; mudanças percebidas tarde. | Histórico de check-ins e avaliações; convite para a avaliação após dias seguidos de dificuldade. |
+| Acompanhamento | Ausência de registro ao longo do tempo; mudanças percebidas tarde. | Histórico de check-ins e avaliações. |
 | Privacidade | Receio de registrar dados emocionais; tratamento de dados pouco claro. | Coleta mínima, termo de uso claro, isolamento entre usuários e exclusão total da conta. |
 
 **Figura 1 – Diagrama de Ishikawa das causas do problema**
@@ -172,7 +173,7 @@ flowchart TB
 4. **Métodos — práticas do XP e técnicas de engenharia de requisitos.** Testes automatizados escritos junto com o código, com prioridade para o módulo de regras, cujo comportamento já está todo especificado em tabelas; revisão de código; integração contínua; priorização MoSCoW; histórias de usuário; GQM para métricas;
 5. **Ferramentas.** GitHub (Issues, Projects e Actions), Figma, Docker e pytest.
 
-A combinação é adequada porque o maior risco técnico do produto é encaminhar o usuário de forma errada. Ao especificar as regras antes (seção 4.5), implementá-las primeiro (Sprint 3) e protegê-las com testes que rodam a cada pull request, a equipe reduz esse risco antes de construir as telas.
+A combinação é adequada porque o maior risco técnico do produto é encaminhar o usuário de forma errada. Ao especificar as regras antes (seção 4.5), implementá-las antes das telas que dependem delas (Sprint 3, replanejada para a Sprint 4 na versão 2.2) e protegê-las com testes que rodam a cada pull request, a equipe reduz esse risco antes de construir as telas.
 
 ### 2.2 Organização do Projeto
 
@@ -191,7 +192,7 @@ As atribuições foram divididas sem hierarquia entre os integrantes. Todos part
 
 ### 2.3 Planejamento das Fases e/ou Iterações do Projeto
 
-A partir da Sprint 3 o plano foi refeito para colocar primeiro o que é mais arriscado (regras e catálogo) e deixar o único item Should para depois dos Must. O percentual de conclusão é atualizado ao fim de cada sprint, em intervalos de 10%.
+A partir da Sprint 3 o plano foi refeito para colocar primeiro o que é mais arriscado (regras e catálogo) e deixar o único item Should para depois dos Must. Na versão 2.2, ao fim da Sprint 3, foi aplicado o critério 1 da seção 2.6: os itens Must não concluídos passaram à Sprint 4, antes do check-in, que depende deles, e o item Should (R07) saiu do escopo. O percentual de conclusão é atualizado ao fim de cada sprint, em intervalos de 10%.
 
 **Quadro 8 – Planejamento das sprints**
 
@@ -199,12 +200,12 @@ A partir da Sprint 3 o plano foi refeito para colocar primeiro o que é mais arr
 | :--: | :-- | :--: | :--: | :-- | :--: | :--: |
 | 1 | Definição do produto | 15/09/2026 | 30/09/2026 | Visão do Produto e do Projeto v1.0; backlog inicial; protótipo de baixa fidelidade. | Todos | 100% |
 | 2 | Base do MVP | 01/10/2026 | 14/10/2026 | Documento de Arquitetura v1.1; estrutura dos repositórios; cadastro e login (R01, R02). | BE, FE, QA | [atualizar] |
-| 3 | Regras e catálogo | 15/10/2026 | 28/10/2026 | Visão e Arquitetura v2.1; módulo de regras com TU-01 a TU-07; catálogo inicial (R13); termos (R03); Tela de Ajuda e botão (R10 no frontend, R11); CI executando os testes; pendências da Sprint 2. | Todos | 0% |
-| 4 | Check-in diário | 29/10/2026 | 11/11/2026 | Check-in completo com conteúdos (R05, R06, R10); TI-03 a TI-05; TS-01 a TS-05. | BE, FE, QA | 0% |
-| 5 | Avaliação e histórico | 12/11/2026 | 25/11/2026 | Avaliação quinzenal e resultado (R08, R09); histórico (R12); exclusão de conta (R04); convite (R07, Should); TU-08, TI-06, TI-07; roteiro de sistema, ciclo 1. | BE, FE, QA | 0% |
+| 3 | Regras e catálogo | 15/10/2026 | 28/10/2026 | Visão e Arquitetura v2.1; módulo de regras com TU-01 a TU-07; catálogo inicial (R13); termos (R03); Tela de Ajuda e botão (R10 no frontend, R11); CI executando os testes; pendências da Sprint 2. | Todos | [atualizar] |
+| 4 | Pendências da Sprint 3 e check-in diário | 29/10/2026 | 11/11/2026 | Pendências da Sprint 3 (replanejamento da v2.2): módulo de regras com TU-01 a TU-07; catálogo inicial (R13); termos (R03); Tela de Ajuda e botão (R10 no frontend, R11); pendências da Sprint 2. Check-in completo com conteúdos (R05, R06, R10); TI-03 a TI-05; TS-01 a TS-05. | Todos | 0% |
+| 5 | Avaliação e histórico | 12/11/2026 | 25/11/2026 | Avaliação quinzenal e resultado (R08, R09); histórico (R12); exclusão de conta (R04); TI-06, TI-07; roteiro de sistema, ciclo 1. | BE, FE, QA | 0% |
 | 6 | Qualidade e entrega | 26/11/2026 | 09/12/2026 | Correções; ciclo final do roteiro de sistema; atualização dos documentos; demonstração. | Todos | 0% |
 
-Legenda dos responsáveis: PO = Martin Quadros de Melo; BE = Luiz Felipe Mendes Cordeiro Gomes e Carlos Eduardo Pereira Alexandre; FE = Júlio Barros de Oliveira e Danilo Menezes Gomez; UX = Vinícius Evangelista Borges Pinto; QA = Hugo Sousa Rosa. O percentual da Sprint 2 será registrado na revisão dessa sprint.
+Legenda dos responsáveis: PO = Martin Quadros de Melo; BE = Luiz Felipe Mendes Cordeiro Gomes e Carlos Eduardo Pereira Alexandre; FE = Júlio Barros de Oliveira e Danilo Menezes Gomez; UX = Vinícius Evangelista Borges Pinto; QA = Hugo Sousa Rosa. Os percentuais das Sprints 2 e 3 serão registrados na revisão dessas sprints.
 
 ### 2.4 Matriz de Comunicação
 
@@ -233,7 +234,7 @@ Os riscos são revisados em toda retrospectiva. A exposição combina probabilid
 | R3. Erro nas regras gera encaminhamento errado | Alta | Um teste por linha das tabelas de regras, com valores-limite; revisão de código em todo pull request. | Correção imediata; até a correção, exibir só orientação genérica e Ajuda Imediata. | BE, QA |
 | R4. Vazamento de dados sensíveis | Média | Testes TS-01 a TS-05 na CI; coleta mínima; uso apenas com usuários de teste. | Trocar a chave de assinatura (invalida todos os tokens), corrigir e registrar o incidente. | BE, QA |
 | R5. Links do catálogo quebram ou o conteúdo muda | Média | Somente fontes oficiais; link conferido na inclusão do material; data de revisão por material. | Marcar o material como inativo e substituí-lo na mesma sprint. | UX |
-| R6. Atraso em itens Must | Alta | Escopo enxuto; regras na Sprint 3; item Should só após os Must. | Replanejar: retirar primeiro o item Should. | PO |
+| R6. Atraso em itens Must | Alta | Escopo enxuto; regras antes do check-in; item Should só após os Must. | Replanejar: retirar primeiro o item Should (aplicado na versão 2.2, com a retirada do R07). | PO |
 | R7. Pouca experiência da equipe com React | Alta | Telas simples, sem biblioteca de componentes complexa; apoio entre integrantes quando necessário. | Desenvolvedores backend apoiam o frontend; simplificar telas. | FE |
 | R8. Indisponibilidade de integrante | Média | Issues pequenas; todo PR revisado por outra pessoa; conhecimento compartilhado. | Redistribuir tarefas no acompanhamento seguinte. | Equipe |
 | R9. Uso por menores de idade | Baixa | Declaração de maioridade obrigatória no cadastro; uso restrito a usuários de teste. | Excluir a conta. | PO |
@@ -281,7 +282,7 @@ flowchart TB
 O backlog foi revisado nas versões 2.0 e 2.1 a partir do feedback da apresentação. As classes de prioridade significam, para este projeto:
 
 - **Must:** necessário para que o fluxo principal funcione com segurança. É compromisso de entrega;
-- **Should:** agrega valor e será entregue se todos os Must da sprint estiverem prontos. É declaradamente condicional. Há um único item Should (R07);
+- **Should:** agrega valor e será entregue se todos os Must da sprint estiverem prontos. É declaradamente condicional. Não há itens Should desde a versão 2.2: o único (R07, convite para avaliação) saiu do escopo no replanejamento ao fim da Sprint 3 (seção 2.6, critério 1);
 - **Could:** não há itens Could nesta versão; ideias sem compromisso de entrega não são registradas no backlog.
 
 **Quadro 11 – Técnicas de elicitação**
@@ -294,7 +295,7 @@ O backlog foi revisado nas versões 2.0 e 2.1 a partir do feedback da apresenta�
 | Feedback do cliente | Questionamentos do professor na apresentação. | Especificação do fluxo principal e da estratégia de testes. |
 
 !!! warning "Fora do escopo do MVP"
-    Não entregue nesta disciplina: aplicativo móvel nativo; notificações ou lembretes; perfis administrativos e painel de curadoria; inteligência artificial; chat ou atendimento por profissionais; contato com terceiros ou com serviços de emergência; localização da UBS ou do CAPS mais próximos; integração com APIs externas; exportação de dados; uso por menores de 18 anos; publicação em nuvem; testes de desempenho, de carga ou de usabilidade com participantes; garantia de compatibilidade com navegadores ou tamanhos de tela específicos.
+    Não entregue nesta disciplina: aplicativo móvel nativo; notificações ou lembretes; convite para a avaliação após dias seguidos de dificuldade (R07, retirado na versão 2.2); perfis administrativos e painel de curadoria; inteligência artificial; chat ou atendimento por profissionais; contato com terceiros ou com serviços de emergência; localização da UBS ou do CAPS mais próximos; integração com APIs externas; exportação de dados; uso por menores de 18 anos; publicação em nuvem; testes de desempenho, de carga ou de usabilidade com participantes; garantia de compatibilidade com navegadores ou tamanhos de tela específicos.
 
 ### 4.2 Perfis
 
@@ -315,17 +316,17 @@ A equipe mantenedora não é um perfil do sistema: altera o catálogo por pull r
 
 | Cenário | Nome do cenário | Sprints |
 | :--: | :-- | :--: |
-| C01 | Conta e privacidade (cadastro, login, termos, exclusão) | 2, 3, 5 |
-| C02 | Check-in diário e conteúdos do dia | 3, 4, 5 |
-| C03 | Avaliação quinzenal e resultado | 3, 5 |
-| C04 | Ajuda Imediata | 3, 4 |
+| C01 | Conta e privacidade (cadastro, login, termos, exclusão) | 2, 4, 5 |
+| C02 | Check-in diário e conteúdos do dia | 4 |
+| C03 | Avaliação quinzenal e resultado | 4, 5 |
+| C04 | Ajuda Imediata | 4 |
 | C05 | Histórico | 5 |
-| C06 | Catálogo de conteúdos oficiais | 3 |
+| C06 | Catálogo de conteúdos oficiais | 4 |
 | C07 | Segurança dos dados | 4, 5 |
 
 ### 4.4 Tabela de Backlog do produto
 
-Regras R-D, R-A e R-S na seção 4.5; testes na seção 6.2. F = funcional; NF = não funcional.
+Regras R-D, R-A e R-S na seção 4.5; testes na seção 6.2. F = funcional; NF = não funcional. A coluna Sprint reflete o replanejamento da versão 2.2. O requisito R07 foi retirado nessa versão; a numeração dos demais foi mantida.
 
 **Quadro 14 – Backlog do produto**
 
@@ -333,17 +334,16 @@ Regras R-D, R-A e R-S na seção 4.5; testes na seção 6.2. F = funcional; NF =
 | :-- | :--: | :-- | :--: | :--: | :-- | :-- |
 | C01/R01 | 2 | Cadastrar usuário | F | Must | E-mail único, senha com 8 ou mais caracteres, aceite dos termos e declaração de maioridade obrigatórios; senha guardada com Argon2id. Testes: TI-01, TS-05. | Como visitante, quero criar uma conta para registrar como estou. |
 | C01/R02 | 2 | Autenticar usuário | F | Must | Login retorna token válido por 60 min; mensagem de erro genérica; sair descarta o token. Testes: TI-02, TS-02. | Como usuário, quero entrar e sair da minha conta com segurança. |
-| C01/R03 | 3 | Termos de uso e privacidade | F | Must | Página pública informa dados coletados, finalidade, que não há diagnóstico nem monitoramento e como excluir a conta. | Como visitante, quero saber como meus dados serão usados antes de me cadastrar. |
+| C01/R03 | 4 | Termos de uso e privacidade | F | Must | Página pública informa dados coletados, finalidade, que não há diagnóstico nem monitoramento e como excluir a conta. | Como visitante, quero saber como meus dados serão usados antes de me cadastrar. |
 | C01/R04 | 5 | Excluir conta e dados | F | Must | Após confirmação, remove usuário, check-ins, avaliações e recomendações (exclusão física). Testes: TI-07, TSI-05. | Como usuário, quero apagar todos os meus dados. |
-| C02/R05 | 4 | Responder check-in diário | F | Must | Perguntas P1 a P5 (Quadro 15); P5 obrigatória; um check-in por dia. Testes: TI-03, TI-04. | Como usuário, quero registrar como estou hoje. |
+| C02/R05 | 4 | Responder check-in diário | F | Must | Perguntas P1 a P5 (Quadro 15); P1 a P4 opcionais; P5 obrigatória; um check-in por dia. Testes: TI-03, TI-04. | Como usuário, quero registrar como estou hoje. |
 | C02/R06 | 4 | Receber conteúdos do dia | F | Must | Aplica R-D2 a R-D6 e R-S1 a R-S5; exibe até 3 materiais com título, fonte, resumo, link e motivo. Testes: TU-05, TU-06, TI-03. | Como usuário, quero receber materiais oficiais ligados ao que respondi e entender por quê. |
-| C02/R07 | 5 | Convite para avaliação | F | Should | Aplica R-D7. Teste: TU-08. | Como usuário, quero ser convidado a fazer a avaliação quando tiver dias difíceis seguidos. |
 | C03/R08 | 5 | Responder avaliação quinzenal | F | Must | PHQ-9 e GAD-7 com texto oficial em português do Brasil; 16 respostas obrigatórias, de 0 a 3. Testes: TU-01, TI-06. | Como usuário, quero responder um questionário validado sobre as últimas duas semanas. |
 | C03/R09 | 5 | Ver resultado e orientação | F | Must | Exibe escores, faixas (Quadro 17), nível (R-A1 a R-A4), orientação e materiais, com aviso de que não é diagnóstico. Testes: TU-02 a TU-04, TI-06, TSI-03. | Como usuário, quero entender meu resultado e saber o que fazer. |
-| C04/R10 | 3–4 | Ajuda Imediata por indicador de risco | F | Must | R-D1 ou R-A1 exibem a Tela de Ajuda (seção 4.5.5) e nenhuma recomendação. Testes: TU-04, TU-05, TI-05, TSI-02. | Como usuário em sofrimento intenso, quero ver imediatamente onde conseguir ajuda humana. |
-| C04/R11 | 3 | Botão "Preciso de ajuda agora" | F | Must | Visível em todas as páginas, inclusive sem login; abre a Tela de Ajuda. Teste: TSI-04. | Como qualquer pessoa, quero achar ajuda sem precisar entrar na conta. |
+| C04/R10 | 4 | Ajuda Imediata por indicador de risco | F | Must | R-D1 ou R-A1 exibem a Tela de Ajuda (seção 4.5.5) e nenhuma recomendação. Testes: TU-04, TU-05, TI-05, TSI-02. | Como usuário em sofrimento intenso, quero ver imediatamente onde conseguir ajuda humana. |
+| C04/R11 | 4 | Botão "Preciso de ajuda agora" | F | Must | Visível em todas as páginas, inclusive sem login; abre a Tela de Ajuda. Teste: TSI-04. | Como qualquer pessoa, quero achar ajuda sem precisar entrar na conta. |
 | C05/R12 | 5 | Consultar histórico | F | Must | Lista os últimos 30 check-ins (data, humor, tags) e todas as avaliações (data, escores, faixas, nível) do próprio usuário. Testes: TS-03, TSI-01. | Como usuário, quero rever meus registros para perceber padrões. |
-| C06/R13 | 3 | Catálogo curado | F | Must | Arquivo `materiais.yaml` com pelo menos 1 material ativo por tag, apenas de domínios permitidos, carregado no banco por comando seed. Teste: TU-07. | Como usuário, quero que os conteúdos venham de fontes oficiais. |
+| C06/R13 | 4 | Catálogo curado | F | Must | Arquivo `materiais.yaml` com pelo menos 1 material ativo por tag, apenas de domínios permitidos, carregado no banco por comando seed. Teste: TU-07. | Como usuário, quero que os conteúdos venham de fontes oficiais. |
 | C07/R14 | 4–5 | Proteção de dados | NF | Must | Casos TS-01 a TS-05 aprovados na CI. | Como usuário, quero que minhas informações emocionais fiquem protegidas. |
 
 ### 4.5 Especificação do fluxo principal: do formulário ao conteúdo
@@ -364,6 +364,8 @@ P1 a P4 são perguntas próprias, **não validadas** e **não usadas para classi
 | P4 | Hoje, o quanto você se sentiu sobrecarregado(a) com estudos, trabalho ou outras demandas? | 0 Nada · 1 Um pouco · 2 Bastante · 3 Extremamente | R-D5 |
 | P5 | Hoje você teve pensamentos de se machucar ou de que seria melhor estar morto(a)? | Não · Sim (resposta obrigatória) | R-D1 |
 
+P1 a P4 são opcionais: quando o usuário não responde a uma delas, o valor é gravado como nulo e a regra correspondente não é acionada. P5 é obrigatória: sem ela, o check-in não é registrado.
+
 As regras do Quadro 16 são avaliadas em ordem. O check-in sem risco recebe sempre o nível N0 (autocuidado): o check-in diário nunca produz N1 ou N2, porque suas perguntas não são instrumento de rastreio.
 
 **Quadro 16 – Regras do check-in diário**
@@ -376,11 +378,10 @@ As regras do Quadro 16 são avaliadas em ordem. O check-in sem risco recebe semp
 | R-D4 | P3 ≤ 2 | Adiciona a tag SONO. | "Você indicou que dormiu mal na última noite." |
 | R-D5 | P4 ≥ 2 | Adiciona a tag ESTRESSE. | "Você indicou ter se sentido bastante ou extremamente sobrecarregado(a)." |
 | R-D6 | Nenhuma das regras R-D2 a R-D5 acionada | Adiciona a tag BEM_ESTAR. | "Você não indicou dificuldades marcantes hoje." |
-| R-D7 | Os 3 últimos check-ins registrados (incluindo o atual) têm a tag HUMOR ou ANSIEDADE | Inclui na resposta um convite para responder a avaliação quinzenal (requisito Should R07). | "Notamos dificuldades em dias seguidos. Que tal responder a avaliação?" |
 
 #### 4.5.2 Avaliação quinzenal (PHQ-9 e GAD-7)
 
-A avaliação usa o PHQ-9 (9 itens) e o GAD-7 (7 itens), ambos com a pergunta "Nas últimas 2 semanas, com que frequência você foi incomodado(a) por…" e a escala 0 = nenhuma vez, 1 = vários dias, 2 = mais da metade dos dias, 3 = quase todos os dias. Os textos utilizados serão os das versões oficiais em português do Brasil disponibilizadas pelos autores, cuja reprodução não exige permissão (PHQ SCREENERS, 2026). A avaliação pode ser respondida a qualquer momento; a tela da avaliação informa que o recomendado é respondê-la a cada duas semanas, período a que os instrumentos se referem. O sistema não envia lembretes; o convite após dias seguidos de dificuldade (R-D7) é o único item Should. O escore é a soma dos itens (PHQ-9: 0 a 27; GAD-7: 0 a 21).
+A avaliação usa o PHQ-9 (9 itens) e o GAD-7 (7 itens), ambos com a pergunta "Nas últimas 2 semanas, com que frequência você foi incomodado(a) por…" e a escala 0 = nenhuma vez, 1 = vários dias, 2 = mais da metade dos dias, 3 = quase todos os dias. Os textos utilizados serão os das versões oficiais em português do Brasil disponibilizadas pelos autores, cuja reprodução não exige permissão (PHQ SCREENERS, 2026). A avaliação pode ser respondida a qualquer momento; a tela da avaliação informa que o recomendado é respondê-la a cada duas semanas, período a que os instrumentos se referem. O sistema não envia lembretes nem convites para a avaliação. O escore é a soma dos itens (PHQ-9: 0 a 27; GAD-7: 0 a 21).
 
 **Quadro 17 – Faixas de gravidade do PHQ-9 e do GAD-7**
 
@@ -447,7 +448,7 @@ Os materiais ficam no arquivo `catalog/materiais.yaml` do repositório. Cada mat
 3. inclusão ou alteração apenas por pull request revisado pelo PO, conferindo se a fonte é oficial, se o link abre e se a tag é adequada;
 4. o comando seed carrega o arquivo no banco; para retirar um material, ele é marcado como inativo no arquivo, o que preserva o histórico de recomendações.
 
-O Quadro 21 mostra os materiais já identificados para o catálogo inicial. Para completar o mínimo de 1 material por tag, falta incluir um material com a tag SONO, previsto para a Sprint 3 sob as mesmas regras.
+O Quadro 21 mostra os materiais já identificados para o catálogo inicial. Para completar o mínimo de 1 material por tag, falta incluir um material com a tag SONO, previsto para a Sprint 4 (replanejamento da versão 2.2) sob as mesmas regras.
 
 **Quadro 21 – Amostra do catálogo inicial**
 
@@ -510,7 +511,7 @@ Todas as métricas são coletadas por ferramenta ou por procedimento definido; o
 
 | Nível | O que cobre | Ferramenta e forma | Responsável | Quando |
 | :-- | :-- | :-- | :-- | :-- |
-| Unitário | Regras (pontuação, faixas, tabela de decisão, regras do check-in, seleção, convite) e integridade do catálogo. | pytest. Automático. | Desenvolvedor do item | A cada pull request |
+| Unitário | Regras (pontuação, faixas, tabela de decisão, regras do check-in e seleção) e integridade do catálogo. | pytest. Automático. | Desenvolvedor do item | A cada pull request |
 | Integração | API + regras + banco PostgreSQL de teste: cadastro, login, check-in, avaliação, exclusão e segurança. | pytest + cliente httpx do FastAPI; PostgreSQL de teste. Automático. | Desenvolvedores backend | A cada pull request |
 | Sistema | Jornadas completas pela interface, no navegador. | Roteiro manual com evidências (capturas de tela). | QA | Fim das sprints 5 e 6 |
 | Aceitação | Critérios de aceite de cada história. | Demonstração na revisão da sprint. | PO | Fim de cada sprint |
@@ -543,14 +544,13 @@ Todas as métricas são coletadas por ferramenta ou por procedimento definido; o
 
 | ID | Caso de teste e objetivo | Nível / tipo | Req. | Pré-condições e entradas | Resultado esperado (critério de aceite) | Sprint | Status |
 | :-- | :-- | :-- | :-- | :-- | :-- | :--: | :-- |
-| TU-01 | Pontuação do PHQ-9 e do GAD-7: verificar a soma dos itens e a rejeição de entradas inválidas. | Unitário / Funcional | R08, R09 | Respostas: todas 0; todas 3; PHQ-9 misto [0,1,2,3,0,1,2,3,1]; inválidas: tamanho diferente de 9 (ou 7), valor 4 ou −1. | Escores 0; 27 (PHQ-9) e 21 (GAD-7); 13 no misto. Entradas inválidas lançam `ValueError`. | S3 | Não executado |
-| TU-02 | Faixas do PHQ-9 nos valores-limite. | Unitário / Funcional | R09 | Escores 0, 4, 5, 9, 10, 14, 15, 19, 20, 27. | Mínima, Mínima, Leve, Leve, Moderada, Moderada, Mod. grave, Mod. grave, Grave, Grave. | S3 | Não executado |
-| TU-03 | Faixas do GAD-7 nos valores-limite. | Unitário / Funcional | R09 | Escores 0, 4, 5, 9, 10, 14, 15, 21. | Mínima, Mínima, Leve, Leve, Moderada, Moderada, Grave, Grave. | S3 | Não executado |
-| TU-04 | Tabela de decisão da avaliação: um caso por regra, incluindo precedência. | Unitário / Funcional | R09, R10 | (item 9 = 1, PHQ-9 = 3, GAD-7 = 0); (PHQ-9 = 20, GAD-7 = 0); (5, 15); (10, 0); (0, 10); (19, 14); (9, 9); (4, 4). | N3; N2; N2; N1 [AJUDA, HUMOR]; N1 [AJUDA, ANSIEDADE]; N1 [AJUDA, ANSIEDADE, HUMOR]; N0 [ANSIEDADE, HUMOR]; N0 [BEM_ESTAR]. R-A1 prevalece sobre as demais. | S3 | Não executado |
-| TU-05 | Regras do check-in diário nos limites. | Unitário / Funcional | R06, R10 | P5 = Sim com P1–P4 favoráveis; P1 = 2 e 3; P2 = 1 e 2; P3 = 2 e 3; P4 = 1 e 2; todas favoráveis. | CRISE sem tags; HUMOR só com P1 = 2; ANSIEDADE só com P2 = 2; SONO só com P3 = 2; ESTRESSE só com P4 = 2; BEM_ESTAR quando nenhuma. | S3 | Não executado |
-| TU-06 | Seleção de conteúdo (R-S1 a R-S5). | Unitário / Funcional | R06, R09 | Catálogo de teste fixo (2 materiais por tag, 1 inativo) e histórico de exibições do usuário. | Ordem de prioridade respeitada; material menos recente escolhido; sem repetição; máximo 3; nenhum inativo; cada item com regra e motivo. | S3 | Não executado |
-| TU-07 | Integridade do catálogo real (`materiais.yaml`). | Unitário / Funcional | R13 | Arquivo `materiais.yaml` do repositório. | Esquema válido; slugs únicos; URLs https; domínio na lista permitida; ≥ 1 material ativo por tag. | S3 | Não executado |
-| TU-08 | Convite para avaliação (R-D7). | Unitário / Funcional | R07 | Sequências de tags dos últimos check-ins: 3 seguidos com HUMOR/ANSIEDADE; sequência interrompida por BEM_ESTAR. | Convite apenas no primeiro caso. | S5 | Não executado |
+| TU-01 | Pontuação do PHQ-9 e do GAD-7: verificar a soma dos itens e a rejeição de entradas inválidas. | Unitário / Funcional | R08, R09 | Respostas: todas 0; todas 3; PHQ-9 misto [0,1,2,3,0,1,2,3,1]; inválidas: tamanho diferente de 9 (ou 7), valor 4 ou −1. | Escores 0; 27 (PHQ-9) e 21 (GAD-7); 13 no misto. Entradas inválidas lançam `ValueError`. | S4 | Não executado |
+| TU-02 | Faixas do PHQ-9 nos valores-limite. | Unitário / Funcional | R09 | Escores 0, 4, 5, 9, 10, 14, 15, 19, 20, 27. | Mínima, Mínima, Leve, Leve, Moderada, Moderada, Mod. grave, Mod. grave, Grave, Grave. | S4 | Não executado |
+| TU-03 | Faixas do GAD-7 nos valores-limite. | Unitário / Funcional | R09 | Escores 0, 4, 5, 9, 10, 14, 15, 21. | Mínima, Mínima, Leve, Leve, Moderada, Moderada, Grave, Grave. | S4 | Não executado |
+| TU-04 | Tabela de decisão da avaliação: um caso por regra, incluindo precedência. | Unitário / Funcional | R09, R10 | (item 9 = 1, PHQ-9 = 3, GAD-7 = 0); (PHQ-9 = 20, GAD-7 = 0); (5, 15); (10, 0); (0, 10); (19, 14); (9, 9); (4, 4). | N3; N2; N2; N1 [AJUDA, HUMOR]; N1 [AJUDA, ANSIEDADE]; N1 [AJUDA, ANSIEDADE, HUMOR]; N0 [ANSIEDADE, HUMOR]; N0 [BEM_ESTAR]. R-A1 prevalece sobre as demais. | S4 | Não executado |
+| TU-05 | Regras do check-in diário nos limites. | Unitário / Funcional | R06, R10 | P5 = Sim com P1–P4 favoráveis; P1 = 2 e 3; P2 = 1 e 2; P3 = 2 e 3; P4 = 1 e 2; todas favoráveis; P1 a P4 sem resposta (nulas). | CRISE sem tags; HUMOR só com P1 = 2; ANSIEDADE só com P2 = 2; SONO só com P3 = 2; ESTRESSE só com P4 = 2; BEM_ESTAR quando nenhuma; resposta nula não aciona a regra da pergunta. | S4 | Não executado |
+| TU-06 | Seleção de conteúdo (R-S1 a R-S5). | Unitário / Funcional | R06, R09 | Catálogo de teste fixo (2 materiais por tag, 1 inativo) e histórico de exibições do usuário. | Ordem de prioridade respeitada; material menos recente escolhido; sem repetição; máximo 3; nenhum inativo; cada item com regra e motivo. | S4 | Não executado |
+| TU-07 | Integridade do catálogo real (`materiais.yaml`). | Unitário / Funcional | R13 | Arquivo `materiais.yaml` do repositório. | Esquema válido; slugs únicos; URLs https; domínio na lista permitida; ≥ 1 material ativo por tag. | S4 | Não executado |
 | TI-01 | Cadastro de usuário. | Integração / Funcional | R01 | Banco de teste vazio. | Dados válidos → 201; e-mail repetido → 409; sem aceite dos termos ou sem declaração 18+ → 422; senha < 8 caracteres → 422. | S2 | Não executado |
 | TI-02 | Login. | Integração / Funcional | R02 | Usuário cadastrado. | Credenciais corretas → 200 com token; senha errada e e-mail inexistente → 401 com a mesma mensagem. | S2 | Não executado |
 | TI-03 | Check-in gera e persiste recomendações corretas. | Integração / Funcional | R05, R06 | Usuário autenticado; catálogo de teste; P1 = 4, P2 = 3, P3 = 1, P4 = 0, P5 = Não. | 201; check-in salvo com tags [ANSIEDADE, SONO]; 2 recomendações persistidas com materiais dessas tags e regras R-D3 e R-D4. | S4 | Não executado |

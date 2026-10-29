@@ -1,23 +1,24 @@
 # Vocabulário do check-in diário
 
-**Versão 1.0 – 28/10/2026** · Perguntas, escalas, identificadores e textos da interface do check-in diário.
+**Versão 1.1 – 29/10/2026** · Perguntas, escalas, identificadores e textos da interface do check-in diário.
 
 !!! warning "Proposta em revisão"
-    Este documento atende à issue [#3](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/issues/3) e aguarda a revisão do Product Owner e a confirmação de backend e frontend. Ele se baseia na [Visão do Produto e do Projeto](visao-produto-projeto.md) e no [Documento de Arquitetura](arquitetura.md), ambos na versão 2.1. Os pontos que dependem de decisão do PO estão na [seção 10](#10-pendencias-para-decisao-do-po).
+    Este documento atende à issue [#3](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/issues/3) e complementa a [Visão do Produto e do Projeto](visao-produto-projeto.md) e o [Documento de Arquitetura](arquitetura.md), ambos na versão 2.2. **Onde houver divergência, valem a Visão e a Arquitetura.** Os pontos 1, 3, 5 e 8 da [seção 10](#10-pendencias-para-decisao-do-po) foram decididos na versão 2.2 desses documentos; os demais aguardam decisão do PO.
 
 | | |
 | :-- | :-- |
 | **Projeto** | Sintoniza – Grupo Lamport, MDS 2026.2, Turma 03 (UnB) |
 | **Issue** | [#3](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/issues/3) [PO/UX] Definir vocabulário do check-in: categorias de humor, escala e fatores de contexto |
-| **Base** | Visão do Produto e do Projeto v2.1 e Documento de Arquitetura v2.1, ambos de 18/10/2026 |
+| **Base** | Visão do Produto e do Projeto v2.2 e Documento de Arquitetura v2.2, ambos de 29/10/2026 |
 | **Elaboração** | Vinícius Evangelista Borges Pinto (UX/UI, conteúdo e documentação) |
-| **Revisão** | Martin Quadros de Melo (Product Owner) – pendente |
+| **Revisão** | Martin Quadros de Melo (Product Owner) – parcial (seção 10) |
 
 ## Histórico de revisões
 
 | Data | Versão | Descrição | Autor |
 | :--: | :--: | :-- | :-- |
 | 28/10/2026 | 1.0 | Proposta inicial do vocabulário do check-in, alinhada à Visão v2.1. | Vinícius E. B. Pinto |
+| 29/10/2026 | 1.1 | Alinhamento à Visão e à Arquitetura v2.2: D3 aprovada (P1 a P4 opcionais); D4 rejeitada (a API usa `p1` a `p5` na entrada e na saída; os nomes `humor`, `ansiedade`, `sono`, `sobrecarga` e `pensamento_risco` ficam no domínio e no banco); retirada do convite para avaliação (R07, R-D7); Apêndices A e B atualizados; pontos 1, 3, 5 e 8 da seção 10 resolvidos. | Martin Q. de Melo (PO) |
 
 ---
 
@@ -39,7 +40,7 @@ A issue #3 foi aberta em 14/10/2026 com um modelo baseado em categorias de humor
 
 Os dois modelos não são compatíveis. As regras da v2.1 comparam respostas em escalas ordenadas com limites (por exemplo, P1 ≤ 2 gera a tag `humor`), e uma categoria de escolha única não registra estados que ocorrem juntos, como cansaço e preocupação no mesmo dia. O Quadro 1 mostra como cada tarefa e cada critério de aceite da issue foram atendidos.
 
-A issue também cita requisitos pela numeração anterior (C02/R03 e C02/R04). Na Visão v2.1, o check-in corresponde a C02/R05 (responder o check-in), C02/R06 (receber conteúdos do dia) e C02/R07 (convite para a avaliação); R03 e R04 passaram a ser os requisitos de termos de uso e de exclusão de conta.
+A issue também cita requisitos pela numeração anterior (C02/R03 e C02/R04). Na Visão v2.1, o check-in corresponde a C02/R05 (responder o check-in), C02/R06 (receber conteúdos do dia) e C02/R07 (convite para a avaliação, retirado na Visão v2.2); R03 e R04 passaram a ser os requisitos de termos de uso e de exclusão de conta.
 
 **Quadro 1 – Correspondência entre a issue #3 e este documento**
 
@@ -83,7 +84,7 @@ A lista vale para os textos do check-in. Os termos de uso e a avaliação quinze
 
 ## 4 Perguntas e escalas
 
-As cinco perguntas e os valores gravados são os do Quadro 15 da Visão. P1 a P4 são perguntas próprias da equipe, não validadas, e servem apenas para escolher conteúdos de autocuidado; P5 adapta para o dia o item 9 do PHQ-9 e serve exclusivamente para identificar risco (Visão, seção 4.5.1). Este documento acrescenta o nome de cada campo, a obrigatoriedade e o tratamento das perguntas sem resposta.
+As cinco perguntas e os valores gravados são os do Quadro 15 da Visão. P1 a P4 são perguntas próprias da equipe, não validadas, e servem apenas para escolher conteúdos de autocuidado; P5 adapta para o dia o item 9 do PHQ-9 e serve exclusivamente para identificar risco (Visão, seção 4.5.1). Este documento acrescenta o nome de cada campo, a obrigatoriedade e o tratamento das perguntas sem resposta. A coluna Campo traz o nome usado no domínio e no banco (Arquitetura, Figura 6); na API, as respostas usam `p1` a `p5` na entrada e na saída (Arquitetura v2.2, Quadro 6).
 
 **Quadro 3 – Perguntas do check-in diário**
 
@@ -218,7 +219,6 @@ flowchart LR
 | Explicação | Por que estou vendo isto? | Mostra o motivo da regra (Quadro 11). |
 | Aviso | O check-in não é um teste de saúde: ele serve apenas para sugerir conteúdos de autocuidado. | Decisão D8. |
 | Sem materiais (R-S6) | Não encontramos materiais para hoje. Continue acompanhando como você está. | Situação evitada pelo teste TU-07. |
-| Convite (R-D7) | Notamos dificuldades em dias seguidos. Que tal responder a avaliação? | Botão “Fazer a avaliação”. Requisito Should (R07); ver a seção 9. |
 | Navegação | Ver histórico · Voltar ao início | – |
 
 **Quadro 11 – Motivos exibidos em “Por que estou vendo isto?” (Visão, Quadro 16)**
@@ -283,7 +283,7 @@ O histórico não mostra a resposta da P5 nem o nível do check-in (decisão D6)
 
 ## 7 Decisões
 
-As decisões abaixo completam a Visão v2.1 onde ela não detalha o check-in. Todas dependem da revisão do PO e da confirmação de backend e frontend na issue #3.
+As decisões abaixo completam a Visão onde ela não detalha o check-in. A D3 foi aprovada e a D4 rejeitada pelo PO na versão 2.2 da Visão e da Arquitetura; as demais dependem da revisão do PO e da confirmação de backend e frontend na issue #3.
 
 **D1 – Sem campo de texto livre no MVP.**
 As respostas sobre o estado emocional são dados pessoais sensíveis, por se referirem à saúde (LGPD, art. 5º, II), e a coleta deve se limitar ao mínimo necessário para a finalidade (art. 6º, III). Um texto livre também poderia receber relatos de risco que ninguém vai ler, já que o Sintoniza não acompanha as respostas, o que criaria uma falsa expectativa de acolhimento. Além disso, ele não pode ser usado pelas regras determinísticas da Visão.
@@ -294,7 +294,7 @@ Nenhuma regra da Visão v2.1 usa esses dados, e coletá-los sem finalidade contr
 **D3 – P1 a P4 são opcionais; P5 é obrigatória.**
 A Visão torna obrigatória apenas a P5 (requisito R05 e Quadro 15; Arquitetura, Figura 3). Perguntas opcionais diminuem o esforço do check-in e tratam o risco de baixa adesão citado na issue #2. A opção “Prefiro não responder” deixa a escolha explícita e permite desfazer uma resposta, o que um grupo de botões de rádio não permite sozinho. Consequência para o backend: P1 a P4 aceitam `null`, e a função `avaliar_checkin` (Arquitetura, Quadro 5) passa a receber valores ausentes nessas perguntas, que não acionam suas regras.
 
-**D4 – Mesmos nomes de campo na API, no banco e no frontend.**
+**D4 – Mesmos nomes de campo na API, no banco e no frontend.** *Rejeitada pelo PO (v2.2): a API usa `p1` a `p5` na entrada e na saída, conforme o Quadro 6 da Arquitetura; os nomes abaixo valem para o domínio e o banco. O texto original fica como registro.*
 A Arquitetura define campos de domínio em português sem acento (seção 2.4, item 6), e a Figura 6 já usa `humor`, `ansiedade`, `sono`, `sobrecarga` e `pensamento_risco`. Usar esses nomes também no corpo da API, no lugar de `p1` a `p5` (forma abreviada do Quadro 6 da Arquitetura), evita uma tradução entre camadas e deixa as requisições legíveis. P1 a P5 continuam identificando as perguntas nos documentos e nos testes.
 
 **D5 – Números para respostas; slugs em minúsculas para tags e níveis.**
@@ -313,6 +313,8 @@ A issue proíbe termos clínicos nos textos do check-in, e a Visão pede que nen
 A Tela de Ajuda é estática justamente para funcionar com a API fora do ar (Arquitetura, seção 2.4, item 3). Ao concluir com P5 = Sim, o frontend abre a tela na hora e envia o check-in em paralelo; uma falha no envio não impede que os contatos apareçam.
 
 ## 8 Impacto nas demais issues
+
+*Atualização (v1.1): em 29/10/2026 as issues foram reescritas com base na Visão e na Arquitetura v2.2; o quadro abaixo fica como registro.*
 
 As issues #2 e #4 a #10 foram abertas junto com a #3, antes da Visão v2.0, e ainda descrevem o modelo de categorias, intensidade e fatores. Elas também situam o check-in na Sprint 3, que na v2.1 passou a ser a sprint de regras e catálogo; o check-in agora é da Sprint 4 (29/10 a 11/11/2026). O Quadro 15 resume o que muda em cada uma.
 
@@ -342,7 +344,6 @@ Os textos abaixo vêm da Visão v2.1 e foram mantidos sem alteração nas seçõ
 | P4 | Hoje, o quanto você se sentiu sobrecarregado(a) com estudos, trabalho ou outras demandas? | Hoje, o quanto você sentiu sobrecarga com estudos, trabalho ou outras demandas? | Mesmo motivo da P2. |
 | R-D3 | Você indicou ter se sentido bastante ou extremamente ansioso(a) hoje. | Você indicou muito nervosismo, ansiedade ou preocupação hoje. | Sem “(a)”; repete as palavras da P2. |
 | R-D5 | Você indicou ter se sentido bastante ou extremamente sobrecarregado(a). | Você indicou muita sobrecarga com estudos, trabalho ou outras demandas hoje. | Sem “(a)”; inclui “hoje”, como os demais motivos. |
-| R-D7 | Notamos dificuldades em dias seguidos. Que tal responder a avaliação? | Seus últimos três check-ins indicaram dias difíceis. Que tal fazer a avaliação quinzenal? | “Notamos” sugere acompanhamento contínuo, o que contradiz o aviso de que o Sintoniza não acompanha as respostas; “fazer” repete o verbo do botão. |
 
 ## 10 Pendências para decisão do PO
 
@@ -352,14 +353,14 @@ A revisão deste vocabulário contra a Visão v2.1 e a Arquitetura v2.1 encontro
 
 | # | Ponto | O que dizem os documentos | Decisão necessária |
 | :--: | :-- | :-- | :-- |
-| 1 | P1 a P4 opcionais (D3) | A Visão diz apenas “P5 obrigatória” (R05). A Arquitetura tipa os campos sem nulo (Figura 6: `humor: int 1..5`) e o Quadro 5 diz que `avaliar_checkin` recebe “inteiros nas faixas”. | Aprovar P1 a P4 opcionais e atualizar a Figura 6 e o Quadro 5 da Arquitetura, ou torná-las obrigatórias e retirar “Prefiro não responder”. |
+| 1 | P1 a P4 opcionais (D3) | A Visão diz apenas “P5 obrigatória” (R05). A Arquitetura tipa os campos sem nulo (Figura 6: `humor: int 1..5`) e o Quadro 5 diz que `avaliar_checkin` recebe “inteiros nas faixas”. | **Decidido (v2.2):** P1 a P4 opcionais; Figura 6, Figura 3 e Quadro 5 da Arquitetura atualizados. |
 | 2 | Check-in sem respostas vira “bem-estar” | Pela R-D6, se P1 a P4 ficarem em branco, a tag é `bem_estar` e o motivo é “Você não indicou dificuldades marcantes hoje”, o que pode soar como se a pessoa estivesse bem. | Manter, usar outro motivo quando tudo estiver em branco, ou não sugerir conteúdo nesse caso. Depende do ponto 1. |
-| 3 | Nomes dos campos na API (D4) | O Quadro 6 da Arquitetura usa `p1` a `p5` no corpo de `POST /api/checkins`. | Aprovar `humor`, `ansiedade`, `sono`, `sobrecarga` e `pensamento_risco` e atualizar o Quadro 6, ou manter `p1` a `p5`. |
+| 3 | Nomes dos campos na API (D4) | O Quadro 6 da Arquitetura usa `p1` a `p5` no corpo de `POST /api/checkins`. | **Decidido (v2.2):** manter `p1` a `p5`, na entrada e na saída das rotas de check-in (Quadro 6 da Arquitetura). |
 | 4 | Momento em que a Tela de Ajuda abre (D9) | A Figura 3 da Arquitetura mostra a Tela de Ajuda depois que a API valida e salva o check-in. A seção 2.4, item 3, da mesma Arquitetura exige que ela não dependa do backend. | Aprovar a D9 e ajustar a Figura 3. |
-| 5 | Convite para avaliação (R-D7) | O Quadro 16 da Visão fala nos “3 últimos check-ins registrados”, que podem estar espalhados no tempo; a Figura 3 da Arquitetura, o teste TU-08 e a mensagem falam em “seguidos” e “dias seguidos”. Um check-in com P5 = Sim não gera tags e interrompe a sequência, caso que nenhum documento trata. | Definir se vale “3 últimos registros” ou “3 dias consecutivos” e como contar um check-in com P5 = Sim. |
+| 5 | Convite para avaliação (R-D7) | O Quadro 16 da Visão fala nos “3 últimos check-ins registrados”, que podem estar espalhados no tempo; a Figura 3 da Arquitetura, o teste TU-08 e a mensagem falam em “seguidos” e “dias seguidos”. Um check-in com P5 = Sim não gera tags e interrompe a sequência, caso que nenhum documento trata. | **Sem efeito (v2.2):** o convite (R07, R-D7) saiu do escopo no replanejamento da Sprint 3. |
 | 6 | Escalas em sentidos opostos | P1 e P3 vão de 1 a 5 e valor maior é melhor; P2 e P4 vão de 0 a 3 e valor maior é pior (Visão, Quadro 15). Na tela, a opção “boa” fica num extremo em uma pergunta e no outro na seguinte. | Manter como está (mudar exige rever regras e testes) ou ajustar só a ordem de exibição, sem mudar os valores gravados. |
 | 7 | Tema diferente da pergunta | A P4 pergunta sobre “sobrecarga”, mas gera a tag `ESTRESSE`, exibida como “Estresse”. | Manter ou exibir a tag como “Sobrecarga” na interface, sem mudar o slug. |
-| 8 | Prefixo das rotas | A Figura 3 da Arquitetura usa `GET /checkins/hoje` e `POST /checkins`; o Quadro 6 e a seção 2.4, item 4, usam o prefixo `/api`. | Corrigir a Figura 3 na próxima revisão da Arquitetura. |
+| 8 | Prefixo das rotas | A Figura 3 da Arquitetura usa `GET /checkins/hoje` e `POST /checkins`; o Quadro 6 e a seção 2.4, item 4, usam o prefixo `/api`. | **Corrigido na Arquitetura v2.2.** |
 
 ## Apêndice A – Exemplos de requisição e resposta
 
@@ -372,23 +373,16 @@ POST /api/checkins
 Authorization: Bearer <token>
 
 {
-  "humor": 4,
-  "ansiedade": 3,
-  "sono": 1,
-  "sobrecarga": 0,
-  "pensamento_risco": false
+  "p1": 4,
+  "p2": 3,
+  "p3": 1,
+  "p4": 0,
+  "p5": false
 }
 
-201 Created
+201 Created (trecho)
 
 {
-  "id": "3f6c2a54-9b1e-4d7a-8c2f-5e0a1b2c3d4e",
-  "data": "2026-10-29",
-  "humor": 4,
-  "ansiedade": 3,
-  "sono": 1,
-  "sobrecarga": 0,
-  "pensamento_risco": false,
   "nivel": "autocuidado",
   "tags": ["ansiedade", "sono"]
 }
@@ -402,11 +396,11 @@ No exemplo 2, P2 a P4 ficam sem resposta e P5 = Sim. A regra R-D1 tem precedênc
 POST /api/checkins
 
 {
-  "humor": 2,
-  "ansiedade": null,
-  "sono": null,
-  "sobrecarga": null,
-  "pensamento_risco": true
+  "p1": 2,
+  "p2": null,
+  "p3": null,
+  "p4": null,
+  "p5": true
 }
 
 201 Created (trecho)
@@ -419,7 +413,7 @@ POST /api/checkins
 
 ## Apêndice B – Sugestão de constantes
 
-Sugestão não normativa para as issues #4, #5 e #7. Os nomes de campo, os valores e os rótulos são os das seções 4 e 5; a organização do código fica a critério de cada equipe.
+Sugestão não normativa para as issues #4, #5 e #7. Os nomes de campo da API seguem o Quadro 6 da Arquitetura (`p1` a `p5`); os valores e os rótulos são os das seções 4 e 5; a organização do código fica a critério de cada equipe.
 
 **Backend (Python)**
 
@@ -448,11 +442,11 @@ class Nivel(StrEnum):
 # backend/app/api/schemas.py
 class CheckinCreate(BaseModel):
     # P1-P4 are optional: a missing answer is stored as null and triggers no rule.
-    humor: int | None = Field(default=None, ge=1, le=5)
-    ansiedade: int | None = Field(default=None, ge=0, le=3)
-    sono: int | None = Field(default=None, ge=1, le=5)
-    sobrecarga: int | None = Field(default=None, ge=0, le=3)
-    pensamento_risco: bool
+    p1: int | None = Field(default=None, ge=1, le=5)  # humor
+    p2: int | None = Field(default=None, ge=0, le=3)  # ansiedade
+    p3: int | None = Field(default=None, ge=1, le=5)  # sono
+    p4: int | None = Field(default=None, ge=0, le=3)  # sobrecarga
+    p5: bool  # pensamento_risco
 ```
 
 **Frontend (TypeScript)**
@@ -463,11 +457,11 @@ export type Tag = 'humor' | 'ansiedade' | 'sono' | 'estresse' | 'bem_estar' | 'a
 export type Nivel = 'autocuidado' | 'atencao' | 'prioritario' | 'crise'
 
 export interface CheckinAnswers {
-  humor: number | null
-  ansiedade: number | null
-  sono: number | null
-  sobrecarga: number | null
-  pensamento_risco: boolean
+  p1: number | null // humor
+  p2: number | null // ansiedade
+  p3: number | null // sono
+  p4: number | null // sobrecarga
+  p5: boolean // pensamento_risco
 }
 
 export interface Option {
@@ -494,17 +488,17 @@ const INTENSITY_SCALE: Option[] = [
 export const SKIP_LABEL = 'Prefiro não responder'
 
 export const OPTIONAL_QUESTIONS = [
-  { id: 'P1', field: 'humor', text: 'Como você avalia seu humor hoje?', options: QUALITY_SCALE },
+  { id: 'P1', field: 'p1', text: 'Como você avalia seu humor hoje?', options: QUALITY_SCALE },
   {
     id: 'P2',
-    field: 'ansiedade',
+    field: 'p2',
     text: 'Hoje, o quanto você se sentiu nervoso(a), ansioso(a) ou preocupado(a)?',
     options: INTENSITY_SCALE,
   },
-  { id: 'P3', field: 'sono', text: 'Como foi seu sono na última noite?', options: QUALITY_SCALE },
+  { id: 'P3', field: 'p3', text: 'Como foi seu sono na última noite?', options: QUALITY_SCALE },
   {
     id: 'P4',
-    field: 'sobrecarga',
+    field: 'p4',
     text: 'Hoje, o quanto você se sentiu sobrecarregado(a) com estudos, trabalho ou outras demandas?',
     options: INTENSITY_SCALE,
   },
@@ -512,7 +506,7 @@ export const OPTIONAL_QUESTIONS = [
 
 export const SAFETY_QUESTION = {
   id: 'P5',
-  field: 'pensamento_risco',
+  field: 'p5',
   text: 'Hoje você teve pensamentos de se machucar ou de que seria melhor estar morto(a)?',
   options: [
     { value: false, label: 'Não' },

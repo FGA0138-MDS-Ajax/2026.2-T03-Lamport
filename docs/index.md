@@ -11,8 +11,8 @@ O Sintoniza é uma aplicação web de apoio à saúde mental. Ela combina um **c
 
 | Documento | Versão vigente | Data |
 | :-- | :--: | :--: |
-| [Visão do Produto e do Projeto](visao-produto-projeto.md) | 2.1 | 18/10/2026 |
-| [Documento de Arquitetura](arquitetura.md) | 2.1 | 18/10/2026 |
+| [Visão do Produto e do Projeto](visao-produto-projeto.md) | 2.2 | 29/10/2026 |
+| [Documento de Arquitetura](arquitetura.md) | 2.2 | 29/10/2026 |
 
 Esta documentação publica sempre a versão mais recente de cada documento. As versões anteriores e o que mudou em cada uma estão no [Histórico de versões](historico-versoes.md).
 
