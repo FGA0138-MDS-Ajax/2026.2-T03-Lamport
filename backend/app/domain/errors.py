@@ -20,3 +20,6 @@ class NotAuthenticatedError(DomainError):
 
 class TooManyLoginAttemptsError(DomainError):
     pass
+
+class CheckinAlreadyDoneError(DomainError):
+    pass

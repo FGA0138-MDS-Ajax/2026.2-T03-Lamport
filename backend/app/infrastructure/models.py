@@ -1,7 +1,18 @@
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 
-from sqlalchemy import DateTime, Enum, ForeignKey, MetaData, String, UniqueConstraint, func
+from sqlalchemy import (
+    Date,
+    DateTime,
+    Enum,
+    ForeignKey,
+    MetaData,
+    SmallInteger,
+    String,
+    UniqueConstraint,
+    func,
+)
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from app.domain.users import Role
@@ -68,3 +79,18 @@ class LoginAttemptModel(Base):
     attempted_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), index=True
     )
+class CheckinModel(Base):
+    __tablename__ = "checkins"
+    __table_args__ = (UniqueConstraint("user_id", "data"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    data: Mapped[date] = mapped_column(Date)
+    humor: Mapped[int | None] = mapped_column(SmallInteger)
+    ansiedade: Mapped[int | None] = mapped_column(SmallInteger)
+    sono: Mapped[int | None] = mapped_column(SmallInteger)
+    sobrecarga: Mapped[int | None] = mapped_column(SmallInteger)
+    pensamento_risco: Mapped[bool]
+    nivel: Mapped[str] = mapped_column(String(20))
+    tags: Mapped[list[str]] = mapped_column(ARRAY(String(30)), server_default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

@@ -1,14 +1,16 @@
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 
 from sqlalchemy import delete, func, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.domain.errors import EmailAlreadyRegisteredError
+from app.domain.checkins import Checkin
+from app.domain.errors import CheckinAlreadyDoneError, EmailAlreadyRegisteredError
 from app.domain.users import Consent, User
 from app.infrastructure.models import (
+    CheckinModel,
     ConsentModel,
     LoginAttemptModel,
     RevokedTokenModel,
@@ -111,3 +113,41 @@ class SqlLoginAttemptRepository:
     def clear(self, key: str) -> None:
         self.session.execute(delete(LoginAttemptModel).where(LoginAttemptModel.key == key))
         self.session.commit()
+
+class SqlCheckinRepository:
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    def exists_for_date(self, user_id: uuid.UUID, data: date) -> bool:
+        return (
+            self.session.scalar(
+                select(CheckinModel.id).where(
+                    CheckinModel.user_id == user_id, CheckinModel.data == data
+                )
+            )
+            is not None
+        )
+
+    def add(self, checkin: Checkin) -> None:
+        self.session.add(
+            CheckinModel(
+                id=checkin.id,
+                user_id=checkin.user_id,
+                data=checkin.data,
+                humor=checkin.humor,
+                ansiedade=checkin.ansiedade,
+                sono=checkin.sono,
+                sobrecarga=checkin.sobrecarga,
+                pensamento_risco=checkin.pensamento_risco,
+                nivel=checkin.nivel.value,
+                tags=[tag.value for tag in checkin.tags],
+                created_at=checkin.created_at,
+            )
+        )
+        try:
+            self.session.commit()
+        except IntegrityError as exc:
+            self.session.rollback()
+            if "uq_checkins_user_id_data" in str(exc.orig):
+                raise CheckinAlreadyDoneError from exc
+            raise
