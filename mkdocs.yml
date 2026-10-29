@@ -7,6 +7,7 @@ nav:
   - Início: "index.md"
   - Visão do Produto e do Projeto: "visao-produto-projeto.md"
   - Documento de Arquitetura: "arquitetura.md"
+  - Vocabulário do check-in: "vocabulario-checkin.md"
   - Histórico de versões: "historico-versoes.md"
   - Atas de Reunião:
     - Ata 1: "atas-reuniao/ata-reuniao-1.md"
