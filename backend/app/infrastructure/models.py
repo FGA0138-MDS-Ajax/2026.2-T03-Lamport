@@ -1,9 +1,24 @@
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 
-from sqlalchemy import DateTime, Enum, ForeignKey, MetaData, String, UniqueConstraint, func
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    CheckConstraint,
+    Date,
+    DateTime,
+    Enum,
+    ForeignKey,
+    MetaData,
+    SmallInteger,
+    String,
+    UniqueConstraint,
+    func,
+)
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
+from app.domain.checkin import Nivel
 from app.domain.users import Role
 
 NAMING_CONVENTION = {
@@ -68,3 +83,56 @@ class LoginAttemptModel(Base):
     attempted_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), index=True
     )
+
+
+class CheckinModel(Base):
+    __tablename__ = "checkins"
+    __table_args__ = (
+        UniqueConstraint("user_id", "data"),
+        CheckConstraint(
+            "humor IS NULL OR (humor >= 1 AND humor <= 5)",
+            name="humor_range",
+        ),
+        CheckConstraint(
+            "ansiedade IS NULL OR (ansiedade >= 0 AND ansiedade <= 3)",
+            name="ansiedade_range",
+        ),
+        CheckConstraint(
+            "sono IS NULL OR (sono >= 1 AND sono <= 5)",
+            name="sono_range",
+        ),
+        CheckConstraint(
+            "sobrecarga IS NULL OR (sobrecarga >= 0 AND sobrecarga <= 3)",
+            name="sobrecarga_range",
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), index=True
+    )
+    data: Mapped[date] = mapped_column(Date, index=True)
+    pensamento_risco: Mapped[bool] = mapped_column(Boolean)
+    humor: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    ansiedade: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    sono: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    sobrecarga: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    nivel: Mapped[Nivel] = mapped_column(
+        Enum(
+            Nivel,
+            name="nivel",
+            native_enum=False,
+            create_constraint=True,
+            length=20,
+            values_callable=lambda niveis: [n.value for n in niveis],
+        ),
+        server_default=Nivel.AUTOCUIDADO.value,
+    )
+    tags: Mapped[list[str]] = mapped_column(
+        ARRAY(String(30)).with_variant(JSON, "sqlite"), server_default="{}"
+    )
+    criado_em: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+# Alias CheckinDiarioModel conforme Arquitetura (Figura 6) e Issue #4
+CheckinDiarioModel = CheckinModel
