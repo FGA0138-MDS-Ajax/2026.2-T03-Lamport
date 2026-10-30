@@ -1,9 +1,10 @@
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
+from app.domain.checkin import Nivel, Tag
 from app.domain.users import Role
 
 
@@ -35,3 +36,25 @@ class UserResponse(BaseModel):
 
 class TermsResponse(BaseModel):
     version: str
+
+
+class CheckinResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
+    id: uuid.UUID
+    data: date
+    p1: int | None = Field(default=None, validation_alias="humor")
+    p2: int | None = Field(default=None, validation_alias="ansiedade")
+    p3: int | None = Field(default=None, validation_alias="sono")
+    p4: int | None = Field(default=None, validation_alias="sobrecarga")
+    p5: bool = Field(validation_alias="pensamento_risco")
+    nivel: Nivel = Nivel.AUTOCUIDADO
+    tags: list[Tag] = Field(default_factory=list)
+    criado_em: datetime
+
+
+class CheckinPaginationResponse(BaseModel):
+    items: list[CheckinResponse]
+    total: int
+    limit: int
+    offset: int
