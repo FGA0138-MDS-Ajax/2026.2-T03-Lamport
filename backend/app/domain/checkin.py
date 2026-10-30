@@ -40,8 +40,16 @@ class Checkin:
     criado_em: datetime = field(default_factory=_now)
 
 
+# Alias CheckinDiario conforme especificado na Arquitetura (Figura 6) e Issue #4
+CheckinDiario = Checkin
+
+
 class CheckinRepository(Protocol):
+    def add(self, checkin: Checkin) -> None: ...
+
     def get_by_id_for_user(self, checkin_id: uuid.UUID, user_id: uuid.UUID) -> Checkin | None: ...
+
+    def get_by_user_and_date(self, user_id: uuid.UUID, data: date) -> Checkin | None: ...
 
     def list_by_user(
         self,
