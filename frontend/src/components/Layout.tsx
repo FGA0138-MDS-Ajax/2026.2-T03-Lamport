@@ -22,6 +22,8 @@ export function Layout() {
         </Link>
         {user && (
           <div className="header-session">
+            <Link to="/historico">Histórico</Link>
+            
             <span className="header-email">{user.email}</span>
             <button
               type="button"
