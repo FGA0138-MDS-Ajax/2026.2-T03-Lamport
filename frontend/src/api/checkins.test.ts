@@ -21,7 +21,7 @@ describe('checkinsApi', () => {
   beforeEach(() => {
     vi.unstubAllGlobals()
   })
-  
+
   it('propaga erro 409 quando o check-in do dia já foi realizado', async () => {
     mockApi({
       'POST /api/checkins': {
@@ -70,9 +70,7 @@ describe('checkinsApi', () => {
     const fetchMock = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'))
     vi.stubGlobal('fetch', fetchMock)
 
-    await expect(
-      checkinsApi.getTodayCheckin(token),
-    ).rejects.toMatchObject({
+    await expect(checkinsApi.getTodayCheckin(token)).rejects.toMatchObject({
       name: 'ApiError',
       status: 0,
       message: 'Network error',
@@ -80,7 +78,6 @@ describe('checkinsApi', () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
-
 
   it('cria um check-in enviando os campos esperados pelo backend', async () => {
     const fetchMock = mockApi({
@@ -96,7 +93,7 @@ describe('checkinsApi', () => {
       sono: 4,
       sobrecarga: 1,
       pensamento_risco: false,
-}
+    }
 
     const result = await checkinsApi.createCheckin(token, data)
 
@@ -168,9 +165,7 @@ describe('checkinsApi', () => {
       },
     })
 
-    await expect(
-      checkinsApi.getCheckin(token, checkin.id),
-    ).rejects.toBeInstanceOf(ApiError)
+    await expect(checkinsApi.getCheckin(token, checkin.id)).rejects.toBeInstanceOf(ApiError)
   })
 
   it('lança ApiError quando o token é inválido', async () => {
@@ -181,8 +176,6 @@ describe('checkinsApi', () => {
       },
     })
 
-    await expect(
-      checkinsApi.getTodayCheckin(token),
-    ).rejects.toBeInstanceOf(ApiError)
+    await expect(checkinsApi.getTodayCheckin(token)).rejects.toBeInstanceOf(ApiError)
   })
 })
