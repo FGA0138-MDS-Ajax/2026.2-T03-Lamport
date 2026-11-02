@@ -8,19 +8,9 @@ export interface CreateCheckinData {
   pensamento_risco: boolean
 }
 
-export type Nivel =
-  | 'autocuidado'
-  | 'atencao'
-  | 'prioritario'
-  | 'crise'
+export type Nivel = 'autocuidado' | 'atencao' | 'prioritario' | 'crise'
 
-export type Tag =
-  | 'HUMOR'
-  | 'ANSIEDADE'
-  | 'SONO'
-  | 'ESTRESSE'
-  | 'BEM_ESTAR'
-  | 'AJUDA_PROFISSIONAL'
+export type Tag = 'HUMOR' | 'ANSIEDADE' | 'SONO' | 'ESTRESSE' | 'BEM_ESTAR' | 'AJUDA_PROFISSIONAL'
 
 export interface Checkin {
   id: string
@@ -42,8 +32,7 @@ export const checkinsApi = {
       token,
     }),
 
-  getTodayCheckin: (token: string) =>
-    request<Checkin>('/checkins/hoje', { token }),
+  getTodayCheckin: (token: string) => request<Checkin>('/checkins/hoje', { token }),
 
   listCheckins: (token: string, limite = 30) =>
     request<Checkin[]>(`/checkins?limite=${limite}`, {
