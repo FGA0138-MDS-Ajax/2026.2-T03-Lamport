@@ -180,29 +180,11 @@ class SqlCheckinRepository:
         )
         return _to_checkin(model) if model else None
 
-    def list_by_user(
-        self,
-        user_id: uuid.UUID,
-        limit: int = 20,
-        offset: int = 0,
-        from_date: date | None = None,
-        to_date: date | None = None,
-    ) -> tuple[list[Checkin], int]:
-        filters = [CheckinModel.user_id == user_id]
-        if from_date is not None:
-            filters.append(CheckinModel.data >= from_date)
-        if to_date is not None:
-            filters.append(CheckinModel.data <= to_date)
-
-        count_query = select(func.count()).select_from(CheckinModel).where(*filters)
-        total = self.session.scalar(count_query) or 0
-
-        items_query = (
+    def list_by_user(self, user_id: uuid.UUID, limit: int) -> list[Checkin]:
+        models = self.session.scalars(
             select(CheckinModel)
-            .where(*filters)
-            .order_by(CheckinModel.data.desc(), CheckinModel.criado_em.desc())
-            .offset(offset)
+            .where(CheckinModel.user_id == user_id)
+            .order_by(CheckinModel.data.desc())
             .limit(limit)
         )
-        models = self.session.scalars(items_query).all()
-        return [_to_checkin(m) for m in models], total
+        return [_to_checkin(m) for m in models]

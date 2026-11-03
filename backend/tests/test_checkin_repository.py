@@ -177,46 +177,9 @@ def test_unique_constraint_same_user_same_date(repo, user_id, other_user_id):
     assert repo.get_by_user_and_date(other_user_id, checkin_day) is not None
 
 
-def test_list_by_user_pagination_and_ordering(repo, user_id):
-    d1 = Checkin(
-        user_id=user_id,
-        data=date(2026, 10, 1),
-        pensamento_risco=False,
-        nivel=Nivel.AUTOCUIDADO,
-    )
-    d2 = Checkin(
-        user_id=user_id,
-        data=date(2026, 10, 2),
-        pensamento_risco=False,
-        nivel=Nivel.AUTOCUIDADO,
-    )
-    d3 = Checkin(
-        user_id=user_id,
-        data=date(2026, 10, 3),
-        pensamento_risco=False,
-        nivel=Nivel.AUTOCUIDADO,
-    )
-
-    repo.add(d1)
-    repo.add(d2)
-    repo.add(d3)
-
-    # Order should be DESC: d3, d2, d1
-    items, total = repo.list_by_user(user_id, limit=2, offset=0)
-    assert total == 3
-    assert len(items) == 2
-    assert items[0].data == date(2026, 10, 3)
-    assert items[1].data == date(2026, 10, 2)
-
-    # Second page
-    page2, total2 = repo.list_by_user(user_id, limit=2, offset=2)
-    assert total2 == 3
-    assert len(page2) == 1
-    assert page2[0].data == date(2026, 10, 1)
-
-
-def test_list_by_user_date_filters(repo, user_id):
-    for day in range(1, 6):
+def test_list_by_user_newest_first_with_limit(repo, user_id):
+    # Gravados fora de ordem para que a ordenação venha da consulta.
+    for day in (2, 1, 3):
         repo.add(
             Checkin(
                 user_id=user_id,
@@ -226,17 +189,35 @@ def test_list_by_user_date_filters(repo, user_id):
             )
         )
 
-    items, total = repo.list_by_user(
-        user_id,
-        from_date=date(2026, 10, 2),
-        to_date=date(2026, 10, 4),
-    )
-    assert total == 3
-    assert [c.data for c in items] == [
-        date(2026, 10, 4),
+    assert [c.data for c in repo.list_by_user(user_id, limit=30)] == [
+        date(2026, 10, 3),
+        date(2026, 10, 2),
+        date(2026, 10, 1),
+    ]
+    assert [c.data for c in repo.list_by_user(user_id, limit=2)] == [
         date(2026, 10, 3),
         date(2026, 10, 2),
     ]
+
+
+def test_list_by_user_does_not_return_other_users_checkins(repo, user_id, other_user_id):
+    own = Checkin(
+        user_id=user_id,
+        data=date(2026, 10, 1),
+        pensamento_risco=False,
+        nivel=Nivel.AUTOCUIDADO,
+    )
+    repo.add(own)
+    repo.add(
+        Checkin(
+            user_id=other_user_id,
+            data=date(2026, 10, 2),
+            pensamento_risco=False,
+            nivel=Nivel.AUTOCUIDADO,
+        )
+    )
+
+    assert [c.id for c in repo.list_by_user(user_id, limit=30)] == [own.id]
 
 
 def test_cascade_delete_user_removes_checkins(repo, db_session, user_id):

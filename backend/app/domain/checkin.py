@@ -51,13 +51,6 @@ class CheckinRepository(Protocol):
 
     def get_by_user_and_date(self, user_id: uuid.UUID, data: date) -> Checkin | None: ...
 
-    def list_by_user(
-        self,
-        user_id: uuid.UUID,
-        limit: int = 20,
-        offset: int = 0,
-        from_date: date | None = None,
-        to_date: date | None = None,
-    ) -> tuple[list[Checkin], int]:
-        """Returns a page of check-ins (ordered DESC) and the total count."""
+    def list_by_user(self, user_id: uuid.UUID, limit: int) -> list[Checkin]:
+        """Returns the user's most recent check-ins, newest first."""
         ...
