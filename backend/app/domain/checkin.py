@@ -44,6 +44,15 @@ class Checkin:
 CheckinDiario = Checkin
 
 
+@dataclass(frozen=True)
+class ResultadoCheckin:
+    """Saída de avaliar_checkin (Arquitetura, Quadro 5)."""
+
+    nivel: Nivel
+    tags: tuple[Tag, ...]
+    regras: tuple[str, ...]
+
+
 class CheckinRepository(Protocol):
     def add(self, checkin: Checkin) -> None: ...
 
