@@ -1,31 +1,52 @@
-# Configuração para desenvolvimento local: as credenciais padrão do banco não devem ir para produção.
+# Ambiente de desenvolvimento e demonstração (Arquitetura, seção 2.6): web, api e db.
+# Lê SECRET_KEY e POSTGRES_PASSWORD do arquivo .env da raiz (copie de .env.example).
+# As credenciais padrão do banco servem apenas para uso local e não devem ir para produção.
+name: sintoniza
+
 services:
   db:
-    image: postgres:17-alpine
+    image: postgres:16-alpine
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-sintoniza}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sintoniza}
       POSTGRES_DB: ${POSTGRES_DB:-sintoniza}
+    # Publicada para os testes (pytest) e para a API rodando fora do Docker.
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 3s
       retries: 10
 
-  backend:
+  api:
     build: ./backend
-    env_file: ./backend/.env
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-sintoniza}:${POSTGRES_PASSWORD:-sintoniza}@db:5432/${POSTGRES_DB:-sintoniza}
-    ports:
-      - "8000:8000"
+      SECRET_KEY: ${SECRET_KEY:?defina SECRET_KEY no arquivo .env (veja .env.example)}
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  web:
+    build: ./frontend
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
 
 volumes:
-  pgdata:
+  db-data:
