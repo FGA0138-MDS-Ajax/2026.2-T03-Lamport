@@ -6,8 +6,8 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.domain.checkins import Checkin
-from app.domain.errors import CheckinAlreadyDoneError, EmailAlreadyRegisteredError
+from app.domain.checkin import Checkin, Nivel, Tag
+from app.domain.errors import CheckinAlreadyExistsError, EmailAlreadyRegisteredError
 from app.domain.users import Consent, User
 from app.infrastructure.models import (
     CheckinModel,
@@ -26,6 +26,22 @@ def _to_user(model: UserModel) -> User:
         role=model.role,
         created_at=model.created_at,
         updated_at=model.updated_at,
+    )
+
+
+def _to_checkin(model: CheckinModel) -> Checkin:
+    return Checkin(
+        id=model.id,
+        user_id=model.user_id,
+        data=model.data,
+        pensamento_risco=model.pensamento_risco,
+        nivel=Nivel(model.nivel) if isinstance(model.nivel, str) else model.nivel,
+        humor=model.humor,
+        ansiedade=model.ansiedade,
+        sono=model.sono,
+        sobrecarga=model.sobrecarga,
+        tags=[Tag(t) for t in model.tags] if model.tags else [],
+        criado_em=model.criado_em,
     )
 
 
@@ -119,36 +135,56 @@ class SqlCheckinRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def exists_for_date(self, user_id: uuid.UUID, data: date) -> bool:
-        return (
-            self.session.scalar(
-                select(CheckinModel.id).where(
-                    CheckinModel.user_id == user_id, CheckinModel.data == data
-                )
-            )
-            is not None
-        )
-
     def add(self, checkin: Checkin) -> None:
-        self.session.add(
-            CheckinModel(
-                id=checkin.id,
-                user_id=checkin.user_id,
-                data=checkin.data,
-                humor=checkin.humor,
-                ansiedade=checkin.ansiedade,
-                sono=checkin.sono,
-                sobrecarga=checkin.sobrecarga,
-                pensamento_risco=checkin.pensamento_risco,
-                nivel=checkin.nivel.value,
-                tags=[tag.value for tag in checkin.tags],
-                created_at=checkin.created_at,
-            )
+        model = CheckinModel(
+            id=checkin.id,
+            user_id=checkin.user_id,
+            data=checkin.data,
+            pensamento_risco=checkin.pensamento_risco,
+            humor=checkin.humor,
+            ansiedade=checkin.ansiedade,
+            sono=checkin.sono,
+            sobrecarga=checkin.sobrecarga,
+            nivel=checkin.nivel,
+            tags=[t.value if isinstance(t, Tag) else t for t in checkin.tags],
+            criado_em=checkin.criado_em,
         )
+        self.session.add(model)
         try:
-            self.session.commit()
+            self.session.flush()
         except IntegrityError as exc:
             self.session.rollback()
-            if "uq_checkins_user_id_data" in str(exc.orig):
-                raise CheckinAlreadyDoneError from exc
+            diag = getattr(exc.orig, "diag", None)
+            constraint_name = getattr(diag, "constraint_name", None)
+            if constraint_name == "uq_checkins_user_id_data" or "uq_checkins_user_id_data" in str(
+                exc.orig
+            ):
+                raise CheckinAlreadyExistsError from exc
             raise
+
+    def get_by_id_for_user(self, checkin_id: uuid.UUID, user_id: uuid.UUID) -> Checkin | None:
+        model = self.session.scalar(
+            select(CheckinModel).where(
+                CheckinModel.id == checkin_id,
+                CheckinModel.user_id == user_id,
+            )
+        )
+        return _to_checkin(model) if model else None
+
+    def get_by_user_and_date(self, user_id: uuid.UUID, data: date) -> Checkin | None:
+        model = self.session.scalar(
+            select(CheckinModel).where(
+                CheckinModel.user_id == user_id,
+                CheckinModel.data == data,
+            )
+        )
+        return _to_checkin(model) if model else None
+
+    def list_by_user(self, user_id: uuid.UUID, limit: int) -> list[Checkin]:
+        models = self.session.scalars(
+            select(CheckinModel)
+            .where(CheckinModel.user_id == user_id)
+            .order_by(CheckinModel.data.desc())
+            .limit(limit)
+        )
+        return [_to_checkin(m) for m in models]

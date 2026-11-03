@@ -22,5 +22,9 @@ class TooManyLoginAttemptsError(DomainError):
     pass
 
 
-class CheckinAlreadyDoneError(DomainError):
+class CheckinNotFoundError(DomainError):
+    pass
+
+
+class CheckinAlreadyExistsError(DomainError):
     pass
