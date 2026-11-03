@@ -1,11 +1,11 @@
 import { request } from './client'
 
 export interface CreateCheckinData {
-  humor: number | null
-  ansiedade: number | null
-  sono: number | null
-  sobrecarga: number | null
-  pensamento_risco: boolean
+  p1: number | null
+  p2: number | null
+  p3: number | null
+  p4: number | null
+  p5: boolean
 }
 
 export type Nivel = 'autocuidado' | 'atencao' | 'prioritario' | 'crise'
@@ -15,13 +15,21 @@ export type Tag = 'HUMOR' | 'ANSIEDADE' | 'SONO' | 'ESTRESSE' | 'BEM_ESTAR' | 'A
 export interface Checkin {
   id: string
   data: string
-  humor: number | null
-  ansiedade: number | null
-  sono: number | null
-  sobrecarga: number | null
-  pensamento_risco: boolean
+  p1: number | null
+  p2: number | null
+  p3: number | null
+  p4: number | null
+  p5: boolean
   nivel: Nivel
   tags: Tag[]
+  criado_em: string
+}
+
+export interface CheckinPaginationResponse {
+  items: Checkin[]
+  total: number
+  limit: number
+  offset: number
 }
 
 export const checkinsApi = {
@@ -34,10 +42,8 @@ export const checkinsApi = {
 
   getTodayCheckin: (token: string) => request<Checkin>('/checkins/hoje', { token }),
 
-  listCheckins: (token: string, limite = 30) =>
-    request<Checkin[]>(`/checkins?limite=${limite}`, {
-      token,
-    }),
+  listCheckins: (token: string, limit = 30, offset = 0) =>
+    request<CheckinPaginationResponse>(`/checkins?limit=${limit}&offset=${offset}`, { token }),
 
   getCheckin: (token: string, id: string) =>
     request<Checkin>(`/checkins/${encodeURIComponent(id)}`, { token }),
