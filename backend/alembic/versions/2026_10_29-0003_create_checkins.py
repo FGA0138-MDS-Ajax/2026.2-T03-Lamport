@@ -42,7 +42,6 @@ def upgrade() -> None:
                 create_constraint=True,
                 length=20,
             ),
-            server_default="autocuidado",
             nullable=False,
         ),
         sa.Column(

@@ -30,11 +30,11 @@ class Checkin:
     user_id: uuid.UUID
     data: date
     pensamento_risco: bool
+    nivel: Nivel
     humor: int | None = None
     ansiedade: int | None = None
     sono: int | None = None
     sobrecarga: int | None = None
-    nivel: Nivel = Nivel.AUTOCUIDADO
     tags: list[Tag] = field(default_factory=list)
     id: uuid.UUID = field(default_factory=uuid.uuid4)
     criado_em: datetime = field(default_factory=_now)

@@ -2,7 +2,6 @@ import uuid
 from datetime import date, datetime
 
 from sqlalchemy import (
-    JSON,
     Boolean,
     CheckConstraint,
     Date,
@@ -126,11 +125,8 @@ class CheckinModel(Base):
             length=20,
             values_callable=lambda niveis: [n.value for n in niveis],
         ),
-        server_default=Nivel.AUTOCUIDADO.value,
     )
-    tags: Mapped[list[str]] = mapped_column(
-        ARRAY(String(30)).with_variant(JSON, "sqlite"), server_default="{}"
-    )
+    tags: Mapped[list[str]] = mapped_column(ARRAY(String(30)), server_default="{}")
     criado_em: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 

@@ -35,11 +35,11 @@ def _to_checkin(model: CheckinModel) -> Checkin:
         user_id=model.user_id,
         data=model.data,
         pensamento_risco=model.pensamento_risco,
+        nivel=Nivel(model.nivel) if isinstance(model.nivel, str) else model.nivel,
         humor=model.humor,
         ansiedade=model.ansiedade,
         sono=model.sono,
         sobrecarga=model.sobrecarga,
-        nivel=Nivel(model.nivel) if isinstance(model.nivel, str) else model.nivel,
         tags=[Tag(t) for t in model.tags] if model.tags else [],
         criado_em=model.criado_em,
     )
@@ -154,14 +154,13 @@ class SqlCheckinRepository:
             self.session.flush()
         except IntegrityError as exc:
             self.session.rollback()
-            orig_msg = str(exc.orig).lower()
-            if (
-                "uq_checkins_user_id_data" in orig_msg
-                or "checkins.user_id, checkins.data" in orig_msg
+            diag = getattr(exc.orig, "diag", None)
+            constraint_name = getattr(diag, "constraint_name", None)
+            if constraint_name == "uq_checkins_user_id_data" or "uq_checkins_user_id_data" in str(
+                exc.orig
             ):
                 raise CheckinAlreadyExistsError from exc
             raise
-        self.session.commit()
 
     def get_by_id_for_user(self, checkin_id: uuid.UUID, user_id: uuid.UUID) -> Checkin | None:
         model = self.session.scalar(
