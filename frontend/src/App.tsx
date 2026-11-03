@@ -6,6 +6,7 @@ import { LoginPage } from './pages/LoginPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { RegisterPage } from './pages/RegisterPage'
+import { DailyCheckin } from './pages/DailyCheckin'
 
 export function App() {
   return (
@@ -13,6 +14,7 @@ export function App() {
       <Route element={<Layout />}>
         <Route element={<RequireAuth />}>
           <Route index element={<HomePage />} />
+          <Route path="dailycheckin" element={<DailyCheckin />} />
         </Route>
         <Route element={<GuestOnly />}>
           <Route path="login" element={<LoginPage />} />
