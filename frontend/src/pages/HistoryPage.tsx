@@ -1,19 +1,19 @@
 
 import { useEffect, useState } from 'react'
-import { mockCheckins } from '../mocks/checkins'
-import type { Checkin } from '../api/checkins'
+import { useAuth } from '../auth/AuthContext'
+import { checkinsApi, type Checkin } from '../api/checkins'
 
 const dateFormatter = new Intl.DateTimeFormat('pt-BR', {
   dateStyle: 'long',
 })
 
 const tagLabels: Record<string, string> = {
-  humor: 'Humor',
-  ansiedade: 'Ansiedade',
-  sono: 'Sono',
-  estresse: 'Estresse',
-  bem_estar: 'Bem-estar',
-  ajuda_profissional: 'Ajuda profissional',
+  HUMOR: 'Humor',
+  ANSIEDADE: 'Ansiedade',
+  SONO: 'Sono',
+  ESTRESSE: 'Estresse',
+  BEM_ESTAR: 'Bem-estar',
+  AJUDA_PROFISSIONAL: 'Ajuda profissional',
 }
 
 function formatDate(value: string) {
@@ -35,19 +35,46 @@ function groupByDate(checkins: Checkin[]) {
 }
 
 export function HistoryPage() {
+  const { token } = useAuth()
+
   const [checkins, setCheckins] = useState<Checkin[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    // Simula o tempo de resposta de uma API.
-    const timeout = setTimeout(() => {
-      setCheckins(mockCheckins)
-      setLoading(false)
-    }, 500)
+    let cancelled = false
 
-    return () => clearTimeout(timeout)
-  }, [])
+    async function loadCheckins() {
+      if (!token) {
+        setError(true)
+        setLoading(false)
+        return
+      }
+
+      try {
+        const response = await checkinsApi.listCheckins(token, 30, 0)
+
+        if (!cancelled) {
+          setCheckins(response.items)
+          setError(false)
+        }
+      } catch {
+        if (!cancelled) {
+          setError(true)
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false)
+        }
+      }
+    }
+
+    void loadCheckins()
+
+    return () => {
+      cancelled = true
+    }
+  }, [token])
 
   const groupedCheckins = groupByDate(checkins)
 
@@ -92,7 +119,7 @@ export function HistoryPage() {
               <article key={checkin.id}>
                 <p>
                   <strong>Humor:</strong>{' '}
-                  {checkin.humor ?? 'Não informado'}
+                  {checkin.p1 ?? 'Não informado'}
                 </p>
 
                 {checkin.tags.length > 0 && (
