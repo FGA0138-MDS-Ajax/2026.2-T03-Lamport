@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import uuid
 from collections.abc import Callable
@@ -18,7 +20,11 @@ def today_in_checkin_timezone() -> date:
 
 
 class CheckinService:
-    def __init__(self, checkins: CheckinRepository, commit: Callable[[], None]) -> None:
+    def __init__(
+        self,
+        checkins: CheckinRepository,
+        commit: Callable[[], None] = lambda: None,
+    ) -> None:
         self.checkins = checkins
         self.commit = commit
 
@@ -58,3 +64,34 @@ class CheckinService:
         if checkin is None:
             raise CheckinNotFoundError
         return checkin
+
+    def get_by_id(self, checkin_id: uuid.UUID, user_id: uuid.UUID) -> Checkin:
+        checkin = self.checkins.get_by_id_for_user(checkin_id, user_id)
+        if checkin is None:
+            raise CheckinNotFoundError
+        return checkin
+
+    def list(self, user_id: uuid.UUID, limit: int = 30) -> list[Checkin]:
+        clamped_limit = min(max(1, limit), 30)
+        return self.checkins.list_by_user(user_id, limit=clamped_limit)
+
+    # Aliases de compatibilidade
+    def get_checkin_detail(self, checkin_id: uuid.UUID, user_id: uuid.UUID) -> Checkin:
+        return self.get_by_id(checkin_id, user_id)
+
+    def get_today_checkin(self, user_id: uuid.UUID, today: date | None = None) -> Checkin:
+        target_date = today or today_in_checkin_timezone()
+        checkin = self.checkins.get_by_user_and_date(user_id, target_date)
+        if checkin is None:
+            raise CheckinNotFoundError
+        return checkin
+
+    def list_checkins(
+        self,
+        user_id: uuid.UUID,
+        limit: int = 30,
+        offset: int = 0,
+        from_date: date | None = None,
+        to_date: date | None = None,
+    ) -> list[Checkin]:
+        return self.list(user_id, limit=limit)
