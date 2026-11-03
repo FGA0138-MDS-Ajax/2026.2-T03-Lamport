@@ -19,11 +19,67 @@ Organização do backend (`backend/app`):
 
 ## Pré-requisitos
 
-- Python 3.12 ou superior
-- Node.js 22.22 ou superior
-- Docker e Docker Compose (para o PostgreSQL)
+- Docker e Docker Compose (o suficiente para subir o ambiente de demonstração)
+- Python 3.12 ou superior e Node.js 22.22 ou superior (para desenvolver e rodar os testes fora do Docker)
 
-## Configuração
+## Ambiente de demonstração
+
+O sistema completo roda com Docker Compose em três contêineres (Arquitetura, seção 2.6):
+
+| Serviço | Conteúdo                                                                   |
+| ------- | -------------------------------------------------------------------------- |
+| `web`   | Nginx com o build do React; encaminha `/api` para a API                    |
+| `api`   | FastAPI com Uvicorn (Python 3.12); aplica as migrações ao iniciar          |
+| `db`    | PostgreSQL 16 com volume persistente                                       |
+
+**1. Crie o arquivo `.env` na raiz do repositório** (ele não é versionado):
+
+```bash
+cp .env.example .env              # Windows (PowerShell): Copy-Item .env.example .env
+```
+
+Abra o `.env` e preencha `SECRET_KEY` com um valor aleatório de pelo menos 32 caracteres. Para gerar um:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(48))"
+# sem Python instalado:
+docker run --rm python:3.12-slim python -c "import secrets; print(secrets.token_urlsafe(48))"
+```
+
+**2. Suba o ambiente:**
+
+```bash
+docker compose up --build --detach --wait
+```
+
+O comando termina quando os três serviços estão prontos. O site fica em `http://localhost:8080` (a porta pode ser trocada por `WEB_PORT` no `.env`).
+
+**3. Rode o seed:**
+
+```bash
+docker compose exec api python -m app.seed_demo
+```
+
+O comando cria os usuários fictícios abaixo, todos com a senha `sintoniza-demo`. Pode ser executado de novo sem duplicar dados.
+
+| E-mail                  | Situação                                                      |
+| ----------------------- | ------------------------------------------------------------- |
+| `demo@example.com`      | Sem check-ins                                                 |
+| `historico@example.com` | Com check-ins nos 5 dias anteriores; o de hoje fica em aberto |
+
+O catálogo de materiais oficiais será carregado pelo comando seed da issue #19, que ainda não foi integrado. Quando for, este passo passa a incluir esse comando.
+
+**Comandos úteis:**
+
+```bash
+docker compose logs -f api        # acompanha os logs da API
+docker compose down               # para os contêineres e mantém os dados
+docker compose down --volumes     # para os contêineres e apaga o banco
+```
+
+Depois de atualizar a branch, rode de novo o `docker compose up --build --detach --wait` para reconstruir as imagens. A partir desta versão, o banco usa PostgreSQL 16 em um volume novo (`sintoniza_db-data`). Se um contêiner antigo do projeto ainda estiver usando a porta 5432, pare-o com `docker compose -p 20262-t03-lamport down`.
+
+## Desenvolvimento local
 
 ### Banco de dados
 
@@ -31,7 +87,7 @@ Organização do backend (`backend/app`):
 docker compose up -d db
 ```
 
-O PostgreSQL fica disponível em `localhost:5432` com usuário, senha e banco `sintoniza` (valores apenas para desenvolvimento; podem ser alterados por `POSTGRES_USER`, `POSTGRES_PASSWORD` e `POSTGRES_DB`).
+O PostgreSQL fica disponível em `localhost:5432` com usuário, senha e banco `sintoniza` (valores apenas para desenvolvimento; podem ser alterados por `POSTGRES_USER`, `POSTGRES_PASSWORD` e `POSTGRES_DB`). O `.env` da raiz precisa existir mesmo para subir só o banco (veja o passo 1 do ambiente de demonstração).
 
 ### Backend
 
@@ -66,9 +122,7 @@ alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
-A API fica em `http://localhost:8000` e a documentação OpenAPI em `http://localhost:8000/docs`.
-
-Alternativamente, banco e backend podem ser iniciados juntos com `docker compose up --build` (o contêiner aplica as migrações ao iniciar; o arquivo `backend/.env` precisa existir).
+A API fica em `http://localhost:8000` e a documentação OpenAPI em `http://localhost:8000/docs`. Para criar os usuários fictícios nesse banco local, rode `python -m app.seed_demo`.
 
 ### Frontend
 
@@ -83,12 +137,23 @@ A aplicação fica em `http://localhost:5173`. `VITE_API_URL` define o endereço
 
 ## Testes e verificações
 
-Backend (requer o PostgreSQL em execução; o banco `sintoniza_test` é recriado e migrado a cada execução, e pode ser alterado por `TEST_DATABASE_URL`):
+Backend (requer o PostgreSQL em execução com `docker compose up -d db`; o banco `sintoniza_test` é recriado e migrado a cada execução, e pode ser alterado por `TEST_DATABASE_URL`):
 
 ```bash
 cd backend
 pytest
 ruff check . && ruff format --check .
+```
+
+Para conferir se as migrações sobem e descem em um banco vazio, como a CI faz, use um banco descartável:
+
+```bash
+cd backend
+docker compose exec db createdb -U sintoniza sintoniza_mig
+export DATABASE_URL=postgresql+psycopg://sintoniza:sintoniza@localhost:5432/sintoniza_mig
+alembic upgrade head && alembic downgrade base && alembic upgrade head
+unset DATABASE_URL
+docker compose exec db dropdb -U sintoniza sintoniza_mig
 ```
 
 Frontend:
@@ -101,7 +166,23 @@ npm run format:check
 npm run build
 ```
 
-O workflow `.github/workflows/tests.yml` executa essas verificações em pull requests e em pushes para `main` e `developer`.
+## Integração contínua
+
+O workflow [`.github/workflows/tests.yml`](.github/workflows/tests.yml) roda em todo pull request e em pushes para `main` e `developer`, com três jobs:
+
+| Job        | O que verifica                                                                                                          |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `backend`  | ruff; migrações Alembic em banco vazio (upgrade, downgrade e upgrade); pytest com PostgreSQL 16 de teste                |
+| `frontend` | eslint, prettier, testes (vitest) e build                                                                               |
+| `demo`     | sobe `web`, `api` e `db` com Docker Compose seguindo este README, roda o seed e acessa o site e a API pelo Nginx        |
+
+As branches `main` e `developer` são protegidas: o merge só é liberado quando os três jobs passam. Para configurar a proteção (é preciso ser administrador do repositório), vá em **Settings → Branches → Add branch protection rule** e, para cada uma das branches:
+
+1. em **Branch name pattern**, informe `main` (depois repita para `developer`);
+2. marque **Require a pull request before merging** e, nela, **Require approvals** com 1 aprovação;
+3. marque **Require status checks to pass before merging** e **Require branches to be up to date before merging**;
+4. em **Status checks that are required**, adicione `backend`, `frontend` e `demo` (os nomes só aparecem depois que o workflow rodou uma vez);
+5. marque **Do not allow bypassing the above settings** e salve.
 
 ## Autenticação
 
