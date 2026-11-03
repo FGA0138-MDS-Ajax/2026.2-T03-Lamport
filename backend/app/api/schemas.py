@@ -39,15 +39,15 @@ class TermsResponse(BaseModel):
 
 
 class CheckinResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
     id: uuid.UUID
     data: date
-    pensamento_risco: bool
-    humor: int | None = None
-    ansiedade: int | None = None
-    sono: int | None = None
-    sobrecarga: int | None = None
+    p1: int | None = Field(default=None, validation_alias="humor")
+    p2: int | None = Field(default=None, validation_alias="ansiedade")
+    p3: int | None = Field(default=None, validation_alias="sono")
+    p4: int | None = Field(default=None, validation_alias="sobrecarga")
+    p5: bool = Field(validation_alias="pensamento_risco")
     nivel: Nivel = Nivel.AUTOCUIDADO
     tags: list[Tag] = Field(default_factory=list)
     criado_em: datetime

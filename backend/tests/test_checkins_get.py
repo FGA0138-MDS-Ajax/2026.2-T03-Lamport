@@ -1,4 +1,5 @@
 import uuid
+import zoneinfo
 from datetime import UTC, date, datetime, timedelta
 from unittest.mock import MagicMock
 
@@ -45,10 +46,16 @@ class FakeCheckinRepository:
                 return c
         return None
 
+    def get_by_user_and_date(self, user_id: uuid.UUID, data: date) -> Checkin | None:
+        for c in self._checkins:
+            if c.user_id == user_id and c.data == data:
+                return c
+        return None
+
     def list_by_user(
         self,
         user_id: uuid.UUID,
-        limit: int = 20,
+        limit: int = 30,
         offset: int = 0,
         from_date: date | None = None,
         to_date: date | None = None,
@@ -134,7 +141,7 @@ def test_service_get_checkin_detail_not_found():
 
 
 def test_service_get_checkin_detail_other_user_raises_not_found():
-    """Critério T08: acessar check-in de outro usuário deve levantar CheckinNotFoundError."""
+    """Critério TS-03 / T08: acessar check-in alheio deve levantar CheckinNotFoundError."""
     user_a = _make_user("a@example.com")
     user_b = _make_user("b@example.com")
     checkin_a = _make_checkin(user_id=user_a.id, checkin_date=date(2026, 10, 20))
@@ -149,20 +156,20 @@ def test_service_get_checkin_detail_other_user_raises_not_found():
 def test_service_list_checkins_pagination_and_limits():
     user = _make_user()
     checkins = [
-        _make_checkin(user_id=user.id, checkin_date=date(2026, 10, i)) for i in range(1, 11)
+        _make_checkin(user_id=user.id, checkin_date=date(2026, 9, 1) + timedelta(days=i))
+        for i in range(35)
     ]
     repo = FakeCheckinRepository(checkins)
     service = CheckinService(repo)
 
     # limit=5, offset=0
-    items, total = service.list_checkins(user_id=user.id, limit=5, offset=0)
+    items = service.list_checkins(user_id=user.id, limit=5, offset=0)
     assert len(items) == 5
-    assert total == 10
-    assert items[0].data == date(2026, 10, 10)  # DESC: mais recente primeiro
+    assert items[0].data == date(2026, 9, 1) + timedelta(days=34)  # DESC: mais recente primeiro
 
-    # limit > 100 é limitado a 100
-    items, total = service.list_checkins(user_id=user.id, limit=500, offset=0)
-    assert len(items) == 10
+    # limit máximo segundo R12 é 30
+    items = service.list_checkins(user_id=user.id, limit=50, offset=0)
+    assert len(items) == 30
 
 
 def test_service_list_checkins_date_filters():
@@ -173,17 +180,31 @@ def test_service_list_checkins_date_filters():
     repo = FakeCheckinRepository(checkins)
     service = CheckinService(repo)
 
-    items, total = service.list_checkins(
+    items = service.list_checkins(
         user_id=user.id,
         from_date=date(2026, 10, 5),
         to_date=date(2026, 10, 10),
     )
-    assert total == 6
+    assert len(items) == 6
     assert all(date(2026, 10, 5) <= c.data <= date(2026, 10, 10) for c in items)
 
 
+def test_service_get_today_checkin():
+    user = _make_user()
+    today = datetime.now(zoneinfo.ZoneInfo("America/Sao_Paulo")).date()
+    checkin = _make_checkin(user_id=user.id, checkin_date=today)
+    repo = FakeCheckinRepository([checkin])
+    service = CheckinService(repo)
+
+    result = service.get_today_checkin(user_id=user.id, today=today)
+    assert result.id == checkin.id
+
+    with pytest.raises(CheckinNotFoundError):
+        service.get_today_checkin(user_id=uuid.uuid4(), today=today)
+
+
 # ---------------------------------------------------------------------------
-# Testes da API (Rotas GET /api/checkins e GET /api/checkins/{id})
+# Testes da API (Rotas GET /api/checkins, GET /api/checkins/hoje e GET /api/checkins/{id})
 # ---------------------------------------------------------------------------
 
 
@@ -201,6 +222,13 @@ def test_api_checkin_by_id_requires_authentication():
         assert response.headers["www-authenticate"] == "Bearer"
 
 
+def test_api_checkin_today_requires_authentication():
+    with TestClient(app) as test_client:
+        response = test_client.get("/api/checkins/hoje")
+        assert response.status_code == 401
+        assert response.headers["www-authenticate"] == "Bearer"
+
+
 def test_api_list_checkins_empty():
     user = _make_user()
     repo = FakeCheckinRepository([])
@@ -214,21 +242,33 @@ def test_api_list_checkins_empty():
             response = test_client.get("/api/checkins")
             assert response.status_code == 200
             data = response.json()
-            assert data["items"] == []
-            assert data["total"] == 0
-            assert data["limit"] == 20
-            assert data["offset"] == 0
+            assert data == []
     finally:
         app.dependency_overrides.pop(get_current_session, None)
         app.dependency_overrides.pop(get_checkin_service, None)
 
 
-def test_api_list_checkins_ordered_desc_and_paginated():
+def test_api_list_checkins_ordered_desc_and_p1_p5_schema():
     user = _make_user()
     checkins = [
-        _make_checkin(user_id=user.id, checkin_date=date(2026, 10, 1)),
-        _make_checkin(user_id=user.id, checkin_date=date(2026, 10, 15)),
-        _make_checkin(user_id=user.id, checkin_date=date(2026, 10, 8)),
+        _make_checkin(
+            user_id=user.id,
+            checkin_date=date(2026, 10, 1),
+            humor=5,
+            ansiedade=0,
+            sono=4,
+            sobrecarga=1,
+            pensamento_risco=False,
+        ),
+        _make_checkin(
+            user_id=user.id,
+            checkin_date=date(2026, 10, 15),
+            humor=2,
+            ansiedade=3,
+            sono=1,
+            sobrecarga=2,
+            pensamento_risco=True,
+        ),
     ]
     repo = FakeCheckinRepository(checkins)
     service = CheckinService(repo)
@@ -238,40 +278,54 @@ def test_api_list_checkins_ordered_desc_and_paginated():
 
     try:
         with TestClient(app) as test_client:
-            response = test_client.get("/api/checkins?limit=2&offset=0")
+            response = test_client.get("/api/checkins?limite=2")
             assert response.status_code == 200
             data = response.json()
-            assert data["total"] == 3
-            assert len(data["items"]) == 2
-            # Ordenado DESC: 15/10 depois 08/10
-            assert data["items"][0]["data"] == "2026-10-15"
-            assert data["items"][1]["data"] == "2026-10-08"
+            assert len(data) == 2
+            # Mais recente primeiro (15/10)
+            item1 = data[0]
+            assert item1["data"] == "2026-10-15"
+            assert item1["p1"] == 2
+            assert item1["p2"] == 3
+            assert item1["p3"] == 1
+            assert item1["p4"] == 2
+            assert item1["p5"] is True
+
+            # Segundo item (01/10)
+            item2 = data[1]
+            assert item2["data"] == "2026-10-01"
+            assert item2["p1"] == 5
+            assert item2["p2"] == 0
+            assert item2["p3"] == 4
+            assert item2["p4"] == 1
+            assert item2["p5"] is False
     finally:
         app.dependency_overrides.pop(get_current_session, None)
         app.dependency_overrides.pop(get_checkin_service, None)
 
 
-def test_api_list_checkins_with_from_and_to_filters():
-    user = _make_user()
-    checkins = [
-        _make_checkin(user_id=user.id, checkin_date=date(2026, 10, 2)),
-        _make_checkin(user_id=user.id, checkin_date=date(2026, 10, 10)),
-        _make_checkin(user_id=user.id, checkin_date=date(2026, 10, 20)),
-    ]
-    repo = FakeCheckinRepository(checkins)
+def test_api_list_checkins_isolation_ts_03():
+    """Critério TS-03: usuário B não deve ver check-ins do usuário A na listagem."""
+    user_a = _make_user("a@example.com")
+    user_b = _make_user("b@example.com")
+
+    checkin_a = _make_checkin(user_id=user_a.id, checkin_date=date(2026, 10, 10))
+    checkin_b = _make_checkin(user_id=user_b.id, checkin_date=date(2026, 10, 12))
+
+    repo = FakeCheckinRepository([checkin_a, checkin_b])
     service = CheckinService(repo)
 
-    app.dependency_overrides[get_current_session] = lambda: _make_session(user)
+    app.dependency_overrides[get_current_session] = lambda: _make_session(user_b)
     app.dependency_overrides[get_checkin_service] = lambda: service
 
     try:
         with TestClient(app) as test_client:
-            response = test_client.get("/api/checkins?from=2026-10-05&to=2026-10-15")
+            response = test_client.get("/api/checkins")
             assert response.status_code == 200
             data = response.json()
-            assert data["total"] == 1
-            assert len(data["items"]) == 1
-            assert data["items"][0]["data"] == "2026-10-10"
+            assert len(data) == 1
+            assert data[0]["id"] == str(checkin_b.id)
+            assert not any(item["id"] == str(checkin_a.id) for item in data)
     finally:
         app.dependency_overrides.pop(get_current_session, None)
         app.dependency_overrides.pop(get_checkin_service, None)
@@ -303,8 +357,11 @@ def test_api_get_checkin_by_id_owner_success():
             data = response.json()
             assert data["id"] == str(checkin.id)
             assert data["data"] == "2026-10-28"
-            assert data["humor"] == 4
-            assert data["pensamento_risco"] is False
+            assert data["p1"] == 4
+            assert data["p2"] == 1
+            assert data["p3"] == 5
+            assert data["p4"] == 0
+            assert data["p5"] is False
             assert data["nivel"] == "autocuidado"
             assert "humor" in data["tags"]
     finally:
@@ -313,7 +370,7 @@ def test_api_get_checkin_by_id_owner_success():
 
 
 def test_api_get_checkin_by_id_other_user_returns_404():
-    """Critério de segurança T08: se o check-in for de outro usuário, retorna 404 (nunca 403)."""
+    """Critério de segurança TS-03: se o check-in for de outro usuário, retorna 404."""
     user_a = _make_user("a@example.com")
     user_b = _make_user("b@example.com")
     checkin_a = _make_checkin(user_id=user_a.id, checkin_date=date(2026, 10, 28))
@@ -335,9 +392,19 @@ def test_api_get_checkin_by_id_other_user_returns_404():
         app.dependency_overrides.pop(get_checkin_service, None)
 
 
-def test_api_get_checkin_by_id_nonexistent_returns_404():
+def test_api_get_today_checkin_found_and_not_found():
     user = _make_user()
-    repo = FakeCheckinRepository([])
+    today = datetime.now(zoneinfo.ZoneInfo("America/Sao_Paulo")).date()
+    checkin = _make_checkin(
+        user_id=user.id,
+        checkin_date=today,
+        humor=4,
+        ansiedade=0,
+        sono=5,
+        sobrecarga=0,
+        pensamento_risco=False,
+    )
+    repo = FakeCheckinRepository([checkin])
     service = CheckinService(repo)
 
     app.dependency_overrides[get_current_session] = lambda: _make_session(user)
@@ -345,9 +412,20 @@ def test_api_get_checkin_by_id_nonexistent_returns_404():
 
     try:
         with TestClient(app) as test_client:
-            response = test_client.get(f"/api/checkins/{uuid.uuid4()}")
-            assert response.status_code == 404
-            assert response.json() == {"detail": "Check-in not found"}
+            # 1. Usuário fez check-in hoje -> 200
+            response = test_client.get("/api/checkins/hoje")
+            assert response.status_code == 200
+            data = response.json()
+            assert data["id"] == str(checkin.id)
+            assert data["p1"] == 4
+            assert data["p5"] is False
+
+            # 2. Usuário que ainda não fez check-in hoje -> 404
+            other_user = _make_user("other@example.com")
+            app.dependency_overrides[get_current_session] = lambda: _make_session(other_user)
+            resp_not_found = test_client.get("/api/checkins/hoje")
+            assert resp_not_found.status_code == 404
+            assert resp_not_found.json() == {"detail": "Check-in not found"}
     finally:
         app.dependency_overrides.pop(get_current_session, None)
         app.dependency_overrides.pop(get_checkin_service, None)
