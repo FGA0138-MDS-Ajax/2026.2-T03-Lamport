@@ -3,10 +3,6 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../auth/AuthContext'
 import { checkinsApi, type Checkin } from '../api/checkins'
 
-const dateFormatter = new Intl.DateTimeFormat('pt-BR', {
-  dateStyle: 'long',
-})
-
 const tagLabels: Record<string, string> = {
   HUMOR: 'Humor',
   ANSIEDADE: 'Ansiedade',
@@ -16,22 +12,33 @@ const tagLabels: Record<string, string> = {
   AJUDA_PROFISSIONAL: 'Ajuda profissional',
 }
 
-function formatDate(value: string) {
-  const [year, month, day] = value.split('-').map(Number)
-
-  return dateFormatter.format(new Date(year, month - 1, day))
+const humorLabels: Record<number, string> = {
+  1: 'Muito ruim',
+  2: 'Ruim',
+  3: 'Regular',
+  4: 'Bom',
+  5: 'Muito bom',
 }
 
-function groupByDate(checkins: Checkin[]) {
-  return checkins.reduce<Record<string, Checkin[]>>((groups, checkin) => {
-    if (!groups[checkin.data]) {
-      groups[checkin.data] = []
-    }
+function formatDate(value: string) {
+  const [year, month, day] = value.split('-').map(Number)
+  const date = new Date(year, month - 1, day)
 
-    groups[checkin.data].push(checkin)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
 
-    return groups
-  }, {})
+  const yesterday = new Date(today)
+  yesterday.setDate(yesterday.getDate() - 1)
+
+  if (date.getTime() === today.getTime()) return 'Hoje'
+  if (date.getTime() === yesterday.getTime()) return 'Ontem'
+
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: 'short',
+  })
+    .format(date)
+    .replace('.', '')
 }
 
 export function HistoryPage() {
@@ -76,25 +83,21 @@ export function HistoryPage() {
     }
   }, [token])
 
-  const groupedCheckins = groupByDate(checkins)
-
-  const dates = Object.keys(groupedCheckins).sort((a, b) =>
-    b.localeCompare(a),
-  )
-
   if (loading) {
     return (
-      <section className="card" aria-labelledby="history-title">
-        <h1 id="history-title">Histórico de check-ins</h1>
-        <p role="status">Carregando histórico...</p>
+      <section className="history-page" aria-labelledby="history-title">
+        <h1 id="history-title">Histórico</h1>
+        <p className="muted" role="status">
+          Carregando histórico...
+        </p>
       </section>
     )
   }
 
   if (error) {
     return (
-      <section className="card" aria-labelledby="history-title">
-        <h1 id="history-title">Histórico de check-ins</h1>
+      <section className="history-page" aria-labelledby="history-title">
+        <h1 id="history-title">Histórico</h1>
         <p role="alert">
           Não foi possível carregar o histórico. Tente novamente.
         </p>
@@ -103,37 +106,49 @@ export function HistoryPage() {
   }
 
   return (
-    <section className="card" aria-labelledby="history-title">
-      <h1 id="history-title">Histórico de check-ins</h1>
+    <section className="history-page" aria-labelledby="history-title">
+      <h1 id="history-title">Histórico</h1>
+      <p className="muted history-description">
+        Seus últimos 30 check-ins.
+      </p>
 
       {checkins.length === 0 ? (
-        <p className="muted">
-          Você ainda não possui check-ins registrados.
-        </p>
+        <div className="history-empty">
+          <p>Você ainda não fez nenhum check-in.</p>
+        </div>
       ) : (
-        dates.map((date) => (
-          <section key={date} aria-labelledby={`date-${date}`}>
-            <h2 id={`date-${date}`}>{formatDate(date)}</h2>
+        <div className="history-list">
+          {checkins.map((checkin) => (
+            <article className="history-item" key={checkin.id}>
+              <strong className="history-date">
+                {formatDate(checkin.data)}
+              </strong>
 
-            {groupedCheckins[date].map((checkin) => (
-              <article key={checkin.id}>
-                <p>
+              <div className="history-details">
+                <p className="history-humor">
                   <strong>Humor:</strong>{' '}
-                  {checkin.p1 ?? 'Não informado'}
+                  {checkin.p1 === null
+                    ? 'Não informado'
+                    : humorLabels[checkin.p1] ?? 'Não informado'}
                 </p>
 
                 {checkin.tags.length > 0 && (
-                  <p>
-                    <strong>Temas:</strong>{' '}
-                    {checkin.tags
-                      .map((tag) => tagLabels[tag] ?? tag)
-                      .join(', ')}
-                  </p>
+                  <div className="history-tags">
+                    <span className="history-tags-label">Temas:</span>
+
+                    <div className="history-tag-list">
+                      {checkin.tags.map((tag) => (
+                        <span className="history-tag" key={tag}>
+                          {tagLabels[tag] ?? tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 )}
-              </article>
-            ))}
-          </section>
-        ))
+              </div>
+            </article>
+          ))}
+        </div>
       )}
     </section>
   )

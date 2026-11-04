@@ -1,5 +1,6 @@
+
 import { useState } from 'react'
-import { Link, Outlet, useNavigate } from 'react-router'
+import { Link, NavLink, Outlet, useNavigate } from 'react-router'
 import { useAuth } from '../auth/AuthContext'
 
 export function Layout() {
@@ -20,11 +21,21 @@ export function Layout() {
         <Link to="/" className="brand">
           Sintoniza
         </Link>
+
         {user && (
           <div className="header-session">
-            <Link to="/historico">Histórico</Link>
-            
+            <nav className="header-navigation" aria-label="Navegação principal">
+              <NavLink to="/" end>
+                Início
+              </NavLink>
+
+              <NavLink to="/historico">
+                Histórico
+              </NavLink>
+            </nav>
+
             <span className="header-email">{user.email}</span>
+
             <button
               type="button"
               className="button button-secondary"
@@ -36,9 +47,11 @@ export function Layout() {
           </div>
         )}
       </header>
+
       <main className="app-main">
         <Outlet />
       </main>
+
       <footer className="app-footer">
         <Link to="/privacidade">Termos de uso e privacidade</Link>
       </footer>
