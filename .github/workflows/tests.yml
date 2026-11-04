@@ -1,12 +1,20 @@
-name: Testes
+# Integração contínua (Visão, Quadro 25; Arquitetura, seção 2.6).
+# Os jobs backend, frontend e demo são as verificações exigidas pela proteção de branch:
+# se algum falhar, o pull request não pode ser mergeado.
+name: CI
 
 on:
   push:
     branches: [main, developer]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   backend:
@@ -16,7 +24,7 @@ jobs:
         working-directory: backend
     services:
       postgres:
-        image: postgres:17-alpine
+        image: postgres:16-alpine
         env:
           POSTGRES_USER: sintoniza
           POSTGRES_PASSWORD: sintoniza
@@ -28,17 +36,28 @@ jobs:
           --health-interval 5s
           --health-timeout 3s
           --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://sintoniza:sintoniza@localhost:5432/sintoniza
+      SECRET_KEY: ci-secret-key-with-at-least-32-characters
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "3.12"
           cache: pip
           cache-dependency-path: backend/requirements*.txt
       - run: pip install -r requirements-dev.txt
-      - run: ruff check .
-      - run: ruff format --check .
-      - run: pytest
+      - name: Lint (ruff)
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Migrações em banco vazio (upgrade, downgrade e upgrade)
+        run: |
+          alembic upgrade head
+          alembic downgrade base
+          alembic upgrade head
+      - name: Testes (pytest com PostgreSQL de teste)
+        run: pytest
 
   frontend:
     runs-on: ubuntu-latest
@@ -53,7 +72,39 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
-      - run: npm run lint
-      - run: npm run format:check
-      - run: npm test
-      - run: npm run build
+      - name: Lint (eslint e prettier)
+        run: |
+          npm run lint
+          npm run format:check
+      - name: Testes (vitest)
+        run: npm test
+      - name: Build
+        run: npm run build
+
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Cria o .env como no README
+        run: |
+          cp .env.example .env
+          sed -i "s|^SECRET_KEY=.*|SECRET_KEY=$(openssl rand -hex 32)|" .env
+      - name: Sobe web, api e db
+        run: docker compose up --build --detach --wait
+      - name: Carrega os usuários fictícios
+        run: docker compose exec -T api python -m app.seed_demo
+      - name: Verifica o ambiente pelo endereço do site
+        run: |
+          curl -fsS http://localhost:8080/ | grep -q 'id="root"'
+          curl -fsS http://localhost:8080/login | grep -q 'id="root"'
+          curl -fsS http://localhost:8080/api/health
+          curl -fsS http://localhost:8080/api/auth/login \
+            -H 'Content-Type: application/json' \
+            -d '{"email": "historico@example.com", "password": "sintoniza-demo"}' \
+            | grep -q access_token
+      - name: Logs dos contêineres
+        if: failure()
+        run: docker compose logs
+      - name: Remove os contêineres
+        if: always()
+        run: docker compose down --volumes
