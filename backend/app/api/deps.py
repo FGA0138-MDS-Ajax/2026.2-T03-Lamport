@@ -12,6 +12,7 @@ from app.domain.checkin import CheckinRepository
 from app.domain.errors import NotAuthenticatedError
 from app.infrastructure.database import get_session
 from app.infrastructure.repositories import (
+    SqlCheckinRepository,
     SqlLoginAttemptRepository,
     SqlRevokedTokenRepository,
     SqlUserRepository,
@@ -37,6 +38,13 @@ def get_auth_service(session: DbSession) -> AuthService:
 
 
 AuthServiceDep = Annotated[AuthService, Depends(get_auth_service)]
+
+
+def get_checkin_service(session: DbSession) -> CheckinService:
+    return CheckinService(checkins=SqlCheckinRepository(session), commit=session.commit)
+
+
+CheckinServiceDep = Annotated[CheckinService, Depends(get_checkin_service)]
 
 
 def get_current_session(
