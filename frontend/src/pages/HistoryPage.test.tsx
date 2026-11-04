@@ -75,12 +75,7 @@ const checkins: Checkin[] = [
 ]
 
 function mockSuccessfulResponse(items = checkins) {
-  listCheckinsMock.mockResolvedValue({
-    items,
-    total: items.length,
-    limit: 30,
-    offset: 0,
-  })
+  listCheckinsMock.mockResolvedValue(items)
 }
 
 describe('HistoryPage', () => {
@@ -146,11 +141,11 @@ describe('HistoryPage', () => {
     ).toBeInTheDocument()
   })
 
-  it('chama a API com o token e os parâmetros de paginação', async () => {
+  it('chama a API com o token e o limite', async () => {
     render(<HistoryPage />)
 
     await waitFor(() => {
-      expect(listCheckinsMock).toHaveBeenCalledWith('test-token', 30, 0)
+      expect(listCheckinsMock).toHaveBeenCalledWith('test-token', 30)
     })
   })
 })

@@ -59,10 +59,10 @@ export function HistoryPage() {
       }
 
       try {
-        const response = await checkinsApi.listCheckins(token, 30, 0)
+        const response = await checkinsApi.listCheckins(token, 30)
 
         if (!cancelled) {
-          setCheckins(response.items)
+          setCheckins(response)
           setError(false)
         }
       } catch {
