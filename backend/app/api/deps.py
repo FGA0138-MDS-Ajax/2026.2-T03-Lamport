@@ -8,7 +8,6 @@ from sqlalchemy.orm import Session
 from app.application.auth import AuthenticatedSession, AuthService, LoginThrottle
 from app.application.checkins import CheckinService
 from app.core.config import get_settings
-from app.domain.checkin import CheckinRepository
 from app.domain.errors import NotAuthenticatedError
 from app.infrastructure.database import get_session
 from app.infrastructure.repositories import (
@@ -57,22 +56,3 @@ def get_current_session(
 
 
 CurrentSession = Annotated[AuthenticatedSession, Depends(get_current_session)]
-
-
-def get_checkin_repository(session: DbSession) -> CheckinRepository:
-    try:
-        from app.infrastructure.repositories import SqlCheckinRepository  # type: ignore
-
-        return SqlCheckinRepository(session)
-    except (ImportError, AttributeError) as exc:
-        raise NotImplementedError("SqlCheckinRepository is not yet implemented") from exc
-
-
-CheckinRepoDep = Annotated[CheckinRepository, Depends(get_checkin_repository)]
-
-
-def get_checkin_service(repo: CheckinRepoDep) -> CheckinService:
-    return CheckinService(repo)
-
-
-CheckinServiceDep = Annotated[CheckinService, Depends(get_checkin_service)]

@@ -1,7 +1,14 @@
-from fastapi import APIRouter, status
+import uuid
+
+from fastapi import APIRouter, Query, status
 
 from app.api.deps import CheckinServiceDep, CurrentSession
-from app.api.schemas import CheckinCreate, CheckinCreatedResponse, CheckinTodayResponse
+from app.api.schemas import (
+    CheckinCreate,
+    CheckinCreatedResponse,
+    CheckinItemResponse,
+    CheckinTodayResponse,
+)
 from app.domain.checkin import Checkin
 
 router = APIRouter(prefix="/checkins", tags=["checkins"])
@@ -33,6 +40,22 @@ def create_checkin(
     )
 
 
+@router.get(
+    "",
+    response_model=list[CheckinItemResponse],
+    summary="Histórico de check-ins do usuário",
+    responses={
+        status.HTTP_401_UNAUTHORIZED: {"description": "Token ausente, inválido ou revogado"},
+    },
+)
+def list_checkins(
+    session: CurrentSession,
+    service: CheckinServiceDep,
+    limite: int = Query(default=30, ge=1, le=30),
+) -> list[Checkin]:
+    return service.list(user_id=session.user.id, limit=limite)
+
+
 # Declarada antes de qualquer rota "/{checkin_id}", para que "hoje" não seja lido como id.
 @router.get(
     "/hoje",
@@ -45,3 +68,20 @@ def create_checkin(
 )
 def read_today_checkin(session: CurrentSession, service: CheckinServiceDep) -> Checkin:
     return service.get_today(user_id=session.user.id)
+
+
+@router.get(
+    "/{checkin_id}",
+    response_model=CheckinItemResponse,
+    summary="Detalhes de um check-in por ID",
+    responses={
+        status.HTTP_401_UNAUTHORIZED: {"description": "Token ausente, inválido ou revogado"},
+        status.HTTP_404_NOT_FOUND: {"description": "Check-in não encontrado"},
+    },
+)
+def read_checkin_by_id(
+    checkin_id: uuid.UUID,
+    session: CurrentSession,
+    service: CheckinServiceDep,
+) -> Checkin:
+    return service.get_by_id(checkin_id=checkin_id, user_id=session.user.id)
