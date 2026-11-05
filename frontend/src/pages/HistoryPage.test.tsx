@@ -84,26 +84,15 @@ describe('HistoryPage', () => {
     mockSuccessfulResponse()
   })
 
-  it('exibe os check-ins agrupados por data', async () => {
+  it('exibe os check-ins com suas respectivas datas', async () => {
     render(<HistoryPage />)
 
-    expect(
-      await screen.findByRole('heading', {
-        name: '30 de outubro de 2026',
-      }),
-    ).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('30 de out')).toBeInTheDocument()
+    })
 
-    expect(
-      screen.getByRole('heading', {
-        name: '29 de outubro de 2026',
-      }),
-    ).toBeInTheDocument()
-
-    expect(
-      screen.getByRole('heading', {
-        name: '27 de outubro de 2026',
-      }),
-    ).toBeInTheDocument()
+    expect(screen.getAllByText('29 de out')).toHaveLength(2)
+    expect(screen.getByText('27 de out')).toBeInTheDocument()
 
     expect(screen.getAllByText(/Humor:/)).toHaveLength(4)
   })
@@ -115,30 +104,32 @@ describe('HistoryPage', () => {
   })
 
   it('exibe os check-ins em ordem cronológica decrescente', async () => {
-    render(<HistoryPage />)
+    const { container } = render(<HistoryPage />)
 
-    const newestDate = await screen.findByRole('heading', {
-      name: '30 de outubro de 2026',
+    await waitFor(() => {
+      expect(screen.getByText('30 de out')).toBeInTheDocument()
     })
 
-    const oldestDate = screen.getByRole('heading', {
-      name: '27 de outubro de 2026',
-    })
+    const dates = Array.from(
+      container.querySelectorAll('.history-date'),
+    ).map((element) => element.textContent)
 
-    expect(
-      newestDate.compareDocumentPosition(oldestDate) &
-        Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy()
+    expect(dates).toEqual([
+      '30 de out',
+      '29 de out',
+      '29 de out',
+      '27 de out',
+    ])
   })
 
   it('exibe uma mensagem quando ocorre um erro', async () => {
-    listCheckinsMock.mockRejectedValue(new Error('Erro ao carregar check-ins'))
+    listCheckinsMock.mockRejectedValue(
+      new Error('Erro ao carregar check-ins'),
+    )
 
     render(<HistoryPage />)
 
-    expect(
-      await screen.findByRole('alert'),
-    ).toBeInTheDocument()
+    expect(await screen.findByRole('alert')).toBeInTheDocument()
   })
 
   it('chama a API com o token e o limite', async () => {

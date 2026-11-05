@@ -115,6 +115,12 @@ export function HistoryPage() {
       {checkins.length === 0 ? (
         <div className="history-empty">
           <p>Você ainda não fez nenhum check-in.</p>
+          <button
+            type="button"
+            className="button button-primary history-empty-button"
+          >
+            Fazer o primeiro check-in
+          </button>
         </div>
       ) : (
         <div className="history-list">
