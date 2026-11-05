@@ -8,13 +8,14 @@ const token = 'test-token'
 const checkin: Checkin = {
   id: '550e8400-e29b-41d4-a716-446655440000',
   data: '2026-10-30',
-  humor: 3,
-  ansiedade: 2,
-  sono: 4,
-  sobrecarga: 1,
-  pensamento_risco: false,
+  p1: 3,
+  p2: 2,
+  p3: 4,
+  p4: 1,
+  p5: false,
   nivel: 'atencao',
   tags: ['ANSIEDADE'],
+  criado_em: '',
 }
 
 describe('checkinsApi', () => {
@@ -32,11 +33,11 @@ describe('checkinsApi', () => {
 
     await expect(
       checkinsApi.createCheckin(token, {
-        humor: 3,
-        ansiedade: 2,
-        sono: 4,
-        sobrecarga: 1,
-        pensamento_risco: false,
+        p1: 3,
+        p2: 2,
+        p3: 4,
+        p4: 1,
+        p5: false,
       }),
     ).rejects.toMatchObject({
       name: 'ApiError',
@@ -54,11 +55,11 @@ describe('checkinsApi', () => {
 
     await expect(
       checkinsApi.createCheckin(token, {
-        humor: 3,
-        ansiedade: 2,
-        sono: 4,
-        sobrecarga: 1,
-        pensamento_risco: false,
+        p1: 3,
+        p2: 2,
+        p3: 4,
+        p4: 1,
+        p5: false,
       }),
     ).rejects.toMatchObject({
       name: 'ApiError',
@@ -88,11 +89,11 @@ describe('checkinsApi', () => {
     })
 
     const data = {
-      humor: 3,
-      ansiedade: 2,
-      sono: 4,
-      sobrecarga: 1,
-      pensamento_risco: false,
+      p1: 3,
+      p2: 2,
+      p3: 4,
+      p4: 1,
+      p5: false,
     }
 
     const result = await checkinsApi.createCheckin(token, data)
@@ -125,22 +126,33 @@ describe('checkinsApi', () => {
   })
 
   it('lista check-ins com limite', async () => {
+    const paginatedResponse = {
+      items: [checkin],
+      total: 1,
+      limit: 30,
+      offset: 0,
+    }
+
     const fetchMock = mockApi({
       'GET /api/checkins': {
         status: 200,
-        body: [checkin],
+        body: paginatedResponse,
       },
     })
 
     const result = await checkinsApi.listCheckins(token)
 
-    expect(result).toEqual([checkin])
+    expect(result).toEqual(paginatedResponse)
 
-    const [url] = fetchMock.mock.calls[0]
+    const [url, init] = fetchMock.mock.calls[0]
     const parsedUrl = new URL(String(url))
 
     expect(parsedUrl.pathname).toBe('/api/checkins')
-    expect(parsedUrl.searchParams.get('limite')).toBe('30')
+    expect(parsedUrl.searchParams.get('limit')).toBe('30')
+    expect(parsedUrl.searchParams.get('offset')).toBe('0')
+    expect(init?.headers).toMatchObject({
+      Authorization: `Bearer ${token}`,
+    })
   })
 
   it('busca um check-in pelo ID', async () => {

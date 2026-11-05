@@ -5,13 +5,11 @@
  * do documento de Visão do Produto.
  *
  * As regras de classificação seguem o Quadro 16.
- *
- *
  */
 
 export const CHECKIN_QUESTIONS = [
   {
-    id: 'humor',
+    id: 'p1',
     code: 'P1',
     question: 'Como você está se sentindo hoje?',
     type: 'scale',
@@ -27,7 +25,7 @@ export const CHECKIN_QUESTIONS = [
     required: false,
   },
   {
-    id: 'ansiedade',
+    id: 'p2',
     code: 'P2',
     question: 'Quanto você se sentiu ansioso(a) hoje?',
     type: 'scale',
@@ -42,7 +40,7 @@ export const CHECKIN_QUESTIONS = [
     required: false,
   },
   {
-    id: 'sono',
+    id: 'p3',
     code: 'P3',
     question: 'Como foi a qualidade do seu sono?',
     type: 'scale',
@@ -58,7 +56,7 @@ export const CHECKIN_QUESTIONS = [
     required: false,
   },
   {
-    id: 'sobrecarga',
+    id: 'p4',
     code: 'P4',
     question: 'Quanto você se sentiu sobrecarregado(a) hoje?',
     type: 'scale',
@@ -73,7 +71,7 @@ export const CHECKIN_QUESTIONS = [
     required: false,
   },
   {
-    id: 'pensamento_risco',
+    id: 'p5',
     code: 'P5',
     question: 'Você teve pensamentos de se machucar ou de que seria melhor não estar vivo(a)?',
     type: 'boolean',
@@ -118,22 +116,22 @@ export const CHECKIN_TAG_LABELS = {
  */
 export const CHECKIN_RULES = {
   [CHECKIN_TAGS.HUMOR]: {
-    field: 'humor',
+    field: 'p1',
     operator: '<=',
     value: 2,
   },
   [CHECKIN_TAGS.ANSIEDADE]: {
-    field: 'ansiedade',
+    field: 'p2',
     operator: '>=',
     value: 2,
   },
   [CHECKIN_TAGS.SONO]: {
-    field: 'sono',
+    field: 'p3',
     operator: '<=',
     value: 2,
   },
   [CHECKIN_TAGS.ESTRESSE]: {
-    field: 'sobrecarga',
+    field: 'p4',
     operator: '>=',
     value: 2,
   },
