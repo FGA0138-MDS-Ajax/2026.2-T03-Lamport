@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { CHECKIN_QUESTIONS, type CheckinQuestion } from '../constants/checkin';
 import { checkinsApi } from '../api/checkins';
 import { authApi } from '../api/auth';
+import { ApiError } from '../api/client';
 
 type AnswerValue = number | boolean
 type Option = { readonly value: AnswerValue; readonly label: string }
@@ -23,6 +24,24 @@ export function DailyCheckin() {
   const { user, token } = useAuth()
   //const { user, token} = useAuth()
   if (!user) return null
+
+  const [checkinAlreadyExists, setCheckinAlreadyExists] = useState<string>()
+  async function checkTodayCheckin() {
+    try {
+      const todayCheckinExists = ((await checkinsApi.getTodayCheckin(token as string)) != null);
+      if (todayCheckinExists) {
+        console.log('Check-in already exists for today.')
+        setCheckinAlreadyExists('Você já realizou o check-in hoje.')
+        navigate('/', { state: {checkinAlreadyExists: true} /*, replace: true*/ })
+      }
+    } catch (error) {
+        console.log('caught:', error, error instanceof ApiError)
+        if (error instanceof ApiError && error.status != 200) {
+            console.error('Error checking for today\'s check-in:', error);
+        } //return false
+    }
+  } checkTodayCheckin()
+
 
   const navigate = useNavigate()
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({})
