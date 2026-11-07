@@ -26,6 +26,8 @@ export function DailyCheckin() {
   if (!user) return null
 
   const [checkinAlreadyExists, setCheckinAlreadyExists] = useState<string>()
+
+  const [checkedForCheckin, setCheckedForCheckin] = useState(false)
   async function checkTodayCheckin() {
     try {
       const todayCheckinExists = ((await checkinsApi.getTodayCheckin(token as string)) != null);
@@ -40,7 +42,17 @@ export function DailyCheckin() {
             console.error('Error checking for today\'s check-in:', error);
         } //return false
     }
-  } checkTodayCheckin()
+  } if (checkedForCheckin === false) {
+    checkTodayCheckin(); 
+    setCheckedForCheckin(true);
+  } // Call checkTodayCheckin() only once when the component mounts
+  
+  //checkTodayCheckin()
+
+  function checkForRisco(checkinData: CreateCheckinData): boolean {
+    if (checkinData.p5 === true) {return true}
+    else return false;
+  }
 
 
   const navigate = useNavigate()
@@ -85,7 +97,6 @@ export function DailyCheckin() {
       p5: (payload.find((p) => p.question_id === 'p5')?.answer as boolean),
     }
 
-    
     /*
     function strictNumbersOnly(val: number | boolean | null): number | null {
         return typeof val === 'number' ? val : null; // booleans and null both become null
@@ -110,16 +121,18 @@ export function DailyCheckin() {
     try {
       //const res = 
       await checkinsApi.createCheckin((token as string), checkinData);
+      checkForRisco(checkinData) ? navigate('/risco') : navigate('/'); // Navigate to /risco if p5 is true, else navigate to /
       //console.log('token:', token);
       //console.log('token as string:', token as string);
       //console.log('answers:', answers);
       //console.log('payload:', payload);
       //console.log('checkinData:', checkinData);
       //if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      navigate('/', { replace: true })
+      //navigate('/')
     } catch (error) {
       setError('Não foi possível enviar o check-in. Tente novamente.')
-     setSubmitting(false)
+      setSubmitting(false)
+      checkForRisco(checkinData) ? navigate('/risco') : console.log('Sem risco nos dados de checkin, mas houve um erro ao enviar. Mantendo mesma página.')
     }
   }
 
