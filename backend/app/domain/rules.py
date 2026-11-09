@@ -1,10 +1,12 @@
 from enum import Enum
-from typing import List, Optional, Dict, Any, NamedTuple
+from typing import Any, NamedTuple
+
 
 class Nivel(Enum):
-    AUTOCUIDADO = "N0"  
-    ALERTA = "N1"       
-    CRISE = "N2"        
+    AUTOCUIDADO = "N0"
+    ALERTA = "N1"
+    CRISE = "N2"
+
 
 class Tag(Enum):
     ANSIEDADE = "ansiedade"
@@ -14,27 +16,30 @@ class Tag(Enum):
     FOCO = "foco"
     BEM_ESTAR = "bem_estar"
 
+
 LIMITE_PADRAO_SUGESTOES = 3
 DIAS_BLOQUEIO_ULTIMAS_EXIBICOES = 7
+
 
 class ResultadoCheckin(NamedTuple):
     nivel: Nivel
     tags: tuple
     regras: tuple
 
+
 def avaliar_checkin(
-    p1: Optional[int] = None, 
-    p2: Optional[int] = None, 
-    p3: Optional[int] = None, 
-    p4: Optional[int] = None, 
-    p5: Optional[bool] = None
+    p1: int | None = None,
+    p2: int | None = None,
+    p3: int | None = None,
+    p4: int | None = None,
+    p5: bool | None = None,
 ) -> ResultadoCheckin:
     """
-    Avalia o check-in do usuário retornando o nível de risco, as tags identificadas 
+    Avalia o check-in do usuário retornando o nível de risco, as tags identificadas
     e as regras acionadas (R-D1 a R-D6).
     """
-    regras_acionadas: List[str] = []
-    tags_detectadas: List[Tag] = []
+    regras_acionadas: list[str] = []
+    tags_detectadas: list[Tag] = []
 
     if p5 is True:
         return ResultadoCheckin(Nivel.CRISE, (), ("R-D1",))
@@ -56,52 +61,49 @@ def avaliar_checkin(
         tags_detectadas.append(Tag.SONO)
 
     if regras_acionadas:
-        return ResultadoCheckin(
-            Nivel.AUTOCUIDADO, 
-            tuple(tags_detectadas), 
-            tuple(regras_acionadas)
-        )
+        return ResultadoCheckin(Nivel.AUTOCUIDADO, tuple(tags_detectadas), tuple(regras_acionadas))
 
     return ResultadoCheckin(Nivel.AUTOCUIDADO, (Tag.BEM_ESTAR,), ("R-D6",))
 
+
 def selecionar_materiais(
-    tags: tuple, 
-    catalogo: List[Dict[str, Any]], 
-    ultimas_exibicoes: List[str], 
-    limite: int = LIMITE_PADRAO_SUGESTOES
-) -> List[Dict[str, str]]:
+    tags: tuple,
+    catalogo: list[dict[str, Any]],
+    ultimas_exibicoes: list[str],
+    limite: int = LIMITE_PADRAO_SUGESTOES,
+) -> list[dict[str, str]]:
     """
     Seleciona sugestões de materiais com base nas tags, filtrando itens recentes.
     """
-    sugestoes: List[Dict[str, str]] = []
-    
+    sugestoes: list[dict[str, str]] = []
+
     for item in catalogo:
         material_id = item.get("material_id")
         item_tags = item.get("tags", [])
-        
+
         if material_id in ultimas_exibicoes:
             continue
 
         match_encontrado = any(tag in item_tags for tag in tags)
-        
+
         if match_encontrado:
-            sugestoes.append({
-                "material_id": material_id,
-                "regra": "R-S3",
-                "motivo": item.get("motivo", "")
-            })
-            
+            sugestoes.append(
+                {"material_id": material_id, "regra": "R-S3", "motivo": item.get("motivo", "")}
+            )
+
         if len(sugestoes) >= limite:
             break
 
     if not sugestoes and catalogo:
         for item in catalogo:
             if item.get("material_id") not in ultimas_exibicoes:
-                sugestoes.append({
-                    "material_id": item.get("material_id"),
-                    "regra": "R-S6",
-                    "motivo": "Conteúdo geral de apoio"
-                })
+                sugestoes.append(
+                    {
+                        "material_id": item.get("material_id"),
+                        "regra": "R-S6",
+                        "motivo": "Conteúdo geral de apoio",
+                    }
+                )
                 if len(sugestoes) >= limite:
                     break
 

@@ -1,9 +1,7 @@
 import pytest
-from enum import Enum
-from typing import List, Optional, Dict, Any, NamedTuple
 
 # Importa diretamente as funções puras do seu módulo
-from app.rules.checkin import avaliar_checkin, selecionar_materiais, Nivel, Tag
+from app.rules.checkin import Nivel, Tag, avaliar_checkin, selecionar_materiais
 
 
 def test_example_from_ti03():
@@ -78,12 +76,9 @@ def catalogo_mock():
 
 def test_rs2_ultimas_exibicoes_sao_ignoradas(catalogo_mock):
     sugestoes = selecionar_materiais(
-        tags=(Tag.ANSIEDADE,),
-        catalogo=catalogo_mock,
-        ultimas_exibicoes=["m1"],
-        limite=3
+        tags=(Tag.ANSIEDADE,), catalogo=catalogo_mock, ultimas_exibicoes=["m1"], limite=3
     )
-    
+
     ids_sugeridos = [s["material_id"] for s in sugestoes]
     assert "m1" not in ids_sugeridos
     assert "m5" in ids_sugeridos
@@ -91,23 +86,17 @@ def test_rs2_ultimas_exibicoes_sao_ignoradas(catalogo_mock):
 
 def test_rs3_rs4_match_de_tags_respeita_limite(catalogo_mock):
     sugestoes = selecionar_materiais(
-        tags=(Tag.ANSIEDADE,),
-        catalogo=catalogo_mock,
-        ultimas_exibicoes=[],
-        limite=1
+        tags=(Tag.ANSIEDADE,), catalogo=catalogo_mock, ultimas_exibicoes=[], limite=1
     )
-    
+
     assert len(sugestoes) == 1
     assert sugestoes[0]["material_id"] == "m1"
-    assert "R-S" in sugestoes[0]["regra"]  
+    assert "R-S" in sugestoes[0]["regra"]
 
 
 def test_rs5_rs6_fallback_quando_nenhuma_tag_da_match(catalogo_mock):
     sugestoes = selecionar_materiais(
-        tags=(Tag.FOCO,),
-        catalogo=catalogo_mock,
-        ultimas_exibicoes=[],
-        limite=2
+        tags=(Tag.FOCO,), catalogo=catalogo_mock, ultimas_exibicoes=[], limite=2
     )
     assert len(sugestoes) == 2
     assert sugestoes[0]["material_id"] == "m1"
