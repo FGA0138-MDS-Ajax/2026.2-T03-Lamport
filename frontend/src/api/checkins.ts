@@ -25,26 +25,27 @@ export interface Checkin {
   criado_em: string
 }
 
-export interface CheckinPaginationResponse {
-  items: Checkin[]
-  total: number
-  limit: number
-  offset: number
+// O backend devolve as tags em minúsculas ("humor", "bem_estar"); o frontend usa maiúsculas.
+function normalizeCheckin(checkin: Checkin): Checkin {
+  return { ...checkin, tags: (checkin.tags ?? []).map((tag) => tag.toUpperCase() as Tag) }
 }
 
 export const checkinsApi = {
-  createCheckin: (token: string, data: CreateCheckinData) =>
-    request<Checkin>('/checkins', {
-      method: 'POST',
-      body: data,
-      token,
-    }),
+  createCheckin: async (token: string, data: CreateCheckinData) =>
+    normalizeCheckin(
+      await request<Checkin>('/checkins', {
+        method: 'POST',
+        body: data,
+        token,
+      }),
+    ),
 
-  getTodayCheckin: (token: string) => request<Checkin>('/checkins/hoje', { token }),
+  getTodayCheckin: async (token: string) =>
+    normalizeCheckin(await request<Checkin>('/checkins/hoje', { token })),
 
-  listCheckins: (token: string, limit = 30, offset = 0) =>
-    request<CheckinPaginationResponse>(`/checkins?limit=${limit}&offset=${offset}`, { token }),
+  listCheckins: async (token: string, limite = 30) =>
+    (await request<Checkin[]>(`/checkins?limite=${limite}`, { token })).map(normalizeCheckin),
 
-  getCheckin: (token: string, id: string) =>
-    request<Checkin>(`/checkins/${encodeURIComponent(id)}`, { token }),
+  getCheckin: async (token: string, id: string) =>
+    normalizeCheckin(await request<Checkin>(`/checkins/${encodeURIComponent(id)}`, { token })),
 }

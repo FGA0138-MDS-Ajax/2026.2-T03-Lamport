@@ -126,30 +126,22 @@ describe('checkinsApi', () => {
   })
 
   it('lista check-ins com limite', async () => {
-    const paginatedResponse = {
-      items: [checkin],
-      total: 1,
-      limit: 30,
-      offset: 0,
-    }
-
     const fetchMock = mockApi({
       'GET /api/checkins': {
         status: 200,
-        body: paginatedResponse,
+        body: [checkin],
       },
     })
 
     const result = await checkinsApi.listCheckins(token)
 
-    expect(result).toEqual(paginatedResponse)
+    expect(result).toEqual([checkin])
 
     const [url, init] = fetchMock.mock.calls[0]
     const parsedUrl = new URL(String(url))
 
     expect(parsedUrl.pathname).toBe('/api/checkins')
-    expect(parsedUrl.searchParams.get('limit')).toBe('30')
-    expect(parsedUrl.searchParams.get('offset')).toBe('0')
+    expect(parsedUrl.searchParams.get('limite')).toBe('30')
     expect(init?.headers).toMatchObject({
       Authorization: `Bearer ${token}`,
     })
