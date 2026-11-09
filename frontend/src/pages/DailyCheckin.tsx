@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import { CHECKIN_QUESTIONS, type CheckinQuestion } from '../constants/checkin'
 import { checkinsApi } from '../api/checkins'
 import { ApiError } from '../api/client'
+import { AJUDA_PATH } from '../constants/ajuda'
 
 type AnswerValue = number | boolean
 type Option = { readonly value: AnswerValue; readonly label: string }
@@ -82,18 +83,18 @@ export function DailyCheckin() {
     const hasRisk = checkinData.p5 === true
     try {
       await checkinsApi.createCheckin(token as string, checkinData)
-      navigate(hasRisk ? '/risco' : '/')
+      navigate(hasRisk ? AJUDA_PATH : '/')
     } catch {
       setError('Não foi possível enviar o check-in. Tente novamente.')
       setSubmitting(false)
       // Por segurança, sinal de risco leva à página de ajuda mesmo se o envio falhar.
-      if (hasRisk) navigate('/risco')
+      if (hasRisk) navigate(AJUDA_PATH)
     }
   }
 
   return (
-    <section className="card" aria-labelledby="home-title">
-      <h1 id="home-title">Check-in diário</h1>
+    <section className="card" aria-labelledby="checkin-title">
+      <h1 id="checkin-title">Check-in diário</h1>
       <p>
         Você está conectado como <strong>{user.email}</strong>.
       </p>
