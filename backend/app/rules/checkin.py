@@ -1,30 +1,13 @@
-from enum import Enum
-from typing import Any, NamedTuple
+from app.domain.checkin import Nivel, ResultadoCheckin, Tag
 
+# Constantes Originais (Aviso: Alterar exige aprovação do PO)
+LIMITE_HUMOR = 2
+LIMITE_ANSIEDADE = 2
+LIMITE_SONO = 2
+LIMITE_ESTRESSE = 2
 
-class Nivel(Enum):
-    AUTOCUIDADO = "autocuidado"
-    ALERTA = "atencao"
-    CRISE = "crise"
-
-
-class Tag(Enum):
-    ANSIEDADE = "ansiedade"
-    ESTRESSE = "estresse"
-    SONO = "sono"
-    HUMOR = "humor"
-    FOCO = "foco"
-    BEM_ESTAR = "bem_estar"
-
-
-LIMITE_PADRAO_SUGESTOES = 3
-DIAS_BLOQUEIO_ULTIMAS_EXIBICOES = 7
-
-
-class ResultadoCheckin(NamedTuple):
-    nivel: Nivel
-    tags: tuple
-    regras: tuple
+# R-S1 (Prioridade de tags para exibição e materiais)
+ORDEM_TAGS = (Tag.ANSIEDADE, Tag.HUMOR, Tag.ESTRESSE, Tag.SONO)
 
 
 def avaliar_checkin(
@@ -32,78 +15,45 @@ def avaliar_checkin(
     p2: int | None = None,
     p3: int | None = None,
     p4: int | None = None,
-    p5: bool | None = None,
+    p5: bool = False,
 ) -> ResultadoCheckin:
     """
-    Avalia o check-in do usuário retornando o nível de risco, as tags identificadas
-    e as regras acionadas (R-D1 a R-D6).
+    Avalia o check-in do usuário aplicando as regras R-D1 a R-D6.
+    Retorna ResultadoCheckin com nível, tags na ordem de prioridade e regras acionadas.
     """
     regras_acionadas: list[str] = []
     tags_detectadas: list[Tag] = []
 
+    # R-D1: P5 (Crise/Emergência) tem precedência absoluta
     if p5 is True:
-        return ResultadoCheckin(Nivel.CRISE, (), ("R-D1",))
+        return ResultadoCheckin(nivel=Nivel.CRISE, tags=(), regras=("R-D1",))
 
-    if p2 is not None and p2 >= 2:
+    # Avaliação de limites exatos com as constantes
+    if p2 is not None and p2 >= LIMITE_ANSIEDADE:
         regras_acionadas.append("R-D3")
         tags_detectadas.append(Tag.ANSIEDADE)
 
-    if p1 is not None and p1 <= 2:
+    if p1 is not None and p1 <= LIMITE_HUMOR:
         regras_acionadas.append("R-D2")
         tags_detectadas.append(Tag.HUMOR)
 
-    if p4 is not None and p4 >= 2:
+    if p4 is not None and p4 >= LIMITE_ESTRESSE:
         regras_acionadas.append("R-D5")
         tags_detectadas.append(Tag.ESTRESSE)
 
-    if p3 is not None and p3 <= 2:
+    if p3 is not None and p3 <= LIMITE_SONO:
         regras_acionadas.append("R-D4")
         tags_detectadas.append(Tag.SONO)
 
     if regras_acionadas:
-        return ResultadoCheckin(Nivel.AUTOCUIDADO, tuple(tags_detectadas), tuple(regras_acionadas))
-    return ResultadoCheckin(Nivel.AUTOCUIDADO, (Tag.BEM_ESTAR,), ("R-D6",))
+        # Reordena as tags detectadas conforme a prioridade R-S1
+        tags_ordenadas = tuple(tag for tag in ORDEM_TAGS if tag in tags_detectadas)
+        nivel_calculado = Nivel.ATENCAO if len(regras_acionadas) <= 2 else Nivel.PRIORITARIO
+        return ResultadoCheckin(
+            nivel=nivel_calculado,
+            tags=tags_ordenadas,
+            regras=tuple(regras_acionadas),
+        )
 
-
-def selecionar_materiais(
-    tags: tuple,
-    catalogo: list[dict[str, Any]],
-    ultimas_exibicoes: list[str],
-    limite: int = LIMITE_PADRAO_SUGESTOES,
-) -> list[dict[str, str]]:
-    """
-    Seleciona sugestões de materiais com base nas tags, filtrando itens recentes.
-    """
-    sugestoes: list[dict[str, str]] = []
-
-    for item in catalogo:
-        material_id = item.get("material_id")
-        item_tags = item.get("tags", [])
-
-        if material_id in ultimas_exibicoes:
-            continue
-
-        match_encontrado = any(tag in item_tags for tag in tags)
-
-        if match_encontrado:
-            sugestoes.append(
-                {"material_id": material_id, "regra": "R-S3", "motivo": item.get("motivo", "")}
-            )
-
-        if len(sugestoes) >= limite:
-            break
-
-    if not sugestoes and catalogo:
-        for item in catalogo:
-            if item.get("material_id") not in ultimas_exibicoes:
-                sugestoes.append(
-                    {
-                        "material_id": item.get("material_id"),
-                        "regra": "R-S6",
-                        "motivo": "Conteúdo geral de apoio",
-                    }
-                )
-                if len(sugestoes) >= limite:
-                    break
-
-    return sugestoes
+    # R-D6: Sem risco
+    return ResultadoCheckin(nivel=Nivel.AUTOCUIDADO, tags=(Tag.BEM_ESTAR,), regras=("R-D6",))
