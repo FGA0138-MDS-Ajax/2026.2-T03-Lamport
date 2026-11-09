@@ -8,6 +8,7 @@ import { PrivacyPage } from './pages/PrivacyPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { DailyCheckin } from './pages/DailyCheckin'
 import { RiscoPage } from './pages/RiscoPage'
+import { HistoryPage } from './pages/HistoryPage'
 
 export function App() {
   return (
@@ -17,6 +18,7 @@ export function App() {
           <Route index element={<HomePage />} />
           <Route path="dailycheckin" element={<DailyCheckin />} />
           <Route path="risco" element={<RiscoPage />} />
+          <Route path="historico" element={<HistoryPage />} />
         </Route>
         <Route element={<GuestOnly />}>
           <Route path="login" element={<LoginPage />} />

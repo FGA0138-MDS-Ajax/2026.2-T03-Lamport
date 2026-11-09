@@ -4,6 +4,17 @@ from app.domain.checkin import Nivel, Tag
 from app.rules.checkin import avaliar_checkin
 
 
+# Sobrescreve fixtures de banco do conftest.py para testes unitários puros de regras.
+@pytest.fixture(scope="session", autouse=True)
+def database():
+    yield
+
+
+@pytest.fixture(autouse=True)
+def clean_tables():
+    yield
+
+
 def test_example_from_ti03():
     resultado = avaliar_checkin(4, 3, 1, 0, False)
 

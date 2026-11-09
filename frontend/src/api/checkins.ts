@@ -25,13 +25,6 @@ export interface Checkin {
   criado_em: string
 }
 
-export interface CheckinPaginationResponse {
-  items: Checkin[]
-  total: number
-  limit: number
-  offset: number
-}
-
 export const checkinsApi = {
   createCheckin: (token: string, data: CreateCheckinData) =>
     request<Checkin>('/checkins', {
@@ -42,8 +35,8 @@ export const checkinsApi = {
 
   getTodayCheckin: (token: string) => request<Checkin>('/checkins/hoje', { token }),
 
-  listCheckins: (token: string, limit = 30, offset = 0) =>
-    request<CheckinPaginationResponse>(`/checkins?limit=${limit}&offset=${offset}`, { token }),
+  listCheckins: (token: string, limite = 30) =>
+    request<Checkin[]>(`/checkins?limite=${limite}`, { token }),
 
   getCheckin: (token: string, id: string) =>
     request<Checkin>(`/checkins/${encodeURIComponent(id)}`, { token }),
