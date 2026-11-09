@@ -45,9 +45,42 @@ def clean_tables():
         conn.execute(text("TRUNCATE users, consents, revoked_tokens, login_attempts, checkins"))
 
 
+SENSITIVE_KEY_PARTS = ("senha", "password", "hash")
+
+
+def find_sensitive_keys(data, path="$") -> list[str]:
+    """Caminhos de chaves sensíveis em qualquer nível de um JSON (TS-04)."""
+    found: list[str] = []
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if any(part in str(key).lower() for part in SENSITIVE_KEY_PARTS):
+                found.append(f"{path}.{key}")
+            found += find_sensitive_keys(value, f"{path}.{key}")
+    elif isinstance(data, list):
+        for index, item in enumerate(data):
+            found += find_sensitive_keys(item, f"{path}[{index}]")
+    return found
+
+
 @pytest.fixture
 def client():
+    """Cliente que falha se qualquer resposta JSON da suíte expuser campo sensível (TS-04)."""
     with TestClient(app) as client:
+        original_request = client.request
+
+        def checked_request(method, url, *args, **kwargs):
+            response = original_request(method, url, *args, **kwargs)
+            # O schema OpenAPI descreve campos de entrada, sem conter dados de usuários.
+            if (
+                response.request.url.path != app.openapi_url
+                and response.content
+                and "application/json" in response.headers.get("content-type", "")
+            ):
+                leaks = find_sensitive_keys(response.json())
+                assert not leaks, f"{method} {url} expôs campos sensíveis: {leaks}"
+            return response
+
+        client.request = checked_request
         yield client
 
 

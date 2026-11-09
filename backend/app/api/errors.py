@@ -1,6 +1,7 @@
 import logging
 
 from fastapi import FastAPI, Request, status
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -55,6 +56,13 @@ async def _handle_database_error(request: Request, exc: SQLAlchemyError) -> JSON
     )
 
 
+async def _handle_validation_error(request: Request, exc: RequestValidationError) -> JSONResponse:
+    # O input pode conter a senha ou o corpo inteiro quando um campo está ausente.
+    details = [{key: error[key] for key in ("type", "loc", "msg")} for error in exc.errors()]
+    return JSONResponse({"detail": details}, status_code=status.HTTP_422_UNPROCESSABLE_CONTENT)
+
+
 def register_error_handlers(app: FastAPI) -> None:
+    app.add_exception_handler(RequestValidationError, _handle_validation_error)
     app.add_exception_handler(DomainError, _handle_domain_error)
     app.add_exception_handler(SQLAlchemyError, _handle_database_error)
