@@ -2,6 +2,7 @@ import pytest
 
 from app.domain.checkin import Nivel, Tag
 from app.rules.checkin import avaliar_checkin
+from app.rules.selecao import MaterialCatalogo, selecionar_materiais
 
 
 # Sobrescreve fixtures de banco do conftest.py para testes unitários puros de regras.
@@ -74,3 +75,32 @@ def test_unanswered_question_does_not_trigger_its_rule(respostas):
 
     assert resultado.nivel == Nivel.AUTOCUIDADO
     assert resultado.tags == (Tag.BEM_ESTAR,)
+
+
+@pytest.fixture
+def catalogo():
+    return [
+        MaterialCatalogo("m1", {"ansiedade"}, "Apoio 1"),
+        MaterialCatalogo("m2", {"sono"}, "Apoio 2"),
+        MaterialCatalogo("m3", {"bem_estar"}, "Apoio 3"),
+    ]
+
+
+def test_tu06_selecao_limite_zero_ou_catalogo_vazio(catalogo):
+    assert selecionar_materiais((Tag.ANSIEDADE,), catalogo, set(), limite=0) == []
+    assert selecionar_materiais((Tag.ANSIEDADE,), [], set(), limite=3) == []
+
+
+def test_tu06_rs2_ignora_ultimas_exibicoes(catalogo):
+    # m1 tem a tag ansiedade, mas está no bloqueio R-S2
+    res = selecionar_materiais((Tag.ANSIEDADE,), catalogo, {"m1"}, limite=3)
+    assert "m1" not in [r.material_id for r in res]
+    # Deve cair no fallback R-S6 e pegar m3
+    assert res[0].regra == "R-S6"
+
+
+def test_tu06_rs3_match_exato_de_tags(catalogo):
+    res = selecionar_materiais((Tag.SONO,), catalogo, set(), limite=1)
+    assert len(res) == 1
+    assert res[0].material_id == "m2"
+    assert res[0].regra == "R-S3"
