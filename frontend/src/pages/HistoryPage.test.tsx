@@ -110,22 +110,15 @@ describe('HistoryPage', () => {
       expect(screen.getByText('30 de out')).toBeInTheDocument()
     })
 
-    const dates = Array.from(
-      container.querySelectorAll('.history-date'),
-    ).map((element) => element.textContent)
+    const dates = Array.from(container.querySelectorAll('.history-date')).map(
+      (element) => element.textContent,
+    )
 
-    expect(dates).toEqual([
-      '30 de out',
-      '29 de out',
-      '29 de out',
-      '27 de out',
-    ])
+    expect(dates).toEqual(['30 de out', '29 de out', '29 de out', '27 de out'])
   })
 
   it('exibe uma mensagem quando ocorre um erro', async () => {
-    listCheckinsMock.mockRejectedValue(
-      new Error('Erro ao carregar check-ins'),
-    )
+    listCheckinsMock.mockRejectedValue(new Error('Erro ao carregar check-ins'))
 
     render(<HistoryPage />)
 

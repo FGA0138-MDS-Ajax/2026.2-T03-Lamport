@@ -418,8 +418,6 @@ a {
   text-decoration: none;
 }
 
-
-
 /* Menu mobile */
 
 .menu-toggle {
@@ -493,108 +491,106 @@ a {
     display: none;
   }
 
-  
-.menu-toggle {
-  display: flex;
-  position: relative;
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.menu-toggle span {
-  position: absolute;
-  display: block;
-  width: 20px;
-  height: 2.5px;
-  border-radius: 2px;
-  background: var(--color-text);
-  opacity: 1;
-  transition:
-    transform 250ms ease,
-    opacity 200ms ease;
-}
-
-/* Posição inicial dos três traços */
-
-.menu-toggle span:nth-child(1) {
-  transform: translateY(-7px);
-}
-
-.menu-toggle span:nth-child(2) {
-  transform: translateY(0);
-}
-
-.menu-toggle span:nth-child(3) {
-  transform: translateY(7px);
-}
-
-/* Transformação em X quando o menu está aberto */
-
-.menu-toggle[aria-expanded='true'] span:nth-child(1) {
-  transform: rotate(45deg);
-}
-
-.menu-toggle[aria-expanded='true'] span:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.menu-toggle[aria-expanded='true'] span:nth-child(3) {
-  transform: rotate(-45deg);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .menu-toggle span {
-    transition: none;
+  .menu-toggle {
+    display: flex;
+    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
-}
 
+  .menu-toggle span {
+    position: absolute;
+    display: block;
+    width: 20px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: var(--color-text);
+    opacity: 1;
+    transition:
+      transform 250ms ease,
+      opacity 200ms ease;
+  }
+
+  /* Posição inicial dos três traços */
+
+  .menu-toggle span:nth-child(1) {
+    transform: translateY(-7px);
+  }
+
+  .menu-toggle span:nth-child(2) {
+    transform: translateY(0);
+  }
+
+  .menu-toggle span:nth-child(3) {
+    transform: translateY(7px);
+  }
+
+  /* Transformação em X quando o menu está aberto */
+
+  .menu-toggle[aria-expanded='true'] span:nth-child(1) {
+    transform: rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded='true'] span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .menu-toggle[aria-expanded='true'] span:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-toggle span {
+      transition: none;
+    }
+  }
 
   .mobile-navigation {
-  position: absolute;
-  z-index: 10;
-  top: calc(100% + 1px);
-  right: 1rem;
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + 1px);
+    right: 1rem;
 
-  display: flex;
-  flex-direction: column;
-  width: min(16rem, calc(100vw - 2rem));
-  padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    width: min(16rem, calc(100vw - 2rem));
+    padding: 0.5rem 1rem;
 
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
 
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateY(-8px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
 
-  transition:
-    opacity 200ms ease,
-    transform 250ms ease,
-    visibility 250ms;
-}
+    transition:
+      opacity 200ms ease,
+      transform 250ms ease,
+      visibility 250ms;
+  }
 
-.mobile-navigation.is-open {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateY(0);
+  .mobile-navigation.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
 
-  transition:
-    opacity 200ms ease,
-    transform 250ms ease,
-    visibility 0s;
-}
+    transition:
+      opacity 200ms ease,
+      transform 250ms ease,
+      visibility 0s;
+  }
 
   .mobile-navigation a {
     padding: 0.75rem 0;
@@ -629,7 +625,6 @@ a {
     transition: none;
   }
 }
-
 
 /* Botão de ajuda imediata */
 

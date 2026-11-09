@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
 import { useAuth } from '../auth/AuthContext'
@@ -32,22 +31,17 @@ export function Layout() {
 
         {user && (
           <div className="header-session">
-            <button
-              type="button"
-              className="button-help"
-            >
+            <button type="button" className="button-help">
               <span aria-hidden="true">♥</span>
               Preciso de ajuda agora
             </button>
-            
+
             <nav className="header-navigation" aria-label="Navegação principal">
               <NavLink to="/" end>
                 Início
               </NavLink>
 
-              <NavLink to="/historico">
-                Histórico
-              </NavLink>
+              <NavLink to="/historico">Histórico</NavLink>
             </nav>
 
             <span className="header-email">{user.email}</span>
@@ -80,25 +74,25 @@ export function Layout() {
               aria-label="Navegação móvel"
               aria-hidden={!menuOpen}
             >
-                <NavLink to="/" end onClick={closeMenu}>
-                  Início
-                </NavLink>
+              <NavLink to="/" end onClick={closeMenu}>
+                Início
+              </NavLink>
 
-                <NavLink to="/historico" onClick={closeMenu}>
-                  Histórico
-                </NavLink>
+              <NavLink to="/historico" onClick={closeMenu}>
+                Histórico
+              </NavLink>
 
-                <span className="mobile-menu-email">{user.email}</span>
+              <span className="mobile-menu-email">{user.email}</span>
 
-                <button
-                  type="button"
-                  className="mobile-menu-logout"
-                  onClick={handleLogout}
-                  disabled={leaving}
-                >
-                  {leaving ? 'Saindo…' : 'Sair da conta'}
-                </button>
-              </nav>
+              <button
+                type="button"
+                className="mobile-menu-logout"
+                onClick={handleLogout}
+                disabled={leaving}
+              >
+                {leaving ? 'Saindo…' : 'Sair da conta'}
+              </button>
+            </nav>
           </div>
         )}
       </header>

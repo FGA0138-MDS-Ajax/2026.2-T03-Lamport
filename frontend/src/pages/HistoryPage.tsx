@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import { useAuth } from '../auth/AuthContext'
 import { checkinsApi, type Checkin } from '../api/checkins'
@@ -98,9 +97,7 @@ export function HistoryPage() {
     return (
       <section className="history-page" aria-labelledby="history-title">
         <h1 id="history-title">Histórico</h1>
-        <p role="alert">
-          Não foi possível carregar o histórico. Tente novamente.
-        </p>
+        <p role="alert">Não foi possível carregar o histórico. Tente novamente.</p>
       </section>
     )
   }
@@ -108,17 +105,12 @@ export function HistoryPage() {
   return (
     <section className="history-page" aria-labelledby="history-title">
       <h1 id="history-title">Histórico</h1>
-      <p className="muted history-description">
-        Seus últimos 30 check-ins.
-      </p>
+      <p className="muted history-description">Seus últimos 30 check-ins.</p>
 
       {checkins.length === 0 ? (
         <div className="history-empty">
           <p>Você ainda não fez nenhum check-in.</p>
-          <button
-            type="button"
-            className="button button-primary history-empty-button"
-          >
+          <button type="button" className="button button-primary history-empty-button">
             Fazer o primeiro check-in
           </button>
         </div>
@@ -126,16 +118,14 @@ export function HistoryPage() {
         <div className="history-list">
           {checkins.map((checkin) => (
             <article className="history-item" key={checkin.id}>
-              <strong className="history-date">
-                {formatDate(checkin.data)}
-              </strong>
+              <strong className="history-date">{formatDate(checkin.data)}</strong>
 
               <div className="history-details">
                 <p className="history-humor">
                   <strong>Humor:</strong>{' '}
                   {checkin.p1 === null
                     ? 'Não informado'
-                    : humorLabels[checkin.p1] ?? 'Não informado'}
+                    : (humorLabels[checkin.p1] ?? 'Não informado')}
                 </p>
 
                 {checkin.tags.length > 0 && (
