@@ -48,9 +48,8 @@ def avaliar_checkin(
     if regras_acionadas:
         # Reordena as tags detectadas conforme a prioridade R-S1
         tags_ordenadas = tuple(tag for tag in ORDEM_TAGS if tag in tags_detectadas)
-        nivel_calculado = Nivel.ATENCAO if len(regras_acionadas) <= 2 else Nivel.PRIORITARIO
         return ResultadoCheckin(
-            nivel=nivel_calculado,
+            nivel=Nivel.AUTOCUIDADO,
             tags=tags_ordenadas,
             regras=tuple(regras_acionadas),
         )
