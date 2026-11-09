@@ -40,7 +40,14 @@ def test_register_records_terms_consent(client, db_session):
     consent = db_session.scalar(select(ConsentModel))
     assert str(consent.user_id) == response.json()["id"]
     assert consent.purpose == "terms_of_use"
-    assert consent.version == "2026-10"
+    assert consent.version == "2026-11"
+
+
+def test_terms_endpoint_returns_current_version(client):
+    response = client.get("/api/terms")
+
+    assert response.status_code == 200
+    assert response.json() == {"version": "2026-11"}
 
 
 def test_register_normalizes_email(client):
