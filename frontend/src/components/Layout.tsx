@@ -18,6 +18,11 @@ export function Layout() {
     navigate('/login', { replace: true })
   }
 
+  function handleAjuda(): void {
+    closeMenu()
+    navigate('/risco')
+  }
+
   function closeMenu() {
     setMenuOpen(false)
   }
@@ -31,7 +36,7 @@ export function Layout() {
 
         {user && (
           <div className="header-session">
-            <button type="button" className="button-help">
+            <button type="button" className="button-help" onClick={handleAjuda}>
               <span aria-hidden="true">♥</span>
               Preciso de ajuda agora
             </button>

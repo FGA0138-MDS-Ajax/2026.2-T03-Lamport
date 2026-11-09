@@ -6,6 +6,8 @@ import { LoginPage } from './pages/LoginPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { RegisterPage } from './pages/RegisterPage'
+import { DailyCheckin } from './pages/DailyCheckin'
+import { RiscoPage } from './pages/RiscoPage'
 import { HistoryPage } from './pages/HistoryPage'
 
 export function App() {
@@ -14,6 +16,8 @@ export function App() {
       <Route element={<Layout />}>
         <Route element={<RequireAuth />}>
           <Route index element={<HomePage />} />
+          <Route path="dailycheckin" element={<DailyCheckin />} />
+          <Route path="risco" element={<RiscoPage />} />
           <Route path="historico" element={<HistoryPage />} />
         </Route>
         <Route element={<GuestOnly />}>
