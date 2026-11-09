@@ -145,8 +145,8 @@ class SqlCheckinRepository:
             ansiedade=checkin.ansiedade,
             sono=checkin.sono,
             sobrecarga=checkin.sobrecarga,
-            nivel=checkin.nivel,
-            tags=[t.value if isinstance(t, Tag) else t for t in checkin.tags],
+            nivel=checkin.nivel.value,
+            tags=[tag.value for tag in checkin.tags],
             criado_em=checkin.criado_em,
         )
         self.session.add(model)
