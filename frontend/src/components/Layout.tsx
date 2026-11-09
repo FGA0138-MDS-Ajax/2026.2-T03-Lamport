@@ -14,6 +14,10 @@ export function Layout() {
     navigate('/login', { replace: true })
   }
 
+  function handleAjuda(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    navigate('/risco')
+  }
+
   return (
     <div className="app">
       <header className="app-header">
@@ -22,6 +26,9 @@ export function Layout() {
         </Link>
         {user && (
           <div className="header-session">
+            <button type="button" className="button button-help" onClick={handleAjuda}>
+              ♥ Preciso de ajuda agora
+            </button>
             <span className="header-email">{user.email}</span>
             <button
               type="button"
