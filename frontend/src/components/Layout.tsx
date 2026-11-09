@@ -14,7 +14,7 @@ export function Layout() {
     navigate('/login', { replace: true })
   }
 
-  function handleAjuda(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+  function handleAjuda(): void {
     navigate('/risco')
   }
 

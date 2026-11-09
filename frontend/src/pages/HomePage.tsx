@@ -1,40 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 import { useAuth } from '../auth/AuthContext'
-import { useLocation, useNavigate } from 'react-router';
-import { Alert } from '../components/Alert';
+import { useLocation, useNavigate } from 'react-router'
+import { Alert } from '../components/Alert'
 
 const dateFormatter = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' })
 
 function CheckinButton() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const handleCheckin = () => {
-    navigate('/DailyCheckin');
-  };
+    navigate('/DailyCheckin')
+  }
 
   return (
     <button type="button" className="button button-primary" onClick={handleCheckin}>
-          {'Check-in Diário'}
-        </button>
-  );
+      {'Check-in Diário'}
+    </button>
+  )
 }
 
 function CheckinAlreadyExistsAlert() {
-  return (
-    <Alert tone="error">
-      Você já realizou o check-in hoje.
-    </Alert>
-  );
+  return <Alert tone="error">Você já realizou o check-in hoje.</Alert>
 }
 
 export function HomePage() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  if (!user) return null
-
-  const [checkinAlreadyExists, setCheckinAlreadyExists] = useState(
-    Boolean(location.state?.checkinAlreadyExists),
-  )
+  const [checkinAlreadyExists] = useState(Boolean(location.state?.checkinAlreadyExists))
 
   useEffect(() => {
     if (location.state?.checkinAlreadyExists) {
@@ -42,7 +34,8 @@ export function HomePage() {
     }
   }, [location.state, location.pathname, navigate])
 
-  
+  if (!user) return null
+
   return (
     <section className="card" aria-labelledby="home-title">
       <h1 id="home-title">Olá!</h1>

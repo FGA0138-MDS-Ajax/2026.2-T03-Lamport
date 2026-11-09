@@ -1,10 +1,9 @@
-import { useState, type FormEvent } from 'react';
-import { AuthContext, useAuth } from '../auth/AuthContext'
-import { useNavigate } from 'react-router';
-import { CHECKIN_QUESTIONS, type CheckinQuestion } from '../constants/checkin';
-import { checkinsApi } from '../api/checkins';
-import { authApi } from '../api/auth';
-import { ApiError } from '../api/client';
+import { useEffect, useState, type FormEvent } from 'react'
+import { useAuth } from '../auth/AuthContext'
+import { useNavigate } from 'react-router'
+import { CHECKIN_QUESTIONS, type CheckinQuestion } from '../constants/checkin'
+import { checkinsApi } from '../api/checkins'
+import { ApiError } from '../api/client'
 
 type AnswerValue = number | boolean
 type Option = { readonly value: AnswerValue; readonly label: string }
@@ -19,50 +18,35 @@ export interface CreateCheckinData {
   p5: boolean
 }
 
-
 export function DailyCheckin() {
   const { user, token } = useAuth()
-  //const { user, token} = useAuth()
-  if (!user) return null
-
-  const [checkinAlreadyExists, setCheckinAlreadyExists] = useState<string>()
-
-  const [checkedForCheckin, setCheckedForCheckin] = useState(false)
-  async function checkTodayCheckin() {
-    try {
-      const todayCheckinExists = ((await checkinsApi.getTodayCheckin(token as string)) != null);
-      if (todayCheckinExists) {
-        console.log('Check-in already exists for today.')
-        setCheckinAlreadyExists('Você já realizou o check-in hoje.')
-        navigate('/', { state: {checkinAlreadyExists: true} /*, replace: true*/ })
-      }
-    } catch (error) {
-        console.log('caught:', error, error instanceof ApiError)
-        if (error instanceof ApiError && error.status != 200) {
-            console.error('Error checking for today\'s check-in:', error);
-        } //return false
-    }
-  } if (checkedForCheckin === false) {
-    checkTodayCheckin(); 
-    setCheckedForCheckin(true);
-  } // Call checkTodayCheckin() only once when the component mounts
-  
-  //checkTodayCheckin()
-
-  function checkForRisco(checkinData: CreateCheckinData): boolean {
-    if (checkinData.p5 === true) {return true}
-    else return false;
-  }
-
-
   const navigate = useNavigate()
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({})
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const canSubmit = CHECKIN_QUESTIONS.every(
-    (q) => !q.required || answers[q.id] !== undefined,
-  )
+  // Se já existe check-in hoje, volta para a home avisando o usuário.
+  useEffect(() => {
+    if (!token) return
+    let cancelled = false
+    checkinsApi
+      .getTodayCheckin(token)
+      .then((today) => {
+        if (!cancelled && today != null) {
+          navigate('/', { state: { checkinAlreadyExists: true } })
+        }
+      })
+      .catch((err) => {
+        if (err instanceof ApiError) console.error('Erro ao verificar o check-in de hoje:', err)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [token, navigate])
+
+  if (!user) return null
+
+  const canSubmit = CHECKIN_QUESTIONS.every((q) => !q.required || answers[q.id] !== undefined)
 
   function handleChange(q: CheckinQuestion, raw: string) {
     setAnswers((prev) => {
@@ -78,13 +62,11 @@ export function DailyCheckin() {
     e.preventDefault()
     if (!canSubmit || submitting) return
 
-    const payload = CHECKIN_QUESTIONS.filter((q) => answers[q.id] !== undefined).map(
-      (q) => ({
-        question_id: q.id,
-        code: q.code,
-        answer: answers[q.id],
-      }),
-    )  
+    const payload = CHECKIN_QUESTIONS.filter((q) => answers[q.id] !== undefined).map((q) => ({
+      question_id: q.id,
+      code: q.code,
+      answer: answers[q.id],
+    }))
 
     setSubmitting(true)
     setError(null)
@@ -94,53 +76,24 @@ export function DailyCheckin() {
       p2: (payload.find((p) => p.question_id === 'p2')?.answer as number | null) ?? null,
       p3: (payload.find((p) => p.question_id === 'p3')?.answer as number | null) ?? null,
       p4: (payload.find((p) => p.question_id === 'p4')?.answer as number | null) ?? null,
-      p5: (payload.find((p) => p.question_id === 'p5')?.answer as boolean),
+      p5: payload.find((p) => p.question_id === 'p5')?.answer as boolean,
     }
 
-    /*
-    function strictNumbersOnly(val: number | boolean | null): number | null {
-        return typeof val === 'number' ? val : null; // booleans and null both become null
-    }
-    
-    const checkinData: CreateCheckinData = {
-      p1: strictNumbersOnly(payload[0]?.answer) ?? null,
-      p2: strictNumbersOnly(payload[1]?.answer) ?? null,
-      p3: strictNumbersOnly(payload[2]?.answer) ?? null,
-      p4: strictNumbersOnly(payload[3]?.answer) ?? null,
-      p5: (payload[4]?.answer as boolean),
-    }*/
-
-    /*const checkinData: CreateCheckinData = {
-      p1: (payload[0]?.answer as number | null) ?? null,
-      p2: (payload[1]?.answer as number | null) ?? null,
-      p3: (payload[2]?.answer as number | null) ?? null,
-      p4: (payload[3]?.answer as number | null) ?? null,
-      p5: (payload[4]?.answer as boolean),
-    }*/
-    
+    const hasRisk = checkinData.p5 === true
     try {
-      //const res = 
-      await checkinsApi.createCheckin((token as string), checkinData);
-      checkForRisco(checkinData) ? navigate('/risco') : navigate('/'); // Navigate to /risco if p5 is true, else navigate to /
-      //console.log('token:', token);
-      //console.log('token as string:', token as string);
-      //console.log('answers:', answers);
-      //console.log('payload:', payload);
-      //console.log('checkinData:', checkinData);
-      //if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      //navigate('/')
-    } catch (error) {
+      await checkinsApi.createCheckin(token as string, checkinData)
+      navigate(hasRisk ? '/risco' : '/')
+    } catch {
       setError('Não foi possível enviar o check-in. Tente novamente.')
       setSubmitting(false)
-      checkForRisco(checkinData) ? navigate('/risco') : console.log('Sem risco nos dados de checkin, mas houve um erro ao enviar. Mantendo mesma página.')
+      // Por segurança, sinal de risco leva à página de ajuda mesmo se o envio falhar.
+      if (hasRisk) navigate('/risco')
     }
   }
 
-
-
   return (
     <section className="card" aria-labelledby="home-title">
-      <h1 id="home-title">Check-in diário (token: {token})</h1>
+      <h1 id="home-title">Check-in diário</h1>
       <p>
         Você está conectado como <strong>{user.email}</strong>.
       </p>
@@ -177,16 +130,10 @@ export function DailyCheckin() {
 
         {error && <p role="alert">{error}</p>}
 
-        <button
-          type="submit"
-          className="button button-primary"
-          disabled={!canSubmit || submitting}
-        >
+        <button type="submit" className="button button-primary" disabled={!canSubmit || submitting}>
           {submitting ? 'Enviando...' : 'Enviar check-in'}
         </button>
       </form>
-    
-
     </section>
   )
 }
