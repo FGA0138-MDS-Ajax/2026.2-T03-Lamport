@@ -295,6 +295,13 @@ a {
 
 /* Navegação do cabeçalho */
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
 .header-session {
   display: flex;
   align-items: center;
@@ -663,6 +670,7 @@ a {
   font-size: 0.875rem;
   font-weight: 600;
   white-space: nowrap;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -683,13 +691,51 @@ a {
 
 @media (max-width: 40rem) {
   .button-help {
-    margin-left: auto;
-    margin-right: 0.5rem;
     padding: 0.5rem 0.625rem;
     font-size: 0.75rem;
   }
 
-  .header-session {
+  .header-actions {
     flex: 1;
+    justify-content: flex-end;
+    gap: 0.5rem;
   }
+}
+
+/* Telas muito estreitas: o botão de ajuda e o menu cabem ao lado da marca. */
+
+@media (max-width: 22.5rem) {
+  .app-header {
+    gap: 0.5rem;
+    padding-inline: 0.75rem;
+  }
+
+  .header-actions {
+    gap: 0.25rem;
+  }
+
+  .button-help {
+    padding: 0.5rem;
+  }
+}
+
+/* Tela de Ajuda Imediata */
+
+.tela-ajuda {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tela-ajuda h1,
+.tela-ajuda h2 {
+  margin-top: 0;
+}
+
+.button-link {
+  display: block;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-decoration: none;
 }
