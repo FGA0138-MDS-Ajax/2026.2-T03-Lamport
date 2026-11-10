@@ -1,24 +1,24 @@
-import os
 from pathlib import Path
+
 import yaml
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.infrastructure.database import get_engine
-from app.infrastructure.db.models import MaterialModel
+from app.infrastructure.models import MaterialModel
+
+CAMINHO_CATALOGO = Path(__file__).resolve().parents[2] / "catalog" / "materiais.yaml"
 
 
 def carregar_yaml(caminho: Path) -> list[dict]:
-    if not caminho.exists():
-        print(f"⚠️  Arquivo YAML não encontrado no caminho: {caminho}")
-        return []
-    
-    with open(caminho, "r", encoding="utf-8") as f:
+    with open(caminho, encoding="utf-8") as f:
         dados = yaml.safe_load(f) or []
-        
+
     # Trata caso o YAML use chave raiz (ex: materiais: [...])
     if isinstance(dados, dict):
-        return dados.get("materiais", [])
+        dados = dados.get("materiais", [])
+    if not dados:
+        raise ValueError(f"Catálogo sem materiais: {caminho}")
     return dados
 
 
@@ -66,8 +66,5 @@ def rodar_seed(session: Session, caminho_yaml: Path):
 
 
 if __name__ == "__main__":
-    root_dir = Path(__file__).resolve().parent.parent.parent
-    caminho = root_dir / "catalog" / "materiais.yaml"
-
     with Session(get_engine(), expire_on_commit=False) as db:
-        rodar_seed(db, caminho)
+        rodar_seed(db, CAMINHO_CATALOGO)
