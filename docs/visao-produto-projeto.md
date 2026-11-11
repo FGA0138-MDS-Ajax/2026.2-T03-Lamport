@@ -1,9 +1,9 @@
 # Visão do Produto e do Projeto
 
-**Versão 2.2 – 29/10/2026** · Aplicação web de apoio à saúde mental: check-in diário, rastreio com instrumentos validados e encaminhamento a conteúdos e serviços oficiais.
+**Versão 2.3 – 11/11/2026** · Aplicação web de apoio à saúde mental: check-in diário, rastreio com instrumentos validados e encaminhamento a conteúdos e serviços oficiais.
 
 !!! info "Versão vigente"
-    Esta página reproduz a versão 2.2, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md).
+    Esta página reproduz a versão 2.3, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md).
 
 ## Integrantes do grupo
 
@@ -26,6 +26,7 @@
 | 15/10/2026 | 2.0 | Reformulação após o feedback da apresentação: fluxo principal especificado (check-in diário, avaliação quinzenal com PHQ-9 e GAD-7, tabela de decisão, regras de seleção e catálogo curado de fontes oficiais); redução de escopo (remoção dos perfis Administrador e Curador, de lembretes e de IA); estratégia e roteiro de testes detalhados, incluindo testes de vazamento de dados; GQM revisado; replanejamento das sprints 3 a 6. | Grupo Lamport |
 | 18/10/2026 | 2.1 | Revisão de escopo para manter apenas compromissos essenciais: remoção dos requisitos não funcionais de interface responsiva, execução com Docker Compose, publicação em nuvem e verificação automática de links; remoção das metas de usabilidade, desempenho, capacidade e cobertura de código e dos testes associados; remoção dos itens Should e Could não essenciais; testes de segurança concentrados em cinco casos; requisitos e roteiro de testes renumerados. | Grupo Lamport |
 | 29/10/2026 | 2.2 | Replanejamento ao fim da Sprint 3 pelo critério 1 da seção 2.6: itens Must não concluídos (módulo de regras, catálogo, termos, Tela de Ajuda e botão, pendências da Sprint 2) passam à Sprint 4, e o único item Should (R07, convite para avaliação, com a regra R-D7 e o teste TU-08) sai do escopo. Decisão do PO sobre o check-in: P1 a P4 passam a ser opcionais (sem resposta, o valor é nulo e a regra correspondente não é acionada); P5 continua obrigatória. | Grupo Lamport |
+| 11/11/2026 | 2.3 | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: R02 e TI-02 passam a incluir o limite de tentativas de login (bloqueio por 15 min após 5 falhas seguidas); a lista de rotas públicas do TS-01 passa a incluir `/api/terms` e `/api/health`. | Grupo Lamport |
 
 ---
 
@@ -333,7 +334,7 @@ Regras R-D, R-A e R-S na seção 4.5; testes na seção 6.2. F = funcional; NF =
 | Cenário / req. | Sprint | Nome do requisito | Tipo | Prioridade | Descrição sucinta e critério de aceite | História de usuário |
 | :-- | :--: | :-- | :--: | :--: | :-- | :-- |
 | C01/R01 | 2 | Cadastrar usuário | F | Must | E-mail único, senha com 8 ou mais caracteres, aceite dos termos e declaração de maioridade obrigatórios; senha guardada com Argon2id. Testes: TI-01, TS-05. | Como visitante, quero criar uma conta para registrar como estou. |
-| C01/R02 | 2 | Autenticar usuário | F | Must | Login retorna token válido por 60 min; mensagem de erro genérica; sair descarta o token. Testes: TI-02, TS-02. | Como usuário, quero entrar e sair da minha conta com segurança. |
+| C01/R02 | 2 | Autenticar usuário | F | Must | Login retorna token válido por 60 min; mensagem de erro genérica; após 5 falhas seguidas, novas tentativas são bloqueadas por 15 min; sair descarta o token. Testes: TI-02, TS-02. | Como usuário, quero entrar e sair da minha conta com segurança. |
 | C01/R03 | 4 | Termos de uso e privacidade | F | Must | Página pública informa dados coletados, finalidade, que não há diagnóstico nem monitoramento e como excluir a conta. | Como visitante, quero saber como meus dados serão usados antes de me cadastrar. |
 | C01/R04 | 5 | Excluir conta e dados | F | Must | Após confirmação, remove usuário, check-ins, avaliações e recomendações (exclusão física). Testes: TI-07, TSI-05. | Como usuário, quero apagar todos os meus dados. |
 | C02/R05 | 4 | Responder check-in diário | F | Must | Perguntas P1 a P5 (Quadro 15); P1 a P4 opcionais; P5 obrigatória; um check-in por dia. Testes: TI-03, TI-04. | Como usuário, quero registrar como estou hoje. |
@@ -552,13 +553,13 @@ Todas as métricas são coletadas por ferramenta ou por procedimento definido; o
 | TU-06 | Seleção de conteúdo (R-S1 a R-S5). | Unitário / Funcional | R06, R09 | Catálogo de teste fixo (2 materiais por tag, 1 inativo) e histórico de exibições do usuário. | Ordem de prioridade respeitada; material menos recente escolhido; sem repetição; máximo 3; nenhum inativo; cada item com regra e motivo. | S4 | Não executado |
 | TU-07 | Integridade do catálogo real (`materiais.yaml`). | Unitário / Funcional | R13 | Arquivo `materiais.yaml` do repositório. | Esquema válido; slugs únicos; URLs https; domínio na lista permitida; ≥ 1 material ativo por tag. | S4 | Não executado |
 | TI-01 | Cadastro de usuário. | Integração / Funcional | R01 | Banco de teste vazio. | Dados válidos → 201; e-mail repetido → 409; sem aceite dos termos ou sem declaração 18+ → 422; senha < 8 caracteres → 422. | S2 | Não executado |
-| TI-02 | Login. | Integração / Funcional | R02 | Usuário cadastrado. | Credenciais corretas → 200 com token; senha errada e e-mail inexistente → 401 com a mesma mensagem. | S2 | Não executado |
+| TI-02 | Login. | Integração / Funcional | R02 | Usuário cadastrado. | Credenciais corretas → 200 com token; senha errada e e-mail inexistente → 401 com a mesma mensagem; 6ª tentativa após 5 falhas seguidas → 429, inclusive com e-mail inexistente. | S2 | Não executado |
 | TI-03 | Check-in gera e persiste recomendações corretas. | Integração / Funcional | R05, R06 | Usuário autenticado; catálogo de teste; P1 = 4, P2 = 3, P3 = 1, P4 = 0, P5 = Não. | 201; check-in salvo com tags [ANSIEDADE, SONO]; 2 recomendações persistidas com materiais dessas tags e regras R-D3 e R-D4. | S4 | Não executado |
 | TI-04 | Check-in duplicado no mesmo dia. | Integração / Funcional | R05 | Usuário já fez check-in hoje. | 409; nenhum registro novo. | S4 | Não executado |
 | TI-05 | Check-in com indicador de risco. | Integração / Funcional | R10 | P5 = Sim. | 201; nível CRISE; lista de recomendações vazia; nenhuma linha nova em Recomendacao. | S4 | Não executado |
 | TI-06 | Avaliação ponta a ponta. | Integração / Funcional | R08, R09 | Perfis de respostas A a E (Quadro 19). | Escores, faixas, nível e tags iguais aos do Quadro 19; recomendações persistidas conforme R-S. | S5 | Não executado |
 | TI-07 | Exclusão de conta e dados. | Integração / Funcional | R04 | Usuário com check-ins, avaliações e recomendações. | 204; zero linhas do usuário em todas as tabelas; token antigo → 401. | S5 | Não executado |
-| TS-01 | Rotas protegidas exigem autenticação (verificação automática de todas as rotas). | Integração / Segurança | R14 | Teste percorre `app.routes`; rotas públicas: `/api/auth/cadastro` e `/api/auth/login`. | Toda rota fora da lista pública responde 401 sem token. Uma rota nova sem proteção faz o teste falhar. | S4 | Não executado |
+| TS-01 | Rotas protegidas exigem autenticação (verificação automática de todas as rotas). | Integração / Segurança | R14 | Teste percorre `app.routes`; rotas públicas: `/api/auth/cadastro`, `/api/auth/login`, `/api/terms` e `/api/health`. | Toda rota fora da lista pública responde 401 sem token. Uma rota nova sem proteção faz o teste falhar. | S4 | Não executado |
 | TS-02 | Tokens inválidos são rejeitados. | Integração / Segurança | R14 | Token expirado, assinado com outra chave, malformado e de usuário excluído. | 401 em todos os casos. | S4 | Não executado |
 | TS-03 | Isolamento entre usuários (acesso a dado de outro usuário). | Integração / Segurança | R14 | Usuários A e B; A cria check-in e avaliação. | B recebe 404 em `GET /api/checkins/{id de A}` e `GET /api/avaliacoes/{id de A}`; listagens de B não contêm dados de A. | S4–S5 | Não executado |
 | TS-04 | Respostas da API não expõem campos sensíveis. | Integração / Segurança | R14 | Verificação aplicada a todas as respostas JSON produzidas pela suíte de integração. | Nenhuma chave `senha`, `senha_hash`, `password` ou `hash` em qualquer nível; `GET /api/me` retorna apenas id, email e criado_em. | S4 | Não executado |
