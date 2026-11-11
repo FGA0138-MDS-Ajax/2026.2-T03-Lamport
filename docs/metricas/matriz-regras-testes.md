@@ -1,8 +1,8 @@
 # Matriz regra × teste (M1)
 
-Posição em **10/11/2026**, `main` no commit `faac2cf` (PR #35). O oráculo são os Quadros 16, 18 e 20 da Visão v2.2. Cada linha das tabelas de regras deve ter ao menos um teste que verifique o comportamento do Quadro (Visão, seção 6.1).
+Posição final em **11/11/2026**, `main` no commit `886e00b` (PR #44). O oráculo são os Quadros 16, 18 e 20 da Visão. Cada linha das tabelas de regras deve ter ao menos um teste que verifique o comportamento do Quadro (Visão, seção 6.1).
 
-**Resultado: 13 de 16 linhas cobertas, M1 = 81,25%** (valor esperado: 100%), contando os 4 testes novos da branch `test/regras-selecao-rs1-rs3-rs4` (R-S1, R-S3 e R-S4), **ainda sem merge**. Sem eles, na `main` (`faac2cf`), eram 10 de 16 (62,5%). Pela leitura literal da fórmula, contando também testes que verificam comportamento diferente do Quadro, seriam 15 de 16 (93,75%).
+**Resultado: 13 de 16 linhas cobertas, M1 = 81,25%** (valor esperado: 100%), já na `main`: os testes de R-S1, R-S3 e R-S4 entraram com o PR #38. Antes dele, na `main` (`faac2cf`), eram 10 de 16 (62,5%). Pela leitura literal da fórmula, contando também testes que verificam comportamento diferente do Quadro, seriam 15 de 16 (93,75%).
 
 ## R-D: check-in diário (Quadro 16)
 
@@ -59,5 +59,5 @@ Código em `backend/app/rules/selecao.py`; testes `test_tu06_*` em `backend/test
 ## Ações para chegar a 100%
 
 1. **PO decide** as divergências de R-S2, R-S5 e R-S6 (atualizar o Quadro 20 em nova versão da Visão ou ajustar o código). Os documentos são a fonte da verdade; enquanto não houver decisão, não se altera o código nem o teste. Registrado como [DEF-02](defeitos.md#def-02).
-2. ~~Escrever os testes de R-S1, R-S3 e R-S4~~ (feito na branch `test/regras-selecao-rs1-rs3-rs4`; aguarda merge): [DEF-03](defeitos.md#def-03). Resta o teste de R-S5, que depende da decisão do item 1.
+2. ~~Escrever os testes de R-S1, R-S3 e R-S4~~ (feito e mesclado no PR #38): [DEF-03](defeitos.md#def-03). Resta o teste de R-S5, que depende da decisão do item 1.
 3. Reconferir a matriz na revisão da Sprint 4 e ao fim de cada sprint seguinte (Visão, Quadro 23: abaixo de 100%, criar o teste antes de novas funcionalidades).

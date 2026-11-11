@@ -10,7 +10,8 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
 | 15/10/2026 | 2.0 | Reformulação após o feedback da apresentação: fluxo principal especificado (check-in diário, avaliação quinzenal com PHQ-9 e GAD-7, tabela de decisão, regras de seleção e catálogo curado de fontes oficiais); redução de escopo (remoção dos perfis Administrador e Curador, de lembretes e de IA); estratégia e roteiro de testes detalhados, incluindo testes de vazamento de dados; GQM revisado; replanejamento das sprints 3 a 6. | Grupo Lamport |
 | 18/10/2026 | 2.1 | Revisão de escopo para manter apenas compromissos essenciais: remoção dos requisitos não funcionais de interface responsiva, execução com Docker Compose, publicação em nuvem e verificação automática de links; remoção das metas de usabilidade, desempenho, capacidade e cobertura de código e dos testes associados; remoção dos itens Should e Could não essenciais; testes de segurança concentrados em cinco casos; requisitos e roteiro de testes renumerados. | Grupo Lamport |
 | 29/10/2026 | 2.2 | Replanejamento ao fim da Sprint 3 pelo critério 1 da seção 2.6: itens Must não concluídos passam à Sprint 4 e o único item Should (R07) sai do escopo. Decisão do PO: P1 a P4 do check-in passam a ser opcionais; P5 continua obrigatória. | Grupo Lamport |
-| 11/11/2026 | **2.3** (vigente) | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: R02 e TI-02 passam a incluir o limite de tentativas de login (bloqueio por 15 min após 5 falhas seguidas); a lista de rotas públicas do TS-01 passa a incluir `/api/terms` e `/api/health`. | Grupo Lamport |
+| 11/11/2026 | 2.3 | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: R02 e TI-02 passam a incluir o limite de tentativas de login (bloqueio por 15 min após 5 falhas seguidas); a lista de rotas públicas do TS-01 passa a incluir `/api/terms` e `/api/health`. | Grupo Lamport |
+| 11/11/2026 | **2.4** (vigente) | Revisão da Sprint 4 pelo QA (issue #10): Quadro 26 com status, evidência (execução da CI na `main`), reparos e ciclos dos casos previstos até a Sprint 4; seção 6.1, item 5, e legenda da seção 6.2 atualizadas. | Grupo Lamport |
 
 ### Principais mudanças entre versões
 
@@ -42,6 +43,12 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
     - **Origem:** decisões do PO sobre as divergências entre documento e código levantadas na issue #22. Em cada caso, o documento passou a descrever o que o código já fazia e a CI já testava.
     - **R02 e TI-02:** limite de tentativas de login (5 falhas seguidas bloqueiam novas tentativas por 15 min, com resposta 429, também para e-mail inexistente). Já implementado e testado; agora é compromisso documentado.
     - **TS-01:** a lista de rotas públicas passa a incluir `/api/terms` (versão dos termos exibida no cadastro, R03) e `/api/health` (verificação de saúde no Docker Compose e na CI). `POST /api/auth/logout` exige token e já era previsto no R02 ("sair descarta o token").
+
+??? abstract "2.3 → 2.4"
+    - **Origem:** revisão da Sprint 4 pelo QA (issue #10), conforme a seção 6.1, item 5.
+    - **Quadro 26:** colunas Evidência, Reparos e Ciclos; status dos casos previstos até a Sprint 4 com a execução da CI na `main` (commit `886e00b`) como evidência: 13 aprovados, 3 parciais (TU-06, TI-05, TS-03) e 1 não atendido (TI-03).
+    - **Seções 6.1 e 6.2:** texto sobre os resultados obtidos e legenda das colunas de acompanhamento.
+    - O Quadro 8 (percentual de conclusão) e a Arquitetura não mudaram.
 
 ## Documento de Arquitetura
 

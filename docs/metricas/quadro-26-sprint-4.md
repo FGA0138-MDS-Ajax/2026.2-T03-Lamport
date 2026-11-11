@@ -1,37 +1,33 @@
-# Quadro 26: atualização proposta para a Sprint 4
+# Quadro 26: atualização aplicada na Sprint 4
 
-Proposta de preenchimento das colunas de acompanhamento do Quadro 26 da Visão (Status, Evidência, Reparos e Ciclos) para os casos da Sprint 4, com a posição de 10/11/2026.
+Os valores das colunas de acompanhamento (Status, Evidência, Reparos e Ciclos) dos casos previstos até a Sprint 4 foram **aplicados à Visão na versão 2.4** (11/11/2026), por PR na branch `docs`, conforme a issue #10. O Quadro 26 da [Visão](../visao-produto-projeto.md) é a fonte; esta página resume o resultado e o que ficou fora.
 
-!!! warning "Ainda não aplicado à Visão"
-    A Visão v2.2 continua como está. A issue #10 manda atualizar o Quadro 26 **na revisão da sprint**, em nova versão da Visão, por PR na branch `docs`. Esta página é o rascunho pronto para essa atualização; os valores devem ser reconferidos em 11/11, depois dos merges que ainda ocorrerem (em especial o PR #37). O texto sobre "resultados obtidos" da seção 6.1, item 5, e a legenda da seção 6.2 ("atualmente Não executado") também precisam ser ajustados na ocasião.
+Evidência dos casos automatizados: [execução 43118733055](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/43118733055) da CI na `main` (commit `886e00b`): 210 testes no backend e 47 no frontend, todos aprovados, e o job `demo` aprovado.
 
-Evidência dos casos automatizados: [execução 42691191624](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42691191624) da CI na `main` (commit `faac2cf`), 188 testes aprovados no backend e 47 no frontend.
+## Resultado por caso
 
-| ID | Status | Evidência | Reparos | Ciclos |
-| :-- | :-- | :-- | :--: | :--: |
-| TU-01 | Aprovado | [CI 42691191624](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42691191624); `test_rules_avaliacao.py` | — | 1 |
-| TU-02 | Aprovado | idem | — | 1 |
-| TU-03 | Aprovado | idem | — | 1 |
-| TU-04 | Aprovado | idem | — | 1 |
-| TU-05 | Aprovado | CI 42691191624; `test_rules_checkin.py` | PR #32 | 2 |
-| TU-06 | Parcial: os 3 testes passam, mas o resultado esperado do Quadro não é verificado (DEF-02 e DEF-03) | CI 42691191624; `test_rules_checkin.py` | PR #32 | 2 |
-| TU-07 | Pendente: aprovado no PR #37, ainda sem merge | [CI 42728982238](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42728982238) (PR #37) | — | 0 |
-| TI-03 | Não atendido: sem recomendações persistidas (DEF-01) | CI 42691191624; `test_checkins.py` (verifica só 201, nível e tags) | PR #23 | 2 |
-| TI-04 | Aprovado | CI 42691191624; `test_checkins.py` | PR #23 | 2 |
-| TI-05 | Parcial: sem a verificação de recomendações (DEF-01) | CI 42691191624; `test_checkins.py` | PR #23 | 2 |
-| TS-01 | Aprovado | CI 42691191624; `test_security.py` | PR #33 | 2 |
-| TS-02 | Parcial: falta o token de usuário excluído (R04, Sprint 5) | CI 42691191624; `test_auth.py`, `test_security.py` | — | 1 |
-| TS-03 | Parcial: API sem banco (DEF-05); avaliações na Sprint 5 | CI 42691191624; `test_checkins_get.py`, `test_checkin_repository.py` | — | 1 |
-| TS-04 | Parcial: rota e campos de `/api/me` diferentes do Quadro (DEF-04) | CI 42691191624; `test_security.py`, `conftest.py` | PR #33 | 2 |
-| TS-05 | Aprovado | CI 42691191624; `test_register.py` | — | 1 |
+| Status | Casos | Quantidade |
+| :-- | :-- | :--: |
+| Aprovado | TU-01 a TU-05, TU-07, TI-01, TI-02, TI-04, TS-01, TS-02, TS-04, TS-05 | 13 |
+| Parcial | TU-06, TI-05, TS-03 | 3 |
+| Não atendido | TI-03 | 1 |
+| Não executado | TI-06, TI-07 e TSI-01 a TSI-05 (Sprints 5 e 6) | 7 |
 
-Os casos TI-01 e TI-02 (Sprint 2, replanejados como pendência na #22) devem ser registrados junto: TI-02 **Aprovado** (`test_auth.py`) e TI-01 **Parcial** (`test_register.py` não verifica a declaração 18+, que não existe; DEF-04).
+Os 17 casos previstos até a Sprint 4 são TU-01 a TU-07, TI-01 a TI-05 e TS-01 a TS-05.
 
-## Outras atualizações previstas para a mesma versão da Visão
+## Pontos que ficaram parciais ou não atendidos
 
-| Onde | Atualização |
+| Caso | Motivo | Defeito |
+| :-- | :-- | :--: |
+| TU-06 | Os testes não verificam exclusão de inativos nem regra e motivo por item; R-S2, R-S5 e R-S6 divergem do Quadro 20 (decisão do PO). | [DEF-02](defeitos.md#def-02), [DEF-03](defeitos.md#def-03) |
+| TI-03 | O check-in não gera nem grava recomendações. | [DEF-01](defeitos.md#def-01) |
+| TI-05 | Sem a entidade `Recomendacao`, não há como verificar a lista vazia e a ausência de linhas. | [DEF-01](defeitos.md#def-01) |
+| TS-03 | A parte de check-ins está aprovada no banco de teste; a de avaliações depende do endpoint da Sprint 5 (o roteiro marca o caso como S4–S5). | DEF-05 corrigido |
+
+## Fora desta versão da Visão
+
+| Onde | Situação |
 | :-- | :-- |
-| Quadro 8, coluna "% concl." | Sprint 2: 100% (3 de 3 itens). Sprint 3: 30% (2 de 7). Sprint 4: valor da revisão. Percentuais em intervalos de 10%, conforme a seção 2.3. Quem registra é o PO (issue #12). |
-| Seção 5 | Registrar M1 a M5 finais da Sprint 4 ([Sprint 4](sprint-4.md)). |
-| Quadro 20 | Somente se o PO decidir pela alteração das regras R-S2, R-S5 ou R-S6 (DEF-02). |
-| Histórico de revisões e [Histórico de versões](../historico-versoes.md) | Nova linha com a versão, a data e a descrição da atualização. |
+| Quadro 8, coluna "% concl." | Não alterada. Quem registra é o PO (issue #12). Valores sugeridos pelo QA, em intervalos de 10%: Sprint 2, 100% (3 de 3); Sprint 3, 30% (2 de 7); Sprint 4, 100% (14 de 14 pelo estado das issues, com a #10 fechada pelo PR das métricas; 85,7% pelos critérios de aceite). |
+| Seção 5 da Visão | Os valores de M1 a M5 da Sprint 4 estão em [Sprint 4](sprint-4.md). |
+| Quadro 20 | Só muda se o PO decidir alterar R-S2, R-S5 ou R-S6 ([DEF-02](defeitos.md#def-02)). |

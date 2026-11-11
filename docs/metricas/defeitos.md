@@ -1,18 +1,18 @@
 # Registro de defeitos
 
-Defeitos encontrados na conferência da Sprint 4 (posição de 10/11/2026). Pela Visão (seção 6.1, item 4), cada defeito vira uma issue com a label `bug` e a severidade (crítica, alta, média ou baixa); depois do reparo, o caso é executado de novo e o número de ciclos é atualizado.
+Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026). Pela Visão (seção 6.1, item 4), cada defeito vira uma issue com a label `bug` e a severidade (crítica, alta, média ou baixa); depois do reparo, o caso é executado de novo e o número de ciclos é atualizado.
 
-**Situação:** as issues ainda **não foram abertas**; os textos abaixo estão prontos para isso. Nenhuma issue `bug` existe hoje no repositório (M5 = 0 abertas, 5 propostas).
+**Situação:** dos 5 defeitos, **2 foram corrigidos na própria sprint** (DEF-04 e DEF-05) e **3 seguem abertos** (DEF-01, DEF-02 e DEF-03). Os 3 abertos têm issue `bug`: #45 (DEF-01), #46 (DEF-02) e #47 (DEF-03).
 
 | ID | Severidade | Título | Casos afetados | Responsável sugerido | Issue |
 | :-- | :--: | :-- | :-- | :-- | :--: |
-| [DEF-01](#def-01) | **Alta** | `POST /api/checkins` não gera nem grava recomendações | TI-03, TI-05 | Luiz Felipe | a abrir |
-| [DEF-02](#def-02) | Média | `selecionar_materiais` diverge do Quadro 20 da Visão | TU-06 | PO decide; Luiz Felipe | a abrir |
-| [DEF-03](#def-03) | Média | Testes de seleção de conteúdo não cobrem R-S1, R-S3 e R-S4 | TU-06, M1 | Luiz Felipe | a abrir |
-| [DEF-04](#def-04) | Média | Cadastro e `GET /api/me` divergem do contrato da Arquitetura | TI-01, TS-04 | Luiz Felipe, Carlos Eduardo | já tratado na #22 |
-| [DEF-05](#def-05) | Média | Testes de API do TS-03 não usam o banco de teste | TS-03 | Carlos Eduardo | a abrir |
+| [DEF-01](#def-01) | **Alta** | `POST /api/checkins` não gera nem grava recomendações | TI-03, TI-05 | Luiz Felipe | #45 |
+| [DEF-02](#def-02) | Média | `selecionar_materiais` diverge do Quadro 20 da Visão | TU-06 | PO decide; Luiz Felipe | #46 |
+| [DEF-03](#def-03) | Média | Testes de seleção de conteúdo não cobrem R-S1, R-S3 e R-S4 | TU-06, M1 | Luiz Felipe | parcialmente corrigido (PR #38); restante na #47 |
+| [DEF-04](#def-04) | Média | Cadastro e `GET /api/me` divergem do contrato da Arquitetura | TI-01, TS-04 | Luiz Felipe, Carlos Eduardo | **corrigido** (#22, PRs #39, #41 e #42) |
+| [DEF-05](#def-05) | Média | Testes de API do TS-03 não usam o banco de teste | TS-03 | Carlos Eduardo | **corrigido** (PR #39) |
 
-**Totais por severidade:** 0 críticas, 1 alta, 4 médias, 0 baixas. Nenhum defeito crítico (um teste de segurança reprovado ou um encaminhamento errado ao usuário seria crítico).
+**Totais por severidade (abertos):** 0 críticas, 1 alta, 2 médias, 0 baixas; 2 médias corrigidas. Total encontrado: 0 críticas, 1 alta, 4 médias, 0 baixas. Nenhum defeito crítico (um teste de segurança reprovado ou um encaminhamento errado ao usuário seria crítico).
 
 ## Critério de severidade usado
 
@@ -34,9 +34,9 @@ Defeitos encontrados na conferência da Sprint 4 (posição de 10/11/2026). Pela
 
 **Evidência:** `backend/app/application/checkins.py` (função `create`); `backend/tests/test_checkins.py::test_ti03_create_checkin_returns_201_with_nivel_and_tags` verifica só nível e tags e, por isso, passa na CI ([execução 42691191624](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42691191624)).
 
-**Causa provável:** a #5 depende da #17 (concluída) e da #19 (catálogo e `Material`, ainda em PR). A issue foi fechada sem as recomendações.
+**Causa provável:** a #5 depende da #17 (concluída) e da #19 (catálogo e `Material`, mesclada depois, no PR #37). A issue foi fechada sem as recomendações.
 
-**Para corrigir:** depois do merge do PR #37, criar `Recomendacao` (modelo e migração com regra e motivo, cascata a partir do usuário), integrar `selecionar_materiais` ao serviço, devolver as recomendações na resposta e completar o TI-03 e o TI-05 com as verificações do Quadro 26. Reabrir a #5 ou abrir issue nova que a referencie. Sem isso, o R06 não é entregue na Sprint 4.
+**Para corrigir:** com o catálogo já na `main` (PR #37), criar `Recomendacao` (modelo e migração com regra e motivo, cascata a partir do usuário), integrar `selecionar_materiais` ao serviço, devolver as recomendações na resposta e completar o TI-03 e o TI-05 com as verificações do Quadro 26. Reabrir a #5 ou abrir issue nova que a referencie. Sem isso, o R06 não é entregue na Sprint 4.
 
 <a id="def-02"></a>
 ## DEF-02: `selecionar_materiais` diverge do Quadro 20 da Visão
@@ -59,43 +59,28 @@ Defeitos encontrados na conferência da Sprint 4 (posição de 10/11/2026). Pela
 
 **Faltam:** (a) ordem de prioridade com duas ou mais tags (R-S1); (b) material com duas tags geradas aparecendo uma só vez (R-S3); (c) teto de 3 materiais, de 2 para N2 e descarte pela ordem de prioridade (R-S4); (d) exclusão de material inativo e presença de regra e motivo em cada item, previstos no resultado esperado do TU-06.
 
-Os testes de (a), (b) e o teto geral de (c) foram escritos na branch `test/regras-selecao-rs1-rs3-rs4` (sem merge); (d) e o teto de 2 para N2 seguem pendentes. Estes testes não dependem da decisão do DEF-02 (exceto R-S5) e devem ser escritos primeiro. Ver [matriz regra × teste](matriz-regras-testes.md).
+Os testes de (a), (b) e o teto geral de (c) foram escritos e mesclados no PR #38; (d) e o teto de 2 para N2 seguem pendentes. Estes testes não dependem da decisão do DEF-02 (exceto R-S5) e devem ser escritos primeiro. Ver [matriz regra × teste](matriz-regras-testes.md).
 
 <a id="def-04"></a>
 ## DEF-04: cadastro e `GET /api/me` divergem do contrato da Arquitetura
 
-**Severidade:** média. **Casos:** TI-01 (não executável como escrito), TS-04 (parcial). **Tratado na issue #22** (aberta, sem PR).
+**Severidade:** média. **Casos:** TI-01 (não executável como escrito), TS-04 (parcial). **Corrigido na issue #22** (fechada) pelos PRs #39, #41 e #42; as decisões do PO estão na Visão e na Arquitetura v2.3 (PR #40).
+
+**Situação final:** o cadastro exige `maior_de_idade` (422 sem ela); as rotas são `/api/auth/cadastro` e `/api/me`; `GET /api/me` devolve só `id`, `email` e `criado_em`; os campos de entrada estão em português (`senha`, `aceite_termos`), conforme a v2.3. TI-01 e TS-04 passam a **Aprovado**.
+
+**Histórico do defeito:**
 
 - A declaração de maioridade (`maior_de_idade`) não existe no cadastro; o TI-01 exige 422 sem a declaração 18+.
 - As rotas são `/api/auth/register` e `/api/users/me`; o Quadro 6 define `/api/auth/cadastro` e `/api/me`.
 - `GET /api/users/me` devolve `id`, `email`, `role` e `created_at`; o TS-04 exige apenas `id`, `email` e `criado_em`.
 
-Sugestão: manter o acompanhamento na #22, acrescentando a label `bug` e a severidade média, em vez de abrir uma issue duplicada.
+A #22 já cobria o defeito; não foi aberta issue duplicada.
 
 <a id="def-05"></a>
 ## DEF-05: testes de API do TS-03 não usam o banco de teste
 
-**Severidade:** média. **Caso:** TS-03 (parcial). **Issue de origem:** #6 (PR #15).
+**Severidade:** média. **Caso:** TS-03 (parcial). **Issue de origem:** #6 (PR #15). **Corrigido** no PR #39 com `backend/tests/test_ts03_isolamento.py` (5 testes com o `client` e o banco de teste, usuários A e B). A parte de avaliações do TS-03 segue na Sprint 5.
 
 A issue #6 pede "testes de integração no PostgreSQL de teste cobrindo ordem, limite e isolamento". Em `test_checkins_get.py`, os testes de API (`test_api_list_checkins_isolation_ts_03`, `test_api_get_checkin_by_id_other_user_returns_404`) substituem o repositório por `FakeCheckinRepository` e a sessão por um `MagicMock`. O isolamento no nível do banco só é verificado em `test_checkin_repository.py`. Se o filtro por usuário fosse removido da rota ou da consulta de integração, a falha poderia passar despercebida. O risco R4 (vazamento de dados) depende desse teste.
 
-**Para corrigir:** acrescentar versão do teste que use o `client` e as fixtures de banco do `conftest.py` (como `test_checkins.py`), com os usuários A e B.
-
-## Comandos para abrir as issues
-
-Não foram executados. As labels `severidade-alta` e `severidade-media` ainda não existem no repositório, e `bug` já existe.
-
-```bash
-gh label create "severidade-alta"  --color D93F0B --description "Defeito de severidade alta"
-gh label create "severidade-media" --color FBCA04 --description "Defeito de severidade média"
-
-gh issue create --title "[Bug] POST /api/checkins não gera nem grava recomendações (TI-03, TI-05)"   --label bug --label severidade-alta --assignee LuizFelipe81   --body "Ver DEF-01 em docs/metricas/defeitos.md (resultado esperado, obtido, evidência e correção)."
-
-gh issue create --title "[Bug] selecionar_materiais diverge do Quadro 20 (R-S2, R-S3, R-S5, R-S6)"   --label bug --label severidade-media   --body "Ver DEF-02 em docs/metricas/defeitos.md. Exige decisão do PO: atualizar o Quadro 20 ou o código."
-
-gh issue create --title "[Bug] Testes de seleção não cobrem R-S1, R-S3 e R-S4 (TU-06, M1)"   --label bug --label severidade-media --assignee LuizFelipe81   --body "Ver DEF-03 em docs/metricas/defeitos.md."
-
-gh issue create --title "[Bug] TS-03: testes de API sem o banco de teste"   --label bug --label severidade-media --assignee CarlosA84   --body "Ver DEF-05 em docs/metricas/defeitos.md."
-
-gh issue edit 22 --add-label bug --add-label severidade-media   # DEF-04
-```
+**Correção aplicada:** versão do teste que usa o `client` e as fixtures de banco do `conftest.py`, com os usuários A e B.
