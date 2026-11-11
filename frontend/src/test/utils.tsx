@@ -36,6 +36,5 @@ export function renderApp(path = '/') {
 export const testUser = {
   id: '6f1c2a4e-0d7b-4b8e-9a43-2a1f6f0b9c11',
   email: 'ana@example.com',
-  role: 'user',
-  created_at: '2026-10-13T12:00:00Z',
+  criado_em: '2026-10-13T12:00:00Z',
 }

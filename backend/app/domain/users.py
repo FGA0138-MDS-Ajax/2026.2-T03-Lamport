@@ -39,8 +39,8 @@ class UserRepository(Protocol):
 
     def get_by_email(self, email: str) -> User | None: ...
 
-    def add(self, user: User, consent: Consent) -> None:
-        """Persists the user and the consent given at sign-up in a single transaction."""
+    def add(self, user: User, *consents: Consent) -> None:
+        """Persists the user and the consents given at sign-up in a single transaction."""
         ...
 
 

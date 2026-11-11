@@ -42,7 +42,7 @@ export function HomePage() {
       <p>
         Você está conectado como <strong>{user.email}</strong>.
       </p>
-      <p className="muted">Conta criada em {dateFormatter.format(new Date(user.created_at))}.</p>
+      <p className="muted">Conta criada em {dateFormatter.format(new Date(user.criado_em))}.</p>
 
       {checkinAlreadyExists && <CheckinAlreadyExistsAlert />}
 

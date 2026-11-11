@@ -53,7 +53,7 @@ describe('authentication flow', () => {
         status: 200,
         body: { access_token: token, token_type: 'bearer', expires_in: 3600 },
       },
-      'GET /api/users/me': { status: 200, body: testUser },
+      'GET /api/me': { status: 200, body: testUser },
       'POST /api/auth/logout': { status: 204 },
     })
     renderApp('/login')
@@ -73,7 +73,7 @@ describe('authentication flow', () => {
 
   it('restores a stored session', async () => {
     sessionStorage.setItem('sintoniza.token', token)
-    mockApi({ 'GET /api/users/me': { status: 200, body: testUser } })
+    mockApi({ 'GET /api/me': { status: 200, body: testUser } })
     renderApp('/')
 
     expect(await screen.findByRole('heading', { name: 'Olá!' })).toBeInTheDocument()
@@ -81,7 +81,7 @@ describe('authentication flow', () => {
 
   it('discards a stored session rejected by the server', async () => {
     sessionStorage.setItem('sintoniza.token', token)
-    mockApi({ 'GET /api/users/me': { status: 401, body: { detail: 'Not authenticated' } } })
+    mockApi({ 'GET /api/me': { status: 401, body: { detail: 'Not authenticated' } } })
     renderApp('/')
 
     expect(await screen.findByRole('heading', { name: 'Entrar' })).toBeInTheDocument()

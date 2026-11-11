@@ -10,7 +10,7 @@ from tests.conftest import find_sensitive_keys
 
 # Única fonte de verdade das rotas públicas (Arquitetura, Quadro 6; Visão, Quadro 8).
 PUBLIC_ROUTES = {
-    ("POST", "/api/auth/register"),
+    ("POST", "/api/auth/cadastro"),
     ("POST", "/api/auth/login"),
     ("GET", "/api/health"),
     ("GET", "/api/terms"),
@@ -71,8 +71,8 @@ def test_ts04_helper_detects_sensitive_keys_at_any_level():
 
 
 def test_ts04_me_returns_only_public_fields(client, auth_headers):
-    body = client.get("/api/users/me", headers=auth_headers).json()
-    assert set(body) == {"id", "email", "role", "created_at"}
+    body = client.get("/api/me", headers=auth_headers).json()
+    assert set(body) == {"id", "email", "criado_em"}
 
 
 def test_ts04_all_endpoints_responses_have_no_sensitive_fields(client, registered_user):
@@ -82,7 +82,7 @@ def test_ts04_all_endpoints_responses_have_no_sensitive_fields(client, registere
     login = client.post("/api/auth/login", json=registered_user)
     assert login.status_code == 200
     headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
-    assert client.get("/api/users/me", headers=headers).status_code == 200
+    assert client.get("/api/me", headers=headers).status_code == 200
     created = client.post("/api/checkins", json=CHECKIN, headers=headers)
     assert created.status_code == 201
     assert client.post("/api/checkins", json=CHECKIN, headers=headers).status_code == 409
@@ -94,15 +94,33 @@ def test_ts04_all_endpoints_responses_have_no_sensitive_fields(client, registere
     assert client.get(f"/api/checkins/{checkin_id}", headers=headers).status_code == 200
     assert client.get(f"/api/checkins/{uuid.uuid4()}", headers=headers).status_code == 404
     assert client.post("/api/auth/logout", headers=headers).status_code == 204
-    assert client.get("/api/users/me", headers=headers).status_code == 401
+    assert client.get("/api/me", headers=headers).status_code == 401
 
 
 @pytest.mark.parametrize(
     ("path", "payload", "status_code"),
     [
-        ("register", {"email": "invalido", "password": "segredo-ts04"}, 422),
-        ("register", {"email": "a@example.com", "password": "curta", "accept_terms": True}, 422),
-        ("register", {"email": "a@example.com", "password": "z" * 129, "accept_terms": True}, 422),
+        ("cadastro", {"email": "invalido", "password": "segredo-ts04"}, 422),
+        (
+            "cadastro",
+            {
+                "email": "a@example.com",
+                "password": "curta",
+                "accept_terms": True,
+                "maior_de_idade": True,
+            },
+            422,
+        ),
+        (
+            "cadastro",
+            {
+                "email": "a@example.com",
+                "password": "z" * 129,
+                "accept_terms": True,
+                "maior_de_idade": True,
+            },
+            422,
+        ),
         ("login", {"email": "a@example.com"}, 422),
         ("login", {"email": "invalido", "password": "segredo-ts04"}, 422),
         ("login", {"email": "a@example.com", "password": "segredo-ts04"}, 401),

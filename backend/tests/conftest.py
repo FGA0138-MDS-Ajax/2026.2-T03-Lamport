@@ -93,7 +93,9 @@ def db_session():
 @pytest.fixture
 def registered_user(client):
     credentials = {"email": "ana@example.com", "password": "senha-segura-123"}
-    response = client.post("/api/auth/register", json={**credentials, "accept_terms": True})
+    response = client.post(
+        "/api/auth/cadastro", json={**credentials, "accept_terms": True, "maior_de_idade": True}
+    )
     assert response.status_code == 201
     return credentials
 
