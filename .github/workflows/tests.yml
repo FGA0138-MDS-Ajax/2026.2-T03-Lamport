@@ -100,7 +100,7 @@ jobs:
           curl -fsS http://localhost:8080/api/health
           curl -fsS http://localhost:8080/api/auth/login \
             -H 'Content-Type: application/json' \
-            -d '{"email": "historico@example.com", "password": "sintoniza-demo"}' \
+            -d '{"email": "historico@example.com", "senha": "sintoniza-demo"}' \
             | grep -q access_token
       - name: Logs dos contêineres
         if: failure()
