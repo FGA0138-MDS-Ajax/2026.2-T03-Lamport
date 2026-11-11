@@ -10,7 +10,7 @@ MAX_ATTEMPTS = get_settings().login_max_attempts
 
 def _fail_login(client, email, times):
     for _ in range(times):
-        response = client.post("/api/auth/login", json={"email": email, "password": "senha-errada"})
+        response = client.post("/api/auth/login", json={"email": email, "senha": "senha-errada"})
         assert response.status_code == 401
 
 
@@ -28,7 +28,7 @@ def test_unknown_email_is_blocked_the_same_way(client):
     _fail_login(client, "ninguem@example.com", MAX_ATTEMPTS)
 
     response = client.post(
-        "/api/auth/login", json={"email": "ninguem@example.com", "password": "qualquer-senha"}
+        "/api/auth/login", json={"email": "ninguem@example.com", "senha": "qualquer-senha"}
     )
 
     assert response.status_code == 429
@@ -39,7 +39,7 @@ def test_block_is_per_email_and_case_insensitive(client, registered_user):
 
     blocked = client.post("/api/auth/login", json=registered_user)
     other = client.post(
-        "/api/auth/login", json={"email": "outra@example.com", "password": "qualquer-senha"}
+        "/api/auth/login", json={"email": "outra@example.com", "senha": "qualquer-senha"}
     )
 
     assert blocked.status_code == 429

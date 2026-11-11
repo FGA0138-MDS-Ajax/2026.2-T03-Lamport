@@ -15,9 +15,9 @@ CHECKIN_B = {"p1": 2, "p2": 1, "p3": 3, "p4": 2, "p5": False}
 
 
 def _login(client, email: str) -> dict[str, str]:
-    credentials = {"email": email, "password": "senha-segura-123"}
+    credentials = {"email": email, "senha": "senha-segura-123"}
     client.post(
-        "/api/auth/cadastro", json={**credentials, "accept_terms": True, "maior_de_idade": True}
+        "/api/auth/cadastro", json={**credentials, "aceite_termos": True, "maior_de_idade": True}
     )
     token = client.post("/api/auth/login", json=credentials).json()["access_token"]
     return {"Authorization": f"Bearer {token}"}

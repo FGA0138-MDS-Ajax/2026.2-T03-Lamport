@@ -100,13 +100,13 @@ def test_ts04_all_endpoints_responses_have_no_sensitive_fields(client, registere
 @pytest.mark.parametrize(
     ("path", "payload", "status_code"),
     [
-        ("cadastro", {"email": "invalido", "password": "segredo-ts04"}, 422),
+        ("cadastro", {"email": "invalido", "senha": "segredo-ts04"}, 422),
         (
             "cadastro",
             {
                 "email": "a@example.com",
-                "password": "curta",
-                "accept_terms": True,
+                "senha": "curta",
+                "aceite_termos": True,
                 "maior_de_idade": True,
             },
             422,
@@ -115,22 +115,22 @@ def test_ts04_all_endpoints_responses_have_no_sensitive_fields(client, registere
             "cadastro",
             {
                 "email": "a@example.com",
-                "password": "z" * 129,
-                "accept_terms": True,
+                "senha": "z" * 129,
+                "aceite_termos": True,
                 "maior_de_idade": True,
             },
             422,
         ),
         ("login", {"email": "a@example.com"}, 422),
-        ("login", {"email": "invalido", "password": "segredo-ts04"}, 422),
-        ("login", {"email": "a@example.com", "password": "segredo-ts04"}, 401),
+        ("login", {"email": "invalido", "senha": "segredo-ts04"}, 422),
+        ("login", {"email": "a@example.com", "senha": "segredo-ts04"}, 401),
     ],
 )
 def test_ts04_error_responses_do_not_echo_the_password(client, path, payload, status_code):
     response = client.post(f"/api/auth/{path}", json=payload)
     assert response.status_code == status_code
-    if "password" in payload:
-        assert payload["password"] not in response.text
+    if "senha" in payload:
+        assert payload["senha"] not in response.text
     if status_code == 422:
         details = response.json()["detail"]
         assert details

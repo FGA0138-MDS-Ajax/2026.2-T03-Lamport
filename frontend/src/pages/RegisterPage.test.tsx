@@ -51,8 +51,8 @@ describe('RegisterPage', () => {
     expect(screen.getByLabelText('E-mail')).toHaveValue('ana@example.com')
     expect(JSON.parse(fetchMock.mock.calls[0][1]!.body as string)).toEqual({
       email: 'ana@example.com',
-      password: 'senha-segura-123',
-      accept_terms: true,
+      senha: 'senha-segura-123',
+      aceite_termos: true,
       maior_de_idade: true,
     })
   })
