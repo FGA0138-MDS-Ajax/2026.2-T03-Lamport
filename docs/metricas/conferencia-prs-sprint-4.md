@@ -48,7 +48,7 @@ Tarefa da issue #10: conferir, nos PRs das issues #5, #6, #17, #18, #19 e #22, q
 | :-- | :--: |
 | TU-05 automatizado, com os dois lados de cada limite, incluindo P1 a P4 sem resposta | Atendido |
 | TU-06 automatizado com os casos do Quadro 26 | **Parcial**: 3 testes; faltam ordem, menos recente, sem repetição, máximo de 3, inativos, regra e motivo |
-| Toda linha de R-D1 a R-D6 e de R-S1 a R-S6 com ao menos um teste (M1) | **Não atendido**: R-D 6 de 6; R-S 0 de 6 aderentes ([matriz](matriz-regras-testes.md)) |
+| Toda linha de R-D1 a R-D6 e de R-S1 a R-S6 com ao menos um teste (M1) | **Não atendido**: R-D 6 de 6; R-S 3 de 6 aderentes (com os testes da branch `test/regras-selecao-rs1-rs3-rs4`, sem merge) ([matriz](matriz-regras-testes.md)) |
 | Limites em constantes de configuração | Atendido para R-D; `DIAS_BLOQUEIO_ULTIMAS_EXIBICOES` existe em `selecao.py` mas não é usada |
 | Sem acesso a banco, rede, relógio ou aleatoriedade | Atendido |
 | CI verde | Atendido |

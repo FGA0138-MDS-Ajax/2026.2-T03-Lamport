@@ -2,7 +2,7 @@
 
 Posição em **10/11/2026**, `main` no commit `faac2cf` (PR #35). O oráculo são os Quadros 16, 18 e 20 da Visão v2.2. Cada linha das tabelas de regras deve ter ao menos um teste que verifique o comportamento do Quadro (Visão, seção 6.1).
 
-**Resultado: 10 de 16 linhas cobertas, M1 = 62,5%** (valor esperado: 100%). Pela leitura literal da fórmula, contando também testes que verificam comportamento diferente do Quadro, seriam 12 de 16 (75%).
+**Resultado: 13 de 16 linhas cobertas, M1 = 81,25%** (valor esperado: 100%), contando os 4 testes novos da branch `test/regras-selecao-rs1-rs3-rs4` (R-S1, R-S3 e R-S4), **ainda sem merge**. Sem eles, na `main` (`faac2cf`), eram 10 de 16 (62,5%). Pela leitura literal da fórmula, contando também testes que verificam comportamento diferente do Quadro, seriam 15 de 16 (93,75%).
 
 ## R-D: check-in diário (Quadro 16)
 
@@ -38,14 +38,14 @@ Código em `backend/app/rules/selecao.py`; testes `test_tu06_*` em `backend/test
 
 | Regra | Descrição no Quadro 20 | O que existe | Situação |
 | :--: | :-- | :-- | :--: |
-| R-S1 | Ordem de prioridade das tags ao buscar materiais | O código percorre `ORDEM_TAGS`, mas nenhum teste de `selecionar_materiais` usa duas ou mais tags para provar a ordem. (`test_thresholds` verifica a ordem das tags de `avaliar_checkin`, que é outra função.) | **Sem teste** |
+| R-S1 | Ordem de prioridade das tags ao buscar materiais | `test_tu06_rs1_respeita_a_ordem_de_prioridade_das_tags` (tags e catálogo fora de ordem). | Coberta |
 | R-S2 | Escolher o material recomendado há mais tempo; nunca recomendado vem primeiro; empate pelo menor id | O código **exclui** materiais exibidos recentemente (`ids_exibidos_recentemente`); `test_tu06_rs2_ignora_ultimas_exibicoes` testa essa exclusão. Comportamento diferente do Quadro. | **Teste diverge** |
-| R-S3 | Um material não aparece duas vezes na mesma resposta | A deduplicação existe no código (`adicionados`), mas nenhum teste a exercita. `test_tu06_rs3_match_exato_de_tags` testa outra coisa (casamento exato da tag). O código também usa o rótulo "R-S3" para o casamento de tags. | **Sem teste** |
-| R-S4 | No máximo 3 materiais (2 para N2); excedentes descartados por prioridade | Os testes com `limite = 0` e `limite = 1` exercitam o mecanismo do limite, mas nenhum verifica o teto de 3 materiais, o de 2 para N2 nem o descarte das tags excedentes pela ordem de prioridade. | **Teste insuficiente** |
+| R-S3 | Um material não aparece duas vezes na mesma resposta | `test_tu06_rs3_material_com_duas_tags_aparece_uma_vez`. | Coberta |
+| R-S4 | No máximo 3 materiais (2 para N2); excedentes descartados por prioridade | `test_tu06_rs4_maximo_de_tres_descarta_tags_de_menor_prioridade` e `test_tu06_rs4_limite_padrao_e_tres`. O teto de 2 para N2 é do chamador (check-in e avaliação) e será testado na integração. | Coberta |
 | R-S5 | Cada recomendação guarda a regra de origem (ex.: R-D4) e o motivo | `Sugestao` guarda "R-S3" ou "R-S6", não a regra de origem R-Dx. Não há teste. | **Sem teste** |
 | R-S6 | Sem material para nenhuma tag, exibir apenas a orientação do nível | O código completa a lista com materiais BEM_ESTAR ou sem tag ("fallback"); `test_tu06_rs2_ignora_ultimas_exibicoes` verifica esse fallback. Comportamento diferente do Quadro. | **Teste diverge** |
 
-**0 de 6 aderentes ao Quadro** (2 com teste divergente, 1 com teste insuficiente, 3 sem teste).
+**3 de 6 aderentes ao Quadro** (R-S1, R-S3 e R-S4); R-S2 e R-S6 têm teste divergente e R-S5 não tem teste.
 
 ## Totais
 
@@ -53,11 +53,11 @@ Código em `backend/app/rules/selecao.py`; testes `test_tu06_*` em `backend/test
 | :-- | :--: | :--: | :--: |
 | R-D | 6 | 6 | 100% |
 | R-A | 4 | 4 | 100% |
-| R-S | 6 | 0 | 0% |
-| **Total (M1)** | **16** | **10** | **62,5%** |
+| R-S | 6 | 3 | 50% |
+| **Total (M1)** | **16** | **13** | **81,25%** |
 
 ## Ações para chegar a 100%
 
 1. **PO decide** as divergências de R-S2, R-S5 e R-S6 (atualizar o Quadro 20 em nova versão da Visão ou ajustar o código). Os documentos são a fonte da verdade; enquanto não houver decisão, não se altera o código nem o teste. Registrado como [DEF-02](defeitos.md#def-02).
-2. Escrever os testes que faltam para R-S1, R-S3 e R-S4 (nada disso depende de decisão do PO): [DEF-03](defeitos.md#def-03).
+2. ~~Escrever os testes de R-S1, R-S3 e R-S4~~ (feito na branch `test/regras-selecao-rs1-rs3-rs4`; aguarda merge): [DEF-03](defeitos.md#def-03). Resta o teste de R-S5, que depende da decisão do item 1.
 3. Reconferir a matriz na revisão da Sprint 4 e ao fim de cada sprint seguinte (Visão, Quadro 23: abaixo de 100%, criar o teste antes de novas funcionalidades).

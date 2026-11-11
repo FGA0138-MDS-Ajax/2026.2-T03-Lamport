@@ -6,7 +6,7 @@
 
 | Métrica | Valor | Esperado | Observação |
 | :-- | :--: | :--: | :-- |
-| M1. Cobertura das tabelas de regras | **62,5%** (10 de 16) | 100% | R-D e R-A completas; R-S sem cobertura aderente ao Quadro 20. Ver [matriz](matriz-regras-testes.md). |
+| M1. Cobertura das tabelas de regras | **81,25%** (13 de 16), com os testes da branch `test/regras-selecao-rs1-rs3-rs4`, sem merge; 62,5% (10 de 16) na `main` | 100% | R-D e R-A completas; R-S1, R-S3 e R-S4 cobertas; faltam R-S2, R-S5 e R-S6 (decisão do PO). Ver [matriz](matriz-regras-testes.md). |
 | M2. Aprovação dos testes automatizados | **100%** (188 de 188 na `main`) | 100% na `main` | [Execução 42691191624](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42691191624). Frontend: 47 de 47. No PR #37: 195 de 195 ([execução 42728982238](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42728982238)). |
 | M3. Testes de segurança aprovados | **40%** (2 de 5) | 100% | TS-01 e TS-05 aprovados; TS-02, TS-03 e TS-04 parciais. Nenhum teste reprovado. |
 | M4. Conclusão da sprint | **78,6%** (11 de 14) pelo estado das issues; **64,3%** (9 de 14) pelos critérios de aceite | ≥ 80% (referência) | Ver abaixo. |

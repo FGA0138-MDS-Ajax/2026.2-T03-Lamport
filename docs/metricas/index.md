@@ -8,11 +8,13 @@ Registro do acompanhamento de qualidade feito pelo QA (issue #10), com as métri
 
 | Métrica | Esperado | Sprint 2 | Sprint 3 | Sprint 4 (parcial) |
 | :-- | :--: | :--: | :--: | :--: |
-| **M1.** Cobertura das tabelas de regras por testes | 100% | n/a | 0% | **62,5%** (10/16) |
+| **M1.** Cobertura das tabelas de regras por testes | 100% | n/a | 0% | **81,25%** (13/16)* |
 | **M2.** Aprovação dos testes automatizados | 100% na `main` | 100% (35/35) | 100% (35/35) | 100% (188/188) |
 | **M3.** Testes de segurança aprovados | 100% | n/a | n/a | **40%** (2/5) |
 | **M4.** Conclusão da sprint | ≥ 80% | **100%** (3/3) | **29%** (2/7) | **78,6%** (11/14) ou **64,3%** (9/14) pelos critérios |
 | **M5.** Defeitos abertos | 0 críticos | 0 | 0 | 0 abertos; 5 propostos (1 alto, 4 médios) |
+
+\* Com os testes da branch `test/regras-selecao-rs1-rs3-rs4`, ainda sem merge; na `main` são 62,5% (10/16).
 
 M1 e M3 de Sprints 2 e 3 não se aplicam porque o módulo de regras e o roteiro de testes só passam a existir na Sprint 4.
 

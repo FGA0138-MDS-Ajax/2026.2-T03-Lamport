@@ -59,7 +59,7 @@ Defeitos encontrados na conferência da Sprint 4 (posição de 10/11/2026). Pela
 
 **Faltam:** (a) ordem de prioridade com duas ou mais tags (R-S1); (b) material com duas tags geradas aparecendo uma só vez (R-S3); (c) teto de 3 materiais, de 2 para N2 e descarte pela ordem de prioridade (R-S4); (d) exclusão de material inativo e presença de regra e motivo em cada item, previstos no resultado esperado do TU-06.
 
-Estes testes não dependem da decisão do DEF-02 (exceto R-S5) e devem ser escritos primeiro. Ver [matriz regra × teste](matriz-regras-testes.md).
+Os testes de (a), (b) e o teto geral de (c) foram escritos na branch `test/regras-selecao-rs1-rs3-rs4` (sem merge); (d) e o teto de 2 para N2 seguem pendentes. Estes testes não dependem da decisão do DEF-02 (exceto R-S5) e devem ser escritos primeiro. Ver [matriz regra × teste](matriz-regras-testes.md).
 
 <a id="def-04"></a>
 ## DEF-04: cadastro e `GET /api/me` divergem do contrato da Arquitetura
