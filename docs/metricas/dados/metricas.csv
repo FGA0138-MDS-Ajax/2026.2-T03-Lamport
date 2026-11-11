@@ -1,0 +1,17 @@
+sprint,periodo,metrica,valor,numerador,denominador,esperado,fonte,observacao
+S2,01/10-14/10/2026,M1,n/a,,,100%,matriz regra x teste,Tabelas de regras ainda nao existiam
+S2,01/10-14/10/2026,M2,100%,35,35,100%,CI execucao 38571078720,pytest na developer apos PR #1
+S2,01/10-14/10/2026,M3,n/a,,,100%,roteiro,TS-01 a TS-05 ainda nao existiam
+S2,01/10-14/10/2026,M4,100%,3,3,>=80%,Quadro 8 e decisao do PO/equipe,Cadastro e login contados como concluidos; divergencias com a Arquitetura seguem na issue #22
+S2,01/10-14/10/2026,M5,0 criticos / 0 altos / 0 medios / 0 baixos,0,,0 criticos,GitHub Issues,Nenhuma issue bug no periodo
+S3,15/10-28/10/2026,M1,0%,0,16,100%,matriz regra x teste,Sem modulo de regras na main
+S3,15/10-28/10/2026,M2,100%,35,35,100%,CI execucao 40416931338,pytest na main de 26/10
+S3,15/10-28/10/2026,M3,n/a,,,100%,roteiro,TS-01 a TS-05 ainda nao existiam
+S3,15/10-28/10/2026,M4,29%,2,7,>=80%,Quadro 8 e v2.2,Cinco itens Must passaram a Sprint 4
+S3,15/10-28/10/2026,M5,0 criticos / 0 altos / 0 medios / 0 baixos,0,,0 criticos,GitHub Issues,Nenhuma issue bug no periodo
+S4,29/10-11/11/2026 (parcial em 10/11),M1,62.5%,10,16,100%,matriz regra x teste,R-D 6/6; R-A 4/4; R-S 0/6 aderentes (literal: 12/16 = 75%)
+S4,29/10-11/11/2026 (parcial em 10/11),M2,100%,188,188,100% na main,CI execucao 42691191624,pytest na main; frontend 47/47; PR #37 195/195
+S4,29/10-11/11/2026 (parcial em 10/11),M3,40%,2,5,100%,roteiro,TS-01 e TS-05 aprovados; TS-02 TS-03 TS-04 parciais
+S4,29/10-11/11/2026 (parcial em 10/11),M4 (estado das issues),78.6%,11,14,>=80%,issue #12 e GitHub,
+S4,29/10-11/11/2026 (parcial em 10/11),M4 (criterios de aceite),64.3%,9,14,>=80%,issue #12 e conferencia do QA,#5 e #17 fechadas sem atender criterios
+S4,29/10-11/11/2026 (parcial em 10/11),M5,0 abertos / 5 propostos (0 criticos / 1 alto / 4 medios / 0 baixos),0,,0 criticos,docs/metricas/defeitos.md,Issues a abrir

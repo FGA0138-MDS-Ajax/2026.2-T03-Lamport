@@ -14,6 +14,8 @@ O Sintoniza é uma aplicação web de apoio à saúde mental. Ela combina um **c
 | [Visão do Produto e do Projeto](visao-produto-projeto.md) | 2.2 | 29/10/2026 |
 | [Documento de Arquitetura](arquitetura.md) | 2.2 | 29/10/2026 |
 
+As métricas de qualidade de cada sprint (GQM), o status do roteiro de testes e os defeitos estão em [Métricas e qualidade](metricas/index.md).
+
 Esta documentação publica sempre a versão mais recente de cada documento. As versões anteriores e o que mudou em cada uma estão no [Histórico de versões](historico-versoes.md).
 
 ## Equipe
