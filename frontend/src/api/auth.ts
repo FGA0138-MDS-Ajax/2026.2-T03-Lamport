@@ -1,18 +1,16 @@
 import { request } from './client'
 
-export type Role = 'user' | 'curator' | 'admin'
-
 export interface User {
   id: string
   email: string
-  role: Role
-  created_at: string
+  criado_em: string
 }
 
 export interface RegisterData {
   email: string
-  password: string
-  accept_terms: boolean
+  senha: string
+  aceite_termos: boolean
+  maior_de_idade: boolean
 }
 
 export interface Terms {
@@ -26,11 +24,11 @@ interface TokenResponse {
 }
 
 export const authApi = {
-  register: (data: RegisterData) => request<User>('/auth/register', { method: 'POST', body: data }),
+  register: (data: RegisterData) => request<User>('/auth/cadastro', { method: 'POST', body: data }),
   login: (email: string, password: string) =>
-    request<TokenResponse>('/auth/login', { method: 'POST', body: { email, password } }),
+    request<TokenResponse>('/auth/login', { method: 'POST', body: { email, senha: password } }),
   logout: (token: string) => request<void>('/auth/logout', { method: 'POST', token }),
-  me: (token: string) => request<User>('/users/me', { token }),
+  me: (token: string) => request<User>('/me', { token }),
 }
 
 export const termsApi = {

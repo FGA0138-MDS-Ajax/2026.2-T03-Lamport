@@ -12,6 +12,7 @@ interface FieldErrors {
   password?: string
   confirmPassword?: string
   acceptTerms?: string
+  adult?: string
 }
 
 export function RegisterPage() {
@@ -21,6 +22,7 @@ export function RegisterPage() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [acceptTerms, setAcceptTerms] = useState(false)
+  const [adult, setAdult] = useState(false)
   const [errors, setErrors] = useState<FieldErrors>({})
   const [submitError, setSubmitError] = useState<string>()
   const [submitting, setSubmitting] = useState(false)
@@ -34,6 +36,7 @@ export function RegisterPage() {
       acceptTerms: acceptTerms
         ? undefined
         : 'É necessário aceitar os termos de uso e a política de privacidade.',
+      adult: adult ? undefined : 'É necessário declarar que você tem 18 anos ou mais.',
     }
   }
 
@@ -46,7 +49,12 @@ export function RegisterPage() {
 
     setSubmitting(true)
     try {
-      const user = await authApi.register({ email: email.trim(), password, accept_terms: true })
+      const user = await authApi.register({
+        email: email.trim(),
+        senha: password,
+        aceite_termos: true,
+        maior_de_idade: true,
+      })
       navigate('/login', { state: { registeredEmail: user.email } satisfies LoginLocationState })
     } catch (error) {
       if (error instanceof ApiError && error.status === 409) {
@@ -112,6 +120,24 @@ export function RegisterPage() {
           {errors.acceptTerms && (
             <p id="accept-terms-error" className="field-error">
               {errors.acceptTerms}
+            </p>
+          )}
+        </div>
+
+        <div className="field">
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              checked={adult}
+              onChange={(event) => setAdult(event.target.checked)}
+              aria-invalid={errors.adult ? true : undefined}
+              aria-describedby={errors.adult ? 'adult-error' : undefined}
+            />
+            <span>Declaro que tenho 18 anos ou mais.</span>
+          </label>
+          {errors.adult && (
+            <p id="adult-error" className="field-error">
+              {errors.adult}
             </p>
           )}
         </div>

@@ -11,6 +11,7 @@ from app.core.security import (
     verify_password,
 )
 from app.domain.errors import (
+    AgeNotDeclaredError,
     EmailAlreadyRegisteredError,
     InvalidCredentialsError,
     NotAuthenticatedError,
@@ -26,6 +27,8 @@ from app.domain.users import (
 )
 
 TERMS_PURPOSE = "terms_of_use"
+AGE_PURPOSE = "age_declaration"
+AGE_DECLARATION_VERSION = "18+"
 
 # Verified against when the e-mail is unknown, so the response time does not reveal
 # whether an account exists.
@@ -74,16 +77,23 @@ class AuthService:
         self.terms_version = terms_version
         self.throttle = throttle
 
-    def register(self, email: str, password: str, accepted_terms: bool) -> User:
+    def register(
+        self, email: str, password: str, accepted_terms: bool, declared_adult: bool
+    ) -> User:
         if not accepted_terms:
             raise TermsNotAcceptedError
+        if not declared_adult:
+            raise AgeNotDeclaredError
         email = normalize_email(email)
         if self.users.get_by_email(email) is not None:
             raise EmailAlreadyRegisteredError
 
         user = User(email=email, password_hash=hash_password(password))
-        consent = Consent(user_id=user.id, purpose=TERMS_PURPOSE, version=self.terms_version)
-        self.users.add(user, consent)
+        consents = [
+            Consent(user_id=user.id, purpose=TERMS_PURPOSE, version=self.terms_version),
+            Consent(user_id=user.id, purpose=AGE_PURPOSE, version=AGE_DECLARATION_VERSION),
+        ]
+        self.users.add(user, *consents)
         return user
 
     def login(self, email: str, password: str) -> AccessToken:

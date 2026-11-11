@@ -132,3 +132,17 @@ class CheckinModel(Base):
 
 # Alias CheckinDiarioModel conforme Arquitetura (Figura 6) e Issue #4
 CheckinDiarioModel = CheckinModel
+
+
+class MaterialModel(Base):
+    __tablename__ = "materiais"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    slug: Mapped[str] = mapped_column(String(100), unique=True)
+    titulo: Mapped[str] = mapped_column(String(255))
+    url: Mapped[str] = mapped_column(String(500))
+    fonte: Mapped[str] = mapped_column(String(100))
+    resumo: Mapped[str] = mapped_column(String(500))
+    tags: Mapped[list[str]] = mapped_column(ARRAY(String(30)))
+    ativo: Mapped[bool] = mapped_column(Boolean, server_default="true")
+    revisado_em: Mapped[date] = mapped_column(Date)

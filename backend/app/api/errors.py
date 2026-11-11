@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.core.config import get_settings
 from app.domain.errors import (
+    AgeNotDeclaredError,
     CheckinAlreadyExistsError,
     CheckinNotFoundError,
     DomainError,
@@ -24,6 +25,10 @@ _DOMAIN_ERRORS: dict[type[DomainError], tuple[int, str]] = {
     TermsNotAcceptedError: (
         status.HTTP_422_UNPROCESSABLE_CONTENT,
         "Terms of use must be accepted",
+    ),
+    AgeNotDeclaredError: (
+        status.HTTP_422_UNPROCESSABLE_CONTENT,
+        "Declaration of being 18 or older is required",
     ),
     InvalidCredentialsError: (status.HTTP_401_UNAUTHORIZED, "Invalid e-mail or password"),
     NotAuthenticatedError: (status.HTTP_401_UNAUTHORIZED, "Not authenticated"),

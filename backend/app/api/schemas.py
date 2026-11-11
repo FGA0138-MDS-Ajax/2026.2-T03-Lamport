@@ -5,18 +5,18 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from app.domain.checkin import Nivel, Tag
-from app.domain.users import Role
 
 
 class RegisterRequest(BaseModel):
     email: EmailStr
-    password: str = Field(min_length=8, max_length=128)
-    accept_terms: bool
+    senha: str = Field(min_length=8, max_length=128)
+    aceite_termos: bool
+    maior_de_idade: bool
 
 
 class LoginRequest(BaseModel):
     email: EmailStr
-    password: str = Field(min_length=1, max_length=128)
+    senha: str = Field(min_length=1, max_length=128)
 
 
 class TokenResponse(BaseModel):
@@ -30,8 +30,7 @@ class UserResponse(BaseModel):
 
     id: uuid.UUID
     email: str
-    role: Role
-    created_at: datetime
+    criado_em: datetime = Field(validation_alias="created_at")
 
 
 class TermsResponse(BaseModel):

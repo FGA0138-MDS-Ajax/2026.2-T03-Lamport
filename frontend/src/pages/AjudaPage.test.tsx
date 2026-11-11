@@ -69,7 +69,7 @@ describe('Ajuda Imediata page', () => {
 
   it('opens for a logged-in user too', async () => {
     sessionStorage.setItem('sintoniza.token', 'header.payload.signature')
-    mockApi({ 'GET /api/users/me': { status: 200, body: testUser } })
+    mockApi({ 'GET /api/me': { status: 200, body: testUser } })
     renderApp('/risco')
 
     expect(await screen.findByRole('button', { name: 'Sair' })).toBeInTheDocument()
@@ -113,7 +113,7 @@ describe('BotaoAjuda "Preciso de ajuda agora"', () => {
   it('is shown once in the header for a logged-in user', async () => {
     sessionStorage.setItem('sintoniza.token', 'header.payload.signature')
     mockApi({
-      'GET /api/users/me': { status: 200, body: testUser },
+      'GET /api/me': { status: 200, body: testUser },
       'GET /api/checkins': { status: 200, body: [] },
     })
     renderApp('/historico')

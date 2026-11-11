@@ -104,3 +104,54 @@ def test_tu06_rs3_match_exato_de_tags(catalogo):
     assert len(res) == 1
     assert res[0].material_id == "m2"
     assert res[0].regra == "R-S3"
+
+
+def _material(material_id: str, *tags: str) -> MaterialCatalogo:
+    return MaterialCatalogo(material_id, set(tags), f"Motivo {material_id}")
+
+
+def test_tu06_rs1_respeita_a_ordem_de_prioridade_das_tags():
+    # Catálogo e tags em ordem diferente da prioridade: ANSIEDADE, HUMOR, ESTRESSE, SONO.
+    catalogo = [
+        _material("sono", "sono"),
+        _material("estresse", "estresse"),
+        _material("humor", "humor"),
+        _material("ansiedade", "ansiedade"),
+    ]
+    tags = (Tag.SONO, Tag.ESTRESSE, Tag.HUMOR, Tag.ANSIEDADE)
+
+    res = selecionar_materiais(tags, catalogo, set(), limite=4)
+
+    assert [r.material_id for r in res] == ["ansiedade", "humor", "estresse", "sono"]
+
+
+def test_tu06_rs3_material_com_duas_tags_aparece_uma_vez():
+    catalogo = [_material("m1", "ansiedade", "sono"), _material("m2", "sono")]
+
+    res = selecionar_materiais((Tag.ANSIEDADE, Tag.SONO), catalogo, set(), limite=3)
+
+    ids = [r.material_id for r in res]
+    assert ids.count("m1") == 1
+    assert sorted(ids) == ["m1", "m2"]
+
+
+def test_tu06_rs4_maximo_de_tres_descarta_tags_de_menor_prioridade():
+    catalogo = [
+        _material("ansiedade", "ansiedade"),
+        _material("humor", "humor"),
+        _material("estresse", "estresse"),
+        _material("sono", "sono"),
+    ]
+    tags = (Tag.ANSIEDADE, Tag.HUMOR, Tag.ESTRESSE, Tag.SONO)
+
+    res = selecionar_materiais(tags, catalogo, set(), limite=3)
+
+    assert [r.material_id for r in res] == ["ansiedade", "humor", "estresse"]
+
+
+def test_tu06_rs4_limite_padrao_e_tres():
+    catalogo = [_material(f"m{i}", "ansiedade") for i in range(5)]
+
+    res = selecionar_materiais((Tag.ANSIEDADE,), catalogo, set())
+
+    assert len(res) == 3

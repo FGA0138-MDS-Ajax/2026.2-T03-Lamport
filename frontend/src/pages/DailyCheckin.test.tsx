@@ -32,7 +32,7 @@ describe('DailyCheckin with P5 = Sim (R-D1)', () => {
 
   it('opens the help screen after saving the check-in', async () => {
     const fetchMock = mockApi({
-      'GET /api/users/me': { status: 200, body: testUser },
+      'GET /api/me': { status: 200, body: testUser },
       'GET /api/checkins/hoje': { status: 404, body: { detail: 'Not found' } },
       'POST /api/checkins': { status: 201, body: crise },
     })
@@ -49,7 +49,7 @@ describe('DailyCheckin with P5 = Sim (R-D1)', () => {
 
   it('still opens the help screen when saving fails', async () => {
     mockApi({
-      'GET /api/users/me': { status: 200, body: testUser },
+      'GET /api/me': { status: 200, body: testUser },
       'GET /api/checkins/hoje': { status: 404, body: { detail: 'Not found' } },
       'POST /api/checkins': { status: 503, body: { detail: 'Unavailable' } },
     })

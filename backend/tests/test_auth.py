@@ -27,9 +27,7 @@ def test_login_is_case_insensitive_on_email(client, registered_user):
 
 
 def test_login_rejects_wrong_password(client, registered_user):
-    response = client.post(
-        "/api/auth/login", json={**registered_user, "password": "senha-errada-123"}
-    )
+    response = client.post("/api/auth/login", json={**registered_user, "senha": "senha-errada-123"})
 
     assert response.status_code == 401
     assert response.json() == {"detail": "Invalid e-mail or password"}
@@ -37,7 +35,7 @@ def test_login_rejects_wrong_password(client, registered_user):
 
 def test_login_rejects_unknown_user_with_same_message(client):
     response = client.post(
-        "/api/auth/login", json={"email": "ninguem@example.com", "password": "qualquer-senha"}
+        "/api/auth/login", json={"email": "ninguem@example.com", "senha": "qualquer-senha"}
     )
 
     assert response.status_code == 401
@@ -45,20 +43,20 @@ def test_login_rejects_unknown_user_with_same_message(client):
 
 
 def test_me_requires_authentication(client):
-    response = client.get("/api/users/me")
+    response = client.get("/api/me")
 
     assert response.status_code == 401
     assert response.headers["www-authenticate"] == "Bearer"
 
 
 def test_me_rejects_invalid_token(client):
-    response = client.get("/api/users/me", headers={"Authorization": "Bearer invalid.token"})
+    response = client.get("/api/me", headers={"Authorization": "Bearer invalid.token"})
 
     assert response.status_code == 401
 
 
 def test_me_rejects_expired_token(client, auth_headers):
-    me = client.get("/api/users/me", headers=auth_headers).json()
+    me = client.get("/api/me", headers=auth_headers).json()
     past = datetime.now(UTC) - timedelta(minutes=5)
     expired = jwt.encode(
         {"sub": me["id"], "jti": "expired", "iat": past - timedelta(hours=1), "exp": past},
@@ -66,26 +64,26 @@ def test_me_rejects_expired_token(client, auth_headers):
         algorithm=ALGORITHM,
     )
 
-    response = client.get("/api/users/me", headers={"Authorization": f"Bearer {expired}"})
+    response = client.get("/api/me", headers={"Authorization": f"Bearer {expired}"})
 
     assert response.status_code == 401
 
 
 def test_me_rejects_token_signed_with_other_key(client, auth_headers):
-    me = client.get("/api/users/me", headers=auth_headers).json()
+    me = client.get("/api/me", headers=auth_headers).json()
     forged = jwt.encode(
         {"sub": me["id"], "jti": "forged", "exp": datetime.now(UTC) + timedelta(hours=1)},
         "another-secret-key-with-at-least-32-chars",
         algorithm=ALGORITHM,
     )
 
-    response = client.get("/api/users/me", headers={"Authorization": f"Bearer {forged}"})
+    response = client.get("/api/me", headers={"Authorization": f"Bearer {forged}"})
 
     assert response.status_code == 401
 
 
 def test_me_returns_authenticated_user(client, registered_user, auth_headers):
-    response = client.get("/api/users/me", headers=auth_headers)
+    response = client.get("/api/me", headers=auth_headers)
 
     assert response.status_code == 200
     body = response.json()
@@ -98,7 +96,7 @@ def test_logout_revokes_token(client, auth_headers):
     response = client.post("/api/auth/logout", headers=auth_headers)
 
     assert response.status_code == 204
-    assert client.get("/api/users/me", headers=auth_headers).status_code == 401
+    assert client.get("/api/me", headers=auth_headers).status_code == 401
     assert client.post("/api/auth/logout", headers=auth_headers).status_code == 401
 
 
@@ -107,7 +105,7 @@ def test_logout_keeps_other_sessions_active(client, registered_user, auth_header
 
     client.post("/api/auth/logout", headers=auth_headers)
 
-    response = client.get("/api/users/me", headers={"Authorization": f"Bearer {other}"})
+    response = client.get("/api/me", headers={"Authorization": f"Bearer {other}"})
     assert response.status_code == 200
 
 
@@ -127,3 +125,14 @@ def test_terms_returns_current_version(client):
 
     assert response.status_code == 200
     assert response.json() == {"version": get_settings().terms_version}
+
+
+def test_me_rejects_token_of_deleted_user(client, auth_headers, db_session):
+    from sqlalchemy import delete
+
+    from app.infrastructure.models import UserModel
+
+    db_session.execute(delete(UserModel))
+    db_session.commit()
+
+    assert client.get("/api/me", headers=auth_headers).status_code == 401

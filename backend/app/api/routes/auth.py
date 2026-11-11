@@ -7,14 +7,16 @@ from app.domain.users import User
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/register", status_code=status.HTTP_201_CREATED, response_model=UserResponse)
+@router.post("/cadastro", status_code=status.HTTP_201_CREATED, response_model=UserResponse)
 def register(payload: RegisterRequest, service: AuthServiceDep) -> User:
-    return service.register(payload.email, payload.password, payload.accept_terms)
+    return service.register(
+        payload.email, payload.senha, payload.aceite_termos, payload.maior_de_idade
+    )
 
 
 @router.post("/login")
 def login(payload: LoginRequest, service: AuthServiceDep) -> TokenResponse:
-    token = service.login(payload.email, payload.password)
+    token = service.login(payload.email, payload.senha)
     return TokenResponse(access_token=token.value, expires_in=token.expires_in)
 
 

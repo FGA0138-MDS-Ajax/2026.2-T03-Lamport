@@ -42,7 +42,9 @@ def database():
 def clean_tables():
     yield
     with get_engine().begin() as conn:
-        conn.execute(text("TRUNCATE users, consents, revoked_tokens, login_attempts, checkins"))
+        conn.execute(
+            text("TRUNCATE users, consents, revoked_tokens, login_attempts, checkins, materiais")
+        )
 
 
 SENSITIVE_KEY_PARTS = ("senha", "password", "hash")
@@ -92,8 +94,10 @@ def db_session():
 
 @pytest.fixture
 def registered_user(client):
-    credentials = {"email": "ana@example.com", "password": "senha-segura-123"}
-    response = client.post("/api/auth/register", json={**credentials, "accept_terms": True})
+    credentials = {"email": "ana@example.com", "senha": "senha-segura-123"}
+    response = client.post(
+        "/api/auth/cadastro", json={**credentials, "aceite_termos": True, "maior_de_idade": True}
+    )
     assert response.status_code == 201
     return credentials
 

@@ -1,0 +1,82 @@
+- slug: saude-mental-ms
+  titulo: Saúde Mental – Saúde de A a Z
+  url: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental
+  fonte: Ministério da Saúde
+  resumo: >-
+    Explica o que é saúde mental e como o corpo, as emoções, as relações e as condições de
+    vida influenciam o bem-estar. Mostra também onde buscar cuidado na rede pública de saúde.
+  tags: [ajuda_profissional, bem_estar]
+  ativo: true
+  data_de_revisao: 2026-11-09
+
+- slug: sus-saude-mental-ms
+  titulo: SUS e a Saúde Mental
+  url: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental/sus-e-a-saude-mental
+  fonte: Ministério da Saúde
+  resumo: >-
+    Explica como o SUS organiza o cuidado em saúde mental por meio da Rede de Atenção
+    Psicossocial, com serviços próximos da comunidade. Apresenta os princípios dessa política,
+    como o acesso para todas as pessoas e o respeito aos direitos humanos.
+  tags: [ajuda_profissional]
+  ativo: true
+  data_de_revisao: 2026-11-09
+
+- slug: raps-ms
+  titulo: Rede de Atenção Psicossocial (RAPS)
+  url: https://www.gov.br/saude/pt-br/composicao/saes/desmad/raps
+  fonte: Ministério da Saúde
+  resumo: >-
+    Apresenta os serviços públicos de saúde mental do SUS, como as Unidades Básicas de Saúde
+    (UBS), os Centros de Atenção Psicossocial (CAPS) e as UPAs 24h. Mostra o que cada serviço
+    oferece, para você saber onde procurar atendimento.
+  tags: [ajuda_profissional]
+  ativo: true
+  data_de_revisao: 2026-11-09
+
+- slug: depressao-ms
+  titulo: Depressão – Saúde de A a Z
+  url: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao
+  fonte: Ministério da Saúde
+  resumo: >-
+    Apresenta o que é a depressão, os sinais mais comuns e as formas de tratamento e
+    prevenção. O diagnóstico é feito por um médico, e o atendimento pode acontecer na rede
+    pública de saúde.
+  tags: [humor]
+  ativo: true
+  data_de_revisao: 2026-11-09
+
+- slug: suicidio-prevencao-ms
+  titulo: Suicídio (Prevenção) – sinais de alerta e onde pedir ajuda
+  url: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/suicidio-prevencao
+  fonte: Ministério da Saúde
+  resumo: >-
+    Ajuda a reconhecer sinais de alerta em você ou em alguém próximo e mostra como oferecer
+    apoio. Indica onde pedir ajuda: CVV (ligação gratuita para o 188), SAMU 192 e serviços de
+    saúde do SUS.
+  tags: [ajuda_profissional]
+  ativo: true
+  data_de_revisao: 2026-11-09
+
+- slug: faca-o-que-importa-opas
+  titulo: "Faça o que importa em tempos de estresse: guia ilustrado (versão para o Brasil)"
+  url: https://www.paho.org/pt/documentos/faca-que-importa-em-tempos-estresse-guia-ilustrado-versao-adaptada-para-brasil
+  fonte: OPAS/OMS
+  resumo: >-
+    Guia ilustrado da Organização Mundial da Saúde, adaptado para o Brasil, com técnicas
+    práticas para lidar com o estresse e as preocupações. Os exercícios podem ser feitos em
+    poucos minutos por dia, e a página traz versões em áudio.
+  tags: [ansiedade, estresse]
+  ativo: true
+  data_de_revisao: 2026-11-09
+
+- slug: durma-bem-viva-melhor-ms
+  titulo: "“Durma Bem, Viva Melhor”: 13/3 – Dia Mundial do Sono 2026"
+  url: https://bvsms.saude.gov.br/durma-bem-viva-melhor-13-3-dia-mundial-do-sono-2026/
+  fonte: Ministério da Saúde
+  resumo: >-
+    Explica por que o sono é importante para a saúde e reúne hábitos que ajudam a dormir
+    melhor, como manter horários regulares e reduzir a luz das telas à noite. Também indica
+    quando procurar atendimento médico.
+  tags: [sono]
+  ativo: true
+  data_de_revisao: 2026-11-09
