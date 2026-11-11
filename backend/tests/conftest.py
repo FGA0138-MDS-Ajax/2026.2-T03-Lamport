@@ -42,7 +42,9 @@ def database():
 def clean_tables():
     yield
     with get_engine().begin() as conn:
-        conn.execute(text("TRUNCATE users, consents, revoked_tokens, login_attempts, checkins"))
+        conn.execute(
+            text("TRUNCATE users, consents, revoked_tokens, login_attempts, checkins, materiais")
+        )
 
 
 SENSITIVE_KEY_PARTS = ("senha", "password", "hash")

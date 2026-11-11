@@ -26,6 +26,8 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-sintoniza}:${POSTGRES_PASSWORD:-sintoniza}@db:5432/${POSTGRES_DB:-sintoniza}
       SECRET_KEY: ${SECRET_KEY:?defina SECRET_KEY no arquivo .env (veja .env.example)}
+    volumes:
+      - ./catalog:/catalog:ro
     depends_on:
       db:
         condition: service_healthy
