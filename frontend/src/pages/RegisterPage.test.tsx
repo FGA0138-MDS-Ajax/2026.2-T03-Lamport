@@ -8,7 +8,8 @@ async function fillForm(password = 'senha-segura-123', confirmation = password) 
   await user.type(screen.getByLabelText('E-mail'), 'ana@example.com')
   await user.type(screen.getByLabelText('Senha'), password)
   await user.type(screen.getByLabelText('Confirme a senha'), confirmation)
-  await user.click(screen.getByRole('checkbox'))
+  await user.click(screen.getByLabelText(/aceito os/))
+  await user.click(screen.getByLabelText(/18 anos ou mais/))
   return user
 }
 
@@ -22,6 +23,7 @@ describe('RegisterPage', () => {
     expect(screen.getByText('Informe seu e-mail.')).toBeInTheDocument()
     expect(screen.getByText('Crie uma senha.')).toBeInTheDocument()
     expect(screen.getByText(/aceitar os termos de uso/)).toBeInTheDocument()
+    expect(screen.getByText(/declarar que você tem 18 anos/)).toBeInTheDocument()
     expect(screen.getByLabelText('E-mail')).toHaveAttribute('aria-invalid', 'true')
     expect(fetchMock).not.toHaveBeenCalled()
   })
@@ -38,7 +40,7 @@ describe('RegisterPage', () => {
   })
 
   it('creates the account and redirects to login', async () => {
-    const fetchMock = mockApi({ 'POST /api/auth/register': { status: 201, body: testUser } })
+    const fetchMock = mockApi({ 'POST /api/auth/cadastro': { status: 201, body: testUser } })
     renderApp('/cadastro')
 
     const user = await fillForm()
@@ -51,12 +53,13 @@ describe('RegisterPage', () => {
       email: 'ana@example.com',
       password: 'senha-segura-123',
       accept_terms: true,
+      maior_de_idade: true,
     })
   })
 
   it('reports an e-mail that is already registered', async () => {
     mockApi({
-      'POST /api/auth/register': { status: 409, body: { detail: 'E-mail already registered' } },
+      'POST /api/auth/cadastro': { status: 409, body: { detail: 'E-mail already registered' } },
     })
     renderApp('/cadastro')
 
@@ -68,7 +71,7 @@ describe('RegisterPage', () => {
   })
 
   it('reports server errors', async () => {
-    mockApi({ 'POST /api/auth/register': { status: 503, body: { detail: 'Unavailable' } } })
+    mockApi({ 'POST /api/auth/cadastro': { status: 503, body: { detail: 'Unavailable' } } })
     renderApp('/cadastro')
 
     const user = await fillForm()
