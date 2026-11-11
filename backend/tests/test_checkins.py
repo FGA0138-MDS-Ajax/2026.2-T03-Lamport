@@ -74,8 +74,8 @@ def test_ti04_second_checkin_on_same_day_returns_409(client, auth_headers, db_se
 
 def test_other_user_can_checkin_on_same_day(client, auth_headers, db_session):
     client.post(URL, json=VALID_PAYLOAD, headers=auth_headers)
-    other = {"email": "bia@example.com", "password": "senha-segura-123"}
-    client.post("/api/auth/cadastro", json={**other, "accept_terms": True, "maior_de_idade": True})
+    other = {"email": "bia@example.com", "senha": "senha-segura-123"}
+    client.post("/api/auth/cadastro", json={**other, "aceite_termos": True, "maior_de_idade": True})
     token = client.post("/api/auth/login", json=other).json()["access_token"]
 
     response = client.post(URL, json=VALID_PAYLOAD, headers={"Authorization": f"Bearer {token}"})
@@ -156,8 +156,8 @@ def test_today_returns_404_without_checkin(client, auth_headers):
 
 def test_today_does_not_return_another_users_checkin(client, auth_headers):
     client.post(URL, json=VALID_PAYLOAD, headers=auth_headers)
-    other = {"email": "bia@example.com", "password": "senha-segura-123"}
-    client.post("/api/auth/cadastro", json={**other, "accept_terms": True, "maior_de_idade": True})
+    other = {"email": "bia@example.com", "senha": "senha-segura-123"}
+    client.post("/api/auth/cadastro", json={**other, "aceite_termos": True, "maior_de_idade": True})
     token = client.post("/api/auth/login", json=other).json()["access_token"]
 
     response = client.get(TODAY_URL, headers={"Authorization": f"Bearer {token}"})

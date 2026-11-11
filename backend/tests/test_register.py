@@ -6,8 +6,8 @@ from app.infrastructure.models import ConsentModel, UserModel
 
 VALID_PAYLOAD = {
     "email": "ana@example.com",
-    "password": "senha-segura-123",
-    "accept_terms": True,
+    "senha": "senha-segura-123",
+    "aceite_termos": True,
     "maior_de_idade": True,
 }
 
@@ -29,9 +29,9 @@ def test_register_stores_only_password_hash(client, db_session):
     client.post("/api/auth/cadastro", json=VALID_PAYLOAD)
 
     user = db_session.scalar(select(UserModel))
-    assert user.password_hash != VALID_PAYLOAD["password"]
+    assert user.password_hash != VALID_PAYLOAD["senha"]
     assert user.password_hash.startswith("$argon2id$")
-    assert verify_password(VALID_PAYLOAD["password"], user.password_hash)
+    assert verify_password(VALID_PAYLOAD["senha"], user.password_hash)
 
 
 def test_register_records_terms_consent(client, db_session):
@@ -71,7 +71,7 @@ def test_register_rejects_duplicate_email(client, db_session, email):
     assert len(db_session.scalars(select(UserModel)).all()) == 1
 
 
-@pytest.mark.parametrize("missing", ["email", "password", "accept_terms", "maior_de_idade"])
+@pytest.mark.parametrize("missing", ["email", "senha", "aceite_termos", "maior_de_idade"])
 def test_register_requires_fields(client, missing):
     payload = {key: value for key, value in VALID_PAYLOAD.items() if key != missing}
 
@@ -85,8 +85,8 @@ def test_register_requires_fields(client, missing):
     [
         {"email": "not-an-email"},
         {"email": "ana@"},
-        {"password": "curta"},
-        {"password": "x" * 129},
+        {"senha": "curta"},
+        {"senha": "x" * 129},
     ],
 )
 def test_register_rejects_invalid_format(client, db_session, changes):
@@ -97,7 +97,7 @@ def test_register_rejects_invalid_format(client, db_session, changes):
 
 
 def test_register_requires_terms_acceptance(client, db_session):
-    response = client.post("/api/auth/cadastro", json={**VALID_PAYLOAD, "accept_terms": False})
+    response = client.post("/api/auth/cadastro", json={**VALID_PAYLOAD, "aceite_termos": False})
 
     assert response.status_code == 422
     assert response.json() == {"detail": "Terms of use must be accepted"}

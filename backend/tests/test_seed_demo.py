@@ -11,7 +11,7 @@ def test_seed_creates_demo_users_who_can_log_in(client, db_session):
     assert [created for _, created in result] == [True] * len(DEMO_USERS)
     for demo in DEMO_USERS:
         response = client.post(
-            "/api/auth/login", json={"email": demo.email, "password": DEMO_PASSWORD}
+            "/api/auth/login", json={"email": demo.email, "senha": DEMO_PASSWORD}
         )
         assert response.status_code == 200
     # Cada cadastro grava dois consentimentos: termos de uso e declaração de maioridade.

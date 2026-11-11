@@ -51,8 +51,8 @@ export function RegisterPage() {
     try {
       const user = await authApi.register({
         email: email.trim(),
-        password,
-        accept_terms: true,
+        senha: password,
+        aceite_termos: true,
         maior_de_idade: true,
       })
       navigate('/login', { state: { registeredEmail: user.email } satisfies LoginLocationState })

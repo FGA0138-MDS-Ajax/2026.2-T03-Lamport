@@ -27,9 +27,7 @@ def test_login_is_case_insensitive_on_email(client, registered_user):
 
 
 def test_login_rejects_wrong_password(client, registered_user):
-    response = client.post(
-        "/api/auth/login", json={**registered_user, "password": "senha-errada-123"}
-    )
+    response = client.post("/api/auth/login", json={**registered_user, "senha": "senha-errada-123"})
 
     assert response.status_code == 401
     assert response.json() == {"detail": "Invalid e-mail or password"}
@@ -37,7 +35,7 @@ def test_login_rejects_wrong_password(client, registered_user):
 
 def test_login_rejects_unknown_user_with_same_message(client):
     response = client.post(
-        "/api/auth/login", json={"email": "ninguem@example.com", "password": "qualquer-senha"}
+        "/api/auth/login", json={"email": "ninguem@example.com", "senha": "qualquer-senha"}
     )
 
     assert response.status_code == 401
