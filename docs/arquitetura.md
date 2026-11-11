@@ -1,9 +1,9 @@
 # Documento de Arquitetura
 
-**Versão 2.2 – 29/10/2026**
+**Versão 2.3 – 11/11/2026**
 
 !!! info "Versão vigente"
-    Esta página reproduz a versão 2.2, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md). Este documento está alinhado à [Visão do Produto e do Projeto v2.2](visao-produto-projeto.md).
+    Esta página reproduz a versão 2.3, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md). Este documento está alinhado à [Visão do Produto e do Projeto v2.3](visao-produto-projeto.md).
 
 ## Integrantes do grupo
 
@@ -27,6 +27,7 @@
 | 15/10/2026 | 2.0 | Alinhamento à Visão v2.0: remoção dos perfis Administrador e Curador e do componente de administração; módulo de regras como funções puras com contrato documentado; catálogo versionado em arquivo com carga por seed; avaliação quinzenal PHQ-9/GAD-7; dois diagramas de atividades (check-in e avaliação); contrato da API; restrições de segurança verificáveis por testes; Docker Compose como implantação obrigatória. | Grupo Lamport |
 | 18/10/2026 | 2.1 | Alinhamento à Visão v2.1: remoção das metas de desempenho, capacidade e cobertura de código, da publicação em nuvem, do verificador automático de links, da auditoria de dependências e da avaliação de utilidade dos materiais; restrições de segurança limitadas ao que é verificado pelos testes TS-01 a TS-05; características de qualidade descritas sem metas numéricas. | Grupo Lamport |
 | 29/10/2026 | 2.2 | Alinhamento à Visão v2.2: P1 a P4 do check-in opcionais (nulas quando sem resposta) na Figura 3, na Figura 6 e no contrato de `avaliar_checkin`; retirada do convite para avaliação (R07, R-D7), da função `deve_convidar_avaliacao` e do campo `convite`; regra de nomes das respostas do check-in na API (`p1` a `p5` na entrada e na saída); correção do prefixo `/api` nas rotas da Figura 3. | Grupo Lamport |
+| 11/11/2026 | 2.3 | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: inclusão de `POST /api/auth/logout`, `GET /api/terms` e `GET /api/health` no Quadro 6; entidade Consentimento na Figura 6, no lugar dos campos de termos e maioridade em Usuario; limite de tentativas de login na seção 2.4; Quadro 4 e Figura 5 com os pacotes reais do backend (`application`, `core`, `infrastructure`); campos da API em português, exceto os do token (seção 2.4, item 6). | Grupo Lamport |
 
 ---
 
@@ -38,7 +39,7 @@ Este documento descreve a arquitetura do Sintoniza, sistema desenvolvido pelo gr
 
 ### 1.2 Escopo
 
-O detalhamento do escopo encontra-se na [Visão do Produto e do Projeto](visao-produto-projeto.md), versão 2.2 (GRUPO LAMPORT, 2026), seção 4. Em linhas gerais, o MVP compreende: cadastro, autenticação, termos de uso e exclusão de conta; check-in diário com cinco perguntas e recomendação de até três materiais oficiais com explicação; avaliação quinzenal com os instrumentos PHQ-9 e GAD-7 e orientação por nível; Tela de Ajuda Imediata acionada por indicador de risco ou por botão; histórico; e catálogo curado de links oficiais mantido no repositório.
+O detalhamento do escopo encontra-se na [Visão do Produto e do Projeto](visao-produto-projeto.md), versão 2.3 (GRUPO LAMPORT, 2026), seção 4. Em linhas gerais, o MVP compreende: cadastro, autenticação, termos de uso e exclusão de conta; check-in diário com cinco perguntas e recomendação de até três materiais oficiais com explicação; avaliação quinzenal com os instrumentos PHQ-9 e GAD-7 e orientação por nível; Tela de Ajuda Imediata acionada por indicador de risco ou por botão; histórico; e catálogo curado de links oficiais mantido no repositório.
 
 As partes da Visão usadas nas decisões deste documento são citadas explicitamente: a pilha tecnológica (Visão, seção 1.4), as regras de negócio do fluxo principal (Visão, seção 4.5), os requisitos Must (Visão, seção 4.4), as métricas do GQM (Visão, seção 5) e os riscos (Visão, seção 2.5). Ficam fora da arquitetura do MVP: aplicativo móvel nativo, notificações, painel administrativo, inteligência artificial, integração com APIs externas e publicação em nuvem.
 
@@ -102,8 +103,8 @@ As metas e restrições a seguir decorrem dos requisitos e dos riscos da Visão.
 2. **Rastreabilidade de cada recomendação.** Toda recomendação é gravada com o código da regra e o motivo exibido. *Justificativa:* explicar a sugestão ao usuário. *Verificação:* TI-03 e TI-06;
 3. **Ajuda Imediata independente do backend.** A Tela de Ajuda é estática no frontend e acessível sem login. *Justificativa:* risco R1. *Verificação:* TSI-02 e TSI-04;
 4. **Interfaces.** API REST com JSON e rotas sob `/api`. Recursos de outro usuário respondem 404, e não 403, para não revelar sua existência. *Justificativa:* contrato único entre frontend e backend, que evoluem em paralelo. *Verificação:* TS-03;
-5. **Segurança.** Senhas com Argon2id; JWT assinado com validade de 60 min e segredo lido de variável de ambiente; toda rota privada protegida por dependência de autenticação; consultas sempre filtradas pelo usuário do token. *Justificativa:* dados de saúde são dados pessoais sensíveis (BRASIL, 2018, art. 5º, II). *Verificação:* TS-01 a TS-05;
-6. **Padrão de codificação.** Backend em Python seguindo a PEP 8 (VAN ROSSUM; WARSAW; COGHLAN, 2001), verificada pelo Ruff; frontend em TypeScript verificado pelo ESLint. Nomes de pacotes e módulos em inglês (`api`, `services`, `rules`, `persistence`); entidades e campos do domínio em português sem acento (`Usuario`, `CheckinDiario`, `escore_phq9`), por serem termos do negócio; textos da interface em português. *Justificativa:* código uniforme reduz atrito nas revisões.
+5. **Segurança.** Senhas com Argon2id; JWT assinado com validade de 60 min e segredo lido de variável de ambiente; sair da conta revoga o token antes da expiração; após 5 falhas de login seguidas para o mesmo e-mail, novas tentativas recebem 429 por 15 min, também para e-mail não cadastrado, para não revelar se a conta existe (o registro das falhas guarda apenas um resumo SHA-256 do e-mail); toda rota privada protegida por dependência de autenticação; consultas sempre filtradas pelo usuário do token. *Justificativa:* dados de saúde são dados pessoais sensíveis (BRASIL, 2018, art. 5º, II), e o limite de tentativas dificulta descobrir senhas por força bruta. *Verificação:* TS-01 a TS-05; limite de tentativas e saída da conta em TI-02 e TS-02;
+6. **Padrão de codificação.** Backend em Python seguindo a PEP 8 (VAN ROSSUM; WARSAW; COGHLAN, 2001), verificada pelo Ruff; frontend em TypeScript verificado pelo ESLint. Nomes de pacotes e módulos em inglês (`api`, `application`, `rules`, `infrastructure`); entidades e campos do domínio em português sem acento (`Usuario`, `CheckinDiario`, `escore_phq9`), por serem termos do negócio, regra que vale também para os campos de entrada e saída da API (Quadro 6), exceto os do token, que seguem o padrão OAuth 2.0 (`access_token`, `token_type`, `expires_in`); textos da interface em português. *Justificativa:* código uniforme reduz atrito nas revisões.
 
 Não foram definidas metas de desempenho, capacidade, disponibilidade ou compatibilidade com navegadores e tamanhos de tela: o sistema será usado apenas em testes e demonstrações da disciplina, e essas metas exigiriam testes que não fazem parte do escopo (Visão, seção 4.1).
 
@@ -211,15 +212,15 @@ A experiência da equipe também orientou a escolha, como evidência complementa
 | `frontend/pages` | Uma tela por caso de uso (login, cadastro, check-in, avaliação, resultado, histórico, termos, ajuda). | Usa `components` e `services/api`. |
 | `frontend/components` | Elementos reutilizáveis: BotaoAjuda, TelaAjuda, CardMaterial, PerguntaEscala. | Recebe dados por props; TelaAjuda não depende da API. |
 | `frontend/services/api` | Cliente HTTP tipado; injeta o token e trata 401 (volta ao login). | HTTP/JSON com o módulo `api` do backend. |
-| `backend/api` | Rotas FastAPI, esquemas Pydantic e dependência de autenticação. | Recebe HTTP; chama `services` e `security`. |
-| `backend/security` | Hash e verificação de senha (Argon2id); emissão e validação de JWT. | Funções chamadas pela `api`. |
-| `backend/services` | Casos de uso; filtro por usuário em todas as consultas; transações. | Chama `rules` (funções puras) e `persistence` (repositórios). |
+| `backend/api` | Rotas FastAPI, esquemas Pydantic, dependência de autenticação e montagem dos casos de uso com os repositórios concretos. | Recebe HTTP; chama `application`; usa `core` para validar o token e `infrastructure` para obter os repositórios. |
+| `backend/core` | Configuração lida de variáveis de ambiente e segurança: hash e verificação de senha (Argon2id), emissão e validação de JWT. | Funções chamadas por `api`, `application` e `infrastructure`; não importa nenhum outro módulo. |
+| `backend/application` | Casos de uso (contas, check-ins, avaliações, histórico); filtro por usuário em todas as consultas. | Chama `rules` (funções puras) e os repositórios pelas interfaces definidas em `domain`. |
 | `backend/rules` | Pontuação, faixas, decisão, regras do check-in e seleção de conteúdo. | Funções puras (Quadro 5); depende só de `domain`. |
-| `backend/domain` | Enumerações e tipos do negócio: Nivel, Tag, Faixa e objetos de resultado. | Importado pelos demais módulos; não importa nenhum. |
-| `backend/persistence` | Modelos SQLAlchemy, repositórios e migrações Alembic. | Chamado por `services` e `catalog`; único a acessar o PostgreSQL. |
-| `backend/catalog` | `materiais.yaml`, validação e comando seed. | Usa `persistence` para a carga. |
+| `backend/domain` | Entidades, enumerações e tipos do negócio (Nivel, Tag, Faixa e objetos de resultado), erros do domínio e interfaces dos repositórios. | Importado pelos demais módulos; não importa nenhum. |
+| `backend/infrastructure` | Modelos SQLAlchemy, repositórios e conexão com o banco. As migrações Alembic ficam em `backend/alembic`. | Implementa as interfaces de repositório de `domain`; único a acessar o PostgreSQL. |
+| `catalog/materiais.yaml` e comando seed | Arquivo versionado dos materiais, validação e carga no banco. | O comando seed usa `infrastructure` para a carga. |
 
-As dependências de código seguem uma única direção (`pages` → `services/api` → `api` → `services` → `rules`/`persistence` → `domain`), como mostra a Figura 5. O módulo `rules` não depende de `persistence` nem de `api`, o que garante que pode ser testado sem banco e sem servidor. O módulo `domain` não depende de nenhum outro.
+As dependências de código seguem uma única direção (`pages` → `services/api` → `api` → `application` → `rules` → `domain`), como mostra a Figura 5. O módulo `application` não depende de `infrastructure`: usa as interfaces de repositório definidas em `domain`, que `infrastructure` implementa e que a `api` entrega aos casos de uso (inversão de dependência). O módulo `rules` não depende de `infrastructure` nem de `api`, o que garante que pode ser testado sem banco e sem servidor. Os módulos `domain` e `core` não dependem de nenhum outro.
 
 **Figura 5 – Diagrama de pacotes da organização lógica**
 
@@ -234,20 +235,23 @@ flowchart TB
     end
     subgraph BE["backend (Python + FastAPI)"]
         api["api<br/><small>routers, schemas</small>"]
-        security["security<br/><small>Argon2, JWT</small>"]
-        services["services<br/><small>casos de uso</small>"]
-        catalog["catalog<br/><small>materiais.yaml, seed</small>"]
-        persistence["persistence<br/><small>modelos, repositórios, migrações</small>"]
+        core["core<br/><small>configuração, Argon2, JWT</small>"]
+        application["application<br/><small>casos de uso</small>"]
+        catalog["catalog/materiais.yaml<br/><small>seed</small>"]
+        infrastructure["infrastructure<br/><small>modelos, repositórios</small>"]
         rules["rules<br/><small>funções puras</small>"]
-        domain["domain<br/><small>enums e tipos</small>"]
-        api -.-> security
-        api -.-> services
-        services -.-> persistence
-        services -.-> rules
-        services -.-> domain
-        catalog -.-> persistence
+        domain["domain<br/><small>entidades, tipos, interfaces</small>"]
+        api -.-> application
+        api -.-> core
+        api -.-> infrastructure
+        api -.-> domain
+        application -.-> rules
+        application -.-> domain
+        application -.-> core
+        catalog -.-> infrastructure
         catalog -.-> domain
-        persistence -.-> domain
+        infrastructure -.-> domain
+        infrastructure -.-> core
         rules -.-> domain
     end
     sapi -- HTTP/JSON --> api
@@ -266,14 +270,17 @@ O Quadro 5 define o contrato das funções do módulo de regras. É por meio des
 | `avaliar_checkin(p1, p2, p3, p4, p5)` | p1 a p4: inteiros nas faixas do check-in ou nulo (sem resposta); p5: booleano | ResultadoCheckin: nível, tags, regras acionadas | R-D1 a R-D6 |
 | `selecionar_materiais(tags, catalogo, ultimas_exibicoes, limite)` | tags; materiais ativos; data da última exibição de cada material ao usuário; limite (3 ou 2) | lista de Sugestao: material_id, regra, motivo | R-S1 a R-S6 |
 
-O Quadro 6 apresenta o contrato da API. Todas as rotas, exceto as marcadas como públicas, exigem token, e o teste TS-01 verifica isso automaticamente para todas as rotas existentes. Nas rotas de check-in, as respostas às perguntas usam os identificadores `p1` a `p5` tanto na entrada quanto na saída; a camada de serviços converte esses identificadores nos campos do domínio (Figura 6).
+O Quadro 6 apresenta o contrato da API. Todas as rotas, exceto as marcadas como públicas, exigem token, e o teste TS-01 verifica isso automaticamente para todas as rotas existentes. A rota `GET /api/health` não atende a um requisito do produto: serve à verificação de saúde do contêiner `api` no Docker Compose e da CI, e não expõe dados. Nas rotas de check-in, as respostas às perguntas usam os identificadores `p1` a `p5` tanto na entrada quanto na saída; a camada de serviços converte esses identificadores nos campos do domínio (Figura 6).
 
 **Quadro 6 – Contrato da API REST**
 
 | Método e rota | Acesso | Entrada | Saída (sucesso / erros) | Req. |
 | :-- | :-- | :-- | :-- | :-- |
 | `POST /api/auth/cadastro` | Público | email, senha, aceite_termos, maior_de_idade | 201 / 409 e-mail em uso; 422 inválido | R01 |
-| `POST /api/auth/login` | Público | email, senha | 200 token / 401 genérico | R02 |
+| `POST /api/auth/login` | Público | email, senha | 200 token / 401 genérico; 429 após 5 falhas seguidas (por 15 min) | R02 |
+| `POST /api/auth/logout` | Usuário | — | 204 (revoga o token) | R02 |
+| `GET /api/terms` | Público | — | 200 versão vigente dos termos | R01, R03 |
+| `GET /api/health` | Público | — | 200 API e banco disponíveis / 503 banco indisponível | — |
 | `GET /api/me` | Usuário | — | 200 id, email, criado_em | R02 |
 | `DELETE /api/me` | Usuário | — | 204 (apaga tudo) | R04 |
 | `GET /api/checkins/hoje` | Usuário | — | 200 check-in do dia (p1 a p5, nível, tags) ou 404 | R05 |
@@ -285,7 +292,7 @@ O Quadro 6 apresenta o contrato da API. Todas as rotas, exceto as marcadas como 
 
 #### 2.5.3 Visão estrutural
 
-A estrutura do domínio está na Figura 6. Um Usuario possui, por composição, seus check-ins, avaliações e recomendações: ao excluir a conta, todos são removidos (`ON DELETE CASCADE`), atendendo ao requisito R04. Cada Recomendacao liga um Material a um CheckinDiario ou a uma Avaliacao e guarda a regra e o motivo. Material não pertence a usuário: é carregado do catálogo e, quando retirado, é apenas marcado como inativo, para preservar o histórico. O nível CRISE é registrado no próprio check-in ou avaliação, sem entidade separada e sem recomendações associadas.
+A estrutura do domínio está na Figura 6. Um Usuario possui, por composição, seus consentimentos, check-ins, avaliações e recomendações: ao excluir a conta, todos são removidos (`ON DELETE CASCADE`), atendendo ao requisito R04. Cada aceite dado no cadastro é um Consentimento com finalidade, versão e data: o aceite dos termos de uso, com a versão vigente, e a declaração de maioridade. Guardar os aceites em entidade própria preserva o histórico quando os termos mudam de versão e permite comprovar o consentimento, ônus que a LGPD atribui ao controlador (BRASIL, 2018, art. 8º, § 2º). Cada Recomendacao liga um Material a um CheckinDiario ou a uma Avaliacao e guarda a regra e o motivo. Material não pertence a usuário: é carregado do catálogo e, quando retirado, é apenas marcado como inativo, para preservar o histórico. O nível CRISE é registrado no próprio check-in ou avaliação, sem entidade separada e sem recomendações associadas.
 
 **Figura 6 – Diagrama de classes conceitual do Sintoniza**
 
@@ -295,10 +302,13 @@ classDiagram
         id: UUID
         email: str (único)
         senha_hash: str (Argon2id)
-        declarou_maioridade: bool
-        termos_versao: str
-        termos_aceitos_em: datetime
         criado_em: datetime
+    }
+    class Consentimento {
+        id: UUID
+        finalidade: str (termos de uso ou maioridade)
+        versao: str
+        concedido_em: datetime
     }
     class CheckinDiario {
         id: UUID
@@ -362,6 +372,7 @@ classDiagram
         MODERADAMENTE_GRAVE
         GRAVE
     }
+    Usuario "1" *-- "1..*" Consentimento
     Usuario "1" *-- "0..*" CheckinDiario
     Usuario "1" *-- "0..*" Avaliacao
     Usuario "1" *-- "0..*" Recomendacao
@@ -472,7 +483,7 @@ flowchart LR
 
 | Requisito da Visão | Decisão arquitetural | Evidência neste documento | Testes |
 | :-- | :-- | :-- | :-- |
-| R01–R03 Conta e termos | API com Argon2id e JWT; componente Contas e Privacidade. | Quadro 3; Quadro 6; seção 2.4 | TI-01, TI-02, TS-02, TS-05 |
+| R01–R03 Conta e termos | API com Argon2id e JWT; componente Contas e Privacidade; aceites registrados como Consentimento. | Quadro 3; Quadro 6; seção 2.4; Figura 6 | TI-01, TI-02, TS-02, TS-05 |
 | R04 Exclusão de conta | Composição com `ON DELETE CASCADE` a partir de Usuario. | Figura 6; seção 2.5.3 | TI-07, TSI-05 |
 | R05–R06 Check-in e conteúdos | Serviço de check-in + funções `avaliar_checkin` e `selecionar_materiais`. | Figura 3; Quadro 5 | TU-05, TU-06, TI-03, TI-04 |
 | R08–R09 Avaliação e resultado | Serviço de avaliação + funções `pontuar`, `faixa_*` e `decidir_avaliacao`. | Figura 4; Quadro 5 | TU-01 a TU-04, TI-06 |
@@ -485,7 +496,7 @@ flowchart LR
 
 BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD). **Diário Oficial da União**: seção 1, Brasília, DF, 15 ago. 2018.
 
-GRUPO LAMPORT. **Visão do Produto e do Projeto – Sintoniza**: aplicação web de apoio à saúde mental. Versão 2.2. Brasília, DF: Universidade de Brasília, 2026.
+GRUPO LAMPORT. **Visão do Produto e do Projeto – Sintoniza**: aplicação web de apoio à saúde mental. Versão 2.3. Brasília, DF: Universidade de Brasília, 2026.
 
 SCHWABER, K.; SUTHERLAND, J. **The Scrum Guide**: the definitive guide to Scrum: the rules of the game. [S. l.]: Scrum.org, 2020.
 

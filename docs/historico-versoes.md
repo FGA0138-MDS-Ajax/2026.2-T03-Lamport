@@ -9,7 +9,8 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
 | 30/09/2026 | 1.0 | Atualização do nome do produto para Sintoniza e definição das responsabilidades iniciais da equipe. | Equipe do projeto |
 | 15/10/2026 | 2.0 | Reformulação após o feedback da apresentação: fluxo principal especificado (check-in diário, avaliação quinzenal com PHQ-9 e GAD-7, tabela de decisão, regras de seleção e catálogo curado de fontes oficiais); redução de escopo (remoção dos perfis Administrador e Curador, de lembretes e de IA); estratégia e roteiro de testes detalhados, incluindo testes de vazamento de dados; GQM revisado; replanejamento das sprints 3 a 6. | Grupo Lamport |
 | 18/10/2026 | 2.1 | Revisão de escopo para manter apenas compromissos essenciais: remoção dos requisitos não funcionais de interface responsiva, execução com Docker Compose, publicação em nuvem e verificação automática de links; remoção das metas de usabilidade, desempenho, capacidade e cobertura de código e dos testes associados; remoção dos itens Should e Could não essenciais; testes de segurança concentrados em cinco casos; requisitos e roteiro de testes renumerados. | Grupo Lamport |
-| 29/10/2026 | **2.2** (vigente) | Replanejamento ao fim da Sprint 3 pelo critério 1 da seção 2.6: itens Must não concluídos passam à Sprint 4 e o único item Should (R07) sai do escopo. Decisão do PO: P1 a P4 do check-in passam a ser opcionais; P5 continua obrigatória. | Grupo Lamport |
+| 29/10/2026 | 2.2 | Replanejamento ao fim da Sprint 3 pelo critério 1 da seção 2.6: itens Must não concluídos passam à Sprint 4 e o único item Should (R07) sai do escopo. Decisão do PO: P1 a P4 do check-in passam a ser opcionais; P5 continua obrigatória. | Grupo Lamport |
+| 11/11/2026 | **2.3** (vigente) | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: R02 e TI-02 passam a incluir o limite de tentativas de login (bloqueio por 15 min após 5 falhas seguidas); a lista de rotas públicas do TS-01 passa a incluir `/api/terms` e `/api/health`. | Grupo Lamport |
 
 ### Principais mudanças entre versões
 
@@ -37,6 +38,11 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
     - **Requisito removido:** convite para avaliação (R07, único item Should), com a regra R-D7 e o teste TU-08. A numeração dos demais requisitos foi mantida. Não há mais itens Should.
     - **Check-in diário:** P1 a P4 passam a ser opcionais; sem resposta, o valor é nulo e a regra correspondente não é acionada (seção 4.5.1 e TU-05). P5 continua obrigatória. As perguntas, as escalas e os limites das regras não mudaram.
 
+??? abstract "2.2 → 2.3"
+    - **Origem:** decisões do PO sobre as divergências entre documento e código levantadas na issue #22. Em cada caso, o documento passou a descrever o que o código já fazia e a CI já testava.
+    - **R02 e TI-02:** limite de tentativas de login (5 falhas seguidas bloqueiam novas tentativas por 15 min, com resposta 429, também para e-mail inexistente). Já implementado e testado; agora é compromisso documentado.
+    - **TS-01:** a lista de rotas públicas passa a incluir `/api/terms` (versão dos termos exibida no cadastro, R03) e `/api/health` (verificação de saúde no Docker Compose e na CI). `POST /api/auth/logout` exige token e já era previsto no R02 ("sair descarta o token").
+
 ## Documento de Arquitetura
 
 | Data | Versão | Descrição | Autor(es) |
@@ -45,7 +51,8 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
 | 07/10/2026 | 1.1 | Revisão conforme feedback: critérios de indicador crítico, fluxo de segurança, cliente web em React, dependências dos pacotes, modelo de classes, visão de implantação e rastreabilidade. | Grupo Lamport |
 | 15/10/2026 | 2.0 | Alinhamento à Visão v2.0: remoção dos perfis Administrador e Curador e do componente de administração; módulo de regras como funções puras com contrato documentado; catálogo versionado em arquivo com carga por seed; avaliação quinzenal PHQ-9/GAD-7; dois diagramas de atividades (check-in e avaliação); contrato da API; restrições de segurança verificáveis por testes; Docker Compose como implantação obrigatória. | Grupo Lamport |
 | 18/10/2026 | 2.1 | Alinhamento à Visão v2.1: remoção das metas de desempenho, capacidade e cobertura de código, da publicação em nuvem, do verificador automático de links, da auditoria de dependências e da avaliação de utilidade dos materiais; restrições de segurança limitadas ao que é verificado pelos testes TS-01 a TS-05; características de qualidade descritas sem metas numéricas. | Grupo Lamport |
-| 29/10/2026 | **2.2** (vigente) | Alinhamento à Visão v2.2: P1 a P4 opcionais; retirada do convite para avaliação; respostas do check-in na API com `p1` a `p5` na entrada e na saída; prefixo `/api` corrigido na Figura 3. | Grupo Lamport |
+| 29/10/2026 | 2.2 | Alinhamento à Visão v2.2: P1 a P4 opcionais; retirada do convite para avaliação; respostas do check-in na API com `p1` a `p5` na entrada e na saída; prefixo `/api` corrigido na Figura 3. | Grupo Lamport |
+| 11/11/2026 | **2.3** (vigente) | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: inclusão de `POST /api/auth/logout`, `GET /api/terms` e `GET /api/health` no Quadro 6; entidade Consentimento na Figura 6, no lugar dos campos de termos e maioridade em Usuario; limite de tentativas de login na seção 2.4; Quadro 4 e Figura 5 com os pacotes reais do backend (`application`, `core`, `infrastructure`); campos da API em português, exceto os do token (seção 2.4, item 6). | Grupo Lamport |
 
 ### Principais mudanças entre versões
 
@@ -68,3 +75,11 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
     - Removidos a função `deve_convidar_avaliacao`, o desvio de convite da Figura 3, o campo `convite` da resposta de `POST /api/checkins` e o TU-08 (requisito R07 retirado na Visão v2.2).
     - Quadro 6: as respostas do check-in usam `p1` a `p5` na entrada e na saída das rotas; o serviço converte para os campos do domínio. `GET /api/checkins/hoje` e `GET /api/checkins` passam a indicar os campos da saída.
     - Figura 3: rotas corrigidas para `GET /api/checkins/hoje` e `POST /api/checkins`, como no Quadro 6 e na seção 2.4.
+
+??? abstract "2.2 → 2.3"
+    - **Origem:** decisões do PO sobre as divergências entre documento e código levantadas na issue #22.
+    - **Quadro 6:** entram `POST /api/auth/logout` (usuário, R02), `GET /api/terms` (público, R01 e R03) e `GET /api/health` (público, sem requisito); `POST /api/auth/login` passa a indicar 429.
+    - **Figura 6:** volta a entidade Consentimento (finalidade, versão, data), no lugar de `declarou_maioridade`, `termos_versao` e `termos_aceitos_em` em Usuario. Motivo: preservar o histórico de aceites quando os termos mudam de versão e comprovar o consentimento (LGPD, art. 8º, § 2º). O código já usava a tabela `consents`.
+    - **Seção 2.4, item 5:** logout revoga o token; limite de 5 falhas de login seguidas, com bloqueio de 15 min.
+    - **Quadro 4 e Figura 5:** pacotes do backend com os nomes do código: `services` → `application`, `security` → `core` (com a configuração), `persistence` → `infrastructure`; interfaces dos repositórios em `domain`; o catálogo é o arquivo `catalog/materiais.yaml` com comando seed, e não um pacote.
+    - **Seção 2.4, item 6:** os campos de entrada e saída da API seguem a regra de nomes em português, exceto os do token (OAuth 2.0). O Quadro 6 já usava `senha` e `aceite_termos`; o código (`password`, `accept_terms`) será ajustado em issue própria.
