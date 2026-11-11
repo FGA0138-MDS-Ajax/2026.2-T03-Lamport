@@ -7,8 +7,9 @@ import { NotFoundPage } from './pages/NotFoundPage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { DailyCheckin } from './pages/DailyCheckin'
-import { RiscoPage } from './pages/RiscoPage'
+import { AjudaPage } from './pages/AjudaPage'
 import { HistoryPage } from './pages/HistoryPage'
+import { AJUDA_PATH } from './constants/ajuda'
 
 export function App() {
   return (
@@ -17,7 +18,6 @@ export function App() {
         <Route element={<RequireAuth />}>
           <Route index element={<HomePage />} />
           <Route path="dailycheckin" element={<DailyCheckin />} />
-          <Route path="risco" element={<RiscoPage />} />
           <Route path="historico" element={<HistoryPage />} />
         </Route>
         <Route element={<GuestOnly />}>
@@ -25,6 +25,8 @@ export function App() {
           <Route path="cadastro" element={<RegisterPage />} />
         </Route>
         <Route path="privacidade" element={<PrivacyPage />} />
+        {/* Pública: fora de RequireAuth e de GuestOnly (R11; Arquitetura, seção 2.4, item 3). */}
+        <Route path={AJUDA_PATH} element={<AjudaPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
