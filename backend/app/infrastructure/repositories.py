@@ -57,7 +57,7 @@ class SqlUserRepository:
         model = self.session.scalar(select(UserModel).where(UserModel.email == email))
         return _to_user(model) if model else None
 
-    def add(self, user: User, consent: Consent) -> None:
+    def add(self, user: User, *consents: Consent) -> None:
         self.session.add(
             UserModel(
                 id=user.id,
@@ -77,7 +77,7 @@ class SqlUserRepository:
                 raise EmailAlreadyRegisteredError from exc
             raise
 
-        self.session.add(
+        self.session.add_all(
             ConsentModel(
                 id=consent.id,
                 user_id=consent.user_id,
@@ -85,6 +85,7 @@ class SqlUserRepository:
                 version=consent.version,
                 granted_at=consent.granted_at,
             )
+            for consent in consents
         )
         self.session.commit()
 

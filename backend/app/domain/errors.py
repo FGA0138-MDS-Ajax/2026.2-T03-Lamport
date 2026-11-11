@@ -10,6 +10,10 @@ class TermsNotAcceptedError(DomainError):
     pass
 
 
+class AgeNotDeclaredError(DomainError):
+    pass
+
+
 class InvalidCredentialsError(DomainError):
     pass
 

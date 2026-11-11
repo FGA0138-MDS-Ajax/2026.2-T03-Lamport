@@ -191,10 +191,10 @@ A API usa JWT enviado no cabeçalho `Authorization: Bearer <token>`. Senhas são
 | Método | Rota                 | Autenticação | Descrição                                                     |
 | ------ | -------------------- | ------------ | ------------------------------------------------------------- |
 | GET    | `/api/health`        | Não          | Verifica a API e a conexão com o banco                        |
-| POST   | `/api/auth/register` | Não          | Cadastra usuário (`email`, `password`, `accept_terms`)        |
+| POST   | `/api/auth/cadastro` | Não          | Cadastra usuário (`email`, `password`, `accept_terms`, `maior_de_idade`) |
 | POST   | `/api/auth/login`    | Não          | Retorna `access_token` para `email` e `password`              |
 | POST   | `/api/auth/logout`   | Sim          | Revoga o token atual                                          |
-| GET    | `/api/users/me`      | Sim          | Retorna os dados do usuário autenticado                       |
+| GET    | `/api/me`            | Sim          | Retorna os dados do usuário autenticado                       |
 | GET    | `/api/terms`         | Não          | Retorna a versão vigente dos termos de uso                    |
 
 Respostas de erro seguem o formato `{"detail": ...}`: `401` para credenciais ou token inválidos, `409` para e-mail já cadastrado, `422` para dados inválidos, `429` para excesso de tentativas de login e `503` para falha de acesso ao banco.

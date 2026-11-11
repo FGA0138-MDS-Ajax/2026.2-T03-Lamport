@@ -60,7 +60,9 @@ def seed_demo_users(session: Session) -> list[tuple[DemoUser, bool]]:
         user = users.get_by_email(demo.email)
         created = user is None
         if created:
-            user = auth.register(demo.email, DEMO_PASSWORD, accepted_terms=True)
+            user = auth.register(
+                demo.email, DEMO_PASSWORD, accepted_terms=True, declared_adult=True
+            )
 
         total = len(demo.past_checkins)
         for days_ago, (p1, p2, p3, p4, p5) in zip(
