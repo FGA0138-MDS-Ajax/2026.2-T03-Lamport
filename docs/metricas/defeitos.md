@@ -2,13 +2,13 @@
 
 Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026). Pela Visão (seção 6.1, item 4), cada defeito vira uma issue com a label `bug` e a severidade (crítica, alta, média ou baixa); depois do reparo, o caso é executado de novo e o número de ciclos é atualizado.
 
-**Situação:** dos 5 defeitos, **2 foram corrigidos na própria sprint** (DEF-04 e DEF-05) e **3 seguem abertos** (DEF-01, DEF-02 e DEF-03). As issues dos 3 abertos ainda **não foram criadas**; os textos abaixo estão prontos para isso. Nenhuma issue `bug` existe hoje no repositório.
+**Situação:** dos 5 defeitos, **2 foram corrigidos na própria sprint** (DEF-04 e DEF-05) e **3 seguem abertos** (DEF-01, DEF-02 e DEF-03). Os 3 abertos têm issue `bug`: #45 (DEF-01), #46 (DEF-02) e #47 (DEF-03).
 
 | ID | Severidade | Título | Casos afetados | Responsável sugerido | Issue |
 | :-- | :--: | :-- | :-- | :-- | :--: |
-| [DEF-01](#def-01) | **Alta** | `POST /api/checkins` não gera nem grava recomendações | TI-03, TI-05 | Luiz Felipe | a abrir |
-| [DEF-02](#def-02) | Média | `selecionar_materiais` diverge do Quadro 20 da Visão | TU-06 | PO decide; Luiz Felipe | a abrir |
-| [DEF-03](#def-03) | Média | Testes de seleção de conteúdo não cobrem R-S1, R-S3 e R-S4 | TU-06, M1 | Luiz Felipe | parcialmente corrigido (PR #38); a abrir para o restante |
+| [DEF-01](#def-01) | **Alta** | `POST /api/checkins` não gera nem grava recomendações | TI-03, TI-05 | Luiz Felipe | #45 |
+| [DEF-02](#def-02) | Média | `selecionar_materiais` diverge do Quadro 20 da Visão | TU-06 | PO decide; Luiz Felipe | #46 |
+| [DEF-03](#def-03) | Média | Testes de seleção de conteúdo não cobrem R-S1, R-S3 e R-S4 | TU-06, M1 | Luiz Felipe | parcialmente corrigido (PR #38); restante na #47 |
 | [DEF-04](#def-04) | Média | Cadastro e `GET /api/me` divergem do contrato da Arquitetura | TI-01, TS-04 | Luiz Felipe, Carlos Eduardo | **corrigido** (#22, PRs #39, #41 e #42) |
 | [DEF-05](#def-05) | Média | Testes de API do TS-03 não usam o banco de teste | TS-03 | Carlos Eduardo | **corrigido** (PR #39) |
 
@@ -84,19 +84,3 @@ A #22 já cobria o defeito; não foi aberta issue duplicada.
 A issue #6 pede "testes de integração no PostgreSQL de teste cobrindo ordem, limite e isolamento". Em `test_checkins_get.py`, os testes de API (`test_api_list_checkins_isolation_ts_03`, `test_api_get_checkin_by_id_other_user_returns_404`) substituem o repositório por `FakeCheckinRepository` e a sessão por um `MagicMock`. O isolamento no nível do banco só é verificado em `test_checkin_repository.py`. Se o filtro por usuário fosse removido da rota ou da consulta de integração, a falha poderia passar despercebida. O risco R4 (vazamento de dados) depende desse teste.
 
 **Correção aplicada:** versão do teste que usa o `client` e as fixtures de banco do `conftest.py`, com os usuários A e B.
-
-## Comandos para abrir as issues
-
-Não foram executados. Restam os defeitos DEF-01, DEF-02 e DEF-03; DEF-04 e DEF-05 foram corrigidos e não precisam de issue. As labels `severidade-alta` e `severidade-media` ainda não existem no repositório, e `bug` já existe.
-
-```bash
-gh label create "severidade-alta"  --color D93F0B --description "Defeito de severidade alta"
-gh label create "severidade-media" --color FBCA04 --description "Defeito de severidade média"
-
-gh issue create --title "[Bug] POST /api/checkins não gera nem grava recomendações (TI-03, TI-05)"   --label bug --label severidade-alta --assignee LuizFelipe81   --body "Ver DEF-01 em docs/metricas/defeitos.md (resultado esperado, obtido, evidência e correção)."
-
-gh issue create --title "[Bug] selecionar_materiais diverge do Quadro 20 (R-S2, R-S3, R-S5, R-S6)"   --label bug --label severidade-media   --body "Ver DEF-02 em docs/metricas/defeitos.md. Exige decisão do PO: atualizar o Quadro 20 ou o código."
-
-gh issue create --title "[Bug] Testes de seleção não cobrem R-S1, R-S3 e R-S4 (TU-06, M1)"   --label bug --label severidade-media --assignee LuizFelipe81   --body "Ver DEF-03 em docs/metricas/defeitos.md."
-
-```

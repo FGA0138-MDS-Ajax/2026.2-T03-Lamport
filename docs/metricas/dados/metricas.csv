@@ -14,4 +14,4 @@ S4,29/10-11/11/2026,M2,100%,257,257,100% na main,CI execucao 43118733055,pytest 
 S4,29/10-11/11/2026,M3,80%,4,5,100%,roteiro,TS-01 TS-02 TS-04 TS-05 aprovados; TS-03 parcial (avaliacoes na Sprint 5)
 S4,29/10-11/11/2026,M4 (estado das issues),100%,14,14,>=80%,issue #12 e GitHub,#10 contada como concluida (fechada pelo PR de metricas)
 S4,29/10-11/11/2026,M4 (criterios de aceite),85.7%,12,14,>=80%,issue #12 e conferencia do QA,#5 e #17 fechadas sem atender criterios; #10 contada como concluida
-S4,29/10-11/11/2026,M5,0 abertos / 3 a registrar (0 criticos / 1 alto / 2 medios / 0 baixos) / 2 corrigidos,0,,0 criticos,docs/metricas/defeitos.md,DEF-04 e DEF-05 corrigidos na sprint
+S4,29/10-11/11/2026,M5,3 abertos (0 criticos / 1 alto / 2 medios / 0 baixos) / 2 corrigidos,0,,0 criticos,GitHub Issues #45 #46 #47,DEF-04 e DEF-05 corrigidos na sprint

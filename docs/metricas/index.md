@@ -12,7 +12,7 @@ Registro do acompanhamento de qualidade feito pelo QA (issue #10), com as métri
 | **M2.** Aprovação dos testes automatizados | 100% na `main` | 100% (35/35) | 100% (35/35) | 100% (210/210 backend; 47/47 frontend) |
 | **M3.** Testes de segurança aprovados | 100% | n/a | n/a | **80%** (4/5) |
 | **M4.** Conclusão da sprint | ≥ 80% | **100%** (3/3) | **29%** (2/7) | **100%** (14/14) pelas issues; **85,7%** (12/14) pelos critérios |
-| **M5.** Defeitos abertos | 0 críticos | 0 | 0 | 0 críticos; 3 abertos a registrar (1 alto, 2 médios) e 2 corrigidos |
+| **M5.** Defeitos abertos | 0 críticos | 0 | 0 | 0 críticos; 3 abertos, #45 a #47 (1 alto, 2 médios), e 2 corrigidos |
 
 M1 e M3 de Sprints 2 e 3 não se aplicam porque o módulo de regras e o roteiro de testes só passam a existir na Sprint 4.
 
@@ -33,7 +33,7 @@ M1 e M3 de Sprints 2 e 3 não se aplicam porque o módulo de regras e o roteiro 
 | [Sprint 4](sprint-4.md) | Métricas, status dos 15 casos do roteiro, conclusão e CI da Sprint 4. |
 | [Matriz regra × teste](matriz-regras-testes.md) | M1: cada linha de R-D, R-A e R-S e o teste que a cobre. |
 | [Conferência dos PRs](conferencia-prs-sprint-4.md) | Issues #5, #6, #17, #18, #19 e #22: casos existentes, rodando na CI e lacunas. |
-| [Defeitos](defeitos.md) | DEF-01 a DEF-05, com severidade e comandos para abrir as issues. |
+| [Defeitos](defeitos.md) | DEF-01 a DEF-05, com severidade, situação e issue de cada um. |
 | [Quadro 26 da Sprint 4](quadro-26-sprint-4.md) | Atualização do roteiro de testes aplicada na Visão v2.4. |
 | [dados/metricas.csv](dados/metricas.csv) | Todos os valores em formato tabular. |
 

@@ -10,7 +10,7 @@
 | M2. Aprovação dos testes automatizados | **100%** (210 de 210 no backend; 47 de 47 no frontend) | 100% na `main` | [Execução 43118733055](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/43118733055), `main` no commit `886e00b`; jobs `backend`, `frontend` e `demo` aprovados. |
 | M3. Testes de segurança aprovados | **80%** (4 de 5) | 100% | TS-01, TS-02, TS-04 e TS-05 aprovados. TS-03 parcial: a parte de check-ins está coberta no banco de teste, e a de avaliações depende do endpoint da Sprint 5 (o roteiro marca o caso como S4–S5). Nenhum teste reprovado. |
 | M4. Conclusão da sprint | **100%** (14 de 14) pelo estado das issues; **85,7%** (12 de 14) pelos critérios de aceite | ≥ 80% (referência) | A #10 é contada como concluída, pois é fechada pelo PR com estes registros. Ver abaixo. |
-| M5. Defeitos abertos por severidade | **0** issues `bug` abertas; **3 defeitos abertos a registrar** (0 críticos, 1 alto, 2 médios, 0 baixos) e 2 corrigidos na sprint | 0 críticos | Ver [Defeitos](defeitos.md). |
+| M5. Defeitos abertos por severidade | **3** issues `bug` abertas (#45, #46 e #47): 0 críticos, 1 alto, 2 médios, 0 baixos; 2 defeitos corrigidos na sprint | 0 críticos | Ver [Defeitos](defeitos.md). |
 
 Critério de aceite da issue #10 "nenhum defeito crítico aberto no fim da sprint": **atendido**, pois nenhum dos defeitos encontrados é crítico (nenhum teste de segurança falha e nenhuma regra encaminha o usuário de forma errada).
 
@@ -102,7 +102,7 @@ A conferência de cada issue prevista na #10 está em [Conferência dos PRs](con
 
 ## Pendências após a revisão da sprint
 
-1. Abrir as issues dos defeitos abertos (DEF-01, DEF-02 e DEF-03), com a label `bug` e a severidade; DEF-04 e DEF-05 foram corrigidos na própria sprint.
+1. Tratar as issues dos defeitos abertos: #45 (DEF-01, alta), #46 (DEF-02, média, depende do PO) e #47 (DEF-03, média); DEF-04 e DEF-05 foram corrigidos na própria sprint.
 2. Integrar as recomendações ao check-in (DEF-01): modelo e migração de `Recomendacao`, chamada a `selecionar_materiais` e resposta de `POST /api/checkins`.
 3. PO decidir R-S2, R-S5 e R-S6 (DEF-02) e conferir os 7 materiais do catálogo.
 4. Completar o TU-06 (ordem, ausência de repetição, máximo de 3, exclusão de inativos, regra e motivo por item) e o teto de 2 para N2.
