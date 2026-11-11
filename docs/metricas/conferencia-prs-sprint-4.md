@@ -1,6 +1,6 @@
 # Conferência dos PRs da Sprint 4
 
-Tarefa da issue #10: conferir, nos PRs das issues #5, #6, #17, #18, #19 e #22, que cada caso do roteiro previsto para a Sprint 4 existe e roda na CI, e apontar as lacunas. Posição de 10/11/2026.
+Tarefa da issue #10: conferir, nos PRs das issues #5, #6, #17, #18, #19 e #22, que cada caso do roteiro previsto para a Sprint 4 existe e roda na CI, e apontar as lacunas. Posição final em 11/11/2026, com os PRs #37 a #44 mesclados.
 
 **Os comentários abaixo não foram publicados nos PRs.** Estão escritos para que o QA os poste (ou os transforme em issues, ver [Defeitos](defeitos.md)) quando decidir.
 
@@ -9,11 +9,11 @@ Tarefa da issue #10: conferir, nos PRs das issues #5, #6, #17, #18, #19 e #22, q
 | Issue | PR | Casos | Existem e rodam na CI? | Lacuna |
 | :--: | :--: | :-- | :--: | :-- |
 | #5 | #23 (mesclado) | TI-03, TI-04, TI-05 | Sim, os três | TI-03 e TI-05 não verificam recomendações; funcionalidade ausente (DEF-01) |
-| #6 | #15 (mesclado) | TS-03 (check-ins) | Sim | Testes de API sem banco (DEF-05); parte de avaliações é da Sprint 5 |
-| #17 | #32 e #33 (mesclados) | TU-05, TU-06 | Sim | TU-06 sem verificação de R-S1, R-S3, R-S4; divergências do Quadro 20 (DEF-02, DEF-03) |
+| #6 | #15 e #39 (mesclados) | TS-03 (check-ins) | Sim | DEF-05 corrigido no PR #39; parte de avaliações é da Sprint 5 |
+| #17 | #32, #33 e #38 (mesclados) | TU-05, TU-06 | Sim | TU-06 sem verificação de inativos e de regra e motivo por item; divergências do Quadro 20 (DEF-02, DEF-03) |
 | #18 | #30 (mesclado) | TU-01 a TU-04 | Sim, sem lacuna | Nenhuma |
-| #19 | #37 (aberto) | TU-07 | Sim, no PR; não na `main` | Falta merge e a conferência dos materiais pelo PO |
-| #22 | sem PR | TI-01, TI-02, TS-01, TS-02, TS-04, TS-05 | TI-02, TS-01, TS-02 (parcial), TS-04 (parcial) e TS-05 sim; TI-01 não nos termos do roteiro | Contrato do cadastro e de `/api/me` (DEF-04); decisões do PO pendentes |
+| #19 | #37 (mesclado) | TU-07 | Sim, na `main` | Conferência dos 7 materiais pelo PO |
+| #22 | #39, #40, #41 e #42 (mesclados) | TI-01, TI-02, TS-01, TS-02, TS-04, TS-05 | Sim, os seis, aprovados | Nenhuma; decisões do PO registradas na v2.3 |
 
 ## #5, PR #23: `POST /api/checkins` e `GET /api/checkins/hoje`
 
@@ -72,24 +72,24 @@ Sem lacunas. Os 69 testes de regras (avaliação e check-in) também foram execu
 
 | Critério | Resultado |
 | :-- | :--: |
-| TU-07: esquema válido, slugs únicos, URLs https, domínio permitido, ≥ 1 material ativo por tag | Existe e passa no PR (4 testes; [execução 42728982238](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42728982238)) |
-| Seed idempotente, material retirado fica inativo, falha sem arquivo ou com catálogo vazio | 3 testes em `test_seed_materiais.py`, aprovados no PR |
-| Conferência dos 7 materiais pelo PO | **Pendente** (PR #37, lista de aceite) |
-| Merge na `main` | **Pendente** |
+| TU-07: esquema válido, slugs únicos, URLs https, domínio permitido, ≥ 1 material ativo por tag | Atendido (4 testes; CI da `main`, [execução 43118733055](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/43118733055)) |
+| Seed idempotente, material retirado fica inativo, falha sem arquivo ou com catálogo vazio | Atendido (3 testes em `test_seed_materiais.py`) |
+| Conferência dos 7 materiais pelo PO | **Pendente** (lista de aceite do PR #37) |
+| Merge | Concluído |
 
-Rodou localmente, sem banco, `test_materiais_tu07.py` e `test_rules_checkin.py` do PR: 10 aprovados. O PR não altera `Recomendacao` (que não existe), logo não destrava sozinho o DEF-01. Ponto do PR para decisão do PO: o único material de HUMOR (`depressao-ms`) tem texto clínico.
+O PR não cria `Recomendacao`, logo não destrava sozinho o DEF-01. Ponto para decisão do PO: o único material de HUMOR (`depressao-ms`) tem texto clínico.
 
 ## #22: pendências da Sprint 2
 
-Sem PR. Situação por caso do roteiro:
+PRs #39 (alinhamento e testes), #40 (decisões do PO na Visão e Arquitetura v2.3), #41 (campos em português) e #42 (ajuste do job `demo`). Situação por caso do roteiro:
 
 | Caso | Situação |
 | :-- | :-- |
-| TI-01 | Os testes de `test_register.py` cobrem 201, 409, 422 sem aceite e senha curta, mas não o 422 sem declaração 18+ (a declaração não existe). Não executável como escrito. |
-| TI-02 | `test_login_returns_token`, `test_login_rejects_wrong_password`, `test_login_rejects_unknown_user_with_same_message`: atendido. |
-| TS-01 | Atendido, com lista pública diferente da prevista (decisão do PO pendente). |
-| TS-02 | Parcial: falta o token de usuário excluído (R04, Sprint 5). |
-| TS-04 | Parcial: ver DEF-04. |
-| TS-05 | Atendido. |
+| TI-01 | Aprovado: 201, 409, 422 sem aceite dos termos, 422 sem declaração 18+ e 422 com senha curta (`test_register.py`). |
+| TI-02 | Aprovado: login, senha errada e e-mail inexistente com a mesma mensagem, e limite de tentativas (429). |
+| TS-01 | Aprovado, com a lista pública da v2.3 (`/api/auth/cadastro`, `/api/auth/login`, `/api/terms`, `/api/health`). |
+| TS-02 | Aprovado: expirado, outra chave, malformado e usuário excluído, todos com 401. |
+| TS-04 | Aprovado: `GET /api/me` devolve só `id`, `email` e `criado_em`. |
+| TS-05 | Aprovado. |
 
-As quatro decisões do PO listadas na #22 (rotas públicas extras, tabela `consents`, limite de tentativas de login e pacotes do backend) continuam abertas; elas têm efeito direto no TS-01 e no registro de defeitos.
+Duas observações do QA: (1) o PR #41 renomeou os campos de entrada e deixou o job `demo` da CI com o campo antigo (`password`); a execução da `developer` falhou com 422 e o PR #42 corrigiu; (2) os testes de Ajuda e Check-in que vieram da `main` ainda simulavam `/api/users/me`, ajustados no PR #43 ao integrar `main` e `developer`. As decisões do PO sobre as divergências estão registradas na [Visão e Arquitetura v2.3](../historico-versoes.md); as de pacotes do backend e da entidade Consentimento foram resolvidas atualizando o documento ao código.

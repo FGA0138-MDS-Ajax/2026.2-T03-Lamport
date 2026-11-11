@@ -1,22 +1,22 @@
 # Sprint 4: Pendências da Sprint 3 e check-in diário (29/10 a 11/11/2026)
 
-**Posição parcial em 10/11/2026** (dia 13 de 14), `main` no commit `faac2cf` e PR #37 aberto. Este registro deve ser reconferido na revisão da sprint (11/11), depois dos merges que ainda ocorrerem. Acompanha a issue #10.
+**Posição final em 11/11/2026** (dia 14 de 14), `main` no commit `886e00b` (PR #44), com todos os PRs da sprint mesclados e a CI da `main` verde ([execução 43118733055](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/43118733055)). Acompanha a issue #10.
 
 ## Métricas
 
 | Métrica | Valor | Esperado | Observação |
 | :-- | :--: | :--: | :-- |
-| M1. Cobertura das tabelas de regras | **81,25%** (13 de 16), com os testes da branch `test/regras-selecao-rs1-rs3-rs4`, sem merge; 62,5% (10 de 16) na `main` | 100% | R-D e R-A completas; R-S1, R-S3 e R-S4 cobertas; faltam R-S2, R-S5 e R-S6 (decisão do PO). Ver [matriz](matriz-regras-testes.md). |
-| M2. Aprovação dos testes automatizados | **100%** (188 de 188 na `main`) | 100% na `main` | [Execução 42691191624](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42691191624). Frontend: 47 de 47. No PR #37: 195 de 195 ([execução 42728982238](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42728982238)). |
-| M3. Testes de segurança aprovados | **40%** (2 de 5) | 100% | TS-01 e TS-05 aprovados; TS-02, TS-03 e TS-04 parciais. Nenhum teste reprovado. |
-| M4. Conclusão da sprint | **78,6%** (11 de 14) pelo estado das issues; **64,3%** (9 de 14) pelos critérios de aceite | ≥ 80% (referência) | Ver abaixo. |
-| M5. Defeitos abertos por severidade | **0** issues `bug` abertas; **5 defeitos propostos**: 0 críticos, 1 alto, 4 médios, 0 baixos | 0 críticos | Ver [Defeitos](defeitos.md). Aguardam a abertura das issues. |
+| M1. Cobertura das tabelas de regras | **81,25%** (13 de 16) | 100% | R-D e R-A completas; R-S1, R-S3 e R-S4 cobertas (PR #38); faltam R-S2, R-S5 e R-S6 (decisão do PO, [DEF-02](defeitos.md#def-02)). Ver [matriz](matriz-regras-testes.md). |
+| M2. Aprovação dos testes automatizados | **100%** (210 de 210 no backend; 47 de 47 no frontend) | 100% na `main` | [Execução 43118733055](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/43118733055), `main` no commit `886e00b`; jobs `backend`, `frontend` e `demo` aprovados. |
+| M3. Testes de segurança aprovados | **80%** (4 de 5) | 100% | TS-01, TS-02, TS-04 e TS-05 aprovados. TS-03 parcial: a parte de check-ins está coberta no banco de teste, e a de avaliações depende do endpoint da Sprint 5 (o roteiro marca o caso como S4–S5). Nenhum teste reprovado. |
+| M4. Conclusão da sprint | **100%** (14 de 14) pelo estado das issues; **85,7%** (12 de 14) pelos critérios de aceite | ≥ 80% (referência) | A #10 é contada como concluída, pois é fechada pelo PR com estes registros. Ver abaixo. |
+| M5. Defeitos abertos por severidade | **0** issues `bug` abertas; **3 defeitos abertos a registrar** (0 críticos, 1 alto, 2 médios, 0 baixos) e 2 corrigidos na sprint | 0 críticos | Ver [Defeitos](defeitos.md). |
 
-Critério de aceite da issue #10 "nenhum defeito crítico aberto no fim da sprint": **atendido na posição atual**, pois nenhum dos defeitos encontrados é crítico (nenhum teste de segurança falha e nenhuma regra encaminha o usuário de forma errada).
+Critério de aceite da issue #10 "nenhum defeito crítico aberto no fim da sprint": **atendido**, pois nenhum dos defeitos encontrados é crítico (nenhum teste de segurança falha e nenhuma regra encaminha o usuário de forma errada).
 
 ## Roteiro de testes da Sprint 4
 
-Evidência de todos os casos automatizados: execução da CI na `main` indicada acima, salvo onde há outra indicação. "Reparos" cita o PR que corrigiu a falha ou atendeu a revisão.
+Evidência de todos os casos automatizados: [execução 43118733055](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/43118733055) da CI na `main`, salvo onde há outra indicação. "Reparos" cita o PR que corrigiu a falha ou atendeu a revisão.
 
 ### Testes unitários
 
@@ -28,13 +28,13 @@ Evidência de todos os casos automatizados: execução da CI na `main` indicada 
 | TU-04 | Aprovado | `test_tu04_caso1` a `caso8`, precedência de R-A1, perfis A a E | — | 1 | PR #30. |
 | TU-05 | Aprovado | `test_rd1_*`, `test_thresholds`, `test_unanswered_question_*`, `test_example_from_ti03` | PR #32 | 2 | A revisão do PR #32 pediu a remoção de enums duplicados e de lógica de nível não prevista; atendido antes do merge. |
 | TU-06 | **Parcial** | `test_tu06_selecao_limite_zero_ou_catalogo_vazio`, `test_tu06_rs2_ignora_ultimas_exibicoes`, `test_tu06_rs3_match_exato_de_tags` | PR #32 | 2 | Os 3 testes passam, mas não verificam ordem de prioridade, material menos recente, ausência de repetição, máximo de 3, exclusão de inativos nem regra e motivo por item. Ver DEF-02 e DEF-03. |
-| TU-07 | **Pendente** | `test_materiais_tu07.py` (4 testes) e `test_seed_materiais.py` (3 testes), no PR #37 | — | 0 | O catálogo não está na `main`. No PR #37 os testes passam ([execução 42728982238](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42728982238)); falta o merge e a conferência dos 7 materiais pelo PO. |
+| TU-07 | Aprovado | `test_materiais_tu07.py` (4 testes) e `test_seed_materiais.py` (3 testes) | PR #37 | 1 | Catálogo na `main` com 7 materiais oficiais. Resta a conferência dos 7 materiais pelo PO, prevista na lista de aceite do PR #37. |
 
 ### Testes de integração
 
 | ID | Status | Testes que o cobrem | Reparos | Ciclos | Observação |
 | :-- | :--: | :-- | :--: | :--: | :-- |
-| TI-03 | **Não atendido** | `test_ti03_create_checkin_returns_201_with_nivel_and_tags` | PR #23 | 2 | O teste verifica só 201, nível e tags. O resultado esperado do Quadro 26 inclui 2 recomendações persistidas (R-D3 e R-D4), que o sistema não produz: `CheckinService.create` não chama `selecionar_materiais` e não existem `Material` nem `Recomendacao` na `main`. Ver DEF-01. |
+| TI-03 | **Não atendido** | `test_ti03_create_checkin_returns_201_with_nivel_and_tags` | PR #23 | 2 | O teste verifica só 201, nível e tags. O resultado esperado do Quadro 26 inclui 2 recomendações persistidas (R-D3 e R-D4), que o sistema não produz: `CheckinService.create` não chama `selecionar_materiais` e não existe `Recomendacao` (o modelo `Material` entrou com o PR #37). Ver DEF-01. |
 | TI-04 | Aprovado | `test_ti04_second_checkin_on_same_day_returns_409` | PR #23 | 2 | Confere 409 e que há um único registro no banco. Uma execução da CI do PR #23 falhou antes da aprovação. |
 | TI-05 | **Parcial** | `test_ti05_risk_answer_returns_crise_without_tags` | PR #23 | 2 | Confere 201, nível CRISE e tags vazias. A "lista de recomendações vazia" e "nenhuma linha em Recomendacao" não são verificáveis sem a entidade (DEF-01). |
 
@@ -42,23 +42,22 @@ Evidência de todos os casos automatizados: execução da CI na `main` indicada 
 
 | ID | Status | Testes que o cobrem | Reparos | Ciclos | Observação |
 | :-- | :--: | :-- | :--: | :--: | :-- |
-| TS-01 | Aprovado | `test_ts01_*` (percorre o contrato OpenAPI; 401 sem token e com token malformado) | PR #33 | 2 | A lista pública do teste inclui `GET /api/health` e `GET /api/terms`, além de cadastro e login, e usa `/api/auth/register`. Decisão pendente do PO (issue #22). |
-| TS-02 | **Parcial** | `test_me_rejects_expired_token`, `test_me_rejects_token_signed_with_other_key`, `test_ts01_protected_routes_reject_malformed_token` | — | 1 | Falta o caso "token de usuário excluído", que depende da exclusão de conta (R04, Sprint 5). |
-| TS-03 | **Parcial** | `test_api_list_checkins_isolation_ts_03`, `test_api_get_checkin_by_id_other_user_returns_404`; no repositório com banco real: `test_get_by_id_other_user_returns_none`, `test_list_by_user_does_not_return_other_users_checkins` | — | 1 | Os testes de API usam repositório falso e sessão simulada, sem PostgreSQL (DEF-05). A parte de avaliações é da Sprint 5. |
-| TS-04 | **Parcial** | `test_ts04_*` e o cliente de teste que varre toda resposta JSON da suíte | PR #33 | 2 | Nenhuma chave sensível em nenhuma resposta. Mas `GET /api/users/me` devolve `id`, `email`, `role` e `created_at`; o Quadro 26 exige apenas `id`, `email` e `criado_em`, na rota `/api/me` (issue #22). |
+| TS-01 | Aprovado | `test_ts01_*` (percorre o contrato OpenAPI; 401 sem token e com token malformado) | PR #33 e PR #39 | 2 | A lista pública é a da Visão v2.3: `/api/auth/cadastro`, `/api/auth/login`, `/api/terms` e `/api/health`. |
+| TS-02 | Aprovado | `test_me_rejects_expired_token`, `test_me_rejects_token_signed_with_other_key`, `test_ts01_protected_routes_reject_malformed_token`, `test_me_rejects_token_of_deleted_user` | PR #39 | 2 | Os quatro casos do roteiro retornam 401. O usuário excluído é removido diretamente no banco do teste, pois a rota de exclusão de conta (R04) é da Sprint 5. |
+| TS-03 | **Parcial** | `test_ts03_isolamento.py` (5 testes com o `client` e o banco de teste); `test_api_list_checkins_isolation_ts_03`, `test_api_get_checkin_by_id_other_user_returns_404`; no repositório: `test_get_by_id_other_user_returns_none`, `test_list_by_user_does_not_return_other_users_checkins` | PR #39 | 2 | O isolamento de check-ins está coberto no banco de teste (DEF-05 corrigido). Falta a parte de avaliações (`GET /api/avaliacoes/{id}`), do escopo da Sprint 5; o roteiro marca o TS-03 como S4–S5. |
+| TS-04 | Aprovado | `test_ts04_*` e o cliente de teste que varre toda resposta JSON da suíte | PR #33 e PR #39 | 3 | Nenhuma chave sensível em nenhuma resposta; `GET /api/me` devolve só `id`, `email` e `criado_em`. |
 | TS-05 | Aprovado | `test_register_stores_only_password_hash` | — | 1 | Confere o prefixo `$argon2id$`, que o hash difere da senha e que a senha confere com o hash. |
 
 ### Resumo do roteiro
 
 | Status | Casos | Quantidade |
 | :-- | :-- | :--: |
-| Aprovado | TU-01, TU-02, TU-03, TU-04, TU-05, TI-04, TS-01, TS-05 | 8 |
-| Parcial | TU-06, TI-05, TS-02, TS-03, TS-04 | 5 |
+| Aprovado | TU-01, TU-02, TU-03, TU-04, TU-05, TU-07, TI-04, TS-01, TS-02, TS-04, TS-05 | 11 |
+| Parcial | TU-06, TI-05, TS-03 | 3 |
 | Não atendido | TI-03 | 1 |
-| Pendente | TU-07 | 1 |
 | Não executado | (nenhum previsto para a Sprint 4) | 0 |
 
-São 15 casos. Todos os testes automatizados existentes passam na CI; os casos parciais e não atendidos decorrem de critérios do roteiro que ainda não têm teste ou funcionalidade. A atualização proposta para o Quadro 26 está em [Quadro 26 da Sprint 4](quadro-26-sprint-4.md).
+São 15 casos. Todos os testes automatizados existentes passam na CI. Os casos parciais e o não atendido decorrem de critérios do roteiro que ainda não têm teste ou funcionalidade: recomendações persistidas (TI-03 e TI-05), verificações do TU-06 e a parte de avaliações do TS-03. Os casos TI-01 e TI-02 (Sprint 2, pendências da #22) também estão **aprovados**: TI-01 com a declaração 18+ (422 sem ela) e TI-02 com o limite de tentativas de login. A atualização do Quadro 26 está em [Quadro 26 da Sprint 4](quadro-26-sprint-4.md).
 
 ## Conclusão da sprint (M4)
 
@@ -72,19 +71,21 @@ Itens comprometidos conforme a issue #12 (pendências da Sprint 3 e check-in, ma
 | #5 | `POST /api/checkins` e `GET /api/checkins/hoje` | Fechada | Sem recomendações persistidas (TI-03 não atendido) | **Não concluído** |
 | #7 | Cliente de API de check-ins | Fechada | PR #26 mesclado | Concluído |
 | #8 | Tela de check-in diário | Fechada | PR #31 mesclado | Concluído |
-| #10 | Acompanhamento de QA | Aberta | Em andamento | Não concluído |
+| #10 | Acompanhamento de QA | Fechada pelo PR destas métricas na `docs` | Quadro 26 atualizado (Visão v2.4); M1 a M5 registradas; nenhum defeito crítico aberto; defeitos documentados | Concluído |
 | #11 | CI e ambiente de demonstração | Fechada | PR #27 mesclado; job `demo` na CI | Concluído |
 | #17 | Regras do check-in e seleção | Fechada | TU-06 parcial; M1 em R-S abaixo do exigido na própria issue | **Não concluído** |
 | #18 | Regras da avaliação (PHQ-9, GAD-7) | Fechada | PR #30; TU-01 a TU-04 aprovados | Concluído |
-| #19 | Catálogo e seed | Aberta | PR #37 com CI verde, sem merge | Não concluído |
+| #19 | Catálogo e seed | Fechada | PR #37 mesclado; TU-07 aprovado; conferência dos 7 materiais pelo PO pendente | Concluído |
 | #20 | Tela de Ajuda e botão | Fechada | PR #35; `AjudaPage.test.tsx` | Concluído |
 | #21 | Termos de uso | Fechada | PR #36; `PrivacyPage.test.tsx` | Concluído |
-| #22 | Pendências da Sprint 2 | Aberta | Sem PR | Não concluído |
-| | **Total** | **11 de 14 (78,6%)** | | **9 de 14 (64,3%)** |
+| #22 | Pendências da Sprint 2 | Fechada | PRs #39, #41 e #42 mesclados; decisões do PO na Visão e Arquitetura v2.3 (PR #40); TI-01, TI-02, TS-01, TS-02, TS-04 e TS-05 aprovados | Concluído |
+| | **Total** | **14 de 14 (100%)** | | **12 de 14 (85,7%)** |
 
 As issues #6 e #9 (histórico, R12) não estavam na lista de compromissos da Sprint 4 e foram entregues antes (PR #15 e PR #29); ficam fora do cálculo e contam como adiantamento da Sprint 5.
 
-Em 10/11, a conclusão pelo estado das issues está 1,4 ponto abaixo da referência de 80%. Se o PR #37 for mesclado e a issue #19 aceita até 11/11, o valor sobe para 12 de 14 (85,7%) pelo estado e 10 de 14 (71,4%) pelos critérios. Duas sprints seguidas abaixo de 80% acionam o critério 3 da seção 2.6: a Sprint 3 (29%) já está abaixo e a Sprint 4 ficará abaixo se não chegar a 80%; ver [Sprint 3](sprint-3.md).
+Pelo estado das issues, a Sprint 4 fecha com 14 de 14 (100%), acima da referência de 80%. Pelos critérios de aceite, são 12 de 14 (85,7%), também acima da referência. As duas issues que seguem "Não concluídas" pelos critérios, embora fechadas no GitHub, são a #5 (recomendações não persistidas, TI-03) e a #17 (TU-06 parcial e M1 das regras R-S abaixo do exigido na própria issue). A #10 é contada como concluída porque o PR que registra estas métricas é o que a fecha.
+
+Com a Sprint 4 acima de 80% nas duas leituras, o critério 3 da seção 2.6 (duas sprints seguidas abaixo de 80%) não é acionado, apesar de a Sprint 3 (29%) ter ficado abaixo. Ver [Sprint 3](sprint-3.md).
 
 ## Integração contínua na sprint
 
@@ -99,9 +100,11 @@ Das 32 execuções em PR, 9 (28%) falharam; todas as falhas foram corrigidas ant
 
 A conferência de cada issue prevista na #10 está em [Conferência dos PRs](conferencia-prs-sprint-4.md).
 
-## Pendências até a revisão da sprint (11/11)
+## Pendências após a revisão da sprint
 
-1. Abrir as issues dos defeitos propostos, com a label `bug` e a severidade (aguarda confirmação).
-2. Acompanhar o merge do PR #37 e reexecutar a conferência do TU-07.
-3. Reconferir a matriz regra × teste depois de qualquer alteração em `app/rules/`.
-4. Na revisão: aplicar a [atualização do Quadro 26](quadro-26-sprint-4.md) em nova versão da Visão, por PR na branch `docs`, e registrar M1 a M5 finais.
+1. Abrir as issues dos defeitos abertos (DEF-01, DEF-02 e DEF-03), com a label `bug` e a severidade; DEF-04 e DEF-05 foram corrigidos na própria sprint.
+2. Integrar as recomendações ao check-in (DEF-01): modelo e migração de `Recomendacao`, chamada a `selecionar_materiais` e resposta de `POST /api/checkins`.
+3. PO decidir R-S2, R-S5 e R-S6 (DEF-02) e conferir os 7 materiais do catálogo.
+4. Completar o TU-06 (ordem, ausência de repetição, máximo de 3, exclusão de inativos, regra e motivo por item) e o teto de 2 para N2.
+5. Sprint 5: parte de avaliações do TS-03, junto de `GET /api/avaliacoes`.
+6. Reconferir a matriz regra × teste depois de qualquer alteração em `app/rules/`.
