@@ -2,7 +2,7 @@
 
 Posição final em **11/11/2026**, `main` no commit `886e00b` (PR #44). O oráculo são os Quadros 16, 18 e 20 da Visão. Cada linha das tabelas de regras deve ter ao menos um teste que verifique o comportamento do Quadro (Visão, seção 6.1).
 
-**Resultado: 13 de 16 linhas cobertas, M1 = 81,25%** (valor esperado: 100%), já na `main`: os testes de R-S1, R-S3 e R-S4 entraram com o PR #38. Antes dele, na `main` (`faac2cf`), eram 10 de 16 (62,5%). Pela leitura literal da fórmula, contando também testes que verificam comportamento diferente do Quadro, seriam 15 de 16 (93,75%).
+**Resultado: 12 de 16 linhas cobertas, M1 = 75%** (valor esperado: 100%), já na `main`: os testes de R-S3 e R-S4 entraram com o PR #38, junto com o de R-S1, que não conta porque o código diverge do Quadro nessa regra. Antes dele, na `main` (`faac2cf`), eram 10 de 16 (62,5%). Pela leitura literal da fórmula, contando também os testes de regras em que o código diverge do Quadro, seriam 15 de 16 (93,75%).
 
 ## R-D: check-in diário (Quadro 16)
 
@@ -34,18 +34,18 @@ Pontuação e faixas (TU-01 a TU-03) também têm testes nos valores-limite. **4
 
 ## R-S: seleção de conteúdo (Quadro 20)
 
-Código em `backend/app/rules/selecao.py`; testes `test_tu06_*` em `backend/tests/test_rules_checkin.py` (3 testes).
+Código em `backend/app/rules/selecao.py`; testes `test_tu06_*` em `backend/tests/test_rules_checkin.py` (7 testes).
 
 | Regra | Descrição no Quadro 20 | O que existe | Situação |
 | :--: | :-- | :-- | :--: |
-| R-S1 | Ordem de prioridade das tags ao buscar materiais | `test_tu06_rs1_respeita_a_ordem_de_prioridade_das_tags` (tags e catálogo fora de ordem). | Coberta |
+| R-S1 | Buscar os materiais ativos de cada tag na ordem AJUDA_PROFISSIONAL → ANSIEDADE → HUMOR → ESTRESSE → SONO → BEM_ESTAR | `selecao.py` usa a ordem de `app/rules/checkin.py` (ANSIEDADE, HUMOR, ESTRESSE, SONO), sem AJUDA_PROFISSIONAL: só com essa tag (nível N2), a função devolve materiais de BEM_ESTAR pelo fallback. `MaterialCatalogo` não tem o indicador de ativo, então nada exclui inativos. `test_tu06_rs1_respeita_a_ordem_de_prioridade_das_tags` usa só as quatro tags do check-in. | **Código diverge** |
 | R-S2 | Escolher o material recomendado há mais tempo; nunca recomendado vem primeiro; empate pelo menor id | O código **exclui** materiais exibidos recentemente (`ids_exibidos_recentemente`); `test_tu06_rs2_ignora_ultimas_exibicoes` testa essa exclusão. Comportamento diferente do Quadro. | **Teste diverge** |
 | R-S3 | Um material não aparece duas vezes na mesma resposta | `test_tu06_rs3_material_com_duas_tags_aparece_uma_vez`. | Coberta |
 | R-S4 | No máximo 3 materiais (2 para N2); excedentes descartados por prioridade | `test_tu06_rs4_maximo_de_tres_descarta_tags_de_menor_prioridade` e `test_tu06_rs4_limite_padrao_e_tres`. O teto de 2 para N2 é do chamador (check-in e avaliação) e será testado na integração. | Coberta |
 | R-S5 | Cada recomendação guarda a regra de origem (ex.: R-D4) e o motivo | `Sugestao` guarda "R-S3" ou "R-S6", não a regra de origem R-Dx. Não há teste. | **Sem teste** |
 | R-S6 | Sem material para nenhuma tag, exibir apenas a orientação do nível | O código completa a lista com materiais BEM_ESTAR ou sem tag ("fallback"); `test_tu06_rs2_ignora_ultimas_exibicoes` verifica esse fallback. Comportamento diferente do Quadro. | **Teste diverge** |
 
-**3 de 6 aderentes ao Quadro** (R-S1, R-S3 e R-S4); R-S2 e R-S6 têm teste divergente e R-S5 não tem teste.
+**2 de 6 aderentes ao Quadro** (R-S3 e R-S4); R-S1 tem teste, mas o código diverge do Quadro; R-S2 e R-S6 têm teste divergente; R-S5 não tem teste.
 
 ## Totais
 
@@ -53,11 +53,12 @@ Código em `backend/app/rules/selecao.py`; testes `test_tu06_*` em `backend/test
 | :-- | :--: | :--: | :--: |
 | R-D | 6 | 6 | 100% |
 | R-A | 4 | 4 | 100% |
-| R-S | 6 | 3 | 50% |
-| **Total (M1)** | **16** | **13** | **81,25%** |
+| R-S | 6 | 2 | 33,3% |
+| **Total (M1)** | **16** | **12** | **75%** |
 
 ## Ações para chegar a 100%
 
 1. **PO decide** as divergências de R-S2, R-S5 e R-S6 (atualizar o Quadro 20 em nova versão da Visão ou ajustar o código). Os documentos são a fonte da verdade; enquanto não houver decisão, não se altera o código nem o teste. Registrado como [DEF-02](defeitos.md#def-02).
-2. ~~Escrever os testes de R-S1, R-S3 e R-S4~~ (feito e mesclado no PR #38): [DEF-03](defeitos.md#def-03). Resta o teste de R-S5, que depende da decisão do item 1.
-3. Reconferir a matriz na revisão da Sprint 4 e ao fim de cada sprint seguinte (Visão, Quadro 23: abaixo de 100%, criar o teste antes de novas funcionalidades).
+2. **Corrigir R-S1 no código:** usar a ordem completa do Quadro 20, a mesma de `app/rules/avaliacao.py`, garantir que só materiais ativos entrem na seleção e estender o teste a AJUDA_PROFISSIONAL e BEM_ESTAR. Não depende de decisão do PO e deve ser feito antes de ligar a seleção à avaliação (Sprint 5). Registrado em [DEF-02](defeitos.md#def-02).
+3. ~~Escrever os testes de R-S1, R-S3 e R-S4~~ (feito e mesclado no PR #38): [DEF-03](defeitos.md#def-03). Resta o teste de R-S5, que depende da decisão do item 1.
+4. Reconferir a matriz na revisão da Sprint 4 e ao fim de cada sprint seguinte (Visão, Quadro 23: abaixo de 100%, criar o teste antes de novas funcionalidades).

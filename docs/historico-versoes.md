@@ -11,7 +11,8 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
 | 18/10/2026 | 2.1 | Revisão de escopo para manter apenas compromissos essenciais: remoção dos requisitos não funcionais de interface responsiva, execução com Docker Compose, publicação em nuvem e verificação automática de links; remoção das metas de usabilidade, desempenho, capacidade e cobertura de código e dos testes associados; remoção dos itens Should e Could não essenciais; testes de segurança concentrados em cinco casos; requisitos e roteiro de testes renumerados. | Grupo Lamport |
 | 29/10/2026 | 2.2 | Replanejamento ao fim da Sprint 3 pelo critério 1 da seção 2.6: itens Must não concluídos passam à Sprint 4 e o único item Should (R07) sai do escopo. Decisão do PO: P1 a P4 do check-in passam a ser opcionais; P5 continua obrigatória. | Grupo Lamport |
 | 11/11/2026 | 2.3 | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: R02 e TI-02 passam a incluir o limite de tentativas de login (bloqueio por 15 min após 5 falhas seguidas); a lista de rotas públicas do TS-01 passa a incluir `/api/terms` e `/api/health`. | Grupo Lamport |
-| 11/11/2026 | **2.4** (vigente) | Revisão da Sprint 4 pelo QA (issue #10): Quadro 26 com status, evidência (execução da CI na `main`), reparos e ciclos dos casos previstos até a Sprint 4; seção 6.1, item 5, e legenda da seção 6.2 atualizadas. | Grupo Lamport |
+| 11/11/2026 | 2.4 | Revisão da Sprint 4 pelo QA (issue #10): Quadro 26 com status, evidência (execução da CI na `main`), reparos e ciclos dos casos previstos até a Sprint 4; seção 6.1, item 5, e legenda da seção 6.2 atualizadas. | Grupo Lamport |
+| 12/11/2026 | **2.5** (vigente) | Correções do registro da Sprint 4 no Quadro 26 (issue #10): status do TU-06 com a divergência de R-S1 (ordem de prioridade sem AJUDA_PROFISSIONAL no código) e o material menos recente não verificado; ciclos do TI-01 (2) e do TS-01 (3) alinhados aos reparos registrados; observação de que o teste do TS-01 percorre o contrato OpenAPI. | Grupo Lamport |
 
 ### Principais mudanças entre versões
 
@@ -49,6 +50,13 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
     - **Quadro 26:** colunas Evidência, Reparos e Ciclos; status dos casos previstos até a Sprint 4 com a execução da CI na `main` (commit `886e00b`) como evidência: 13 aprovados, 3 parciais (TU-06, TI-05, TS-03) e 1 não atendido (TI-03).
     - **Seções 6.1 e 6.2:** texto sobre os resultados obtidos e legenda das colunas de acompanhamento.
     - O Quadro 8 (percentual de conclusão) e a Arquitetura não mudaram.
+
+??? abstract "2.4 → 2.5"
+    - **Origem:** conferência do registro da Sprint 4 publicado na v2.4 (issue #10).
+    - **TU-06:** o status passa a citar que o código não inclui AJUDA_PROFISSIONAL na ordem de prioridade (R-S1, DEF-02) e que o material menos recente não é verificado. O caso continua parcial.
+    - **TI-01 e TS-01:** ciclos alinhados aos reparos registrados. O TI-01 passa a 2 (o DEF-04 impedia o resultado esperado até o reparo no PR #39) e o TS-01 passa a 3 (reparos nos PRs #33 e #39, como o TS-04).
+    - **TS-01:** observação de que o teste percorre o contrato OpenAPI, e não `app.routes`; hoje as duas listas de rotas coincidem.
+    - Os demais casos, o Quadro 8 e a Arquitetura não mudaram.
 
 ## Documento de Arquitetura
 
