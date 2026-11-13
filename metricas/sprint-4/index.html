@@ -1,0 +1,1586 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação do Sintoniza, aplicação web de apoio à saúde mental (MDS 2026 – Turma 03).">
+      
+      
+      
+      
+        <link rel="prev" href="../sprint-3/">
+      
+      
+        <link rel="next" href="../matriz-regras-testes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Sprint 4 - Sintoniza – Grupo Lamport</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sprint-4-pendencias-da-sprint-3-e-check-in-diario-2910-a-11112026" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Sintoniza – Grupo Lamport" class="md-header__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sintoniza – Grupo Lamport
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sprint 4
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Sintoniza – Grupo Lamport" class="md-nav__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Sintoniza – Grupo Lamport
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-produto-projeto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão do Produto e do Projeto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vocabulario-checkin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vocabulário do check-in
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../historico-versoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Histórico de versões
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Métricas e qualidade
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Métricas e qualidade
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Painel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metodologia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metodologia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprint-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprint-3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 4
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#metricas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métricas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roteiro-de-testes-da-sprint-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roteiro de testes da Sprint 4
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roteiro de testes da Sprint 4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testes-unitarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testes unitários
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testes-de-integracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testes de integração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testes-de-seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testes de segurança
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resumo-do-roteiro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo do roteiro
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao-da-sprint-m4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão da sprint (M4)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integracao-continua-na-sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integração contínua na sprint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conferencia-dos-prs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conferência dos PRs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pendencias-apos-a-revisao-da-sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pendências após a revisão da sprint
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../matriz-regras-testes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matriz regra × teste
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conferencia-prs-sprint-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conferência dos PRs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../defeitos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defeitos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quadro-26-sprint-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quadro 26 da Sprint 4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atas de Reunião
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Atas de Reunião
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../atas-reuniao/ata-reuniao-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ata 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#metricas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métricas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roteiro-de-testes-da-sprint-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roteiro de testes da Sprint 4
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roteiro de testes da Sprint 4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testes-unitarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testes unitários
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testes-de-integracao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testes de integração
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testes-de-seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testes de segurança
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resumo-do-roteiro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo do roteiro
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao-da-sprint-m4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão da sprint (M4)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integracao-continua-na-sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Integração contínua na sprint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conferencia-dos-prs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conferência dos PRs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pendencias-apos-a-revisao-da-sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pendências após a revisão da sprint
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sprint-4-pendencias-da-sprint-3-e-check-in-diario-2910-a-11112026">Sprint 4: Pendências da Sprint 3 e check-in diário (29/10 a 11/11/2026)<a class="headerlink" href="#sprint-4-pendencias-da-sprint-3-e-check-in-diario-2910-a-11112026" title="Permanent link">&para;</a></h1>
+<p><strong>Posição final em 11/11/2026</strong> (dia 14 de 14), <code>main</code> no commit <code>886e00b</code> (PR #44), com todos os PRs da sprint mesclados e a CI da <code>main</code> verde (<a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/43118733055">execução 43118733055</a>). Acompanha a issue #10.</p>
+<h2 id="metricas">Métricas<a class="headerlink" href="#metricas" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Métrica</th>
+<th style="text-align: center;">Valor</th>
+<th style="text-align: center;">Esperado</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">M1. Cobertura das tabelas de regras</td>
+<td style="text-align: center;"><strong>75%</strong> (12 de 16)</td>
+<td style="text-align: center;">100%</td>
+<td style="text-align: left;">R-D e R-A completas; R-S3 e R-S4 cobertas (PR #38). R-S1 tem teste, mas o código não inclui AJUDA_PROFISSIONAL na ordem de prioridade; R-S2, R-S5 e R-S6 dependem de decisão do PO (<a href="../defeitos/#def-02">DEF-02</a>). Ver <a href="../matriz-regras-testes/">matriz</a>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">M2. Aprovação dos testes automatizados</td>
+<td style="text-align: center;"><strong>100%</strong> (210 de 210 no backend; 47 de 47 no frontend)</td>
+<td style="text-align: center;">100% na <code>main</code></td>
+<td style="text-align: left;"><a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/43118733055">Execução 43118733055</a>, <code>main</code> no commit <code>886e00b</code>; jobs <code>backend</code>, <code>frontend</code> e <code>demo</code> aprovados.</td>
+</tr>
+<tr>
+<td style="text-align: left;">M3. Testes de segurança aprovados</td>
+<td style="text-align: center;"><strong>80%</strong> (4 de 5)</td>
+<td style="text-align: center;">100%</td>
+<td style="text-align: left;">TS-01, TS-02, TS-04 e TS-05 aprovados. TS-03 parcial: a parte de check-ins está coberta no banco de teste, e a de avaliações depende do endpoint da Sprint 5 (o roteiro marca o caso como S4–S5). Nenhum teste reprovado.</td>
+</tr>
+<tr>
+<td style="text-align: left;">M4. Conclusão da sprint</td>
+<td style="text-align: center;"><strong>100%</strong> (14 de 14) pelo estado das issues; <strong>85,7%</strong> (12 de 14) pelos critérios de aceite</td>
+<td style="text-align: center;">≥ 80% (referência)</td>
+<td style="text-align: left;">A #10 é contada como concluída, pois é fechada pelo PR com estes registros. Ver abaixo.</td>
+</tr>
+<tr>
+<td style="text-align: left;">M5. Defeitos abertos por severidade</td>
+<td style="text-align: center;"><strong>3</strong> issues <code>bug</code> abertas (#45, #46 e #47): 0 críticos, 1 alto, 2 médios, 0 baixos; 2 defeitos corrigidos na sprint</td>
+<td style="text-align: center;">0 críticos</td>
+<td style="text-align: left;">Ver <a href="../defeitos/">Defeitos</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>Critério de aceite da issue #10 "nenhum defeito crítico aberto no fim da sprint": <strong>atendido</strong>, pois nenhum dos defeitos encontrados é crítico (nenhum teste de segurança falha e nenhuma regra em uso encaminha o usuário de forma errada; a seleção de conteúdo, onde está a divergência de R-S1, ainda não é chamada pelo sistema, ver <a href="../defeitos/#def-02">DEF-02</a>).</p>
+<h2 id="roteiro-de-testes-da-sprint-4">Roteiro de testes da Sprint 4<a class="headerlink" href="#roteiro-de-testes-da-sprint-4" title="Permanent link">&para;</a></h2>
+<p>Evidência de todos os casos automatizados: <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/43118733055">execução 43118733055</a> da CI na <code>main</code>, salvo onde há outra indicação. "Reparos" cita o PR que corrigiu a falha ou atendeu a revisão.</p>
+<h3 id="testes-unitarios">Testes unitários<a class="headerlink" href="#testes-unitarios" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">ID</th>
+<th style="text-align: center;">Status</th>
+<th style="text-align: left;">Testes que o cobrem</th>
+<th style="text-align: center;">Reparos</th>
+<th style="text-align: center;">Ciclos</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TU-01</td>
+<td style="text-align: center;">Aprovado</td>
+<td style="text-align: left;"><code>test_tu01_*</code> (soma, todos 0, todos 3, misto, entradas inválidas)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">PR #30.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-02</td>
+<td style="text-align: center;">Aprovado</td>
+<td style="text-align: left;"><code>test_tu02_faixas_phq9_limites</code> e fora da faixa</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">PR #30.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-03</td>
+<td style="text-align: center;">Aprovado</td>
+<td style="text-align: left;"><code>test_tu03_faixas_gad7_limites</code> e fora da faixa</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">PR #30.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-04</td>
+<td style="text-align: center;">Aprovado</td>
+<td style="text-align: left;"><code>test_tu04_caso1</code> a <code>caso8</code>, precedência de R-A1, perfis A a E</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">PR #30.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-05</td>
+<td style="text-align: center;">Aprovado</td>
+<td style="text-align: left;"><code>test_rd1_*</code>, <code>test_thresholds</code>, <code>test_unanswered_question_*</code>, <code>test_example_from_ti03</code></td>
+<td style="text-align: center;">PR #32</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">A revisão do PR #32 pediu a remoção de enums duplicados e de lógica de nível não prevista; atendido antes do merge.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-06</td>
+<td style="text-align: center;"><strong>Parcial</strong></td>
+<td style="text-align: left;"><code>test_tu06_*</code> (7 testes: limite zero e catálogo vazio, R-S1, R-S2, dois de R-S3 e dois de R-S4)</td>
+<td style="text-align: center;">PR #32 e PR #38</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Os 7 testes passam e verificam a ordem de prioridade (só com as tags do check-in), a ausência de repetição e o máximo de 3. Não verificam a ordem com AJUDA_PROFISSIONAL, que o código não inclui, o material menos recente, a exclusão de inativos nem a regra e o motivo por item. Ver DEF-02 e DEF-03.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TU-07</td>
+<td style="text-align: center;">Aprovado</td>
+<td style="text-align: left;"><code>test_materiais_tu07.py</code> (4 testes) e <code>test_seed_materiais.py</code> (4 testes)</td>
+<td style="text-align: center;">PR #37</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Catálogo na <code>main</code> com 7 materiais oficiais. Resta a conferência dos 7 materiais pelo PO, prevista na lista de aceite do PR #37.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="testes-de-integracao">Testes de integração<a class="headerlink" href="#testes-de-integracao" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">ID</th>
+<th style="text-align: center;">Status</th>
+<th style="text-align: left;">Testes que o cobrem</th>
+<th style="text-align: center;">Reparos</th>
+<th style="text-align: center;">Ciclos</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TI-03</td>
+<td style="text-align: center;"><strong>Não atendido</strong></td>
+<td style="text-align: left;"><code>test_ti03_create_checkin_returns_201_with_nivel_and_tags</code></td>
+<td style="text-align: center;">PR #23</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">O teste verifica só 201, nível e tags. O resultado esperado do Quadro 26 inclui 2 recomendações persistidas (R-D3 e R-D4), que o sistema não produz: <code>CheckinService.create</code> não chama <code>selecionar_materiais</code> e não existe <code>Recomendacao</code> (o modelo <code>Material</code> entrou com o PR #37). Ver DEF-01.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI-04</td>
+<td style="text-align: center;">Aprovado</td>
+<td style="text-align: left;"><code>test_ti04_second_checkin_on_same_day_returns_409</code></td>
+<td style="text-align: center;">PR #23</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Confere 409 e que há um único registro no banco. Uma execução da CI do PR #23 falhou antes da aprovação.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TI-05</td>
+<td style="text-align: center;"><strong>Parcial</strong></td>
+<td style="text-align: left;"><code>test_ti05_risk_answer_returns_crise_without_tags</code></td>
+<td style="text-align: center;">PR #23</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Confere 201, nível CRISE e tags vazias. A "lista de recomendações vazia" e "nenhuma linha em Recomendacao" não são verificáveis sem a entidade (DEF-01).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="testes-de-seguranca">Testes de segurança<a class="headerlink" href="#testes-de-seguranca" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">ID</th>
+<th style="text-align: center;">Status</th>
+<th style="text-align: left;">Testes que o cobrem</th>
+<th style="text-align: center;">Reparos</th>
+<th style="text-align: center;">Ciclos</th>
+<th style="text-align: left;">Observação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">TS-01</td>
+<td style="text-align: center;">Aprovado</td>
+<td style="text-align: left;"><code>test_ts01_*</code> (percorre o contrato OpenAPI; 401 sem token e com token malformado)</td>
+<td style="text-align: center;">PR #33 e PR #39</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">A lista pública é a da Visão v2.3: <code>/api/auth/cadastro</code>, <code>/api/auth/login</code>, <code>/api/terms</code> e <code>/api/health</code>. O Quadro 26 diz que o teste percorre <code>app.routes</code>, mas ele percorre o contrato OpenAPI. Hoje as duas listas coincidem; uma rota marcada com <code>include_in_schema=False</code> não seria verificada.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TS-02</td>
+<td style="text-align: center;">Aprovado</td>
+<td style="text-align: left;"><code>test_me_rejects_expired_token</code>, <code>test_me_rejects_token_signed_with_other_key</code>, <code>test_ts01_protected_routes_reject_malformed_token</code>, <code>test_me_rejects_token_of_deleted_user</code></td>
+<td style="text-align: center;">PR #39</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Os quatro casos do roteiro retornam 401. O usuário excluído é removido diretamente no banco do teste, pois a rota de exclusão de conta (R04) é da Sprint 5.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TS-03</td>
+<td style="text-align: center;"><strong>Parcial</strong></td>
+<td style="text-align: left;"><code>test_ts03_isolamento.py</code> (5 testes com o <code>client</code> e o banco de teste); <code>test_api_list_checkins_isolation_ts_03</code>, <code>test_api_get_checkin_by_id_other_user_returns_404</code>; no repositório: <code>test_get_by_id_other_user_returns_none</code>, <code>test_list_by_user_does_not_return_other_users_checkins</code></td>
+<td style="text-align: center;">PR #39</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">O isolamento de check-ins está coberto no banco de teste (DEF-05 corrigido). Falta a parte de avaliações (<code>GET /api/avaliacoes/{id}</code>), do escopo da Sprint 5; o roteiro marca o TS-03 como S4–S5.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TS-04</td>
+<td style="text-align: center;">Aprovado</td>
+<td style="text-align: left;"><code>test_ts04_*</code> e o cliente de teste que varre toda resposta JSON da suíte</td>
+<td style="text-align: center;">PR #33 e PR #39</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">Nenhuma chave sensível em nenhuma resposta; <code>GET /api/me</code> devolve só <code>id</code>, <code>email</code> e <code>criado_em</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;">TS-05</td>
+<td style="text-align: center;">Aprovado</td>
+<td style="text-align: left;"><code>test_register_stores_only_password_hash</code></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Confere o prefixo <code>$argon2id$</code>, que o hash difere da senha e que a senha confere com o hash.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="resumo-do-roteiro">Resumo do roteiro<a class="headerlink" href="#resumo-do-roteiro" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Status</th>
+<th style="text-align: left;">Casos</th>
+<th style="text-align: center;">Quantidade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Aprovado</td>
+<td style="text-align: left;">TU-01, TU-02, TU-03, TU-04, TU-05, TU-07, TI-04, TS-01, TS-02, TS-04, TS-05</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr>
+<td style="text-align: left;">Parcial</td>
+<td style="text-align: left;">TU-06, TI-05, TS-03</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Não atendido</td>
+<td style="text-align: left;">TI-03</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">Não executado</td>
+<td style="text-align: left;">(nenhum previsto para a Sprint 4)</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>São 15 casos. Todos os testes automatizados existentes passam na CI. Os casos parciais e o não atendido decorrem de critérios do roteiro que ainda não têm teste ou funcionalidade: recomendações persistidas (TI-03 e TI-05), verificações do TU-06 e a parte de avaliações do TS-03. Os casos TI-01 e TI-02 (Sprint 2, pendências da #22) também estão <strong>aprovados</strong>: TI-01 com a declaração 18+ (422 sem ela) e TI-02 com o limite de tentativas de login. A atualização do Quadro 26 está em <a href="../quadro-26-sprint-4/">Quadro 26 da Sprint 4</a>.</p>
+<h2 id="conclusao-da-sprint-m4">Conclusão da sprint (M4)<a class="headerlink" href="#conclusao-da-sprint-m4" title="Permanent link">&para;</a></h2>
+<p>Itens comprometidos conforme a issue #12 (pendências da Sprint 3 e check-in, mais #10 e #11):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Issue</th>
+<th style="text-align: left;">Item</th>
+<th style="text-align: center;">Estado no GitHub</th>
+<th style="text-align: left;">Critérios de aceite verificados</th>
+<th style="text-align: center;">Contagem pelos critérios</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">#2</td>
+<td style="text-align: left;">Protótipo das telas</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">Link do Figma anexado na issue (12/11); telas exportadas no PR #25, ainda aberto na <code>docs</code></td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;">#3</td>
+<td style="text-align: left;">Vocabulário do check-in</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">PR #14 mesclado</td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;">#4</td>
+<td style="text-align: left;">Modelo e migração do check-in</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">PR #24 mesclado</td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;">#5</td>
+<td style="text-align: left;"><code>POST /api/checkins</code> e <code>GET /api/checkins/hoje</code></td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">Sem recomendações persistidas (TI-03 não atendido)</td>
+<td style="text-align: center;"><strong>Não concluído</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;">#7</td>
+<td style="text-align: left;">Cliente de API de check-ins</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">PR #26 mesclado</td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;">#8</td>
+<td style="text-align: left;">Tela de check-in diário</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">PR #31 mesclado</td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;">#10</td>
+<td style="text-align: left;">Acompanhamento de QA</td>
+<td style="text-align: center;">Fechada pelo PR destas métricas na <code>docs</code></td>
+<td style="text-align: left;">Quadro 26 atualizado (Visão v2.4); M1 a M5 registradas; nenhum defeito crítico aberto; defeitos documentados</td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;">#11</td>
+<td style="text-align: left;">CI e ambiente de demonstração</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">PR #27 mesclado; job <code>demo</code> na CI</td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;">#17</td>
+<td style="text-align: left;">Regras do check-in e seleção</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">TU-06 parcial; M1 em R-S abaixo do exigido na própria issue</td>
+<td style="text-align: center;"><strong>Não concluído</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;">#18</td>
+<td style="text-align: left;">Regras da avaliação (PHQ-9, GAD-7)</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">PR #30; TU-01 a TU-04 aprovados</td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;">#19</td>
+<td style="text-align: left;">Catálogo e seed</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">PR #37 mesclado; TU-07 aprovado; conferência dos 7 materiais pelo PO pendente</td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;">#20</td>
+<td style="text-align: left;">Tela de Ajuda e botão</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">PR #35; <code>AjudaPage.test.tsx</code></td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;">#21</td>
+<td style="text-align: left;">Termos de uso</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">PR #36; <code>PrivacyPage.test.tsx</code></td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;">#22</td>
+<td style="text-align: left;">Pendências da Sprint 2</td>
+<td style="text-align: center;">Fechada</td>
+<td style="text-align: left;">PRs #39, #41 e #42 mesclados; decisões do PO na Visão e Arquitetura v2.3 (PR #40); TI-01, TI-02, TS-01, TS-02, TS-04 e TS-05 aprovados</td>
+<td style="text-align: center;">Concluído</td>
+</tr>
+<tr>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"><strong>Total</strong></td>
+<td style="text-align: center;"><strong>14 de 14 (100%)</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"><strong>12 de 14 (85,7%)</strong></td>
+</tr>
+</tbody>
+</table>
+<p>As issues #6 e #9 (histórico, R12) não estavam na lista de compromissos da Sprint 4 e foram entregues antes (PR #15 e PR #29); ficam fora do cálculo e contam como adiantamento da Sprint 5.</p>
+<p>Pelo estado das issues, a Sprint 4 fecha com 14 de 14 (100%), acima da referência de 80%. Pelos critérios de aceite, são 12 de 14 (85,7%), também acima da referência. As duas issues que seguem "Não concluídas" pelos critérios, embora fechadas no GitHub, são a #5 (recomendações não persistidas, TI-03) e a #17 (TU-06 parcial e M1 das regras R-S abaixo do exigido na própria issue). A #10 é contada como concluída porque o PR que registra estas métricas é o que a fecha.</p>
+<p>Com a Sprint 4 acima de 80% nas duas leituras, o critério 3 da seção 2.6 (duas sprints seguidas abaixo de 80%) não é acionado, apesar de a Sprint 3 (29%) ter ficado abaixo. Ver <a href="../sprint-3/">Sprint 3</a>.</p>
+<h2 id="integracao-continua-na-sprint">Integração contínua na sprint<a class="headerlink" href="#integracao-continua-na-sprint" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Evento</th>
+<th style="text-align: center;">Execuções</th>
+<th style="text-align: center;">Aprovadas</th>
+<th style="text-align: center;">Reprovadas</th>
+<th style="text-align: center;">Canceladas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Pull request</td>
+<td style="text-align: center;">38</td>
+<td style="text-align: center;">28</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Push (<code>main</code> e <code>developer</code>)</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<p>Das 38 execuções em PR, 10 (26%) falharam, e todas essas falhas foram corrigidas antes do merge. Os PRs #32 (3 falhas) e #29 (3 falhas) concentraram as reprovações; os PRs #23, #26, #31 e #39 tiveram uma falha cada. A falha em push foi na <code>developer</code>, depois do merge do PR #41, que deixou o job <code>demo</code> com o campo antigo <code>password</code> (<a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/43114251359">execução 43114251359</a>); o PR #42 corrigiu. Os PRs #41 e #42 eram correções das pendências da #22, acompanhadas pelo PO, e foram mesclados sem execução da CI no PR.</p>
+<h2 id="conferencia-dos-prs">Conferência dos PRs<a class="headerlink" href="#conferencia-dos-prs" title="Permanent link">&para;</a></h2>
+<p>A conferência de cada issue prevista na #10 está em <a href="../conferencia-prs-sprint-4/">Conferência dos PRs</a>.</p>
+<h2 id="pendencias-apos-a-revisao-da-sprint">Pendências após a revisão da sprint<a class="headerlink" href="#pendencias-apos-a-revisao-da-sprint" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Tratar as issues dos defeitos abertos: #45 (DEF-01, alta), #46 (DEF-02, média; R-S2, R-S5 e R-S6 dependem do PO) e #47 (DEF-03, média); DEF-04 e DEF-05 foram corrigidos na própria sprint.</li>
+<li>Integrar as recomendações ao check-in (DEF-01): modelo e migração de <code>Recomendacao</code>, chamada a <code>selecionar_materiais</code> e resposta de <code>POST /api/checkins</code>.</li>
+<li>PO decidir R-S2, R-S5 e R-S6 (DEF-02) e conferir os 7 materiais do catálogo.</li>
+<li>Corrigir R-S1 no código (ordem de prioridade com AJUDA_PROFISSIONAL, como no Quadro 20) e completar o TU-06 (essa ordem, exclusão de inativos, regra e motivo por item) e o teto de 2 para N2, antes de ligar a seleção à avaliação (Sprint 5).</li>
+<li>Sprint 5: parte de avaliações do TS-03, junto de <code>GET /api/avaliacoes</code>.</li>
+<li>Reconferir a matriz regra × teste depois de qualquer alteração em <code>app/rules/</code>.</li>
+<li>Fazer o TS-01 percorrer <code>app.routes</code>, como diz o Quadro 26, ou o PO atualizar o Quadro.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
