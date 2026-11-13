@@ -8,7 +8,7 @@ Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026)
 | :-- | :--: | :-- | :-- | :-- | :--: |
 | [DEF-01](#def-01) | **Alta** | `POST /api/checkins` não gera nem grava recomendações | TI-03, TI-05 | Luiz Felipe | #45 |
 | [DEF-02](#def-02) | Média | `selecionar_materiais` diverge do Quadro 20 da Visão | TU-06 | PO decide; Luiz Felipe | #46 |
-| [DEF-03](#def-03) | Média | Testes de seleção de conteúdo não cobrem R-S1, R-S3 e R-S4 | TU-06, M1 | Luiz Felipe | parcialmente corrigido (PR #38); restante na #47 |
+| [DEF-03](#def-03) | Média | Testes de seleção não cobrem inativos nem regra e motivo por item | TU-06, M1 | Luiz Felipe | parcialmente corrigido (PR #38); restante na #47 |
 | [DEF-04](#def-04) | Média | Cadastro e `GET /api/me` divergem do contrato da Arquitetura | TI-01, TS-04 | Luiz Felipe, Carlos Eduardo | **corrigido** (#22, PRs #39, #41 e #42) |
 | [DEF-05](#def-05) | Média | Testes de API do TS-03 não usam o banco de teste | TS-03 | Carlos Eduardo | **corrigido** (PR #39) |
 
@@ -30,7 +30,7 @@ Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026)
 
 **Resultado esperado (Visão, Quadro 26, TI-03):** P1 = 4, P2 = 3, P3 = 1, P4 = 0, P5 = Não → 201; tags [ANSIEDADE, SONO]; 2 recomendações persistidas com materiais dessas tags e regras R-D3 e R-D4. TI-05: lista de recomendações vazia e nenhuma linha nova em `Recomendacao`.
 
-**Resultado obtido:** 201 com apenas `{"nivel": "autocuidado", "tags": ["ansiedade", "sono"]}`. `CheckinService.create` chama `avaliar_checkin`, grava o check-in e termina; não chama `selecionar_materiais`. Não existem na `main` o modelo `Material`, a entidade `Recomendacao` (Arquitetura, Figura 6) nem as migrações correspondentes. A resposta não traz a lista de recomendações exigida pela issue #5.
+**Resultado obtido:** 201 com apenas `{"nivel": "autocuidado", "tags": ["ansiedade", "sono"]}`. `CheckinService.create` chama `avaliar_checkin`, grava o check-in e termina; não chama `selecionar_materiais`. O modelo `Material` e a tabela `materiais` já estão na `main` (PR #37), mas não existem a entidade `Recomendacao` (Arquitetura, Figura 6) nem a migração correspondente. A resposta não traz a lista de recomendações exigida pela issue #5.
 
 **Evidência:** `backend/app/application/checkins.py` (função `create`); `backend/tests/test_checkins.py::test_ti03_create_checkin_returns_201_with_nivel_and_tags` verifica só nível e tags e, por isso, passa na CI ([execução 42691191624](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42691191624)).
 
@@ -41,25 +41,28 @@ Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026)
 <a id="def-02"></a>
 ## DEF-02: `selecionar_materiais` diverge do Quadro 20 da Visão
 
-**Severidade:** média. **Caso:** TU-06 (parcial). **Requisito:** R06.
+**Severidade:** média. **Caso:** TU-06 (parcial). **Requisitos:** R06 e R09.
 
 | Regra | Quadro 20 | Código em `app/rules/selecao.py` |
 | :--: | :-- | :-- |
+| R-S1 | Buscar os materiais ativos de cada tag na ordem AJUDA_PROFISSIONAL → ANSIEDADE → HUMOR → ESTRESSE → SONO → BEM_ESTAR | Usa a ordem do check-in, sem AJUDA_PROFISSIONAL: só com essa tag (N2), devolve materiais de BEM_ESTAR pelo fallback; `MaterialCatalogo` não tem o indicador de ativo |
 | R-S2 | Escolher o material recomendado há mais tempo; nunca recomendado primeiro; empate pelo menor id | Exclui os materiais exibidos recentemente; não ordena por tempo |
 | R-S5 | Guardar a regra de origem (ex.: R-D4) e o motivo | `Sugestao.regra` recebe "R-S3" ou "R-S6" |
 | R-S6 | Sem material para nenhuma tag, exibir só a orientação do nível | Completa a lista com materiais BEM_ESTAR ou sem tag |
 | R-S3 | Material não se repete | A deduplicação existe, mas o rótulo "R-S3" é usado para o casamento de tags |
 
-**Decisão necessária (PO):** como os documentos são a fonte da verdade, o PO decide, para cada linha, entre atualizar o Quadro 20 em nova versão da Visão ou ajustar o código. Até lá não se altera o teste para acompanhar o código. A divergência já havia sido apontada na revisão do PR #32.
+**Decisão necessária (PO):** como os documentos são a fonte da verdade, o PO decide, para as linhas de R-S2, R-S3, R-S5 e R-S6, entre atualizar o Quadro 20 em nova versão da Visão ou ajustar o código. Até lá não se altera o teste para acompanhar o código. A divergência já havia sido apontada na revisão do PR #32.
+
+**R-S1 não depende de decisão:** o Quadro 20 e a ordem usada em `app/rules/avaliacao.py` já incluem AJUDA_PROFISSIONAL, então o ajuste é no código. Hoje a seleção não é chamada pelo sistema (DEF-01), por isso a severidade segue média. Se ela for ligada à avaliação (Sprint 5) sem essa correção, quem estiver em N2 recebe materiais de BEM_ESTAR em vez de AJUDA_PROFISSIONAL, o que, pelo critério desta página, é defeito crítico (risco R3).
 
 <a id="def-03"></a>
-## DEF-03: testes de seleção de conteúdo não cobrem R-S1, R-S3 e R-S4
+## DEF-03: testes de seleção não cobrem inativos nem regra e motivo por item
 
 **Severidade:** média. **Caso:** TU-06; **métrica** M1 (R-S abaixo de 100%). **Issue de origem:** #17, cujo critério de aceite exige "toda linha de R-D1 a R-D6 e de R-S1 a R-S6 com ao menos um teste".
 
-**Faltam:** (a) ordem de prioridade com duas ou mais tags (R-S1); (b) material com duas tags geradas aparecendo uma só vez (R-S3); (c) teto de 3 materiais, de 2 para N2 e descarte pela ordem de prioridade (R-S4); (d) exclusão de material inativo e presença de regra e motivo em cada item, previstos no resultado esperado do TU-06.
+**Faltavam:** (a) ordem de prioridade com duas ou mais tags (R-S1); (b) material com duas tags geradas aparecendo uma só vez (R-S3); (c) teto de 3 materiais, de 2 para N2 e descarte pela ordem de prioridade (R-S4); (d) exclusão de material inativo e presença de regra e motivo em cada item, previstos no resultado esperado do TU-06.
 
-Os testes de (a), (b) e o teto geral de (c) foram escritos e mesclados no PR #38; (d) e o teto de 2 para N2 seguem pendentes. Estes testes não dependem da decisão do DEF-02 (exceto R-S5) e devem ser escritos primeiro. Ver [matriz regra × teste](matriz-regras-testes.md).
+Os testes de (a), (b) e o teto geral de (c) foram escritos e mesclados no PR #38; (d) e o teto de 2 para N2 seguem pendentes. O teste de (a) usa só as tags do check-in; a ordem com AJUDA_PROFISSIONAL está no [DEF-02](#def-02). Estes testes não dependem da decisão do DEF-02 (exceto R-S5) e devem ser escritos primeiro. Ver [matriz regra × teste](matriz-regras-testes.md).
 
 <a id="def-04"></a>
 ## DEF-04: cadastro e `GET /api/me` divergem do contrato da Arquitetura
