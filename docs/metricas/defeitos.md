@@ -7,7 +7,7 @@ Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026)
 | ID | Severidade | Título | Casos afetados | Responsável sugerido | Issue |
 | :-- | :--: | :-- | :-- | :-- | :--: |
 | [DEF-01](#def-01) | **Alta** | `POST /api/checkins` não gera nem grava recomendações | TI-03, TI-05 | Luiz Felipe | #45 |
-| [DEF-02](#def-02) | Média | `selecionar_materiais` diverge do Quadro 20 da Visão | TU-06 | PO decide; Luiz Felipe | #46 |
+| [DEF-02](#def-02) | Média | `selecionar_materiais` diverge do Quadro 20 da Visão | TU-06 | Luiz Felipe (PO decidiu em 12/11: vale o Quadro 20) | #46 |
 | [DEF-03](#def-03) | Média | Testes de seleção de conteúdo não cobrem R-S1, R-S3 e R-S4 | TU-06, M1 | Luiz Felipe | parcialmente corrigido (PR #38); restante na #47 |
 | [DEF-04](#def-04) | Média | Cadastro e `GET /api/me` divergem do contrato da Arquitetura | TI-01, TS-04 | Luiz Felipe, Carlos Eduardo | **corrigido** (#22, PRs #39, #41 e #42) |
 | [DEF-05](#def-05) | Média | Testes de API do TS-03 não usam o banco de teste | TS-03 | Carlos Eduardo | **corrigido** (PR #39) |
@@ -50,7 +50,7 @@ Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026)
 | R-S6 | Sem material para nenhuma tag, exibir só a orientação do nível | Completa a lista com materiais BEM_ESTAR ou sem tag |
 | R-S3 | Material não se repete | A deduplicação existe, mas o rótulo "R-S3" é usado para o casamento de tags |
 
-**Decisão necessária (PO):** como os documentos são a fonte da verdade, o PO decide, para cada linha, entre atualizar o Quadro 20 em nova versão da Visão ou ajustar o código. Até lá não se altera o teste para acompanhar o código. A divergência já havia sido apontada na revisão do PR #32.
+**Decisão do PO (12/11/2026, Visão v2.5):** o Quadro 20 permanece como está e o código se ajusta a ele, em todas as linhas: R-S2 ordena os candidatos pela data da última recomendação ao usuário (nunca recomendado primeiro; empate pelo menor id), sem janela de bloqueio; R-S5 grava a regra de origem da tag (R-D2 a R-D6 ou R-A2 a R-A4) e o motivo correspondente; R-S6 não completa a lista com outros materiais. Os testes do TU-06 devem seguir o Quadro 20, e não o código atual. A divergência já havia sido apontada na revisão do PR #32.
 
 <a id="def-03"></a>
 ## DEF-03: testes de seleção de conteúdo não cobrem R-S1, R-S3 e R-S4

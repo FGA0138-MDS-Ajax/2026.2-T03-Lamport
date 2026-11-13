@@ -1,9 +1,9 @@
 # Documento de Arquitetura
 
-**Versão 2.3 – 11/11/2026**
+**Versão 2.4 – 12/11/2026**
 
 !!! info "Versão vigente"
-    Esta página reproduz a versão 2.3, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md). Este documento está alinhado à [Visão do Produto e do Projeto v2.3](visao-produto-projeto.md).
+    Esta página reproduz a versão 2.4, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md). Este documento está alinhado à [Visão do Produto e do Projeto v2.5](visao-produto-projeto.md).
 
 ## Integrantes do grupo
 
@@ -28,6 +28,7 @@
 | 18/10/2026 | 2.1 | Alinhamento à Visão v2.1: remoção das metas de desempenho, capacidade e cobertura de código, da publicação em nuvem, do verificador automático de links, da auditoria de dependências e da avaliação de utilidade dos materiais; restrições de segurança limitadas ao que é verificado pelos testes TS-01 a TS-05; características de qualidade descritas sem metas numéricas. | Grupo Lamport |
 | 29/10/2026 | 2.2 | Alinhamento à Visão v2.2: P1 a P4 do check-in opcionais (nulas quando sem resposta) na Figura 3, na Figura 6 e no contrato de `avaliar_checkin`; retirada do convite para avaliação (R07, R-D7), da função `deve_convidar_avaliacao` e do campo `convite`; regra de nomes das respostas do check-in na API (`p1` a `p5` na entrada e na saída); correção do prefixo `/api` nas rotas da Figura 3. | Grupo Lamport |
 | 11/11/2026 | 2.3 | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: inclusão de `POST /api/auth/logout`, `GET /api/terms` e `GET /api/health` no Quadro 6; entidade Consentimento na Figura 6, no lugar dos campos de termos e maioridade em Usuario; limite de tentativas de login na seção 2.4; Quadro 4 e Figura 5 com os pacotes reais do backend (`application`, `core`, `infrastructure`); campos da API em português, exceto os do token (seção 2.4, item 6). | Grupo Lamport |
+| 12/11/2026 | 2.4 | Alinhamento à Visão v2.5 (planejamento da Sprint 5): prefixo `/api` corrigido na rota de envio da avaliação na Figura 4, como no Quadro 6. A decisão do PO sobre o defeito DEF-02 mantém o contrato de `selecionar_materiais` do Quadro 5. | Grupo Lamport |
 
 ---
 
@@ -179,7 +180,7 @@ flowchart TB
 ```mermaid
 flowchart TB
     I((" ")) --> B1["[Front] Responder PHQ-9 (9 itens)<br/>e GAD-7 (7 itens), escala 0–3"]
-    B1 --> B2["[API] POST /avaliacoes<br/>validar 16 respostas inteiras 0–3"]
+    B1 --> B2["[API] POST /api/avaliacoes<br/>validar 16 respostas inteiras 0–3"]
     B2 --> B3["[Regras] escore PHQ-9 (0–27), GAD-7 (0–21)<br/>e faixas de gravidade"]
     B3 --> D1{"R-A1: item 9<br/>do PHQ-9 ≥ 1?"}
     D1 -- sim --> N3["N3 CRISE<br/>sem recomendações"]

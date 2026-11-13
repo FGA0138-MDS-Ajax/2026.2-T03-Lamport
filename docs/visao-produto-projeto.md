@@ -1,9 +1,9 @@
 # Visão do Produto e do Projeto
 
-**Versão 2.4 – 11/11/2026** · Aplicação web de apoio à saúde mental: check-in diário, rastreio com instrumentos validados e encaminhamento a conteúdos e serviços oficiais.
+**Versão 2.5 – 12/11/2026** · Aplicação web de apoio à saúde mental: check-in diário, rastreio com instrumentos validados e encaminhamento a conteúdos e serviços oficiais.
 
 !!! info "Versão vigente"
-    Esta página reproduz a versão 2.4, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md).
+    Esta página reproduz a versão 2.5, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md).
 
 ## Integrantes do grupo
 
@@ -28,6 +28,7 @@
 | 29/10/2026 | 2.2 | Replanejamento ao fim da Sprint 3 pelo critério 1 da seção 2.6: itens Must não concluídos (módulo de regras, catálogo, termos, Tela de Ajuda e botão, pendências da Sprint 2) passam à Sprint 4, e o único item Should (R07, convite para avaliação, com a regra R-D7 e o teste TU-08) sai do escopo. Decisão do PO sobre o check-in: P1 a P4 passam a ser opcionais (sem resposta, o valor é nulo e a regra correspondente não é acionada); P5 continua obrigatória. | Grupo Lamport |
 | 11/11/2026 | 2.3 | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: R02 e TI-02 passam a incluir o limite de tentativas de login (bloqueio por 15 min após 5 falhas seguidas); a lista de rotas públicas do TS-01 passa a incluir `/api/terms` e `/api/health`. | Grupo Lamport |
 | 11/11/2026 | 2.4 | Revisão da Sprint 4 pelo QA (issue #10): Quadro 26 com status, evidência (execução da CI na `main`), reparos e ciclos dos casos previstos até a Sprint 4; seção 6.1, item 5, e legenda da seção 6.2 atualizadas. | Grupo Lamport |
+| 12/11/2026 | 2.5 | Revisão da Sprint 4 pelo PO e planejamento da Sprint 5: percentuais de conclusão das Sprints 2 a 4 no Quadro 8; replanejamento pelo critério 1 da seção 2.6, com as recomendações do check-in (R06, TI-03, TI-05, TU-06) passando à Sprint 5; decisão do PO sobre o defeito DEF-02: o Quadro 20 permanece e o código se ajusta a ele; situação do catálogo (seção 4.5.4) e risco R6 atualizados. | Grupo Lamport |
 
 ---
 
@@ -194,20 +195,20 @@ As atribuições foram divididas sem hierarquia entre os integrantes. Todos part
 
 ### 2.3 Planejamento das Fases e/ou Iterações do Projeto
 
-A partir da Sprint 3 o plano foi refeito para colocar primeiro o que é mais arriscado (regras e catálogo) e deixar o único item Should para depois dos Must. Na versão 2.2, ao fim da Sprint 3, foi aplicado o critério 1 da seção 2.6: os itens Must não concluídos passaram à Sprint 4, antes do check-in, que depende deles, e o item Should (R07) saiu do escopo. O percentual de conclusão é atualizado ao fim de cada sprint, em intervalos de 10%.
+A partir da Sprint 3 o plano foi refeito para colocar primeiro o que é mais arriscado (regras e catálogo) e deixar o único item Should para depois dos Must. Na versão 2.2, ao fim da Sprint 3, foi aplicado o critério 1 da seção 2.6: os itens Must não concluídos passaram à Sprint 4, antes do check-in, que depende deles, e o item Should (R07) saiu do escopo. Na versão 2.5, ao fim da Sprint 4, o critério 1 foi aplicado de novo: as recomendações do check-in (R06), não entregues, passaram à Sprint 5, antes da avaliação, que reutiliza a mesma seleção de conteúdo e a mesma entidade Recomendacao. Como não há mais item Should para retirar, a capacidade da Sprint 5 vem do histórico de check-ins (R12), entregue antes do previsto na Sprint 4. O percentual de conclusão é atualizado ao fim de cada sprint, em intervalos de 10%.
 
 **Quadro 8 – Planejamento das sprints**
 
 | Sprint | Produto (entrega) | Início | Fim | Entregáveis | Resp. | % concl. |
 | :--: | :-- | :--: | :--: | :-- | :--: | :--: |
 | 1 | Definição do produto | 15/09/2026 | 30/09/2026 | Visão do Produto e do Projeto v1.0; backlog inicial; protótipo de baixa fidelidade. | Todos | 100% |
-| 2 | Base do MVP | 01/10/2026 | 14/10/2026 | Documento de Arquitetura v1.1; estrutura dos repositórios; cadastro e login (R01, R02). | BE, FE, QA | [atualizar] |
-| 3 | Regras e catálogo | 15/10/2026 | 28/10/2026 | Visão e Arquitetura v2.1; módulo de regras com TU-01 a TU-07; catálogo inicial (R13); termos (R03); Tela de Ajuda e botão (R10 no frontend, R11); CI executando os testes; pendências da Sprint 2. | Todos | [atualizar] |
-| 4 | Pendências da Sprint 3 e check-in diário | 29/10/2026 | 11/11/2026 | Pendências da Sprint 3 (replanejamento da v2.2): módulo de regras com TU-01 a TU-07; catálogo inicial (R13); termos (R03); Tela de Ajuda e botão (R10 no frontend, R11); pendências da Sprint 2. Check-in completo com conteúdos (R05, R06, R10); TI-03 a TI-05; TS-01 a TS-05. | Todos | 0% |
-| 5 | Avaliação e histórico | 12/11/2026 | 25/11/2026 | Avaliação quinzenal e resultado (R08, R09); histórico (R12); exclusão de conta (R04); TI-06, TI-07; roteiro de sistema, ciclo 1. | BE, FE, QA | 0% |
+| 2 | Base do MVP | 01/10/2026 | 14/10/2026 | Documento de Arquitetura v1.1; estrutura dos repositórios; cadastro e login (R01, R02). | BE, FE, QA | 100% |
+| 3 | Regras e catálogo | 15/10/2026 | 28/10/2026 | Visão e Arquitetura v2.1; módulo de regras com TU-01 a TU-07; catálogo inicial (R13); termos (R03); Tela de Ajuda e botão (R10 no frontend, R11); CI executando os testes; pendências da Sprint 2. | Todos | 20% |
+| 4 | Pendências da Sprint 3 e check-in diário | 29/10/2026 | 11/11/2026 | Pendências da Sprint 3 (replanejamento da v2.2): módulo de regras com TU-01 a TU-07; catálogo inicial (R13); termos (R03); Tela de Ajuda e botão (R10 no frontend, R11); pendências da Sprint 2. Check-in completo com conteúdos (R05, R06, R10); TI-03 a TI-05; TS-01 a TS-05. | Todos | 80% |
+| 5 | Pendências da Sprint 4, avaliação e histórico | 12/11/2026 | 25/11/2026 | Pendências da Sprint 4 (replanejamento da v2.5): recomendações do check-in (R06; TI-03, TI-05) e seleção de conteúdo conforme o Quadro 20 (TU-06). Avaliação quinzenal e resultado (R08, R09); histórico (R12); exclusão de conta (R04); TI-06, TI-07; roteiro de sistema, ciclo 1. | BE, FE, QA | 0% |
 | 6 | Qualidade e entrega | 26/11/2026 | 09/12/2026 | Correções; ciclo final do roteiro de sistema; atualização dos documentos; demonstração. | Todos | 0% |
 
-Legenda dos responsáveis: PO = Martin Quadros de Melo; BE = Luiz Felipe Mendes Cordeiro Gomes e Carlos Eduardo Pereira Alexandre; FE = Júlio Barros de Oliveira e Danilo Menezes Gomez; UX = Vinícius Evangelista Borges Pinto; QA = Hugo Sousa Rosa. Os percentuais das Sprints 2 e 3 serão registrados na revisão dessas sprints.
+Legenda dos responsáveis: PO = Martin Quadros de Melo; BE = Luiz Felipe Mendes Cordeiro Gomes e Carlos Eduardo Pereira Alexandre; FE = Júlio Barros de Oliveira e Danilo Menezes Gomez; UX = Vinícius Evangelista Borges Pinto; QA = Hugo Sousa Rosa. Os percentuais das Sprints 2 a 4 foram registrados na versão 2.5 a partir da métrica M4 pelos critérios de aceite (Sprint 2: 3 de 3; Sprint 3: 2 de 7; Sprint 4: 12 de 14), arredondados para baixo ao múltiplo de 10% mais próximo, para não declarar mais do que foi entregue. O detalhamento está em [Métricas e qualidade](metricas/index.md).
 
 ### 2.4 Matriz de Comunicação
 
@@ -236,7 +237,7 @@ Os riscos são revisados em toda retrospectiva. A exposição combina probabilid
 | R3. Erro nas regras gera encaminhamento errado | Alta | Um teste por linha das tabelas de regras, com valores-limite; revisão de código em todo pull request. | Correção imediata; até a correção, exibir só orientação genérica e Ajuda Imediata. | BE, QA |
 | R4. Vazamento de dados sensíveis | Média | Testes TS-01 a TS-05 na CI; coleta mínima; uso apenas com usuários de teste. | Trocar a chave de assinatura (invalida todos os tokens), corrigir e registrar o incidente. | BE, QA |
 | R5. Links do catálogo quebram ou o conteúdo muda | Média | Somente fontes oficiais; link conferido na inclusão do material; data de revisão por material. | Marcar o material como inativo e substituí-lo na mesma sprint. | UX |
-| R6. Atraso em itens Must | Alta | Escopo enxuto; regras antes do check-in; item Should só após os Must. | Replanejar: retirar primeiro o item Should (aplicado na versão 2.2, com a retirada do R07). | PO |
+| R6. Atraso em itens Must | Alta | Escopo enxuto; regras antes do check-in; item Should só após os Must. | Replanejar: retirar primeiro o item Should (aplicado na versão 2.2, com a retirada do R07). Sem item Should restante, o Must não concluído passa à sprint seguinte e ocupa a capacidade de itens adiantados (aplicado na versão 2.5, com o R06 na Sprint 5). | PO |
 | R7. Pouca experiência da equipe com React | Alta | Telas simples, sem biblioteca de componentes complexa; apoio entre integrantes quando necessário. | Desenvolvedores backend apoiam o frontend; simplificar telas. | FE |
 | R8. Indisponibilidade de integrante | Média | Issues pequenas; todo PR revisado por outra pessoa; conhecimento compartilhado. | Redistribuir tarefas no acompanhamento seguinte. | Equipe |
 | R9. Uso por menores de idade | Baixa | Declaração de maioridade obrigatória no cadastro; uso restrito a usuários de teste. | Excluir a conta. | PO |
@@ -319,7 +320,7 @@ A equipe mantenedora não é um perfil do sistema: altera o catálogo por pull r
 | Cenário | Nome do cenário | Sprints |
 | :--: | :-- | :--: |
 | C01 | Conta e privacidade (cadastro, login, termos, exclusão) | 2, 4, 5 |
-| C02 | Check-in diário e conteúdos do dia | 4 |
+| C02 | Check-in diário e conteúdos do dia | 4, 5 |
 | C03 | Avaliação quinzenal e resultado | 4, 5 |
 | C04 | Ajuda Imediata | 4 |
 | C05 | Histórico | 5 |
@@ -328,7 +329,7 @@ A equipe mantenedora não é um perfil do sistema: altera o catálogo por pull r
 
 ### 4.4 Tabela de Backlog do produto
 
-Regras R-D, R-A e R-S na seção 4.5; testes na seção 6.2. F = funcional; NF = não funcional. A coluna Sprint reflete o replanejamento da versão 2.2. O requisito R07 foi retirado nessa versão; a numeração dos demais foi mantida.
+Regras R-D, R-A e R-S na seção 4.5; testes na seção 6.2. F = funcional; NF = não funcional. A coluna Sprint reflete os replanejamentos das versões 2.2 e 2.5. O requisito R07 foi retirado nessa versão; a numeração dos demais foi mantida.
 
 **Quadro 14 – Backlog do produto**
 
@@ -339,7 +340,7 @@ Regras R-D, R-A e R-S na seção 4.5; testes na seção 6.2. F = funcional; NF =
 | C01/R03 | 4 | Termos de uso e privacidade | F | Must | Página pública informa dados coletados, finalidade, que não há diagnóstico nem monitoramento e como excluir a conta. | Como visitante, quero saber como meus dados serão usados antes de me cadastrar. |
 | C01/R04 | 5 | Excluir conta e dados | F | Must | Após confirmação, remove usuário, check-ins, avaliações e recomendações (exclusão física). Testes: TI-07, TSI-05. | Como usuário, quero apagar todos os meus dados. |
 | C02/R05 | 4 | Responder check-in diário | F | Must | Perguntas P1 a P5 (Quadro 15); P1 a P4 opcionais; P5 obrigatória; um check-in por dia. Testes: TI-03, TI-04. | Como usuário, quero registrar como estou hoje. |
-| C02/R06 | 4 | Receber conteúdos do dia | F | Must | Aplica R-D2 a R-D6 e R-S1 a R-S5; exibe até 3 materiais com título, fonte, resumo, link e motivo. Testes: TU-05, TU-06, TI-03. | Como usuário, quero receber materiais oficiais ligados ao que respondi e entender por quê. |
+| C02/R06 | 4–5 | Receber conteúdos do dia | F | Must | Aplica R-D2 a R-D6 e R-S1 a R-S5; exibe até 3 materiais com título, fonte, resumo, link e motivo. Testes: TU-05, TU-06, TI-03. | Como usuário, quero receber materiais oficiais ligados ao que respondi e entender por quê. |
 | C03/R08 | 5 | Responder avaliação quinzenal | F | Must | PHQ-9 e GAD-7 com texto oficial em português do Brasil; 16 respostas obrigatórias, de 0 a 3. Testes: TU-01, TI-06. | Como usuário, quero responder um questionário validado sobre as últimas duas semanas. |
 | C03/R09 | 5 | Ver resultado e orientação | F | Must | Exibe escores, faixas (Quadro 17), nível (R-A1 a R-A4), orientação e materiais, com aviso de que não é diagnóstico. Testes: TU-02 a TU-04, TI-06, TSI-03. | Como usuário, quero entender meu resultado e saber o que fazer. |
 | C04/R10 | 4 | Ajuda Imediata por indicador de risco | F | Must | R-D1 ou R-A1 exibem a Tela de Ajuda (seção 4.5.5) e nenhuma recomendação. Testes: TU-04, TU-05, TI-05, TSI-02. | Como usuário em sofrimento intenso, quero ver imediatamente onde conseguir ajuda humana. |
@@ -450,7 +451,7 @@ Os materiais ficam no arquivo `catalog/materiais.yaml` do repositório. Cada mat
 3. inclusão ou alteração apenas por pull request revisado pelo PO, conferindo se a fonte é oficial, se o link abre e se a tag é adequada;
 4. o comando seed carrega o arquivo no banco; para retirar um material, ele é marcado como inativo no arquivo, o que preserva o histórico de recomendações.
 
-O Quadro 21 mostra os materiais já identificados para o catálogo inicial. Para completar o mínimo de 1 material por tag, falta incluir um material com a tag SONO, previsto para a Sprint 4 (replanejamento da versão 2.2) sob as mesmas regras.
+O Quadro 21 mostra os materiais identificados para o catálogo inicial. Para completar o mínimo de 1 material por tag, faltava um material com a tag SONO: ele foi incluído no arquivo na Sprint 4, junto dos demais, e o teste TU-07 confirma o mínimo por tag. A conferência dos materiais pelo PO (regra 3) está prevista para a Sprint 5; depois dela, o Quadro 21 passa a listar o catálogo completo.
 
 **Quadro 21 – Amostra do catálogo inicial**
 

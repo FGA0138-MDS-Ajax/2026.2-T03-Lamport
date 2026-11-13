@@ -11,7 +11,8 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
 | 18/10/2026 | 2.1 | Revisão de escopo para manter apenas compromissos essenciais: remoção dos requisitos não funcionais de interface responsiva, execução com Docker Compose, publicação em nuvem e verificação automática de links; remoção das metas de usabilidade, desempenho, capacidade e cobertura de código e dos testes associados; remoção dos itens Should e Could não essenciais; testes de segurança concentrados em cinco casos; requisitos e roteiro de testes renumerados. | Grupo Lamport |
 | 29/10/2026 | 2.2 | Replanejamento ao fim da Sprint 3 pelo critério 1 da seção 2.6: itens Must não concluídos passam à Sprint 4 e o único item Should (R07) sai do escopo. Decisão do PO: P1 a P4 do check-in passam a ser opcionais; P5 continua obrigatória. | Grupo Lamport |
 | 11/11/2026 | 2.3 | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: R02 e TI-02 passam a incluir o limite de tentativas de login (bloqueio por 15 min após 5 falhas seguidas); a lista de rotas públicas do TS-01 passa a incluir `/api/terms` e `/api/health`. | Grupo Lamport |
-| 11/11/2026 | **2.4** (vigente) | Revisão da Sprint 4 pelo QA (issue #10): Quadro 26 com status, evidência (execução da CI na `main`), reparos e ciclos dos casos previstos até a Sprint 4; seção 6.1, item 5, e legenda da seção 6.2 atualizadas. | Grupo Lamport |
+| 11/11/2026 | 2.4 | Revisão da Sprint 4 pelo QA (issue #10): Quadro 26 com status, evidência (execução da CI na `main`), reparos e ciclos dos casos previstos até a Sprint 4; seção 6.1, item 5, e legenda da seção 6.2 atualizadas. | Grupo Lamport |
+| 12/11/2026 | **2.5** (vigente) | Revisão da Sprint 4 pelo PO e planejamento da Sprint 5: percentuais de conclusão das Sprints 2 a 4 no Quadro 8; replanejamento pelo critério 1 da seção 2.6, com as recomendações do check-in (R06) passando à Sprint 5; decisão do PO sobre o DEF-02 (o Quadro 20 permanece); situação do catálogo e risco R6 atualizados. | Grupo Lamport |
 
 ### Principais mudanças entre versões
 
@@ -50,6 +51,14 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
     - **Seções 6.1 e 6.2:** texto sobre os resultados obtidos e legenda das colunas de acompanhamento.
     - O Quadro 8 (percentual de conclusão) e a Arquitetura não mudaram.
 
+??? abstract "2.4 → 2.5"
+    - **Origem:** revisão da Sprint 4 pelo PO e planejamento da Sprint 5 ([Planejamento da Sprint 5](sprints/sprint-5.md)).
+    - **Quadro 8:** percentuais de conclusão das Sprints 2 (100%), 3 (20%) e 4 (80%), calculados pela métrica M4 pelos critérios de aceite e arredondados para baixo ao múltiplo de 10%. A Sprint 5 passa a se chamar "Pendências da Sprint 4, avaliação e histórico".
+    - **Replanejamento (seção 2.6, critério 1):** as recomendações do check-in (R06), com TI-03, TI-05 e o TU-06 completo, passam à Sprint 5, antes da avaliação. Não havia item Should para retirar; a capacidade vem do histórico de check-ins (R12), entregue na Sprint 4. Quadro 13 (C02 nas Sprints 4 e 5), Quadro 14 (R06 nas Sprints 4–5) e risco R6 atualizados.
+    - **Decisão do PO sobre o DEF-02 (#46):** o Quadro 20 não muda. R-S2 (material recomendado há mais tempo), R-S5 (regra de origem, ex.: R-D4) e R-S6 (sem material, só a orientação do nível) valem como estão; o código e os testes de `selecionar_materiais` se ajustam a eles.
+    - **Seção 4.5.4:** o material com a tag SONO já está no catálogo; a conferência dos materiais pelo PO fica para a Sprint 5, e o Quadro 21 só muda depois dela.
+    - Perguntas, regras, limites, requisitos e roteiro de testes não mudaram.
+
 ## Documento de Arquitetura
 
 | Data | Versão | Descrição | Autor(es) |
@@ -59,7 +68,8 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
 | 15/10/2026 | 2.0 | Alinhamento à Visão v2.0: remoção dos perfis Administrador e Curador e do componente de administração; módulo de regras como funções puras com contrato documentado; catálogo versionado em arquivo com carga por seed; avaliação quinzenal PHQ-9/GAD-7; dois diagramas de atividades (check-in e avaliação); contrato da API; restrições de segurança verificáveis por testes; Docker Compose como implantação obrigatória. | Grupo Lamport |
 | 18/10/2026 | 2.1 | Alinhamento à Visão v2.1: remoção das metas de desempenho, capacidade e cobertura de código, da publicação em nuvem, do verificador automático de links, da auditoria de dependências e da avaliação de utilidade dos materiais; restrições de segurança limitadas ao que é verificado pelos testes TS-01 a TS-05; características de qualidade descritas sem metas numéricas. | Grupo Lamport |
 | 29/10/2026 | 2.2 | Alinhamento à Visão v2.2: P1 a P4 opcionais; retirada do convite para avaliação; respostas do check-in na API com `p1` a `p5` na entrada e na saída; prefixo `/api` corrigido na Figura 3. | Grupo Lamport |
-| 11/11/2026 | **2.3** (vigente) | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: inclusão de `POST /api/auth/logout`, `GET /api/terms` e `GET /api/health` no Quadro 6; entidade Consentimento na Figura 6, no lugar dos campos de termos e maioridade em Usuario; limite de tentativas de login na seção 2.4; Quadro 4 e Figura 5 com os pacotes reais do backend (`application`, `core`, `infrastructure`); campos da API em português, exceto os do token (seção 2.4, item 6). | Grupo Lamport |
+| 11/11/2026 | 2.3 | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: inclusão de `POST /api/auth/logout`, `GET /api/terms` e `GET /api/health` no Quadro 6; entidade Consentimento na Figura 6, no lugar dos campos de termos e maioridade em Usuario; limite de tentativas de login na seção 2.4; Quadro 4 e Figura 5 com os pacotes reais do backend (`application`, `core`, `infrastructure`); campos da API em português, exceto os do token (seção 2.4, item 6). | Grupo Lamport |
+| 12/11/2026 | **2.4** (vigente) | Alinhamento à Visão v2.5 (planejamento da Sprint 5): prefixo `/api` corrigido na rota de envio da avaliação na Figura 4, como no Quadro 6. A decisão do PO sobre o DEF-02 mantém o contrato de `selecionar_materiais` do Quadro 5. | Grupo Lamport |
 
 ### Principais mudanças entre versões
 
@@ -90,3 +100,8 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
     - **Seção 2.4, item 5:** logout revoga o token; limite de 5 falhas de login seguidas, com bloqueio de 15 min.
     - **Quadro 4 e Figura 5:** pacotes do backend com os nomes do código: `services` → `application`, `security` → `core` (com a configuração), `persistence` → `infrastructure`; interfaces dos repositórios em `domain`; o catálogo é o arquivo `catalog/materiais.yaml` com comando seed, e não um pacote.
     - **Seção 2.4, item 6:** os campos de entrada e saída da API seguem a regra de nomes em português, exceto os do token (OAuth 2.0). O Quadro 6 já usava `senha` e `aceite_termos`; o código (`password`, `accept_terms`) será ajustado em issue própria.
+
+??? abstract "2.3 → 2.4"
+    - **Origem:** planejamento da Sprint 5 (Visão v2.5), antes das issues da avaliação quinzenal.
+    - **Figura 4:** a rota de envio da avaliação passa de `POST /avaliacoes` para `POST /api/avaliacoes`, como no Quadro 6 (mesma correção feita na Figura 3 na versão 2.2).
+    - **Quadro 5:** sem mudança. Com a decisão do PO sobre o DEF-02, `selecionar_materiais` continua recebendo a data da última exibição de cada material e devolvendo a regra de origem e o motivo de cada sugestão.
