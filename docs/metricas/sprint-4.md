@@ -104,7 +104,7 @@ A conferência de cada issue prevista na #10 está em [Conferência dos PRs](con
 
 1. Tratar as issues dos defeitos abertos: #45 (DEF-01, alta), #46 (DEF-02, média; R-S2, R-S5 e R-S6 dependem do PO) e #47 (DEF-03, média); DEF-04 e DEF-05 foram corrigidos na própria sprint.
 2. Integrar as recomendações ao check-in (DEF-01): modelo e migração de `Recomendacao`, chamada a `selecionar_materiais` e resposta de `POST /api/checkins`.
-3. PO decidir R-S2, R-S5 e R-S6 (DEF-02) e conferir os 7 materiais do catálogo.
+3. ~~PO decidir R-S2, R-S5 e R-S6 (DEF-02)~~: decidido em 12/11/2026, vale o Quadro 20 (Visão v2.6). Segue pendente a conferência dos 7 materiais do catálogo pelo PO.
 4. Corrigir R-S1 no código (ordem de prioridade com AJUDA_PROFISSIONAL, como no Quadro 20) e completar o TU-06 (essa ordem, exclusão de inativos, regra e motivo por item) e o teto de 2 para N2, antes de ligar a seleção à avaliação (Sprint 5).
 5. Sprint 5: parte de avaliações do TS-03, junto de `GET /api/avaliacoes`.
 6. Reconferir a matriz regra × teste depois de qualquer alteração em `app/rules/`.

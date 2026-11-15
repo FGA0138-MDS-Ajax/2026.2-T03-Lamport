@@ -9,6 +9,8 @@ nav:
   - Documento de Arquitetura: "arquitetura.md"
   - Vocabulário do check-in: "vocabulario-checkin.md"
   - Histórico de versões: "historico-versoes.md"
+  - Sprints:
+    - Planejamento da Sprint 5: "sprints/sprint-5.md"
   - Métricas e qualidade:
     - Painel: "metricas/index.md"
     - Metodologia: "metricas/metodologia.md"

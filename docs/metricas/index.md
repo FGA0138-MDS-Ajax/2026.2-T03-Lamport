@@ -20,7 +20,7 @@ M1 e M3 de Sprints 2 e 3 não se aplicam porque o módulo de regras e o roteiro 
 
 - **Nenhum defeito crítico.** Todos os testes automatizados passam na CI; os problemas encontrados são de cobertura, de funcionalidade ainda ausente e de divergências da seleção de conteúdo em relação ao Quadro 20, que ainda não é chamada pelo sistema.
 - **TI-03 não é atendido:** o check-in não gera nem grava recomendações ([DEF-01](defeitos.md#def-01)). É a pendência mais importante para a Sprint 5.
-- **Regras de seleção (R-S1, R-S2, R-S5 e R-S6) sem cobertura aderente ao Quadro 20** ([matriz](matriz-regras-testes.md)). Em R-S1, a ordem de prioridade do código não inclui AJUDA_PROFISSIONAL, e a correção não depende do PO; R-S2, R-S5 e R-S6 dependem de decisão do PO.
+- **Regras de seleção (R-S1, R-S2, R-S5 e R-S6) sem cobertura aderente ao Quadro 20** ([matriz](matriz-regras-testes.md)). Em R-S1, a ordem de prioridade do código não inclui AJUDA_PROFISSIONAL; para R-S2, R-S5 e R-S6, o PO decidiu em 12/11/2026 (Visão v2.6) que vale o Quadro 20. Em todos os casos, o código e os testes se ajustam ([DEF-02](defeitos.md#def-02)).
 - **Critério 3 da seção 2.6** (duas sprints seguidas abaixo de 80%): a Sprint 3 (29%) está abaixo; a Sprint 4 chega a 100% pelas issues e a 85,7% pelos critérios de aceite, então o critério não é acionado.
 
 ## Páginas

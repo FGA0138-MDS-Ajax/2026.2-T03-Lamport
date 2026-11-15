@@ -7,7 +7,7 @@ Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026)
 | ID | Severidade | Título | Casos afetados | Responsável sugerido | Issue |
 | :-- | :--: | :-- | :-- | :-- | :--: |
 | [DEF-01](#def-01) | **Alta** | `POST /api/checkins` não gera nem grava recomendações | TI-03, TI-05 | Luiz Felipe | #45 |
-| [DEF-02](#def-02) | Média | `selecionar_materiais` diverge do Quadro 20 da Visão | TU-06 | PO decide; Luiz Felipe | #46 |
+| [DEF-02](#def-02) | Média | `selecionar_materiais` diverge do Quadro 20 da Visão | TU-06 | Luiz Felipe (PO decidiu em 12/11: vale o Quadro 20) | #46 |
 | [DEF-03](#def-03) | Média | Testes de seleção não cobrem inativos nem regra e motivo por item | TU-06, M1 | Luiz Felipe | parcialmente corrigido (PR #38); restante na #47 |
 | [DEF-04](#def-04) | Média | Cadastro e `GET /api/me` divergem do contrato da Arquitetura | TI-01, TS-04 | Luiz Felipe, Carlos Eduardo | **corrigido** (#22, PRs #39, #41 e #42) |
 | [DEF-05](#def-05) | Média | Testes de API do TS-03 não usam o banco de teste | TS-03 | Carlos Eduardo | **corrigido** (PR #39) |
@@ -51,7 +51,7 @@ Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026)
 | R-S6 | Sem material para nenhuma tag, exibir só a orientação do nível | Completa a lista com materiais BEM_ESTAR ou sem tag |
 | R-S3 | Material não se repete | A deduplicação existe, mas o rótulo "R-S3" é usado para o casamento de tags |
 
-**Decisão necessária (PO):** como os documentos são a fonte da verdade, o PO decide, para as linhas de R-S2, R-S3, R-S5 e R-S6, entre atualizar o Quadro 20 em nova versão da Visão ou ajustar o código. Até lá não se altera o teste para acompanhar o código. A divergência já havia sido apontada na revisão do PR #32.
+**Decisão do PO (12/11/2026, registrada na Visão v2.6):** o Quadro 20 permanece como está e o código se ajusta a ele em todas as linhas divergentes: R-S1 inclui AJUDA_PROFISSIONAL na ordem de prioridade e só considera materiais ativos; R-S2 ordena os candidatos pela data da última recomendação ao usuário (nunca recomendado primeiro; empate pelo menor id), sem janela de bloqueio; R-S3 continua como deduplicação, sem ser usada como rótulo do casamento de tags; R-S5 grava a regra de origem da tag (R-D2 a R-D6 ou R-A2 a R-A4) e o motivo correspondente; R-S6 não completa a lista com outros materiais. Os testes do TU-06 devem seguir o Quadro 20, e não o código atual. A divergência já havia sido apontada na revisão do PR #32.
 
 **R-S1 não depende de decisão:** o Quadro 20 e a ordem usada em `app/rules/avaliacao.py` já incluem AJUDA_PROFISSIONAL, então o ajuste é no código. Hoje a seleção não é chamada pelo sistema (DEF-01), por isso a severidade segue média. Se ela for ligada à avaliação (Sprint 5) sem essa correção, quem estiver em N2 recebe materiais de BEM_ESTAR em vez de AJUDA_PROFISSIONAL, o que, pelo critério desta página, é defeito crítico (risco R3).
 
