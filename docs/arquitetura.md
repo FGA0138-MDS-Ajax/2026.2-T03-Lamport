@@ -1,9 +1,9 @@
 # Documento de Arquitetura
 
-**Versão 2.4 – 12/11/2026**
+**Versão 2.5 – 15/11/2026**
 
 !!! info "Versão vigente"
-    Esta página reproduz a versão 2.4, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md). Este documento está alinhado à [Visão do Produto e do Projeto v2.6](visao-produto-projeto.md).
+    Esta página reproduz a versão 2.5, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md). Este documento está alinhado à [Visão do Produto e do Projeto v2.7](visao-produto-projeto.md).
 
 ## Integrantes do grupo
 
@@ -29,6 +29,7 @@
 | 29/10/2026 | 2.2 | Alinhamento à Visão v2.2: P1 a P4 do check-in opcionais (nulas quando sem resposta) na Figura 3, na Figura 6 e no contrato de `avaliar_checkin`; retirada do convite para avaliação (R07, R-D7), da função `deve_convidar_avaliacao` e do campo `convite`; regra de nomes das respostas do check-in na API (`p1` a `p5` na entrada e na saída); correção do prefixo `/api` nas rotas da Figura 3. | Grupo Lamport |
 | 11/11/2026 | 2.3 | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: inclusão de `POST /api/auth/logout`, `GET /api/terms` e `GET /api/health` no Quadro 6; entidade Consentimento na Figura 6, no lugar dos campos de termos e maioridade em Usuario; limite de tentativas de login na seção 2.4; Quadro 4 e Figura 5 com os pacotes reais do backend (`application`, `core`, `infrastructure`); campos da API em português, exceto os do token (seção 2.4, item 6). | Grupo Lamport |
 | 12/11/2026 | 2.4 | Alinhamento à Visão v2.6 (planejamento da Sprint 5): prefixo `/api` corrigido na rota de envio da avaliação na Figura 4, como no Quadro 6. A decisão do PO sobre o defeito DEF-02 mantém o contrato de `selecionar_materiais` do Quadro 5. | Grupo Lamport |
+| 15/11/2026 | 2.5 | Decisões do PO no planejamento da Sprint 5 (DP-2 e DP-3): `GET /api/checkins/hoje` devolve também as recomendações gravadas (Quadro 6 e Figura 3); `GET /api/avaliacoes/{id}` devolve os mesmos campos da resposta de `POST /api/avaliacoes`; campos de cada recomendação nas respostas, com os nomes da Figura 6. | Grupo Lamport |
 
 ---
 
@@ -154,7 +155,7 @@ As funcionalidades mais complexas são o check-in diário e a avaliação quinze
 flowchart TB
     I((" ")) --> A1["[Front] Abrir check-in<br/>GET /api/checkins/hoje"]
     A1 --> D1{"Já existe<br/>check-in hoje?"}
-    D1 -- sim --> A2["[Front] Exibir resultado<br/>já registrado do dia"]
+    D1 -- sim --> A2["[Front] Exibir resultado já registrado<br/>do dia (nível, tags e materiais)"]
     D1 -- não --> A3["[Front] Responder P1–P5<br/>(P1–P4 opcionais, P5 obrigatória)"]
     A3 --> A4["[API] POST /api/checkins<br/>validar schema (faixas de valores)"]
     A4 --> D2{"Válido?"}
@@ -271,7 +272,7 @@ O Quadro 5 define o contrato das funções do módulo de regras. É por meio des
 | `avaliar_checkin(p1, p2, p3, p4, p5)` | p1 a p4: inteiros nas faixas do check-in ou nulo (sem resposta); p5: booleano | ResultadoCheckin: nível, tags, regras acionadas | R-D1 a R-D6 |
 | `selecionar_materiais(tags, catalogo, ultimas_exibicoes, limite)` | tags; materiais ativos; data da última exibição de cada material ao usuário; limite (3 ou 2) | lista de Sugestao: material_id, regra, motivo | R-S1 a R-S6 |
 
-O Quadro 6 apresenta o contrato da API. Todas as rotas, exceto as marcadas como públicas, exigem token, e o teste TS-01 verifica isso automaticamente para todas as rotas existentes. A rota `GET /api/health` não atende a um requisito do produto: serve à verificação de saúde do contêiner `api` no Docker Compose e da CI, e não expõe dados. Nas rotas de check-in, as respostas às perguntas usam os identificadores `p1` a `p5` tanto na entrada quanto na saída; a camada de serviços converte esses identificadores nos campos do domínio (Figura 6).
+O Quadro 6 apresenta o contrato da API. Todas as rotas, exceto as marcadas como públicas, exigem token, e o teste TS-01 verifica isso automaticamente para todas as rotas existentes. A rota `GET /api/health` não atende a um requisito do produto: serve à verificação de saúde do contêiner `api` no Docker Compose e da CI, e não expõe dados. Nas rotas de check-in, as respostas às perguntas usam os identificadores `p1` a `p5` tanto na entrada quanto na saída; a camada de serviços converte esses identificadores nos campos do domínio (Figura 6). Nas rotas que devolvem recomendações, cada item traz `titulo`, `fonte`, `resumo` e `url` do Material e `regra` e `motivo` da Recomendacao (Figura 6; Visão, R06 e R-S5), na ordem em que foram selecionadas.
 
 **Quadro 6 – Contrato da API REST**
 
@@ -284,12 +285,13 @@ O Quadro 6 apresenta o contrato da API. Todas as rotas, exceto as marcadas como 
 | `GET /api/health` | Público | — | 200 API e banco disponíveis / 503 banco indisponível | — |
 | `GET /api/me` | Usuário | — | 200 id, email, criado_em | R02 |
 | `DELETE /api/me` | Usuário | — | 204 (apaga tudo) | R04 |
-| `GET /api/checkins/hoje` | Usuário | — | 200 check-in do dia (p1 a p5, nível, tags) ou 404 | R05 |
+| `GET /api/checkins/hoje` | Usuário | — | 200 check-in do dia (p1 a p5, nível, tags, recomendações) ou 404 | R05, R06 |
 | `POST /api/checkins` | Usuário | p1, p2, p3, p4 (inteiro ou nulo), p5 (booleano, obrigatório) | 201 nível, tags, recomendações / 409 já existe; 422 | R05, R06, R10 |
 | `GET /api/checkins` | Usuário | limite (≤ 30) | 200 lista do próprio usuário (data, p1 a p5, tags) | R12 |
 | `GET /api/checkins/{id}` | Usuário (dono) | — | 200 / 404 se não for do usuário | R12 |
 | `POST /api/avaliacoes` | Usuário | phq9[9], gad7[7] | 201 escores, faixas, nível, orientação, recomendações / 422 | R08, R09, R10 |
-| `GET /api/avaliacoes` e `GET /api/avaliacoes/{id}` | Usuário (dono) | — | 200 / 404 se não for do usuário | R12 |
+| `GET /api/avaliacoes` | Usuário | — | 200 lista do próprio usuário (data, escores, faixas, nível) | R12 |
+| `GET /api/avaliacoes/{id}` | Usuário (dono) | — | 200 com os mesmos campos da resposta de `POST /api/avaliacoes` / 404 se não for do usuário | R09, R12 |
 
 #### 2.5.3 Visão estrutural
 
