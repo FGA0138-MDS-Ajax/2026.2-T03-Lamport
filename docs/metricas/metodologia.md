@@ -10,7 +10,7 @@ Esta página descreve como as métricas M1 a M5 do GQM (Visão, Quadro 23) foram
 | Pull requests | Data de merge, revisões e reparos de cada entrega | `gh pr list --state all` |
 | Issues | Itens comprometidos na sprint, estado e defeitos (label `bug`) | `gh issue list --state all` |
 | Código da `main` | Existência e conteúdo dos testes, usados na matriz regra × teste | Leitura dos arquivos em `backend/tests/` |
-| Visão v2.2 | Planejamento (Quadro 8), regras (Quadros 16, 18 e 20) e roteiro (Quadro 26) | `docs/visao-produto-projeto.md` |
+| Visão (versão vigente) | Planejamento (Quadro 8), regras (Quadros 16, 18 e 20) e roteiro (Quadro 26) | `docs/visao-produto-projeto.md` |
 
 ## Definição de cada métrica
 
@@ -42,7 +42,7 @@ Esta página descreve como as métricas M1 a M5 do GQM (Visão, Quadro 23) foram
 1. A CI executa `pytest` sem o modo detalhado e não publica relatório por caso. A evidência de cada caso é, portanto, o link da execução na CI (que prova a aprovação da suíte inteira) somado ao teste identificado no código. Recomendação: publicar `pytest -ra --junitxml` como artefato da CI.
 2. O QA não dispõe de PostgreSQL local nesta coleta. Os testes de regras (sem banco) foram também executados localmente; os de integração e segurança foram conferidos pelo log da CI.
 3. As Sprints 2 e 3 são reconstruídas depois do fim, a partir do histórico do GitHub. Nelas só existem dados de CI a partir de 13/10/2026 e não havia roteiro de testes executável (os casos TU, TI e TS entram a partir da Sprint 4).
-4. Nenhuma issue do repositório usa as labels `sprint-N`, `qualidade`, `seguranca` nem de severidade, embora as issues as prevejam. Por isso M5 e M4 não puderam ser obtidos por filtro de label e foram conferidos issue a issue.
+4. Nenhuma issue do repositório usa as labels `sprint-N`, `qualidade` e `seguranca`, embora as issues as prevejam. Por isso M4 não pôde ser obtido por filtro de label e foi conferido issue a issue. As labels de severidade só passaram a ser usadas nas issues de defeito abertas na revisão da Sprint 4 (#45 a #47, com `severidade-alta` ou `severidade-media`); a partir delas, M5 pode ser obtido pelo filtro `bug`.
 
 ## Reprodução
 

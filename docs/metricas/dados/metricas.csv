@@ -9,8 +9,8 @@ S3,15/10-28/10/2026,M2,100%,35,35,100%,CI execucao 40416931338,pytest na main de
 S3,15/10-28/10/2026,M3,n/a,,,100%,roteiro,TS-01 a TS-05 ainda nao existiam
 S3,15/10-28/10/2026,M4,29%,2,7,>=80%,Quadro 8 e v2.2,Cinco itens Must passaram a Sprint 4
 S3,15/10-28/10/2026,M5,0 criticos / 0 altos / 0 medios / 0 baixos,0,,0 criticos,GitHub Issues,Nenhuma issue bug no periodo
-S4,29/10-11/11/2026,M1,81.25%,13,16,100%,matriz regra x teste,R-D 6/6; R-A 4/4; R-S 3/6 (R-S1 R-S3 R-S4 na main desde o PR #38); literal: 15/16
-S4,29/10-11/11/2026,M2,100%,257,257,100% na main,CI execucao 43118733055,pytest 210/210 + frontend 47/47 na main (886e00b)
+S4,29/10-11/11/2026,M1,75%,12,16,100%,matriz regra x teste,R-D 6/6; R-A 4/4; R-S 2/6 (R-S3 R-S4 na main desde o PR #38; R-S1 diverge no codigo: sem AJUDA_PROFISSIONAL); literal: 15/16
+S4,29/10-11/11/2026,M2,100%,210,210,100% na main,CI execucao 43118733055,pytest 210/210 na main (886e00b); frontend 47/47 como complemento
 S4,29/10-11/11/2026,M3,80%,4,5,100%,roteiro,TS-01 TS-02 TS-04 TS-05 aprovados; TS-03 parcial (avaliacoes na Sprint 5)
 S4,29/10-11/11/2026,M4 (estado das issues),100%,14,14,>=80%,issue #12 e GitHub,#10 contada como concluida (fechada pelo PR de metricas)
 S4,29/10-11/11/2026,M4 (criterios de aceite),85.7%,12,14,>=80%,issue #12 e conferencia do QA,#5 e #17 fechadas sem atender criterios; #10 contada como concluida

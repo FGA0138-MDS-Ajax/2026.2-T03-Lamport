@@ -1,6 +1,6 @@
 # Sprint 5: Pendências da Sprint 4, avaliação e histórico
 
-**12/11 a 25/11/2026** · Base: [Visão v2.5](../visao-produto-projeto.md) e [Arquitetura v2.4](../arquitetura.md) · Código analisado: `main` no commit `886e00b` (PR #44).
+**12/11 a 25/11/2026** · Base: [Visão v2.6](../visao-produto-projeto.md) e [Arquitetura v2.4](../arquitetura.md) · Código analisado: `main` no commit `886e00b` (PR #44).
 
 Esta página registra a revisão da Sprint 4 pelo PO, o estado do produto requisito a requisito, as pendências e o backlog proposto para a Sprint 5. O backlog é a base para criar as issues; cada issue deve citar a seção ou o quadro dos documentos de que vem. O que não está nos documentos entra como decisão pendente do PO (seção 4), e não diretamente na issue.
 
@@ -14,9 +14,9 @@ A conferência do QA está em [Métricas da Sprint 4](../metricas/sprint-4.md). 
 | **Rejeitados** | #5, #17 | #5: `POST /api/checkins` não gera nem grava recomendações (TI-03 não atendido, [DEF-01](../metricas/defeitos.md#def-01), #45). #17: seleção de conteúdo diverge do Quadro 20 e TU-06 parcial ([DEF-02](../metricas/defeitos.md#def-02) e [DEF-03](../metricas/defeitos.md#def-03), #46 e #47). |
 | Adiantados | #6, #9 | Histórico de check-ins (R12), previsto para a Sprint 5 e entregue na Sprint 4. |
 
-**Replanejamento (Visão v2.5, seção 2.6, critério 1):** o R06 (recomendações do check-in) é Must e não foi entregue; passa à Sprint 5, antes da avaliação, que reutiliza a seleção de conteúdo e a entidade Recomendacao. Não há item Should para retirar; a capacidade vem do histórico de check-ins já entregue.
+**Replanejamento (Visão v2.6, seção 2.6, critério 1):** o R06 (recomendações do check-in) é Must e não foi entregue; passa à Sprint 5, antes da avaliação, que reutiliza a seleção de conteúdo e a entidade Recomendacao. Não há item Should para retirar; a capacidade vem do histórico de check-ins já entregue.
 
-**Decisão do PO sobre o DEF-02 (Visão v2.5):** vale o Quadro 20. O código e os testes de `selecionar_materiais` se ajustam a R-S2, R-S5 e R-S6 como estão escritas.
+**Decisão do PO sobre o DEF-02 (Visão v2.6):** vale o Quadro 20. O código e os testes de `selecionar_materiais` se ajustam a R-S1 a R-S6 como estão escritas. A correção da R-S1 (ordem de prioridade com AJUDA_PROFISSIONAL) é obrigatória antes de ligar a seleção à avaliação: sem ela, quem estiver em N2 receberia materiais de BEM_ESTAR, o que seria defeito crítico (risco R3).
 
 ### Lições da Sprint 4 (proposta para a retrospectiva)
 
@@ -25,7 +25,7 @@ Os pontos abaixo saem dos dados da conferência do QA e devem ser confirmados ou
 1. **Duas issues foram fechadas sem cumprir o critério de aceite** (#5 e #17). Proposta: fechar a issue só pelo PR que atende todos os critérios, com o PO marcando a lista de aceite antes do merge (Definição de Pronto, seção 3).
 2. **Uma dependência entre issues não foi respeitada:** a #5 foi fechada antes de existir o modelo `Material` (#19). Proposta: registrar "Depende de" em cada issue e não iniciar a integração antes da dependência estar na `main`.
 3. **Testes que passam sem verificar o resultado esperado do roteiro** (TI-03 confere só nível e tags). Proposta: cada teste do roteiro cita o ID do caso e confere todos os itens da coluna "Resultado esperado" do Quadro 26.
-4. **28% das execuções da CI em PR falharam**, todas corrigidas antes do merge. A CI cumpriu sua função; rodar `pytest` e `npm test` localmente antes do push reduz o retrabalho.
+4. **26% das execuções da CI em PR falharam** (10 de 38), todas corrigidas antes do merge. A CI cumpriu sua função; rodar `pytest` e `npm test` localmente antes do push reduz o retrabalho.
 
 ## 2 Estado do produto por requisito
 
@@ -54,7 +54,7 @@ Posição na `main` (`886e00b`). "Regras" indica as funções puras do Quadro 5 
 | Issue | Defeito | Severidade | O que falta |
 | :--: | :-- | :--: | :-- |
 | #45 | DEF-01: check-in sem recomendações | Alta | Recomendacao (modelo, migração, repositório), integração ao serviço, resposta de `POST /api/checkins` e TI-03/TI-05 completos. |
-| #46 | DEF-02: seleção diverge do Quadro 20 | Média | Ajustar `selecionar_materiais` a R-S2, R-S5 e R-S6 (decisão do PO de 12/11). |
+| #46 | DEF-02: seleção diverge do Quadro 20 | Média | Ajustar `selecionar_materiais` a R-S1 (AJUDA_PROFISSIONAL na ordem e só materiais ativos), R-S2, R-S3, R-S5 e R-S6 (decisão do PO de 12/11). |
 | #47 | DEF-03: TU-06 incompleto | Média | Testes de inativos, regra e motivo por item e teto de 2 para N2, seguindo o Quadro 20. |
 
 ### 3.2 Tarefas do PO
@@ -94,7 +94,7 @@ Responsáveis sugeridos conforme os papéis do Quadro 7 da Visão. Os blocos A e
 
 | ID | Issue | Resp. | Depende de | Requisitos e testes | Base nos documentos |
 | :--: | :-- | :--: | :--: | :-- | :-- |
-| #46 + #47 | [Backend] Seleção de conteúdo conforme o Quadro 20 e TU-06 completo | Luiz Felipe | — | R06, R09; TU-06; M1 = 100% | Visão, Quadro 20; Arquitetura, Quadro 5; DEF-02, DEF-03 |
+| #46 + #47 | [Backend] Seleção de conteúdo conforme o Quadro 20 e TU-06 completo | Luiz Felipe | — | R06, R09; TU-06; M1 = 100%; R-S1 corrigida antes da B3 | Visão, Quadro 20; Arquitetura, Quadro 5; DEF-02, DEF-03 |
 | #45 | [Backend] Recomendacao e recomendações no `POST /api/checkins` | Luiz Felipe | #46 | R06, R10; TI-03, TI-05 | Visão, R06 e seção 4.5.3; Arquitetura, Figuras 3 e 6, Quadro 6; DEF-01 |
 | A4 | [Frontend] Materiais do dia com motivo após o check-in | Júlio | contrato da #45 (pode usar mock) | R06; prepara TSI-01 | Visão, R06 (título, fonte, resumo, link e motivo) e R-S5 ("Por que estou vendo isto?") |
 
@@ -158,7 +158,7 @@ flowchart LR
 
 | Métrica | Meta da Sprint 5 | Sprint 4 |
 | :-- | :--: | :--: |
-| M1. Cobertura das tabelas de regras | 100% (16 de 16) | 81,25% |
+| M1. Cobertura das tabelas de regras | 100% (16 de 16) | 75% (12 de 16) |
 | M2. Aprovação dos testes automatizados | 100% na `main` | 100% |
 | M3. Testes de segurança aprovados | 100% (TS-03 completo) | 80% |
 | M4. Conclusão da sprint | ≥ 80% pelos critérios de aceite | 85,7% |
@@ -169,6 +169,6 @@ flowchart LR
 | Risco (Visão, Quadro 10) | Por que importa nesta sprint | Ação |
 | :-- | :-- | :-- |
 | R6. Atraso em itens Must | Sprint com a pendência do R06 e sem item Should para retirar. | Bloco A primeiro; acompanhamento semanal das dependências da seção 5. |
-| R3. Erro nas regras | A seleção de conteúdo muda (DEF-02) e passa a ser usada pela avaliação. | TU-06 seguindo o Quadro 20; M1 = 100% antes das telas. |
+| R3. Erro nas regras | A seleção de conteúdo muda (DEF-02) e passa a ser usada pela avaliação; com a R-S1 atual, o N2 receberia BEM_ESTAR. | #46 antes da B3; TU-06 seguindo o Quadro 20; M1 = 100% antes das telas. |
 | R1 e R2. Crise real; resultado lido como diagnóstico | A avaliação introduz o item 9 do PHQ-9 e a exibição de escores. | Item 9 ≥ 1 abre a Tela de Ajuda sem materiais (TI-06, perfil D); aviso "não é diagnóstico" no resultado (TSI-03). |
 | R7. Pouca experiência com React | Quatro telas novas ou alteradas no frontend. | Telas simples conforme o protótipo (B1); backend apoia se necessário. |

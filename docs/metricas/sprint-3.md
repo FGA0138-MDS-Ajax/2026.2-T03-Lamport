@@ -37,6 +37,6 @@ Só um PR passou pela CI na sprint (o PR #13, `developer` para `main`, em 26/10)
 
 ## Análise
 
-- **Critério 3 da seção 2.6 (atenção).** Duas sprints seguidas abaixo de 80% exigem reduzir a capacidade planejada. A Sprint 2 ficou em 100%, então o critério não foi acionado aqui; ele passa a valer se a Sprint 4 também ficar abaixo de 80% (hoje 78,6% pelas issues).
+- **Critério 3 da seção 2.6 (atenção).** Duas sprints seguidas abaixo de 80% exigem reduzir a capacidade planejada. A Sprint 2 ficou em 100%, então o critério não foi acionado aqui; ele seria acionado se a Sprint 4 também ficasse abaixo de 80%, o que não ocorreu: a Sprint 4 fechou com 100% pelo estado das issues e 85,7% pelos critérios de aceite ([Sprint 4](sprint-4.md)).
 - O risco R6 (atraso em itens Must) se concretizou: cinco dos sete itens da sprint foram para a Sprint 4.
 - O valor de M1 em 0% na Sprint 3 mostra que o plano de colocar as regras antes das telas (seção 2.1 da Visão) não se cumpriu nessa sprint.

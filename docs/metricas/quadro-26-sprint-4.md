@@ -1,6 +1,6 @@
 # Quadro 26: atualização aplicada na Sprint 4
 
-Os valores das colunas de acompanhamento (Status, Evidência, Reparos e Ciclos) dos casos previstos até a Sprint 4 foram **aplicados à Visão na versão 2.4** (11/11/2026), por PR na branch `docs`, conforme a issue #10. O Quadro 26 da [Visão](../visao-produto-projeto.md) é a fonte; esta página resume o resultado e o que ficou fora.
+Os valores das colunas de acompanhamento (Status, Evidência, Reparos e Ciclos) dos casos previstos até a Sprint 4 foram **aplicados à Visão na versão 2.4** (11/11/2026), por PR na branch `docs`, conforme a issue #10, e **corrigidos na versão 2.5** (12/11/2026): status do TU-06, ciclos do TI-01 e do TS-01 e observação do TS-01. O Quadro 26 da [Visão](../visao-produto-projeto.md) é a fonte; esta página resume o resultado e o que ficou fora.
 
 Evidência dos casos automatizados: [execução 43118733055](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/43118733055) da CI na `main` (commit `886e00b`): 210 testes no backend e 47 no frontend, todos aprovados, e o job `demo` aprovado.
 
@@ -19,7 +19,7 @@ Os 17 casos previstos até a Sprint 4 são TU-01 a TU-07, TI-01 a TI-05 e TS-01 
 
 | Caso | Motivo | Defeito |
 | :-- | :-- | :--: |
-| TU-06 | Os testes não verificam exclusão de inativos nem regra e motivo por item; R-S2, R-S5 e R-S6 divergem do Quadro 20 (decisão do PO). | [DEF-02](defeitos.md#def-02), [DEF-03](defeitos.md#def-03) |
+| TU-06 | O código não inclui AJUDA_PROFISSIONAL na ordem de prioridade (R-S1); os testes não verificam exclusão de inativos nem regra e motivo por item; R-S2, R-S5 e R-S6 divergem do Quadro 20 (decisão do PO). | [DEF-02](defeitos.md#def-02), [DEF-03](defeitos.md#def-03) |
 | TI-03 | O check-in não gera nem grava recomendações. | [DEF-01](defeitos.md#def-01) |
 | TI-05 | Sem a entidade `Recomendacao`, não há como verificar a lista vazia e a ausência de linhas. | [DEF-01](defeitos.md#def-01) |
 | TS-03 | A parte de check-ins está aprovada no banco de teste; a de avaliações depende do endpoint da Sprint 5 (o roteiro marca o caso como S4–S5). | DEF-05 corrigido |
