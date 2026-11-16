@@ -8,6 +8,7 @@ nav:
   - Visão do Produto e do Projeto: "visao-produto-projeto.md"
   - Documento de Arquitetura: "arquitetura.md"
   - Vocabulário do check-in: "vocabulario-checkin.md"
+  - Protótipo do check-in: "prototipo-checkin.md"
   - Histórico de versões: "historico-versoes.md"
   - Sprints:
     - Planejamento da Sprint 5: "sprints/sprint-5.md"
