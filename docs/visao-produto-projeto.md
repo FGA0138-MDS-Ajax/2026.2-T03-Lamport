@@ -5,6 +5,8 @@
 !!! info "Versão vigente"
     Esta página reproduz a versão 2.7, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md).
 
+    Baixar em PDF (formatado nas normas ABNT): [Visão do Produto e do Projeto v2.7](pdf/visao-produto-projeto-v2.7.pdf).
+
 ## Integrantes do grupo
 
 | Matrícula | Nome | Função (responsabilidade) | Pontos de participação |

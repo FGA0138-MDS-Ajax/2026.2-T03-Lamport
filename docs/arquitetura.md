@@ -5,6 +5,8 @@
 !!! info "Versão vigente"
     Esta página reproduz a versão 2.5, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md). Este documento está alinhado à [Visão do Produto e do Projeto v2.7](visao-produto-projeto.md).
 
+    Baixar em PDF (formatado nas normas ABNT): [Documento de Arquitetura v2.5](pdf/arquitetura-v2.5.pdf).
+
 ## Integrantes do grupo
 
 | Matrícula | Nome | Função (responsabilidade) | Pontos de participação |
