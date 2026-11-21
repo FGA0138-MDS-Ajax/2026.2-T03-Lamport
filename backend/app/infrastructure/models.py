@@ -146,3 +146,23 @@ class MaterialModel(Base):
     tags: Mapped[list[str]] = mapped_column(ARRAY(String(30)))
     ativo: Mapped[bool] = mapped_column(Boolean, server_default="true")
     revisado_em: Mapped[date] = mapped_column(Date)
+
+
+class RecomendacaoModel(Base):
+    __tablename__ = "recomendacoes"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), index=True
+    )
+    material_id: Mapped[int] = mapped_column(ForeignKey("materiais.id"), index=True)
+    checkin_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("checkins.id", ondelete="CASCADE"), nullable=True, index=True
+    )
+    regra: Mapped[str] = mapped_column(String(20))
+    motivo: Mapped[str] = mapped_column(String(500))
+    criado_em: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    @property
+    def usuario_id(self) -> uuid.UUID:
+        return self.user_id

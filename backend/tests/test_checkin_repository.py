@@ -1,13 +1,14 @@
 import uuid
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 
 import pytest
 
 from app.domain.checkin import Checkin, CheckinDiario, Nivel, Tag
 from app.domain.errors import CheckinAlreadyExistsError
+from app.domain.recomendacao import Recomendacao
 from app.domain.users import Role
-from app.infrastructure.models import CheckinModel, UserModel
-from app.infrastructure.repositories import SqlCheckinRepository
+from app.infrastructure.models import CheckinModel, MaterialModel, RecomendacaoModel, UserModel
+from app.infrastructure.repositories import SqlCheckinRepository, SqlRecomendacaoRepository
 
 
 @pytest.fixture
@@ -238,3 +239,182 @@ def test_cascade_delete_user_removes_checkins(repo, db_session, user_id):
 
     # O check-in deve ter sido removido automaticamente pelo banco
     assert db_session.get(CheckinModel, checkin.id) is None
+
+
+@pytest.fixture
+def rec_repo(db_session):
+    return SqlRecomendacaoRepository(db_session)
+
+
+@pytest.fixture
+def sample_materials(db_session):
+    m1 = MaterialModel(
+        slug="mat-ansiedade",
+        titulo="Material Ansiedade",
+        url="https://www.gov.br/saude/ansiedade",
+        fonte="Ministério da Saúde",
+        resumo="Resumo sobre ansiedade.",
+        tags=["ansiedade"],
+        ativo=True,
+        revisado_em=date(2026, 11, 9),
+    )
+    m2 = MaterialModel(
+        slug="mat-sono",
+        titulo="Material Sono",
+        url="https://www.gov.br/saude/sono",
+        fonte="OPAS/OMS",
+        resumo="Resumo sobre sono.",
+        tags=["sono"],
+        ativo=True,
+        revisado_em=date(2026, 11, 9),
+    )
+    m_inativo = MaterialModel(
+        slug="mat-inativo",
+        titulo="Material Inativo",
+        url="https://www.gov.br/saude/inativo",
+        fonte="Ministério da Saúde",
+        resumo="Resumo inativo.",
+        tags=["humor"],
+        ativo=False,
+        revisado_em=date(2026, 11, 9),
+    )
+    db_session.add_all([m1, m2, m_inativo])
+    db_session.commit()
+    return m1, m2, m_inativo
+
+
+def test_recomendacao_repo_save_list_and_active_materials(
+    repo, rec_repo, db_session, user_id, sample_materials
+):
+    m1, m2, _ = sample_materials
+    checkin = Checkin(
+        user_id=user_id,
+        data=date(2026, 11, 18),
+        pensamento_risco=False,
+        nivel=Nivel.AUTOCUIDADO,
+        tags=[Tag.ANSIEDADE, Tag.SONO],
+    )
+    repo.add(checkin)
+
+    t0 = datetime(2026, 11, 18, 10, 0, tzinfo=UTC)
+    r1 = Recomendacao(
+        user_id=user_id,
+        checkin_id=checkin.id,
+        material_id=m1.id,
+        regra="R-D3",
+        motivo="Motivo ansiedade",
+        criado_em=t0,
+    )
+    r2 = Recomendacao(
+        user_id=user_id,
+        checkin_id=checkin.id,
+        material_id=m2.id,
+        regra="R-D4",
+        motivo="Motivo sono",
+        criado_em=t0 + timedelta(microseconds=1),
+    )
+    rec_repo.add_all([r1, r2])
+    db_session.commit()
+
+    ativas = rec_repo.list_active_materials()
+    assert [m.slug for m in ativas] == ["mat-ansiedade", "mat-sono"]
+
+    gravadas = rec_repo.list_by_checkin(checkin.id)
+    assert len(gravadas) == 2
+    assert [r.id for r in gravadas] == [r1.id, r2.id]
+    assert gravadas[0].usuario_id == user_id
+    assert gravadas[0].titulo == "Material Ansiedade"
+    assert gravadas[0].fonte == "Ministério da Saúde"
+    assert gravadas[0].resumo == "Resumo sobre ansiedade."
+    assert gravadas[0].url == "https://www.gov.br/saude/ansiedade"
+    assert gravadas[0].regra == "R-D3"
+    assert gravadas[0].motivo == "Motivo ansiedade"
+    assert gravadas[1].titulo == "Material Sono"
+    assert gravadas[1].regra == "R-D4"
+
+
+def test_recomendacao_repo_ultimas_exibicoes_por_usuario(
+    repo, rec_repo, db_session, user_id, other_user_id, sample_materials
+):
+    m1, m2, _ = sample_materials
+    t_antigo = datetime(2026, 11, 10, 12, 0, tzinfo=UTC)
+    t_recente = datetime(2026, 11, 15, 12, 0, tzinfo=UTC)
+    t_outro_usuario = datetime(2026, 11, 18, 12, 0, tzinfo=UTC)
+
+    rec_repo.add_all(
+        [
+            Recomendacao(
+                user_id=user_id,
+                material_id=m1.id,
+                regra="R-D3",
+                motivo="Antiga",
+                criado_em=t_antigo,
+            ),
+            Recomendacao(
+                user_id=user_id,
+                material_id=m1.id,
+                regra="R-D3",
+                motivo="Recente",
+                criado_em=t_recente,
+            ),
+            Recomendacao(
+                user_id=other_user_id,
+                material_id=m2.id,
+                regra="R-D4",
+                motivo="Outro usuário",
+                criado_em=t_outro_usuario,
+            ),
+        ]
+    )
+    db_session.commit()
+
+    ultimas = rec_repo.get_last_displayed_by_user(user_id)
+    assert ultimas == {m1.id: t_recente}
+    assert rec_repo.get_last_displayed_by_user(other_user_id) == {m2.id: t_outro_usuario}
+
+
+def test_cascade_delete_checkin_and_user_removes_recomendacoes(
+    repo, rec_repo, db_session, user_id, sample_materials
+):
+    m1, m2, _ = sample_materials
+    c1 = Checkin(
+        user_id=user_id,
+        data=date(2026, 11, 17),
+        pensamento_risco=False,
+        nivel=Nivel.AUTOCUIDADO,
+    )
+    c2 = Checkin(
+        user_id=user_id,
+        data=date(2026, 11, 18),
+        pensamento_risco=False,
+        nivel=Nivel.AUTOCUIDADO,
+    )
+    repo.add(c1)
+    repo.add(c2)
+    r1 = Recomendacao(
+        user_id=user_id,
+        checkin_id=c1.id,
+        material_id=m1.id,
+        regra="R-D3",
+        motivo="Motivo 1",
+    )
+    r2 = Recomendacao(
+        user_id=user_id,
+        checkin_id=c2.id,
+        material_id=m2.id,
+        regra="R-D4",
+        motivo="Motivo 2",
+    )
+    rec_repo.add_all([r1, r2])
+    db_session.commit()
+
+    # Excluir o check-in c1 remove r1 em cascata.
+    db_session.delete(db_session.get(CheckinModel, c1.id))
+    db_session.commit()
+    assert db_session.get(RecomendacaoModel, r1.id) is None
+    assert db_session.get(RecomendacaoModel, r2.id) is not None
+
+    # Excluir o usuário remove r2 em cascata (R04).
+    db_session.delete(db_session.get(UserModel, user_id))
+    db_session.commit()
+    assert db_session.get(RecomendacaoModel, r2.id) is None

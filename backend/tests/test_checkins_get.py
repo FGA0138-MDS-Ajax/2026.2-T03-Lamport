@@ -11,9 +11,12 @@ from app.application.checkins import CheckinService
 from app.core.security import TokenClaims
 from app.domain.checkin import Checkin, Nivel, Tag
 from app.domain.errors import CheckinNotFoundError
+from app.domain.material import Material
+from app.domain.recomendacao import Recomendacao
 from app.domain.users import Role, User
 from app.infrastructure.database import get_session
 from app.main import app
+from app.rules.checkin import MOTIVO_POR_REGRA_CHECKIN
 
 
 # Sobrescreve as fixtures do conftest.py para testes unitários/em memória
@@ -59,6 +62,77 @@ class FakeCheckinRepository:
         # Mais recente para o mais antigo (DESC) por data
         user_checkins.sort(key=lambda c: (c.data, c.criado_em), reverse=True)
         return user_checkins[:limit]
+
+
+class FakeRecomendacaoRepository:
+    def __init__(
+        self,
+        materiais: list[Material] | None = None,
+        recomendacoes: list[Recomendacao] | None = None,
+    ) -> None:
+        self._materiais: list[Material] = (
+            list(materiais)
+            if materiais is not None
+            else [
+                Material(
+                    id=1,
+                    slug="ansiedade-opas",
+                    titulo="Faça o que importa em tempos de estresse",
+                    url="https://www.paho.org/pt/documentos/faca-que-importa",
+                    fonte="OPAS/OMS",
+                    resumo="Guia ilustrado da OMS.",
+                    tags=[Tag.ANSIEDADE, Tag.ESTRESSE],
+                    ativo=True,
+                    revisado_em=date(2026, 11, 9),
+                ),
+                Material(
+                    id=2,
+                    slug="sono-ms",
+                    titulo="Durma Bem, Viva Melhor",
+                    url="https://bvsms.saude.gov.br/durma-bem",
+                    fonte="Ministério da Saúde",
+                    resumo="Hábitos que ajudam a dormir melhor.",
+                    tags=[Tag.SONO],
+                    ativo=True,
+                    revisado_em=date(2026, 11, 9),
+                ),
+                Material(
+                    id=3,
+                    slug="bem-estar-ms",
+                    titulo="Saúde Mental – Saúde de A a Z",
+                    url="https://www.gov.br/saude/saude-mental",
+                    fonte="Ministério da Saúde",
+                    resumo="Explica o que é saúde mental.",
+                    tags=[Tag.BEM_ESTAR, Tag.AJUDA_PROFISSIONAL],
+                    ativo=True,
+                    revisado_em=date(2026, 11, 9),
+                ),
+            ]
+        )
+        self._recomendacoes: list[Recomendacao] = list(recomendacoes) if recomendacoes else []
+
+    def add(self, recomendacao: Recomendacao) -> None:
+        self._recomendacoes.append(recomendacao)
+
+    def add_all(self, recomendacoes) -> None:
+        self._recomendacoes.extend(recomendacoes)
+
+    def list_by_checkin(self, checkin_id: uuid.UUID) -> list[Recomendacao]:
+        itens = [r for r in self._recomendacoes if r.checkin_id == checkin_id]
+        itens.sort(key=lambda r: (r.criado_em, r.id))
+        return itens
+
+    def get_last_displayed_by_user(self, user_id: uuid.UUID) -> dict[int, datetime]:
+        ultimas: dict[int, datetime] = {}
+        for r in self._recomendacoes:
+            if r.user_id == user_id:
+                atual = ultimas.get(r.material_id)
+                if atual is None or r.criado_em > atual:
+                    ultimas[r.material_id] = r.criado_em
+        return ultimas
+
+    def list_active_materials(self) -> list[Material]:
+        return [m for m in self._materiais if m.ativo]
 
 
 def _make_user(email: str = "user@example.com") -> User:
@@ -338,6 +412,65 @@ def test_api_get_checkin_by_id_other_user_returns_404():
             response = test_client.get(f"/api/checkins/{checkin_a.id}")
             assert response.status_code == 404
             assert response.json() == {"detail": "Check-in not found"}
+    finally:
+        app.dependency_overrides.pop(get_current_session, None)
+        app.dependency_overrides.pop(get_checkin_service, None)
+
+
+def test_api_post_and_get_today_checkin_with_recomendacoes_ti03():
+    user = _make_user()
+    repo = FakeCheckinRepository()
+    rec_repo = FakeRecomendacaoRepository()
+    service = CheckinService(checkins=repo, recomendacoes=rec_repo)
+
+    app.dependency_overrides[get_current_session] = lambda: _make_session(user)
+    app.dependency_overrides[get_checkin_service] = lambda: service
+
+    try:
+        with TestClient(app) as test_client:
+            payload = {"p1": 4, "p2": 3, "p3": 1, "p4": 0, "p5": False}
+            post_resp = test_client.post("/api/checkins", json=payload)
+            assert post_resp.status_code == 201
+            post_body = post_resp.json()
+            assert post_body["nivel"] == "autocuidado"
+            assert post_body["tags"] == ["ansiedade", "sono"]
+            assert len(post_body["recomendacoes"]) == 2
+            assert [r["regra"] for r in post_body["recomendacoes"]] == ["R-D3", "R-D4"]
+            assert [r["motivo"] for r in post_body["recomendacoes"]] == [
+                MOTIVO_POR_REGRA_CHECKIN["R-D3"],
+                MOTIVO_POR_REGRA_CHECKIN["R-D4"],
+            ]
+            assert len(rec_repo._recomendacoes) == 2
+
+            today_resp = test_client.get("/api/checkins/hoje")
+            assert today_resp.status_code == 200
+            assert today_resp.json() == {
+                **payload,
+                "nivel": "autocuidado",
+                "tags": ["ansiedade", "sono"],
+                "recomendacoes": post_body["recomendacoes"],
+            }
+    finally:
+        app.dependency_overrides.pop(get_current_session, None)
+        app.dependency_overrides.pop(get_checkin_service, None)
+
+
+def test_api_post_checkin_crise_produces_no_recomendacoes_ti05():
+    user = _make_user()
+    repo = FakeCheckinRepository()
+    rec_repo = FakeRecomendacaoRepository()
+    service = CheckinService(checkins=repo, recomendacoes=rec_repo)
+
+    app.dependency_overrides[get_current_session] = lambda: _make_session(user)
+    app.dependency_overrides[get_checkin_service] = lambda: service
+
+    try:
+        with TestClient(app) as test_client:
+            payload = {"p1": 2, "p2": 3, "p3": 1, "p4": 2, "p5": True}
+            post_resp = test_client.post("/api/checkins", json=payload)
+            assert post_resp.status_code == 201
+            assert post_resp.json() == {"nivel": "crise", "tags": [], "recomendacoes": []}
+            assert rec_repo._recomendacoes == []
     finally:
         app.dependency_overrides.pop(get_current_session, None)
         app.dependency_overrides.pop(get_checkin_service, None)
