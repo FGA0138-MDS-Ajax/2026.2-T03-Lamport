@@ -183,22 +183,107 @@ def test_tu06_rs2_nunca_recomendado_depois_mais_antigo_e_desempate_menor_id():
         15: datetime(2026, 11, 12, 12, 0),  # naive assumido como UTC
     }
 
-    res = selecionar_materiais(
-        [TagSelecao(Tag.ANSIEDADE, "R-D3", "Motivo ansiedade")],
-        catalogo,
-        ultimas_exibicoes,
-        limite=6,
-    )
+    ordem_escolhida: list[int] = []
+    base_nova_exibicao = datetime(2026, 11, 20, 12, 0, tzinfo=UTC)
+    for rodada in range(len(catalogo)):
+        res = selecionar_materiais(
+            [TagSelecao(Tag.ANSIEDADE, "R-D3", "Motivo ansiedade")],
+            catalogo,
+            ultimas_exibicoes,
+            limite=3,
+        )
+        assert len(res) == 1
+        escolhido = res[0].material_id
+        ordem_escolhida.append(escolhido)
+        ultimas_exibicoes[escolhido] = base_nova_exibicao + timedelta(minutes=rodada)
 
     # Ordem esperada: nunca recomendados (2 antes de 10), depois 2026-11-10 (3 antes de 20),
     # depois 2026-11-12 (15) e por fim 2026-11-15 (30) — sem janela de bloqueio.
-    assert [s.material_id for s in res] == [2, 10, 3, 20, 15, 30]
+    assert ordem_escolhida == [2, 10, 3, 20, 15, 30]
+
+
+def test_tu06_rs2_rs4_um_material_por_tag_com_multiplos_ativos():
+    catalogo_ansiedade = [
+        MaterialCatalogo(1, {Tag.ANSIEDADE}, ativo=True),
+        MaterialCatalogo(2, {Tag.ANSIEDADE}, ativo=True),
+        MaterialCatalogo(3, {Tag.ANSIEDADE}, ativo=True),
+    ]
+    ultimas = {
+        1: datetime(2026, 11, 15, 12, 0, tzinfo=UTC),
+        2: datetime(2026, 11, 10, 12, 0, tzinfo=UTC),
+    }
+
+    # Só 1 material é escolhido por tag (o nunca recomendado primeiro).
+    res_nunca = selecionar_materiais(
+        [TagSelecao(Tag.ANSIEDADE, "R-D3", "Motivo ansiedade")],
+        catalogo_ansiedade,
+        ultimas,
+        limite=3,
+    )
+    assert res_nunca == [Sugestao(3, "R-D3", "Motivo ansiedade")]
+
+    # Quando todos já foram exibidos, escolhe apenas o mais antigo (ID 2).
+    ultimas[3] = datetime(2026, 11, 18, 12, 0, tzinfo=UTC)
+    res_antigo = selecionar_materiais(
+        [TagSelecao(Tag.ANSIEDADE, "R-D3", "Motivo ansiedade")],
+        catalogo_ansiedade,
+        ultimas,
+        limite=3,
+    )
+    assert res_antigo == [Sugestao(2, "R-D3", "Motivo ansiedade")]
+
+    # Cenário TI-03: [ANSIEDADE, SONO] com vários ativos de ansiedade traz 1 de cada tag.
+    catalogo_ti03 = [
+        *catalogo_ansiedade,
+        MaterialCatalogo(30, {Tag.SONO}, ativo=True),
+        MaterialCatalogo(31, {Tag.SONO}, ativo=True),
+    ]
+    ultimas_ti03 = {
+        1: datetime(2026, 11, 15, 12, 0, tzinfo=UTC),
+        2: datetime(2026, 11, 10, 12, 0, tzinfo=UTC),
+        30: datetime(2026, 11, 11, 12, 0, tzinfo=UTC),
+    }
+    res_ti03 = selecionar_materiais(
+        [
+            TagSelecao(Tag.ANSIEDADE, "R-D3", "Motivo ansiedade"),
+            TagSelecao(Tag.SONO, "R-D4", "Motivo sono"),
+        ],
+        catalogo_ti03,
+        ultimas_ti03,
+        limite=3,
+    )
+    assert res_ti03 == [
+        Sugestao(3, "R-D3", "Motivo ansiedade"),
+        Sugestao(31, "R-D4", "Motivo sono"),
+    ]
+
+    # Com 4 tags e múltiplos ativos por tag, retorna 1 das 3 primeiras e descarta a 4ª (R-S4).
+    catalogo_quatro_tags = [
+        *catalogo_ti03,
+        MaterialCatalogo(10, {Tag.HUMOR}, ativo=True),
+        MaterialCatalogo(11, {Tag.HUMOR}, ativo=True),
+        MaterialCatalogo(20, {Tag.ESTRESSE}, ativo=True),
+        MaterialCatalogo(21, {Tag.ESTRESSE}, ativo=True),
+    ]
+    res_quatro = selecionar_materiais(
+        [
+            TagSelecao(Tag.SONO, "R-D4", "Motivo sono"),
+            TagSelecao(Tag.ESTRESSE, "R-D5", "Motivo estresse"),
+            TagSelecao(Tag.HUMOR, "R-D2", "Motivo humor"),
+            TagSelecao(Tag.ANSIEDADE, "R-D3", "Motivo ansiedade"),
+        ],
+        catalogo_quatro_tags,
+        ultimas_ti03,
+        limite=3,
+    )
+    assert [s.material_id for s in res_quatro] == [3, 10, 20]
 
 
 def test_tu06_rs3_material_com_duas_tags_aparece_uma_vez():
     catalogo = [
         MaterialCatalogo(10, {"ansiedade", "sono"}, ativo=True),
         MaterialCatalogo(20, {"sono"}, ativo=True),
+        MaterialCatalogo(30, {"sono"}, ativo=True),
     ]
     tags = [
         TagSelecao(Tag.SONO, "R-D4", "Você indicou que dormiu mal na última noite."),
@@ -240,7 +325,7 @@ def test_tu06_rs4_limite_tres_padrao_e_limite_dois_n2(catalogo_tu06):
     res_n2_tags = selecionar_materiais(tags_n2, catalogo_tu06, {}, limite=2)
     assert [s.material_id for s in res_n2_tags] == [1, 3]
 
-    # Limite 2 mesmo quando há mais de 2 materiais ativos na mesma tag.
+    # Apenas 1 material é escolhido por tag mesmo quando há vários ativos e limite=2.
     catalogo_ajuda = [MaterialCatalogo(i, {Tag.AJUDA_PROFISSIONAL}, True) for i in (1, 2, 3)]
     res_n2_mesma_tag = selecionar_materiais(
         [TagSelecao(Tag.AJUDA_PROFISSIONAL, "R-A2", "Motivo N2")],
@@ -248,7 +333,7 @@ def test_tu06_rs4_limite_tres_padrao_e_limite_dois_n2(catalogo_tu06):
         {},
         limite=2,
     )
-    assert [s.material_id for s in res_n2_mesma_tag] == [1, 2]
+    assert [s.material_id for s in res_n2_mesma_tag] == [1]
 
     assert selecionar_materiais(tags_checkin, catalogo_tu06, {}, limite=0) == []
     assert selecionar_materiais(tags_checkin, catalogo_tu06, {}, limite=-1) == []

@@ -90,5 +90,8 @@ def selecionar_materiais(
             if len(sugestoes) >= limite:
                 return sugestoes
 
+            # R-S2: escolhe apenas 1 material por tag e segue para a próxima tag.
+            break
+
     # R-S6: sem fallback para BEM_ESTAR ou materiais sem tag.
     return sugestoes
