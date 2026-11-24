@@ -3,15 +3,33 @@
 Cobre TU-01 a TU-04 (Quadro 26 da Visão) e os perfis de referência A a E (Quadro 19).
 """
 
-import pytest
+import uuid
+from datetime import UTC, date, datetime, timedelta
+from unittest.mock import MagicMock
 
-from app.domain.avaliacao import Faixa
+import pytest
+from fastapi.testclient import TestClient
+
+from app.api.deps import get_avaliacao_service, get_current_session
+from app.application.auth import AuthenticatedSession
+from app.application.avaliacoes import AvaliacaoService
+from app.core.security import TokenClaims
+from app.domain.avaliacao import ORIENTACAO_POR_NIVEL, Avaliacao, Faixa
 from app.domain.checkin import Nivel, Tag
+from app.domain.material import Material
+from app.domain.recomendacao import Recomendacao
+from app.domain.users import Role, User
+from app.infrastructure.database import get_session
+from app.main import app
 from app.rules.avaliacao import (
+    MOTIVO_POR_REGRA_E_TAG_AVALIACAO,
     decidir_avaliacao,
     faixa_gad7,
     faixa_phq9,
+    limite_recomendacoes_avaliacao,
+    orientacao_avaliacao,
     pontuar,
+    tags_selecao_avaliacao,
 )
 
 
@@ -302,3 +320,223 @@ def test_perfil_e():
     assert resultado.nivel == Nivel.AUTOCUIDADO
     assert resultado.tags == (Tag.ANSIEDADE, Tag.HUMOR)
     assert resultado.regras == ("R-A4",)
+
+
+def test_orientacao_limite_e_tags_selecao_quadro_18():
+    assert orientacao_avaliacao(Nivel.CRISE) == ORIENTACAO_POR_NIVEL[Nivel.CRISE]
+    assert orientacao_avaliacao(Nivel.PRIORITARIO) == ORIENTACAO_POR_NIVEL[Nivel.PRIORITARIO]
+    assert orientacao_avaliacao(Nivel.ATENCAO) == ORIENTACAO_POR_NIVEL[Nivel.ATENCAO]
+    assert orientacao_avaliacao(Nivel.AUTOCUIDADO) == ORIENTACAO_POR_NIVEL[Nivel.AUTOCUIDADO]
+
+    assert limite_recomendacoes_avaliacao(Nivel.CRISE) == 0
+    assert limite_recomendacoes_avaliacao(Nivel.PRIORITARIO) == 2
+    assert limite_recomendacoes_avaliacao(Nivel.ATENCAO) == 3
+    assert limite_recomendacoes_avaliacao(Nivel.AUTOCUIDADO) == 3
+
+    res_d = decidir_avaliacao([0, 0, 0, 0, 0, 0, 0, 0, 1], [0] * 7)
+    assert tags_selecao_avaliacao(res_d) == ()
+
+    res_b = decidir_avaliacao([2, 2, 1, 1, 1, 1, 1, 1, 0], [1, 1, 1, 1, 1, 0, 0])
+    tags_b = tags_selecao_avaliacao(res_b)
+    assert [(t.tag, t.regra, t.motivo) for t in tags_b] == [
+        (
+            Tag.AJUDA_PROFISSIONAL,
+            "R-A3",
+            MOTIVO_POR_REGRA_E_TAG_AVALIACAO[("R-A3", Tag.AJUDA_PROFISSIONAL)],
+        ),
+        (
+            Tag.HUMOR,
+            "R-A3",
+            MOTIVO_POR_REGRA_E_TAG_AVALIACAO[("R-A3", Tag.HUMOR)],
+        ),
+    ]
+
+
+class _FakeAvaliacaoRepository:
+    def __init__(self) -> None:
+        self.items: list[Avaliacao] = []
+
+    def add(self, avaliacao: Avaliacao) -> None:
+        self.items.append(avaliacao)
+
+    def get_by_id_for_user(self, avaliacao_id: uuid.UUID, user_id: uuid.UUID) -> Avaliacao | None:
+        for item in self.items:
+            if item.id == avaliacao_id and item.user_id == user_id:
+                return item
+        return None
+
+    def list_by_user(self, user_id: uuid.UUID, limit: int | None = None) -> list[Avaliacao]:
+        owned = [item for item in self.items if item.user_id == user_id]
+        return owned[:limit] if limit is not None else owned
+
+
+class _FakeRecomendacaoRepository:
+    def __init__(self) -> None:
+        self.items: list[Recomendacao] = []
+        self.materiais: list[Material] = [
+            Material(
+                id=1,
+                slug="saude-mental-ms",
+                titulo="Saúde Mental – Saúde de A a Z",
+                url="https://www.gov.br/saude/saude-mental",
+                fonte="Ministério da Saúde",
+                resumo="Explica o que é saúde mental.",
+                tags=[Tag.AJUDA_PROFISSIONAL, Tag.BEM_ESTAR],
+                ativo=True,
+                revisado_em=date(2026, 11, 9),
+            ),
+            Material(
+                id=2,
+                slug="depressao-ms",
+                titulo="Depressão – Saúde de A a Z",
+                url="https://www.gov.br/saude/depressao",
+                fonte="Ministério da Saúde",
+                resumo="Apresenta o que é a depressão.",
+                tags=[Tag.HUMOR],
+                ativo=True,
+                revisado_em=date(2026, 11, 9),
+            ),
+            Material(
+                id=3,
+                slug="faca-o-que-importa-opas",
+                titulo="Faça o que importa em tempos de estresse",
+                url="https://www.paho.org/pt/documentos/faca-que-importa",
+                fonte="OPAS/OMS",
+                resumo="Guia ilustrado da OMS.",
+                tags=[Tag.ANSIEDADE, Tag.ESTRESSE],
+                ativo=True,
+                revisado_em=date(2026, 11, 9),
+            ),
+        ]
+
+    def add(self, recomendacao: Recomendacao) -> None:
+        self.items.append(recomendacao)
+
+    def add_all(self, recomendacoes) -> None:
+        self.items.extend(recomendacoes)
+
+    def list_by_checkin(self, checkin_id: uuid.UUID) -> list[Recomendacao]:
+        return [r for r in self.items if r.checkin_id == checkin_id]
+
+    def list_by_avaliacao(self, avaliacao_id: uuid.UUID) -> list[Recomendacao]:
+        return [r for r in self.items if r.avaliacao_id == avaliacao_id]
+
+    def get_last_displayed_by_user(self, user_id: uuid.UUID) -> dict[int, datetime]:
+        return {}
+
+    def list_active_materials(self) -> list[Material]:
+        return [m for m in self.materiais if m.ativo]
+
+
+@pytest.mark.parametrize(
+    ("phq9", "gad7", "escore_p", "escore_g", "faixa_p", "faixa_g", "nivel", "regra", "n_recs"),
+    [
+        ([0] * 9, [0] * 7, 0, 0, "minima", "minima", "autocuidado", "R-A4", 1),
+        (
+            [2, 2, 1, 1, 1, 1, 1, 1, 0],
+            [1, 1, 1, 1, 1, 0, 0],
+            10,
+            5,
+            "moderada",
+            "leve",
+            "atencao",
+            "R-A3",
+            2,
+        ),
+        (
+            [3, 3, 2, 2, 2, 2, 2, 2, 0],
+            [3, 3, 2, 2, 2, 2, 1],
+            18,
+            15,
+            "moderadamente_grave",
+            "grave",
+            "prioritario",
+            "R-A2",
+            1,
+        ),
+        ([0, 0, 0, 0, 0, 0, 0, 0, 1], [0] * 7, 1, 0, "minima", "minima", "crise", "R-A1", 0),
+        (
+            [1, 1, 1, 1, 1, 0, 0, 0, 0],
+            [1, 1, 1, 1, 1, 1, 0],
+            5,
+            6,
+            "leve",
+            "leve",
+            "autocuidado",
+            "R-A4",
+            2,
+        ),
+    ],
+)
+def test_api_post_avaliacoes_perfis_a_a_e_em_memoria(
+    phq9, gad7, escore_p, escore_g, faixa_p, faixa_g, nivel, regra, n_recs
+):
+    user = User(id=uuid.uuid4(), email="u@example.com", password_hash="h", role=Role.USER)
+    session = AuthenticatedSession(
+        user=user,
+        claims=TokenClaims(
+            subject=user.id, jti="jti", expires_at=datetime.now(UTC) + timedelta(hours=1)
+        ),
+    )
+    av_repo = _FakeAvaliacaoRepository()
+    rec_repo = _FakeRecomendacaoRepository()
+    service = AvaliacaoService(avaliacoes=av_repo, recomendacoes=rec_repo)
+
+    app.dependency_overrides[get_session] = lambda: MagicMock()
+    app.dependency_overrides[get_current_session] = lambda: session
+    app.dependency_overrides[get_avaliacao_service] = lambda: service
+
+    try:
+        with TestClient(app) as test_client:
+            resp = test_client.post("/api/avaliacoes", json={"phq9": phq9, "gad7": gad7})
+            assert resp.status_code == 201
+            body = resp.json()
+            assert body["escore_phq9"] == escore_p
+            assert body["escore_gad7"] == escore_g
+            assert body["faixa_phq9"] == faixa_p
+            assert body["faixa_gad7"] == faixa_g
+            assert body["nivel"] == nivel
+            assert body["orientacao"] == ORIENTACAO_POR_NIVEL[Nivel(nivel)]
+            assert len(body["recomendacoes"]) == n_recs
+            assert len(rec_repo.items) == n_recs
+            assert all(r["regra"] == regra for r in body["recomendacoes"])
+    finally:
+        app.dependency_overrides.clear()
+
+
+@pytest.mark.parametrize(
+    "invalid_payload",
+    [
+        {"phq9": [0] * 8, "gad7": [0] * 7},
+        {"phq9": [0] * 10, "gad7": [0] * 7},
+        {"phq9": [0] * 9, "gad7": [0] * 6},
+        {"phq9": [4, 0, 0, 0, 0, 0, 0, 0, 0], "gad7": [0] * 7},
+        {"phq9": [-1, 0, 0, 0, 0, 0, 0, 0, 0], "gad7": [0] * 7},
+        {"phq9": [0] * 9, "gad7": [0, 0, 0, 0, 0, 0, 4]},
+        {"phq9": [0] * 9, "gad7": [0, 0, 0, 0, 0, 0, -1]},
+        {"phq9": [True, 0, 0, 0, 0, 0, 0, 0, 0], "gad7": [0] * 7},
+    ],
+)
+def test_api_post_avaliacoes_entradas_invalidas_retornam_422_em_memoria(invalid_payload):
+    user = User(id=uuid.uuid4(), email="u@example.com", password_hash="h", role=Role.USER)
+    session = AuthenticatedSession(
+        user=user,
+        claims=TokenClaims(
+            subject=user.id, jti="jti", expires_at=datetime.now(UTC) + timedelta(hours=1)
+        ),
+    )
+    service = AvaliacaoService(
+        avaliacoes=_FakeAvaliacaoRepository(),
+        recomendacoes=_FakeRecomendacaoRepository(),
+    )
+
+    app.dependency_overrides[get_session] = lambda: MagicMock()
+    app.dependency_overrides[get_current_session] = lambda: session
+    app.dependency_overrides[get_avaliacao_service] = lambda: service
+
+    try:
+        with TestClient(app) as test_client:
+            resp = test_client.post("/api/avaliacoes", json=invalid_payload)
+            assert resp.status_code == 422
+    finally:
+        app.dependency_overrides.clear()

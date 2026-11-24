@@ -1,9 +1,10 @@
 import uuid
 from datetime import date, datetime
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
+from app.domain.avaliacao import Faixa
 from app.domain.checkin import Nivel, Tag
 
 
@@ -96,3 +97,26 @@ class CheckinItemResponse(BaseModel):
 
 
 CheckinResponse = CheckinItemResponse
+
+RespostaItemAvaliacao = Annotated[int, Field(strict=True, ge=0, le=3)]
+
+
+class AvaliacaoCreate(BaseModel):
+    """Respostas da avaliação quinzenal PHQ-9 e GAD-7 (Arquitetura, Quadro 6)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    phq9: list[RespostaItemAvaliacao] = Field(min_length=9, max_length=9)
+    gad7: list[RespostaItemAvaliacao] = Field(min_length=7, max_length=7)
+
+
+class AvaliacaoCreatedResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    escore_phq9: int
+    escore_gad7: int
+    faixa_phq9: Faixa
+    faixa_gad7: Faixa
+    nivel: Nivel
+    orientacao: str
+    recomendacoes: list[RecomendacaoResponse] = Field(default_factory=list)
