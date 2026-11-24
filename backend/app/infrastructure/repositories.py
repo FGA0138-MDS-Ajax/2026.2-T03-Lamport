@@ -1,4 +1,5 @@
 import uuid
+from collections.abc import Sequence
 from datetime import date, datetime
 
 from sqlalchemy import delete, func, select
@@ -6,13 +7,19 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.domain.avaliacao import Avaliacao, Faixa
 from app.domain.checkin import Checkin, Nivel, Tag
 from app.domain.errors import CheckinAlreadyExistsError, EmailAlreadyRegisteredError
+from app.domain.material import Material
+from app.domain.recomendacao import Recomendacao
 from app.domain.users import Consent, User
 from app.infrastructure.models import (
+    AvaliacaoModel,
     CheckinModel,
     ConsentModel,
     LoginAttemptModel,
+    MaterialModel,
+    RecomendacaoModel,
     RevokedTokenModel,
     UserModel,
 )
@@ -41,6 +48,58 @@ def _to_checkin(model: CheckinModel) -> Checkin:
         sono=model.sono,
         sobrecarga=model.sobrecarga,
         tags=[Tag(t) for t in model.tags] if model.tags else [],
+        criado_em=model.criado_em,
+    )
+
+
+def _to_material(model: MaterialModel) -> Material:
+    return Material(
+        id=model.id,
+        slug=model.slug,
+        titulo=model.titulo,
+        url=model.url,
+        fonte=model.fonte,
+        resumo=model.resumo,
+        tags=[Tag(t) for t in model.tags] if model.tags else [],
+        ativo=model.ativo,
+        revisado_em=model.revisado_em,
+    )
+
+
+def _to_recomendacao(
+    model: RecomendacaoModel, material: MaterialModel | None = None
+) -> Recomendacao:
+    return Recomendacao(
+        id=model.id,
+        user_id=model.user_id,
+        material_id=model.material_id,
+        checkin_id=model.checkin_id,
+        avaliacao_id=model.avaliacao_id,
+        regra=model.regra,
+        motivo=model.motivo,
+        criado_em=model.criado_em,
+        titulo=material.titulo if material else "",
+        fonte=material.fonte if material else "",
+        resumo=material.resumo if material else "",
+        url=material.url if material else "",
+    )
+
+
+def _to_avaliacao(model: AvaliacaoModel) -> Avaliacao:
+    return Avaliacao(
+        id=model.id,
+        user_id=model.user_id,
+        respostas_phq9=list(model.respostas_phq9),
+        respostas_gad7=list(model.respostas_gad7),
+        escore_phq9=model.escore_phq9,
+        escore_gad7=model.escore_gad7,
+        faixa_phq9=Faixa(model.faixa_phq9)
+        if isinstance(model.faixa_phq9, str)
+        else model.faixa_phq9,
+        faixa_gad7=Faixa(model.faixa_gad7)
+        if isinstance(model.faixa_gad7, str)
+        else model.faixa_gad7,
+        nivel=Nivel(model.nivel) if isinstance(model.nivel, str) else model.nivel,
         criado_em=model.criado_em,
     )
 
@@ -189,3 +248,127 @@ class SqlCheckinRepository:
             .limit(limit)
         )
         return [_to_checkin(m) for m in models]
+
+
+class SqlMaterialRepository:
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    def list_active(self) -> list[Material]:
+        models = self.session.scalars(
+            select(MaterialModel)
+            .where(MaterialModel.ativo.is_(True))
+            .order_by(MaterialModel.id.asc())
+        )
+        return [_to_material(m) for m in models]
+
+
+class SqlRecomendacaoRepository:
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    def add(self, recomendacao: Recomendacao) -> None:
+        self.add_all([recomendacao])
+
+    def add_all(self, recomendacoes: Sequence[Recomendacao]) -> None:
+        if not recomendacoes:
+            return
+        self.session.add_all(
+            RecomendacaoModel(
+                id=rec.id,
+                user_id=rec.user_id,
+                material_id=rec.material_id,
+                checkin_id=rec.checkin_id,
+                avaliacao_id=rec.avaliacao_id,
+                regra=rec.regra,
+                motivo=rec.motivo,
+                criado_em=rec.criado_em,
+            )
+            for rec in recomendacoes
+        )
+        self.session.flush()
+
+    def list_by_checkin(self, checkin_id: uuid.UUID) -> list[Recomendacao]:
+        rows = self.session.execute(
+            select(RecomendacaoModel, MaterialModel)
+            .join(MaterialModel, RecomendacaoModel.material_id == MaterialModel.id)
+            .where(RecomendacaoModel.checkin_id == checkin_id)
+            .order_by(RecomendacaoModel.criado_em.asc(), RecomendacaoModel.id.asc())
+        ).all()
+        return [_to_recomendacao(rec, mat) for rec, mat in rows]
+
+    def list_by_avaliacao(self, avaliacao_id: uuid.UUID) -> list[Recomendacao]:
+        rows = self.session.execute(
+            select(RecomendacaoModel, MaterialModel)
+            .join(MaterialModel, RecomendacaoModel.material_id == MaterialModel.id)
+            .where(RecomendacaoModel.avaliacao_id == avaliacao_id)
+            .order_by(RecomendacaoModel.criado_em.asc(), RecomendacaoModel.id.asc())
+        ).all()
+        return [_to_recomendacao(rec, mat) for rec, mat in rows]
+
+    def get_last_displayed_by_user(self, user_id: uuid.UUID) -> dict[int, datetime]:
+        rows = self.session.execute(
+            select(
+                RecomendacaoModel.material_id,
+                func.max(RecomendacaoModel.criado_em),
+            )
+            .where(RecomendacaoModel.user_id == user_id)
+            .group_by(RecomendacaoModel.material_id)
+        ).all()
+        return {material_id: ultima_exibicao for material_id, ultima_exibicao in rows}
+
+    def list_active_materials(self) -> list[Material]:
+        return SqlMaterialRepository(self.session).list_active()
+
+    # Aliases em português conforme vocabulário do domínio
+    gravar = add_all
+    listar_por_checkin = list_by_checkin
+    listar_por_avaliacao = list_by_avaliacao
+    obter_ultimas_exibicoes = get_last_displayed_by_user
+    listar_materiais_ativos = list_active_materials
+
+
+class SqlAvaliacaoRepository:
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    def add(self, avaliacao: Avaliacao) -> None:
+        model = AvaliacaoModel(
+            id=avaliacao.id,
+            user_id=avaliacao.user_id,
+            respostas_phq9=list(avaliacao.respostas_phq9),
+            respostas_gad7=list(avaliacao.respostas_gad7),
+            escore_phq9=avaliacao.escore_phq9,
+            escore_gad7=avaliacao.escore_gad7,
+            faixa_phq9=avaliacao.faixa_phq9,
+            faixa_gad7=avaliacao.faixa_gad7,
+            nivel=avaliacao.nivel,
+            criado_em=avaliacao.criado_em,
+        )
+        self.session.add(model)
+        self.session.flush()
+
+    def get_by_id_for_user(self, avaliacao_id: uuid.UUID, user_id: uuid.UUID) -> Avaliacao | None:
+        model = self.session.scalar(
+            select(AvaliacaoModel).where(
+                AvaliacaoModel.id == avaliacao_id,
+                AvaliacaoModel.user_id == user_id,
+            )
+        )
+        return _to_avaliacao(model) if model else None
+
+    def list_by_user(self, user_id: uuid.UUID, limit: int | None = None) -> list[Avaliacao]:
+        stmt = (
+            select(AvaliacaoModel)
+            .where(AvaliacaoModel.user_id == user_id)
+            .order_by(AvaliacaoModel.criado_em.desc(), AvaliacaoModel.id.desc())
+        )
+        if limit is not None:
+            stmt = stmt.limit(limit)
+        models = self.session.scalars(stmt)
+        return [_to_avaliacao(m) for m in models]
+
+    # Aliases em português conforme vocabulário do domínio
+    gravar = add
+    obter_por_id_do_usuario = get_by_id_for_user
+    listar_por_usuario = list_by_user

@@ -6,13 +6,16 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
 from app.application.auth import AuthenticatedSession, AuthService, LoginThrottle
+from app.application.avaliacoes import AvaliacaoService
 from app.application.checkins import CheckinService
 from app.core.config import get_settings
 from app.domain.errors import NotAuthenticatedError
 from app.infrastructure.database import get_session
 from app.infrastructure.repositories import (
+    SqlAvaliacaoRepository,
     SqlCheckinRepository,
     SqlLoginAttemptRepository,
+    SqlRecomendacaoRepository,
     SqlRevokedTokenRepository,
     SqlUserRepository,
 )
@@ -40,10 +43,25 @@ AuthServiceDep = Annotated[AuthService, Depends(get_auth_service)]
 
 
 def get_checkin_service(session: DbSession) -> CheckinService:
-    return CheckinService(checkins=SqlCheckinRepository(session), commit=session.commit)
+    return CheckinService(
+        checkins=SqlCheckinRepository(session),
+        recomendacoes=SqlRecomendacaoRepository(session),
+        commit=session.commit,
+    )
 
 
 CheckinServiceDep = Annotated[CheckinService, Depends(get_checkin_service)]
+
+
+def get_avaliacao_service(session: DbSession) -> AvaliacaoService:
+    return AvaliacaoService(
+        avaliacoes=SqlAvaliacaoRepository(session),
+        recomendacoes=SqlRecomendacaoRepository(session),
+        commit=session.commit,
+    )
+
+
+AvaliacaoServiceDep = Annotated[AvaliacaoService, Depends(get_avaliacao_service)]
 
 
 def get_current_session(

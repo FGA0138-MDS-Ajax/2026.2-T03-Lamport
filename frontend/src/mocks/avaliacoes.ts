@@ -1,8 +1,6 @@
-
 import type {
   Avaliacao,
   AvaliacaoListItem,
-  CreateAvaliacaoData,
 } from '../api/avaliacoes'
 
 const mockAvaliacoes: Avaliacao[] = [
@@ -13,8 +11,8 @@ const mockAvaliacoes: Avaliacao[] = [
     respostas_gad7: [1, 0, 1, 0, 1, 0, 1],
     escore_phq9: 3,
     escore_gad7: 4,
-    faixa_phq9: 'MINIMA',
-    faixa_gad7: 'MINIMA',
+    faixa_phq9: 'minima',
+    faixa_gad7: 'minima',
     nivel: 'autocuidado',
     orientacao:
       'Continue cuidando do seu bem-estar. Mantenha hábitos saudáveis e procure atividades que contribuam para sua qualidade de vida.',
@@ -37,8 +35,8 @@ const mockAvaliacoes: Avaliacao[] = [
     respostas_gad7: [1, 1, 1, 1, 1, 2, 1],
     escore_phq9: 8,
     escore_gad7: 9,
-    faixa_phq9: 'LEVE',
-    faixa_gad7: 'LEVE',
+    faixa_phq9: 'leve',
+    faixa_gad7: 'leve',
     nivel: 'atencao',
     orientacao:
       'Seus resultados indicam alguns sinais de sofrimento emocional. Observe como você tem se sentido e considere buscar orientação profissional.',
@@ -61,8 +59,8 @@ const mockAvaliacoes: Avaliacao[] = [
     respostas_gad7: [2, 2, 2, 2, 2, 2, 3],
     escore_phq9: 16,
     escore_gad7: 15,
-    faixa_phq9: 'MODERADAMENTE_GRAVE',
-    faixa_gad7: 'MODERADA',
+    faixa_phq9: 'moderadamente_grave',
+    faixa_gad7: 'grave',
     nivel: 'prioritario',
     orientacao:
       'Seus resultados indicam sofrimento emocional significativo. É importante procurar acompanhamento de um profissional de saúde.',
@@ -82,24 +80,6 @@ const mockAvaliacoes: Avaliacao[] = [
 ]
 
 export const mockAvaliacoesApi = {
-  createAvaliacao: async (
-    data: CreateAvaliacaoData,
-  ): Promise<Avaliacao> => {
-    const avaliacao: Avaliacao = {
-      ...mockAvaliacoes[0],
-      id: crypto.randomUUID(),
-      criado_em: new Date().toISOString(),
-      respostas_phq9: [...data.phq9],
-      respostas_gad7: [...data.gad7],
-      escore_phq9: data.phq9.reduce((total, resposta) => total + resposta, 0),
-      escore_gad7: data.gad7.reduce((total, resposta) => total + resposta, 0),
-    }
-
-    mockAvaliacoes.unshift(avaliacao)
-
-    return avaliacao
-  },
-
   listAvaliacoes: async (): Promise<AvaliacaoListItem[]> => {
     return mockAvaliacoes.map(
       ({

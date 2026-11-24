@@ -17,6 +17,7 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
+from app.domain.avaliacao import Faixa
 from app.domain.checkin import Nivel
 from app.domain.users import Role
 
@@ -146,3 +147,84 @@ class MaterialModel(Base):
     tags: Mapped[list[str]] = mapped_column(ARRAY(String(30)))
     ativo: Mapped[bool] = mapped_column(Boolean, server_default="true")
     revisado_em: Mapped[date] = mapped_column(Date)
+
+
+class AvaliacaoModel(Base):
+    __tablename__ = "avaliacoes"
+    __table_args__ = (
+        CheckConstraint(
+            "escore_phq9 >= 0 AND escore_phq9 <= 27",
+            name="escore_phq9_range",
+        ),
+        CheckConstraint(
+            "escore_gad7 >= 0 AND escore_gad7 <= 21",
+            name="escore_gad7_range",
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), index=True
+    )
+    respostas_phq9: Mapped[list[int]] = mapped_column(ARRAY(SmallInteger))
+    respostas_gad7: Mapped[list[int]] = mapped_column(ARRAY(SmallInteger))
+    escore_phq9: Mapped[int] = mapped_column(SmallInteger)
+    escore_gad7: Mapped[int] = mapped_column(SmallInteger)
+    faixa_phq9: Mapped[Faixa] = mapped_column(
+        Enum(
+            Faixa,
+            name="faixa_phq9",
+            native_enum=False,
+            create_constraint=True,
+            length=30,
+            values_callable=lambda faixas: [f.value for f in faixas],
+        ),
+    )
+    faixa_gad7: Mapped[Faixa] = mapped_column(
+        Enum(
+            Faixa,
+            name="faixa_gad7",
+            native_enum=False,
+            create_constraint=True,
+            length=30,
+            values_callable=lambda faixas: [f.value for f in faixas],
+        ),
+    )
+    nivel: Mapped[Nivel] = mapped_column(
+        Enum(
+            Nivel,
+            name="nivel",
+            native_enum=False,
+            create_constraint=True,
+            length=20,
+            values_callable=lambda niveis: [n.value for n in niveis],
+        ),
+    )
+    criado_em: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    @property
+    def usuario_id(self) -> uuid.UUID:
+        return self.user_id
+
+
+class RecomendacaoModel(Base):
+    __tablename__ = "recomendacoes"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), index=True
+    )
+    material_id: Mapped[int] = mapped_column(ForeignKey("materiais.id"), index=True)
+    checkin_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("checkins.id", ondelete="CASCADE"), nullable=True, index=True
+    )
+    avaliacao_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("avaliacoes.id", ondelete="CASCADE"), nullable=True, index=True
+    )
+    regra: Mapped[str] = mapped_column(String(20))
+    motivo: Mapped[str] = mapped_column(String(500))
+    criado_em: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    @property
+    def usuario_id(self) -> uuid.UUID:
+        return self.user_id

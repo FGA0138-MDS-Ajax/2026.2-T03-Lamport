@@ -1,5 +1,5 @@
-
 import type { Nivel } from './checkins'
+import { request } from './client'
 import { mockAvaliacoesApi } from '../mocks/avaliacoes'
 
 export interface CreateAvaliacaoData {
@@ -8,11 +8,11 @@ export interface CreateAvaliacaoData {
 }
 
 export type Faixa =
-  | 'MINIMA'
-  | 'LEVE'
-  | 'MODERADA'
-  | 'MODERADAMENTE_GRAVE'
-  | 'GRAVE'
+  | 'minima'
+  | 'leve'
+  | 'moderada'
+  | 'moderadamente_grave'
+  | 'grave'
 
 export interface Recomendacao {
   titulo: string
@@ -23,6 +23,10 @@ export interface Recomendacao {
   motivo: string
 }
 
+/**
+ * Resultado retornado pelo POST /api/avaliacoes.
+ * Corresponde ao schema AvaliacaoCreatedResponse do backend.
+ */
 export interface ResultadoAvaliacao {
   escore_phq9: number
   escore_gad7: number
@@ -43,6 +47,9 @@ export interface AvaliacaoListItem {
   nivel: Nivel
 }
 
+/**
+ * Representação completa utilizada pelos mocks de consulta individual.
+ */
 export interface Avaliacao extends ResultadoAvaliacao {
   id: string
   criado_em: string
@@ -52,9 +59,15 @@ export interface Avaliacao extends ResultadoAvaliacao {
 
 export const avaliacoesApi = {
   createAvaliacao: async (
-    _token: string,
+    token: string,
     data: CreateAvaliacaoData,
-  ): Promise<Avaliacao> => mockAvaliacoesApi.createAvaliacao(data),
+  ): Promise<ResultadoAvaliacao> => {
+    return request<ResultadoAvaliacao>('/avaliacoes', {
+      method: 'POST',
+      body: data,
+      token,
+    })
+  },
 
   listAvaliacoes: async (
     _token: string,
