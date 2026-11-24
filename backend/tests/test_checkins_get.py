@@ -187,7 +187,7 @@ def test_service_get_checkin_detail_success():
     user = _make_user()
     checkin = _make_checkin(user_id=user.id, checkin_date=date(2026, 10, 20))
     repo = FakeCheckinRepository([checkin])
-    service = CheckinService(repo)
+    service = CheckinService(repo, FakeRecomendacaoRepository())
 
     result = service.get_by_id(checkin_id=checkin.id, user_id=user.id)
     assert result.id == checkin.id
@@ -197,7 +197,7 @@ def test_service_get_checkin_detail_success():
 def test_service_get_checkin_detail_not_found():
     user = _make_user()
     repo = FakeCheckinRepository([])
-    service = CheckinService(repo)
+    service = CheckinService(repo, FakeRecomendacaoRepository())
 
     with pytest.raises(CheckinNotFoundError):
         service.get_by_id(checkin_id=uuid.uuid4(), user_id=user.id)
@@ -210,7 +210,7 @@ def test_service_get_checkin_detail_other_user_raises_not_found():
     checkin_a = _make_checkin(user_id=user_a.id, checkin_date=date(2026, 10, 20))
 
     repo = FakeCheckinRepository([checkin_a])
-    service = CheckinService(repo)
+    service = CheckinService(repo, FakeRecomendacaoRepository())
 
     with pytest.raises(CheckinNotFoundError):
         service.get_by_id(checkin_id=checkin_a.id, user_id=user_b.id)
@@ -223,7 +223,7 @@ def test_service_list_checkins_limits():
         for i in range(35)
     ]
     repo = FakeCheckinRepository(checkins)
-    service = CheckinService(repo)
+    service = CheckinService(repo, FakeRecomendacaoRepository())
 
     # limit=5
     items = service.list(user_id=user.id, limit=5)
@@ -257,7 +257,7 @@ def test_api_checkin_by_id_requires_authentication():
 def test_api_list_checkins_empty():
     user = _make_user()
     repo = FakeCheckinRepository([])
-    service = CheckinService(repo)
+    service = CheckinService(repo, FakeRecomendacaoRepository())
 
     app.dependency_overrides[get_current_session] = lambda: _make_session(user)
     app.dependency_overrides[get_checkin_service] = lambda: service
@@ -296,7 +296,7 @@ def test_api_list_checkins_ordered_desc_and_p1_p5_schema():
         ),
     ]
     repo = FakeCheckinRepository(checkins)
-    service = CheckinService(repo)
+    service = CheckinService(repo, FakeRecomendacaoRepository())
 
     app.dependency_overrides[get_current_session] = lambda: _make_session(user)
     app.dependency_overrides[get_checkin_service] = lambda: service
@@ -338,7 +338,7 @@ def test_api_list_checkins_isolation_ts_03():
     checkin_b = _make_checkin(user_id=user_b.id, checkin_date=date(2026, 10, 12))
 
     repo = FakeCheckinRepository([checkin_a, checkin_b])
-    service = CheckinService(repo)
+    service = CheckinService(repo, FakeRecomendacaoRepository())
 
     app.dependency_overrides[get_current_session] = lambda: _make_session(user_b)
     app.dependency_overrides[get_checkin_service] = lambda: service
@@ -370,7 +370,7 @@ def test_api_get_checkin_by_id_owner_success():
         tags=[Tag.HUMOR, Tag.BEM_ESTAR],
     )
     repo = FakeCheckinRepository([checkin])
-    service = CheckinService(repo)
+    service = CheckinService(repo, FakeRecomendacaoRepository())
 
     app.dependency_overrides[get_current_session] = lambda: _make_session(user)
     app.dependency_overrides[get_checkin_service] = lambda: service
@@ -401,7 +401,7 @@ def test_api_get_checkin_by_id_other_user_returns_404():
     checkin_a = _make_checkin(user_id=user_a.id, checkin_date=date(2026, 10, 28))
 
     repo = FakeCheckinRepository([checkin_a])
-    service = CheckinService(repo)
+    service = CheckinService(repo, FakeRecomendacaoRepository())
 
     # Usuário B tenta acessar o check-in do Usuário A
     app.dependency_overrides[get_current_session] = lambda: _make_session(user_b)

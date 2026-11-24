@@ -26,7 +26,7 @@ class CheckinService:
     def __init__(
         self,
         checkins: CheckinRepository,
-        recomendacoes: RecomendacaoRepository | None = None,
+        recomendacoes: RecomendacaoRepository,
         commit: Callable[[], None] = lambda: None,
     ) -> None:
         self.checkins = checkins
@@ -61,7 +61,7 @@ class CheckinService:
         )
         self.checkins.add(checkin)
 
-        if resultado.nivel != Nivel.CRISE and self.recomendacoes is not None:
+        if resultado.nivel != Nivel.CRISE:
             materiais_ativos = self.recomendacoes.list_active_materials()
             materiais_por_id = {m.id: m for m in materiais_ativos if m.id is not None}
             catalogo = [
@@ -102,8 +102,7 @@ class CheckinService:
         checkin = self.checkins.get_by_user_and_date(user_id, today_in_checkin_timezone())
         if checkin is None:
             raise CheckinNotFoundError
-        if self.recomendacoes is not None:
-            checkin.recomendacoes = self.recomendacoes.list_by_checkin(checkin.id)
+        checkin.recomendacoes = self.recomendacoes.list_by_checkin(checkin.id)
         return checkin
 
     def get_by_id(self, checkin_id: uuid.UUID, user_id: uuid.UUID) -> Checkin:
@@ -125,8 +124,7 @@ class CheckinService:
         checkin = self.checkins.get_by_user_and_date(user_id, target_date)
         if checkin is None:
             raise CheckinNotFoundError
-        if self.recomendacoes is not None:
-            checkin.recomendacoes = self.recomendacoes.list_by_checkin(checkin.id)
+        checkin.recomendacoes = self.recomendacoes.list_by_checkin(checkin.id)
         return checkin
 
     def list_checkins(

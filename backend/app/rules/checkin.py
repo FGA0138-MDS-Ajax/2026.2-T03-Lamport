@@ -1,4 +1,5 @@
 from app.domain.checkin import Nivel, ResultadoCheckin, Tag
+from app.rules.avaliacao import ORDEM_TAGS
 from app.rules.selecao import TagSelecao
 
 # Constantes Originais (Aviso: Alterar exige aprovação do PO)
@@ -6,9 +7,6 @@ LIMITE_HUMOR = 2
 LIMITE_ANSIEDADE = 2
 LIMITE_SONO = 2
 LIMITE_ESTRESSE = 2
-
-# R-S1 (Prioridade de tags para exibição e materiais)
-ORDEM_TAGS = (Tag.ANSIEDADE, Tag.HUMOR, Tag.ESTRESSE, Tag.SONO)
 
 # Quadro 16 (Visão v2.7, seção 4.5.1): regras e motivos exibidos ao usuário por tag do check-in.
 REGRA_POR_TAG_CHECKIN: dict[Tag, str] = {
