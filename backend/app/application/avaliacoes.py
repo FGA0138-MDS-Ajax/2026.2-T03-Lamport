@@ -7,6 +7,7 @@ from datetime import timedelta
 
 from app.domain.avaliacao import Avaliacao, AvaliacaoRepository
 from app.domain.checkin import Nivel
+from app.domain.errors import AvaliacaoNotFoundError
 from app.domain.recomendacao import Recomendacao, RecomendacaoRepository
 from app.rules.avaliacao import (
     decidir_avaliacao,
@@ -83,4 +84,19 @@ class AvaliacaoService:
 
         self.commit()
         logger.info("Avaliacao created id=%s user_id=%s", avaliacao.id, user_id)
+        return avaliacao
+
+    def list(self, user_id: uuid.UUID) -> list[Avaliacao]:
+        """Todas as avaliações do usuário, da mais recente para a mais antiga (R12)."""
+        return self.avaliacoes.list_by_user(user_id)
+
+    def get_by_id(self, avaliacao_id: uuid.UUID, user_id: uuid.UUID) -> Avaliacao:
+        """Avaliação do próprio usuário com as recomendações gravadas (DP-3).
+
+        Inexistente e de outro usuário levantam o mesmo erro, para não revelar ids alheios.
+        """
+        avaliacao = self.avaliacoes.get_by_id_for_user(avaliacao_id, user_id)
+        if avaliacao is None:
+            raise AvaliacaoNotFoundError
+        avaliacao.recomendacoes = self.recomendacoes.list_by_avaliacao(avaliacao.id)
         return avaliacao

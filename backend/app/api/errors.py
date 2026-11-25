@@ -8,6 +8,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.core.config import get_settings
 from app.domain.errors import (
     AgeNotDeclaredError,
+    AvaliacaoNotFoundError,
     CheckinAlreadyExistsError,
     CheckinNotFoundError,
     DomainError,
@@ -38,6 +39,7 @@ _DOMAIN_ERRORS: dict[type[DomainError], tuple[int, str]] = {
     ),
     CheckinAlreadyExistsError: (status.HTTP_409_CONFLICT, "Check-in already done today"),
     CheckinNotFoundError: (status.HTTP_404_NOT_FOUND, "Check-in not found"),
+    AvaliacaoNotFoundError: (status.HTTP_404_NOT_FOUND, "Avaliacao not found"),
 }
 
 
