@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ApiError } from './client'
-import { checkinsApi, type Checkin } from './checkins'
+import { checkinsApi, type Checkin, type CheckinHoje, type CheckinResultado } from './checkins'
 import { mockApi } from '../test/utils'
 
 const token = 'test-token'
@@ -17,6 +17,19 @@ const checkin: Checkin = {
   tags: ['ANSIEDADE'],
   criado_em: '',
 }
+
+const recomendacao = {
+  titulo: 'Ansiedade: como lidar',
+  fonte: 'Ministério da Saúde',
+  resumo: 'Orientações para reconhecer e lidar com a ansiedade no dia a dia.',
+  url: 'https://www.gov.br/saude/ansiedade',
+  regra: 'R-D3',
+  motivo: 'Você indicou ter se sentido bastante ou extremamente ansioso(a) hoje.',
+}
+
+// Respostas de POST /api/checkins e GET /api/checkins/hoje (backend: tags em minúsculas).
+const criado = { nivel: 'autocuidado', tags: ['ansiedade'], recomendacoes: [recomendacao] }
+const hoje = { p1: 3, p2: 2, p3: 4, p4: 1, p5: false, ...criado }
 
 describe('checkinsApi', () => {
   beforeEach(() => {
@@ -84,7 +97,7 @@ describe('checkinsApi', () => {
     const fetchMock = mockApi({
       'POST /api/checkins': {
         status: 201,
-        body: checkin,
+        body: criado,
       },
     })
 
@@ -98,7 +111,11 @@ describe('checkinsApi', () => {
 
     const result = await checkinsApi.createCheckin(token, data)
 
-    expect(result).toEqual(checkin)
+    expect(result).toEqual<CheckinResultado>({
+      nivel: 'autocuidado',
+      tags: ['ANSIEDADE'],
+      recomendacoes: [recomendacao],
+    })
     expect(fetchMock).toHaveBeenCalledTimes(1)
 
     const [url, init] = fetchMock.mock.calls[0]
@@ -111,18 +128,34 @@ describe('checkinsApi', () => {
     expect(JSON.parse(String(init?.body))).toEqual(data)
   })
 
-  it('busca o check-in de hoje', async () => {
+  it('busca o check-in de hoje com as recomendações gravadas', async () => {
     const fetchMock = mockApi({
       'GET /api/checkins/hoje': {
         status: 200,
-        body: checkin,
+        body: hoje,
       },
     })
 
     const result = await checkinsApi.getTodayCheckin(token)
 
-    expect(result).toEqual(checkin)
+    expect(result).toEqual<CheckinHoje>({ ...hoje, nivel: 'autocuidado', tags: ['ANSIEDADE'] })
     expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('usa lista vazia quando a resposta não traz recomendações', async () => {
+    mockApi({
+      'POST /api/checkins': { status: 201, body: { nivel: 'crise', tags: [] } },
+    })
+
+    const result = await checkinsApi.createCheckin(token, {
+      p1: null,
+      p2: null,
+      p3: null,
+      p4: null,
+      p5: true,
+    })
+
+    expect(result.recomendacoes).toEqual([])
   })
 
   it('lista check-ins com limite', async () => {
