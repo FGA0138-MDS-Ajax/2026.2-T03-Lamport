@@ -1,4 +1,5 @@
 import { request } from './client'
+import type { Recomendacao } from './recomendacoes'
 
 export interface CreateCheckinData {
   p1: number | null
@@ -25,15 +26,35 @@ export interface Checkin {
   criado_em: string
 }
 
+/** Resposta de `POST /api/checkins`: nível, tags e recomendações (Arquitetura, Quadro 6). */
+export interface CheckinResultado {
+  nivel: Nivel
+  tags: Tag[]
+  recomendacoes: Recomendacao[]
+}
+
+/** Resposta de `GET /api/checkins/hoje`: respostas do dia e as recomendações gravadas (DP-2). */
+export interface CheckinHoje extends CheckinResultado {
+  p1: number | null
+  p2: number | null
+  p3: number | null
+  p4: number | null
+  p5: boolean
+}
+
 // O backend devolve as tags em minúsculas ("humor", "bem_estar"); o frontend usa maiúsculas.
-function normalizeCheckin(checkin: Checkin): Checkin {
+function normalizeCheckin<T extends { tags: Tag[] }>(checkin: T): T {
   return { ...checkin, tags: (checkin.tags ?? []).map((tag) => tag.toUpperCase() as Tag) }
+}
+
+function normalizeResultado<T extends CheckinResultado>(resultado: T): T {
+  return normalizeCheckin({ ...resultado, recomendacoes: resultado.recomendacoes ?? [] })
 }
 
 export const checkinsApi = {
   createCheckin: async (token: string, data: CreateCheckinData) =>
-    normalizeCheckin(
-      await request<Checkin>('/checkins', {
+    normalizeResultado(
+      await request<CheckinResultado>('/checkins', {
         method: 'POST',
         body: data,
         token,
@@ -41,7 +62,7 @@ export const checkinsApi = {
     ),
 
   getTodayCheckin: async (token: string) =>
-    normalizeCheckin(await request<Checkin>('/checkins/hoje', { token })),
+    normalizeResultado(await request<CheckinHoje>('/checkins/hoje', { token })),
 
   listCheckins: async (token: string, limite = 30) =>
     (await request<Checkin[]>(`/checkins?limite=${limite}`, { token })).map(normalizeCheckin),
