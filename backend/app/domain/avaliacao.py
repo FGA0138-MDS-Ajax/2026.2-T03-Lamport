@@ -20,6 +20,22 @@ class Faixa(StrEnum):
     GRAVE = "grave"
 
 
+# Textos da coluna "O que o usuário vê" do Quadro 18 (Visão v2.7, seção 4.5.2).
+ORIENTACAO_POR_NIVEL: dict[Nivel, str] = {
+    Nivel.CRISE: "Tela de Ajuda Imediata. Nenhum material é exibido.",
+    Nivel.PRIORITARIO: (
+        "Suas respostas indicam sintomas intensos. Recomendamos procurar atendimento "
+        "em saúde nos próximos dias, na sua UBS de referência ou em um CAPS. "
+        "Se piorar, use a Ajuda Imediata."
+    ),
+    Nivel.ATENCAO: (
+        "Recomendamos conversar com um profissional de saúde. "
+        "No SUS, a porta de entrada é a Unidade Básica de Saúde (UBS)."
+    ),
+    Nivel.AUTOCUIDADO: ("Continue acompanhando como você está. Seguem materiais de autocuidado."),
+}
+
+
 @dataclass
 class Avaliacao:
     """Avaliação quinzenal PHQ-9 e GAD-7 (Arquitetura, Figura 6)."""
@@ -39,6 +55,10 @@ class Avaliacao:
     @property
     def usuario_id(self) -> uuid.UUID:
         return self.user_id
+
+    @property
+    def orientacao(self) -> str:
+        return ORIENTACAO_POR_NIVEL[self.nivel]
 
 
 @dataclass(frozen=True)
