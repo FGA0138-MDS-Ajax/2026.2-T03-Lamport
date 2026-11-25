@@ -4,6 +4,8 @@ from datetime import UTC, date, datetime
 from enum import StrEnum
 from typing import Protocol
 
+from app.domain.recomendacao import Recomendacao
+
 
 class Nivel(StrEnum):
     AUTOCUIDADO = "autocuidado"
@@ -36,6 +38,7 @@ class Checkin:
     sono: int | None = None
     sobrecarga: int | None = None
     tags: list[Tag] = field(default_factory=list)
+    recomendacoes: list[Recomendacao] = field(default_factory=list)
     id: uuid.UUID = field(default_factory=uuid.uuid4)
     criado_em: datetime = field(default_factory=_now)
 

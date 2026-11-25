@@ -1,28 +1,90 @@
 import logging
+from datetime import UTC, date, datetime
 
 import pytest
 from sqlalchemy import select
 
 from app.application.checkins import today_in_checkin_timezone
 from app.infrastructure.database import get_engine
-from app.infrastructure.models import CheckinModel
+from app.infrastructure.models import CheckinModel, MaterialModel, RecomendacaoModel, UserModel
+from app.rules.checkin import MOTIVO_POR_REGRA_CHECKIN
+from app.seed_materiais import CAMINHO_CATALOGO, rodar_seed
 
 URL = "/api/checkins"
 TODAY_URL = "/api/checkins/hoje"
 
 # Respostas do TI-03.
 VALID_PAYLOAD = {"p1": 4, "p2": 3, "p3": 1, "p4": 0, "p5": False}
+CAMPOS_RECOMENDACAO = {"titulo", "fonte", "resumo", "url", "regra", "motivo"}
+
+
+@pytest.fixture(autouse=True)
+def catalogo_carregado(db_session):
+    rodar_seed(db_session, CAMINHO_CATALOGO)
 
 
 def _checkins(db_session) -> list[CheckinModel]:
     return list(db_session.scalars(select(CheckinModel)))
 
 
-def test_ti03_create_checkin_returns_201_with_nivel_and_tags(client, auth_headers):
+def _recomendacoes(db_session) -> list[RecomendacaoModel]:
+    return list(
+        db_session.scalars(
+            select(RecomendacaoModel).order_by(
+                RecomendacaoModel.criado_em.asc(), RecomendacaoModel.id.asc()
+            )
+        )
+    )
+
+
+def test_ti03_create_checkin_returns_201_with_nivel_tags_and_persists_recomendacoes(
+    client, auth_headers, db_session
+):
     response = client.post(URL, json=VALID_PAYLOAD, headers=auth_headers)
 
     assert response.status_code == 201
-    assert response.json() == {"nivel": "autocuidado", "tags": ["ansiedade", "sono"]}
+    body = response.json()
+    assert body["nivel"] == "autocuidado"
+    assert body["tags"] == ["ansiedade", "sono"]
+
+    recs_resposta = body["recomendacoes"]
+    assert len(recs_resposta) == 2
+    assert [r["regra"] for r in recs_resposta] == ["R-D3", "R-D4"]
+    assert [r["motivo"] for r in recs_resposta] == [
+        MOTIVO_POR_REGRA_CHECKIN["R-D3"],
+        MOTIVO_POR_REGRA_CHECKIN["R-D4"],
+    ]
+    for item in recs_resposta:
+        assert set(item) == CAMPOS_RECOMENDACAO
+        assert all(isinstance(item[campo], str) and item[campo] for campo in CAMPOS_RECOMENDACAO)
+
+    # Confere persistência no banco PostgreSQL de teste (TI-03, Quadro 26).
+    [checkin] = _checkins(db_session)
+    recs_banco = _recomendacoes(db_session)
+    assert len(recs_banco) == 2
+    assert [r.regra for r in recs_banco] == ["R-D3", "R-D4"]
+    assert [r.motivo for r in recs_banco] == [
+        MOTIVO_POR_REGRA_CHECKIN["R-D3"],
+        MOTIVO_POR_REGRA_CHECKIN["R-D4"],
+    ]
+
+    for rec_db, rec_api, tag_esperada in zip(
+        recs_banco, recs_resposta, ("ansiedade", "sono"), strict=True
+    ):
+        assert rec_db.checkin_id == checkin.id
+        assert rec_db.user_id == checkin.user_id
+        material = db_session.get(MaterialModel, rec_db.material_id)
+        assert material is not None
+        assert material.ativo is True
+        assert tag_esperada in material.tags
+        assert rec_api == {
+            "titulo": material.titulo,
+            "fonte": material.fonte,
+            "resumo": material.resumo,
+            "url": material.url,
+            "regra": rec_db.regra,
+            "motivo": rec_db.motivo,
+        }
 
 
 def test_checkin_is_saved_for_authenticated_user(client, auth_headers, db_session):
@@ -39,20 +101,30 @@ def test_checkin_is_saved_for_authenticated_user(client, auth_headers, db_sessio
     assert checkin.tags == ["ansiedade", "sono"]
 
 
-def test_ti05_risk_answer_returns_crise_without_tags(client, auth_headers):
-    payload = {"p1": 2, "p2": None, "p3": None, "p4": None, "p5": True}
+def test_ti05_risk_answer_returns_crise_without_tags_or_recomendacoes(
+    client, auth_headers, db_session
+):
+    payload = {"p1": 2, "p2": 3, "p3": 1, "p4": 3, "p5": True}
 
     response = client.post(URL, json=payload, headers=auth_headers)
 
     assert response.status_code == 201
-    assert response.json() == {"nivel": "crise", "tags": []}
+    assert response.json() == {"nivel": "crise", "tags": [], "recomendacoes": []}
+    [checkin] = _checkins(db_session)
+    assert checkin.nivel == "crise"
+    assert checkin.tags == []
+    assert _recomendacoes(db_session) == []
 
 
 def test_only_p5_is_required(client, auth_headers, db_session):
     response = client.post(URL, json={"p5": False}, headers=auth_headers)
 
     assert response.status_code == 201
-    assert response.json()["tags"] == ["bem_estar"]
+    body = response.json()
+    assert body["tags"] == ["bem_estar"]
+    assert len(body["recomendacoes"]) == 1
+    assert body["recomendacoes"][0]["regra"] == "R-D6"
+    assert body["recomendacoes"][0]["motivo"] == MOTIVO_POR_REGRA_CHECKIN["R-D6"]
     [checkin] = _checkins(db_session)
     assert (checkin.humor, checkin.ansiedade, checkin.sono, checkin.sobrecarga) == (
         None,
@@ -60,16 +132,65 @@ def test_only_p5_is_required(client, auth_headers, db_session):
         None,
         None,
     )
+    assert len(_recomendacoes(db_session)) == 1
+
+
+def test_rs2_checkin_uses_ultimas_exibicoes_from_database(client, auth_headers, db_session):
+    me = client.get("/api/me", headers=auth_headers).json()
+    user = db_session.scalar(select(UserModel).where(UserModel.email == me["email"]))
+    # Adiciona um segundo material ativo para a tag sono.
+    novo_sono = MaterialModel(
+        slug="sono-alternativo-ms",
+        titulo="Hábitos de Sono – Ministério da Saúde",
+        url="https://www.gov.br/saude/pt-br/assuntos/sono",
+        fonte="Ministério da Saúde",
+        resumo="Orientações adicionais sobre higiene do sono.",
+        tags=["sono"],
+        ativo=True,
+        revisado_em=date(2026, 11, 9),
+    )
+    db_session.add(novo_sono)
+    db_session.flush()
+
+    sono_original = db_session.scalar(
+        select(MaterialModel).where(MaterialModel.slug == "durma-bem-viva-melhor-ms")
+    )
+    # Registra recomendação anterior do material original para que o nunca exibido venha primeiro.
+    db_session.add(
+        RecomendacaoModel(
+            user_id=user.id,
+            material_id=sono_original.id,
+            checkin_id=None,
+            regra="R-D4",
+            motivo=MOTIVO_POR_REGRA_CHECKIN["R-D4"],
+            criado_em=datetime(2026, 11, 10, 12, 0, tzinfo=UTC),
+        )
+    )
+    db_session.commit()
+
+    response = client.post(
+        URL,
+        json={"p1": 4, "p2": 0, "p3": 1, "p4": 0, "p5": False},
+        headers=auth_headers,
+    )
+
+    assert response.status_code == 201
+    recs = response.json()["recomendacoes"]
+    assert len(recs) == 1
+    assert recs[0]["titulo"] == novo_sono.titulo
+    assert recs[0]["regra"] == "R-D4"
 
 
 def test_ti04_second_checkin_on_same_day_returns_409(client, auth_headers, db_session):
     client.post(URL, json=VALID_PAYLOAD, headers=auth_headers)
+    recs_iniciais = len(_recomendacoes(db_session))
 
     response = client.post(URL, json=VALID_PAYLOAD, headers=auth_headers)
 
     assert response.status_code == 409
     assert response.json() == {"detail": "Check-in already done today"}
     assert len(_checkins(db_session)) == 1
+    assert len(_recomendacoes(db_session)) == recs_iniciais
 
 
 def test_other_user_can_checkin_on_same_day(client, auth_headers, db_session):
@@ -135,8 +256,9 @@ def test_unknown_fields_are_rejected(client, auth_headers, db_session, extra):
     assert _checkins(db_session) == []
 
 
-def test_today_returns_checkin_of_the_day(client, auth_headers):
-    client.post(URL, json=VALID_PAYLOAD, headers=auth_headers)
+def test_today_returns_checkin_of_the_day_with_same_recomendacoes_as_post(client, auth_headers):
+    created = client.post(URL, json=VALID_PAYLOAD, headers=auth_headers)
+    assert created.status_code == 201
 
     response = client.get(TODAY_URL, headers=auth_headers)
 
@@ -145,7 +267,9 @@ def test_today_returns_checkin_of_the_day(client, auth_headers):
         **VALID_PAYLOAD,
         "nivel": "autocuidado",
         "tags": ["ansiedade", "sono"],
+        "recomendacoes": created.json()["recomendacoes"],
     }
+    assert len(response.json()["recomendacoes"]) == 2
 
 
 def test_today_returns_404_without_checkin(client, auth_headers):

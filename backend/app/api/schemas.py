@@ -49,11 +49,23 @@ class CheckinCreate(BaseModel):
     p5: bool = Field(strict=True)
 
 
+class RecomendacaoResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    titulo: str
+    fonte: str
+    resumo: str
+    url: str
+    regra: str
+    motivo: str
+
+
 class CheckinCreatedResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     nivel: Nivel
     tags: list[Tag]
+    recomendacoes: list[RecomendacaoResponse] = Field(default_factory=list)
 
 
 class CheckinTodayResponse(BaseModel):
@@ -66,6 +78,7 @@ class CheckinTodayResponse(BaseModel):
     p5: bool = Field(validation_alias="pensamento_risco")
     nivel: Nivel
     tags: list[Tag]
+    recomendacoes: list[RecomendacaoResponse] = Field(default_factory=list)
 
 
 class CheckinItemResponse(BaseModel):
