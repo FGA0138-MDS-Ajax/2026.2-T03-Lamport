@@ -1,14 +1,21 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { avaliacoesApi } from './avaliacoes'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import {
+  avaliacoesApi,
+  type AvaliacaoListItem,
+  type CreateAvaliacaoData,
+  type ResultadoAvaliacao,
+} from './avaliacoes'
+import { mockApi } from '../test/utils'
 
 const token = 'test-token'
+const id = '550e8400-e29b-41d4-a716-446655440000'
 
-const dadosAvaliacao = {
+const dados: CreateAvaliacaoData = {
   phq9: [1, 0, 2, 1, 0, 1, 0, 1, 0],
   gad7: [0, 1, 1, 0, 2, 0, 1],
 }
 
-const respostaAvaliacao = {
+const resultado: ResultadoAvaliacao = {
   escore_phq9: 6,
   escore_gad7: 5,
   faixa_phq9: 'leve',
@@ -27,8 +34,8 @@ const respostaAvaliacao = {
   ],
 }
 
-const itemHistorico = {
-  id: '550e8400-e29b-41d4-a716-446655440000',
+const item: AvaliacaoListItem = {
+  id,
   data: '2026-11-20',
   escore_phq9: 6,
   escore_gad7: 5,
@@ -37,158 +44,112 @@ const itemHistorico = {
   nivel: 'autocuidado',
 }
 
-function criarResposta(body: unknown, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { 'Content-Type': 'application/json' },
-  })
-}
-
-afterEach(() => {
-  vi.unstubAllGlobals()
-})
-
 describe('avaliacoesApi', () => {
-  describe('createAvaliacao', () => {
-    it('envia as respostas ao backend e retorna o resultado da avaliação', async () => {
-      const fetchMock = vi.fn().mockResolvedValue(criarResposta(respostaAvaliacao, 201))
+  beforeEach(() => {
+    vi.unstubAllGlobals()
+  })
 
-      vi.stubGlobal('fetch', fetchMock)
-
-      const resultado = await avaliacoesApi.createAvaliacao(token, dadosAvaliacao)
-
-      expect(fetchMock).toHaveBeenCalledOnce()
-
-      const [url, options] = fetchMock.mock.calls[0]
-
-      expect(url).toBe('http://localhost:8000/api/avaliacoes')
-      expect(options).toMatchObject({
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(dadosAvaliacao),
-      })
-
-      expect(resultado).toEqual(respostaAvaliacao)
+  it('cria uma avaliação enviando as respostas do PHQ-9 e do GAD-7', async () => {
+    const fetchMock = mockApi({
+      'POST /api/avaliacoes': { status: 201, body: resultado },
     })
 
-    it('propaga erros retornados pelo backend', async () => {
-      const fetchMock = vi
-        .fn()
-        .mockResolvedValue(criarResposta({ detail: 'Respostas inválidas' }, 422))
+    const result = await avaliacoesApi.createAvaliacao(token, dados)
 
-      vi.stubGlobal('fetch', fetchMock)
+    expect(result).toEqual(resultado)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
 
-      await expect(avaliacoesApi.createAvaliacao(token, dadosAvaliacao)).rejects.toMatchObject({
-        name: 'ApiError',
-        status: 422,
-        message: 'Respostas inválidas',
-      })
+    const [url, init] = fetchMock.mock.calls[0]
+
+    expect(String(url)).toContain('/api/avaliacoes')
+    expect(init?.method).toBe('POST')
+    expect(init?.headers).toMatchObject({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    })
+    expect(JSON.parse(String(init?.body))).toEqual(dados)
+  })
+
+  it('propaga erro 422 quando as respostas são inválidas', async () => {
+    mockApi({
+      'POST /api/avaliacoes': { status: 422, body: { detail: 'Respostas inválidas' } },
+    })
+
+    await expect(avaliacoesApi.createAvaliacao(token, dados)).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 422,
+      message: 'Respostas inválidas',
     })
   })
 
-  describe('listAvaliacoes', () => {
-    it('consulta o histórico de avaliações do usuário', async () => {
-      const fetchMock = vi.fn().mockResolvedValue(criarResposta([itemHistorico]))
-
-      vi.stubGlobal('fetch', fetchMock)
-
-      const resultado = await avaliacoesApi.listAvaliacoes(token)
-
-      expect(fetchMock).toHaveBeenCalledOnce()
-
-      const [url, options] = fetchMock.mock.calls[0]
-
-      expect(url).toBe('http://localhost:8000/api/avaliacoes')
-      expect(options).toMatchObject({
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-
-      expect(resultado).toEqual([itemHistorico])
+  it('lista o histórico de avaliações do usuário', async () => {
+    const fetchMock = mockApi({
+      'GET /api/avaliacoes': { status: 200, body: [item] },
     })
 
-    it('retorna uma lista vazia quando o usuário não possui avaliações', async () => {
-      const fetchMock = vi.fn().mockResolvedValue(criarResposta([]))
+    const result = await avaliacoesApi.listAvaliacoes(token)
 
-      vi.stubGlobal('fetch', fetchMock)
+    expect(result).toEqual([item])
 
-      const resultado = await avaliacoesApi.listAvaliacoes(token)
+    const [, init] = fetchMock.mock.calls[0]
 
-      expect(resultado).toEqual([])
+    expect(init?.method).toBe('GET')
+    expect(init?.headers).toMatchObject({ Authorization: `Bearer ${token}` })
+  })
+
+  it('retorna lista vazia quando o usuário não possui avaliações', async () => {
+    mockApi({
+      'GET /api/avaliacoes': { status: 200, body: [] },
     })
 
-    it('propaga erros retornados pelo backend', async () => {
-      const fetchMock = vi
-        .fn()
-        .mockResolvedValue(criarResposta({ detail: 'Not authenticated' }, 401))
+    await expect(avaliacoesApi.listAvaliacoes(token)).resolves.toEqual([])
+  })
 
-      vi.stubGlobal('fetch', fetchMock)
+  it('propaga erro 401 ao listar sem autenticação', async () => {
+    mockApi({
+      'GET /api/avaliacoes': { status: 401, body: { detail: 'Not authenticated' } },
+    })
 
-      await expect(avaliacoesApi.listAvaliacoes(token)).rejects.toMatchObject({
-        name: 'ApiError',
-        status: 401,
-      })
+    await expect(avaliacoesApi.listAvaliacoes(token)).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 401,
     })
   })
 
-  describe('getAvaliacao', () => {
-    it('consulta uma avaliação pelo ID', async () => {
-      const fetchMock = vi.fn().mockResolvedValue(criarResposta(respostaAvaliacao))
-
-      vi.stubGlobal('fetch', fetchMock)
-
-      const id = '550e8400-e29b-41d4-a716-446655440000'
-      const resultado = await avaliacoesApi.getAvaliacao(token, id)
-
-      expect(fetchMock).toHaveBeenCalledOnce()
-
-      const [url, options] = fetchMock.mock.calls[0]
-
-      expect(url).toBe(`http://localhost:8000/api/avaliacoes/${id}`)
-      expect(options).toMatchObject({
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-
-      expect(resultado).toEqual(respostaAvaliacao)
-      expect(resultado).not.toHaveProperty('id')
-      expect(resultado).not.toHaveProperty('criado_em')
-      expect(resultado).not.toHaveProperty('respostas_phq9')
-      expect(resultado).not.toHaveProperty('respostas_gad7')
+  it('busca uma avaliação pelo ID com os mesmos campos do POST', async () => {
+    const fetchMock = mockApi({
+      [`GET /api/avaliacoes/${id}`]: { status: 200, body: resultado },
     })
 
-    it('propaga erro 404 ao consultar uma avaliação inexistente ou de outro usuário', async () => {
-      const fetchMock = vi
-        .fn()
-        .mockResolvedValue(criarResposta({ detail: 'Avaliacao not found' }, 404))
+    const result = await avaliacoesApi.getAvaliacao(token, id)
 
-      vi.stubGlobal('fetch', fetchMock)
+    expect(result).toEqual(resultado)
 
-      await expect(
-        avaliacoesApi.getAvaliacao(token, '550e8400-e29b-41d4-a716-446655440000'),
-      ).rejects.toMatchObject({
-        name: 'ApiError',
-        status: 404,
-        message: 'Avaliacao not found',
-      })
+    const [, init] = fetchMock.mock.calls[0]
+
+    expect(init?.method).toBe('GET')
+    expect(init?.headers).toMatchObject({ Authorization: `Bearer ${token}` })
+  })
+
+  it('propaga erro 404 para avaliação inexistente ou de outro usuário', async () => {
+    mockApi({
+      [`GET /api/avaliacoes/${id}`]: { status: 404, body: { detail: 'Avaliacao not found' } },
     })
 
-    it('propaga erro 422 quando o ID possui formato inválido', async () => {
-      const fetchMock = vi.fn().mockResolvedValue(criarResposta({ detail: [] }, 422))
+    await expect(avaliacoesApi.getAvaliacao(token, id)).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 404,
+      message: 'Avaliacao not found',
+    })
+  })
 
-      vi.stubGlobal('fetch', fetchMock)
+  it('transforma erro de rede em ApiError com status 0', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('Failed to fetch')))
 
-      await expect(avaliacoesApi.getAvaliacao(token, 'id-invalido')).rejects.toMatchObject({
-        name: 'ApiError',
-        status: 422,
-      })
+    await expect(avaliacoesApi.listAvaliacoes(token)).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 0,
+      message: 'Network error',
     })
   })
 })

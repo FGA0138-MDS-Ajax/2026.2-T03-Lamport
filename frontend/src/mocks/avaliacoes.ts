@@ -1,9 +1,10 @@
-import type { Avaliacao, AvaliacaoListItem } from '../api/avaliacoes'
+import type { AvaliacaoListItem, ResultadoAvaliacao } from '../api/avaliacoes'
+import { ApiError } from '../api/client'
 
 interface MockAvaliacao {
   id: string
   data: string
-  resultado: Avaliacao
+  resultado: ResultadoAvaliacao
 }
 
 const mockAvaliacoes: MockAvaliacao[] = [
@@ -112,11 +113,11 @@ export const mockAvaliacoesApi = {
     }))
   },
 
-  getAvaliacao: async (id: string): Promise<Avaliacao> => {
+  getAvaliacao: async (id: string): Promise<ResultadoAvaliacao> => {
     const avaliacao = mockAvaliacoes.find((item) => item.id === id)
 
     if (!avaliacao) {
-      throw new Error('Avaliação não encontrada')
+      throw new ApiError(404, 'Avaliacao not found')
     }
 
     return avaliacao.resultado
