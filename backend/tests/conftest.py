@@ -45,7 +45,7 @@ def clean_tables():
         conn.execute(
             text(
                 "TRUNCATE users, consents, revoked_tokens, login_attempts, "
-                "checkins, materiais, recomendacoes"
+                "checkins, avaliacoes, materiais, recomendacoes"
             )
         )
 

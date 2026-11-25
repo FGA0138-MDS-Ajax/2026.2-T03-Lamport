@@ -21,6 +21,7 @@ class Recomendacao:
     regra: str
     motivo: str
     checkin_id: uuid.UUID | None = None
+    avaliacao_id: uuid.UUID | None = None
     titulo: str = ""
     fonte: str = ""
     resumo: str = ""
@@ -39,6 +40,8 @@ class RecomendacaoRepository(Protocol):
     def add_all(self, recomendacoes: Sequence[Recomendacao]) -> None: ...
 
     def list_by_checkin(self, checkin_id: uuid.UUID) -> list[Recomendacao]: ...
+
+    def list_by_avaliacao(self, avaliacao_id: uuid.UUID) -> list[Recomendacao]: ...
 
     def get_last_displayed_by_user(self, user_id: uuid.UUID) -> dict[int, datetime]: ...
 
