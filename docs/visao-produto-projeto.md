@@ -1,9 +1,11 @@
 # Visão do Produto e do Projeto
 
-**Versão 2.6 – 15/11/2026** · Aplicação web de apoio à saúde mental: check-in diário, rastreio com instrumentos validados e encaminhamento a conteúdos e serviços oficiais.
+**Versão 2.7 – 15/11/2026** · Aplicação web de apoio à saúde mental: check-in diário, rastreio com instrumentos validados e encaminhamento a conteúdos e serviços oficiais.
 
 !!! info "Versão vigente"
-    Esta página reproduz a versão 2.6, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md).
+    Esta página reproduz a versão 2.7, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md).
+
+    Baixar em PDF (formatado nas normas ABNT): [Visão do Produto e do Projeto v2.7](pdf/visao-produto-projeto-v2.7.pdf).
 
 ## Integrantes do grupo
 
@@ -30,6 +32,7 @@
 | 11/11/2026 | 2.4 | Revisão da Sprint 4 pelo QA (issue #10): Quadro 26 com status, evidência (execução da CI na `main`), reparos e ciclos dos casos previstos até a Sprint 4; seção 6.1, item 5, e legenda da seção 6.2 atualizadas. | Grupo Lamport |
 | 12/11/2026 | 2.5 | Correções do registro da Sprint 4 no Quadro 26 (issue #10): status do TU-06 com a divergência de R-S1 (ordem de prioridade sem AJUDA_PROFISSIONAL no código) e o material menos recente não verificado; ciclos do TI-01 (2) e do TS-01 (3) alinhados aos reparos registrados; observação de que o teste do TS-01 percorre o contrato OpenAPI. | Grupo Lamport |
 | 15/11/2026 | 2.6 | Revisão da Sprint 4 pelo PO e planejamento da Sprint 5: percentuais de conclusão das Sprints 2 a 4 no Quadro 8; replanejamento pelo critério 1 da seção 2.6, com as recomendações do check-in (R06, TI-03, TI-05, TU-06) passando à Sprint 5; decisão do PO sobre o defeito DEF-02: o Quadro 20 permanece e o código se ajusta a ele (R-S1 a R-S6); situação do catálogo (seção 4.5.4) e risco R6 atualizados. | Grupo Lamport |
+| 15/11/2026 | 2.7 | Decisão do PO no planejamento da Sprint 5 (DP-1): Quadro 18 com o motivo exibido ao usuário para cada tag gerada pela avaliação, e regra gravada nas recomendações da avaliação (R-S5). | Grupo Lamport |
 
 ---
 
@@ -407,12 +410,14 @@ O nível de orientação é definido pela tabela de decisão do Quadro 18, avali
 
 **Quadro 18 – Tabela de decisão da avaliação quinzenal**
 
-| Regra | Condição | Nível | O que o usuário vê | Tags usadas para o conteúdo |
-| :--: | :-- | :-- | :-- | :-- |
-| R-A1 | Item 9 do PHQ-9 ≥ 1 (qualquer pontuação total) | N3 – CRISE | Tela de Ajuda Imediata. Nenhum material é exibido. | — |
-| R-A2 | PHQ-9 ≥ 20 ou GAD-7 ≥ 15 | N2 – PRIORITÁRIO | "Suas respostas indicam sintomas intensos. Recomendamos procurar atendimento em saúde nos próximos dias, na sua UBS de referência ou em um CAPS. Se piorar, use a Ajuda Imediata." | AJUDA_PROFISSIONAL (até 2 materiais) |
-| R-A3 | PHQ-9 ≥ 10 ou GAD-7 ≥ 10 | N1 – ATENÇÃO | "Recomendamos conversar com um profissional de saúde. No SUS, a porta de entrada é a Unidade Básica de Saúde (UBS)." | AJUDA_PROFISSIONAL + HUMOR (se PHQ-9 ≥ 10) + ANSIEDADE (se GAD-7 ≥ 10) |
-| R-A4 | Nenhuma das anteriores | N0 – AUTOCUIDADO | "Continue acompanhando como você está. Seguem materiais de autocuidado." | HUMOR (se PHQ-9 5–9) + ANSIEDADE (se GAD-7 5–9); BEM_ESTAR se ambos ≤ 4 |
+| Regra | Condição | Nível | O que o usuário vê | Tags usadas para o conteúdo | Motivo exibido ao usuário, por tag |
+| :--: | :-- | :-- | :-- | :-- | :-- |
+| R-A1 | Item 9 do PHQ-9 ≥ 1 (qualquer pontuação total) | N3 – CRISE | Tela de Ajuda Imediata. Nenhum material é exibido. | — | — |
+| R-A2 | PHQ-9 ≥ 20 ou GAD-7 ≥ 15 | N2 – PRIORITÁRIO | "Suas respostas indicam sintomas intensos. Recomendamos procurar atendimento em saúde nos próximos dias, na sua UBS de referência ou em um CAPS. Se piorar, use a Ajuda Imediata." | AJUDA_PROFISSIONAL (até 2 materiais) | AJUDA_PROFISSIONAL: "Suas respostas indicam sintomas intensos. Este material explica onde buscar atendimento." |
+| R-A3 | PHQ-9 ≥ 10 ou GAD-7 ≥ 10 | N1 – ATENÇÃO | "Recomendamos conversar com um profissional de saúde. No SUS, a porta de entrada é a Unidade Básica de Saúde (UBS)." | AJUDA_PROFISSIONAL + HUMOR (se PHQ-9 ≥ 10) + ANSIEDADE (se GAD-7 ≥ 10) | AJUDA_PROFISSIONAL: "Suas respostas indicam que conversar com um profissional de saúde pode ajudar."<br>HUMOR: "Seu resultado no PHQ-9 ficou na faixa moderada ou acima."<br>ANSIEDADE: "Seu resultado no GAD-7 ficou na faixa moderada ou acima." |
+| R-A4 | Nenhuma das anteriores | N0 – AUTOCUIDADO | "Continue acompanhando como você está. Seguem materiais de autocuidado." | HUMOR (se PHQ-9 5–9) + ANSIEDADE (se GAD-7 5–9); BEM_ESTAR se ambos ≤ 4 | HUMOR: "Seu resultado no PHQ-9 ficou na faixa leve."<br>ANSIEDADE: "Seu resultado no GAD-7 ficou na faixa leve."<br>BEM_ESTAR: "Suas respostas não indicaram sintomas marcantes nas últimas duas semanas." |
+
+Nas recomendações da avaliação, a regra gravada (R-S5) é a que definiu o nível (R-A2, R-A3 ou R-A4), e o motivo é o da tag do material, conforme a última coluna do Quadro 18.
 
 **Justificativa dos limites.** O ponto de corte 10 é o usual para ambos os instrumentos (KROENKE; SPITZER; WILLIAMS, 2001; SPITZER et al., 2006) e foi o adotado na análise da Pesquisa Nacional de Saúde 2019 (MELO et al., 2023). O estudo brasileiro de Santos et al. (2013) encontrou desempenho semelhante com o corte 9; a equipe mantém os valores internacionais porque coincidem com as faixas publicadas e **não cria limites próprios**. O item 9 do PHQ-9 é tratado isoladamente, com qualquer resposta diferente de "nenhuma vez", porque indica pensamentos de morte ou de autoagressão. Os limites ficam em constantes de configuração do módulo de regras; alterá-los exige pull request, atualização dos testes e aprovação do PO.
 

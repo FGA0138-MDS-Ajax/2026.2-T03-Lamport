@@ -13,7 +13,8 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
 | 11/11/2026 | 2.3 | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: R02 e TI-02 passam a incluir o limite de tentativas de login (bloqueio por 15 min após 5 falhas seguidas); a lista de rotas públicas do TS-01 passa a incluir `/api/terms` e `/api/health`. | Grupo Lamport |
 | 11/11/2026 | 2.4 | Revisão da Sprint 4 pelo QA (issue #10): Quadro 26 com status, evidência (execução da CI na `main`), reparos e ciclos dos casos previstos até a Sprint 4; seção 6.1, item 5, e legenda da seção 6.2 atualizadas. | Grupo Lamport |
 | 12/11/2026 | 2.5 | Correções do registro da Sprint 4 no Quadro 26 (issue #10): status do TU-06 com a divergência de R-S1 (ordem de prioridade sem AJUDA_PROFISSIONAL no código) e o material menos recente não verificado; ciclos do TI-01 (2) e do TS-01 (3) alinhados aos reparos registrados; observação de que o teste do TS-01 percorre o contrato OpenAPI. | Grupo Lamport |
-| 15/11/2026 | **2.6** (vigente) | Revisão da Sprint 4 pelo PO e planejamento da Sprint 5: percentuais de conclusão das Sprints 2 a 4 no Quadro 8; replanejamento pelo critério 1 da seção 2.6, com as recomendações do check-in (R06) passando à Sprint 5; decisão do PO sobre o DEF-02 (o Quadro 20 permanece); situação do catálogo e risco R6 atualizados. | Grupo Lamport |
+| 15/11/2026 | 2.6 | Revisão da Sprint 4 pelo PO e planejamento da Sprint 5: percentuais de conclusão das Sprints 2 a 4 no Quadro 8; replanejamento pelo critério 1 da seção 2.6, com as recomendações do check-in (R06) passando à Sprint 5; decisão do PO sobre o DEF-02 (o Quadro 20 permanece); situação do catálogo e risco R6 atualizados. | Grupo Lamport |
+| 15/11/2026 | **2.7** (vigente) | Decisão do PO no planejamento da Sprint 5 (DP-1): Quadro 18 com o motivo exibido para cada tag gerada pela avaliação, e regra gravada nas recomendações da avaliação (R-S5). | Grupo Lamport |
 
 ### Principais mudanças entre versões
 
@@ -67,6 +68,12 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
     - **Seção 4.5.4:** o material com a tag SONO já está no catálogo; a conferência dos materiais pelo PO fica para a Sprint 5, e o Quadro 21 só muda depois dela.
     - Perguntas, regras, limites, requisitos e roteiro de testes não mudaram.
 
+??? abstract "2.6 → 2.7"
+    - **Origem:** decisão DP-1 do PO no [planejamento da Sprint 5](sprints/sprint-5.md#4-decisoes-pendentes-do-po).
+    - **Quadro 18:** nova coluna com o motivo exibido ao usuário para cada tag gerada por R-A2, R-A3 e R-A4, no lugar da lacuna entre o Quadro 18 e a R-S5 (o check-in já tinha os motivos no Quadro 16).
+    - **Seção 4.5.2:** nas recomendações da avaliação, a regra gravada é a que definiu o nível (R-A2, R-A3 ou R-A4) e o motivo é o da tag do material.
+    - Limites, níveis, orientações, requisitos e roteiro de testes não mudaram.
+
 ## Documento de Arquitetura
 
 | Data | Versão | Descrição | Autor(es) |
@@ -77,7 +84,8 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
 | 18/10/2026 | 2.1 | Alinhamento à Visão v2.1: remoção das metas de desempenho, capacidade e cobertura de código, da publicação em nuvem, do verificador automático de links, da auditoria de dependências e da avaliação de utilidade dos materiais; restrições de segurança limitadas ao que é verificado pelos testes TS-01 a TS-05; características de qualidade descritas sem metas numéricas. | Grupo Lamport |
 | 29/10/2026 | 2.2 | Alinhamento à Visão v2.2: P1 a P4 opcionais; retirada do convite para avaliação; respostas do check-in na API com `p1` a `p5` na entrada e na saída; prefixo `/api` corrigido na Figura 3. | Grupo Lamport |
 | 11/11/2026 | 2.3 | Decisões do PO sobre as divergências entre documento e código levantadas na issue #22: inclusão de `POST /api/auth/logout`, `GET /api/terms` e `GET /api/health` no Quadro 6; entidade Consentimento na Figura 6, no lugar dos campos de termos e maioridade em Usuario; limite de tentativas de login na seção 2.4; Quadro 4 e Figura 5 com os pacotes reais do backend (`application`, `core`, `infrastructure`); campos da API em português, exceto os do token (seção 2.4, item 6). | Grupo Lamport |
-| 12/11/2026 | **2.4** (vigente) | Alinhamento à Visão v2.6 (planejamento da Sprint 5): prefixo `/api` corrigido na rota de envio da avaliação na Figura 4, como no Quadro 6. A decisão do PO sobre o DEF-02 mantém o contrato de `selecionar_materiais` do Quadro 5. | Grupo Lamport |
+| 12/11/2026 | 2.4 | Alinhamento à Visão v2.6 (planejamento da Sprint 5): prefixo `/api` corrigido na rota de envio da avaliação na Figura 4, como no Quadro 6. A decisão do PO sobre o DEF-02 mantém o contrato de `selecionar_materiais` do Quadro 5. | Grupo Lamport |
+| 15/11/2026 | **2.5** (vigente) | Decisões do PO no planejamento da Sprint 5 (DP-2 e DP-3): recomendações em `GET /api/checkins/hoje`; `GET /api/avaliacoes/{id}` com os campos de `POST /api/avaliacoes`; campos de cada recomendação nas respostas. | Grupo Lamport |
 
 ### Principais mudanças entre versões
 
@@ -113,3 +121,9 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
     - **Origem:** planejamento da Sprint 5 (Visão v2.6), antes das issues da avaliação quinzenal.
     - **Figura 4:** a rota de envio da avaliação passa de `POST /avaliacoes` para `POST /api/avaliacoes`, como no Quadro 6 (mesma correção feita na Figura 3 na versão 2.2).
     - **Quadro 5:** sem mudança. Com a decisão do PO sobre o DEF-02, `selecionar_materiais` continua recebendo a data da última exibição de cada material e devolvendo a regra de origem e o motivo de cada sugestão.
+
+??? abstract "2.4 → 2.5"
+    - **Origem:** decisões DP-2 e DP-3 do PO no [planejamento da Sprint 5](sprints/sprint-5.md#4-decisoes-pendentes-do-po).
+    - **Quadro 6 e Figura 3 (DP-2):** `GET /api/checkins/hoje` devolve também as recomendações gravadas, para que o check-in reaberto mostre os materiais do dia, como a Figura 3 já previa.
+    - **Quadro 6 (DP-3):** `GET /api/avaliacoes` e `GET /api/avaliacoes/{id}` passam a ter linhas próprias. A listagem devolve data, escores, faixas e nível (R12); o detalhe devolve os mesmos campos da resposta de `POST /api/avaliacoes` (escores, faixas, nível, orientação e recomendações).
+    - **Seção 2.5.2:** cada recomendação nas respostas traz `titulo`, `fonte`, `resumo`, `url`, `regra` e `motivo`, com os nomes da Figura 6.

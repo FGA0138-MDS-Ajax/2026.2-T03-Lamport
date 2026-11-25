@@ -1,6 +1,6 @@
 # Sprint 5: Pendências da Sprint 4, avaliação e histórico
 
-**12/11 a 25/11/2026** · Base: [Visão v2.6](../visao-produto-projeto.md) e [Arquitetura v2.4](../arquitetura.md) · Código analisado: `main` no commit `886e00b` (PR #44).
+**12/11 a 25/11/2026** · Base: [Visão v2.7](../visao-produto-projeto.md) e [Arquitetura v2.5](../arquitetura.md) · Código analisado: `main` no commit `886e00b` (PR #44).
 
 Esta página registra a revisão da Sprint 4 pelo PO, o estado do produto requisito a requisito, as pendências e o backlog proposto para a Sprint 5. O backlog é a base para criar as issues; cada issue deve citar a seção ou o quadro dos documentos de que vem. O que não está nos documentos entra como decisão pendente do PO (seção 4), e não diretamente na issue.
 
@@ -62,7 +62,7 @@ Posição na `main` (`886e00b`). "Regras" indica as funções puras do Quadro 5 
 1. Conferir os 7 materiais do catálogo (fonte oficial, link abre, tag adequada) e atualizar o Quadro 21 em nova versão da Visão.
 2. Revisar e decidir o PR #25 (protótipo do check-in e do histórico, aberto na `docs` desde a Sprint 4).
 3. Registrar a retrospectiva da Sprint 4 (seção 1).
-4. Decidir os pontos DP-1 a DP-3 da seção 4 antes das issues que dependem deles.
+4. ~~Decidir os pontos DP-1 a DP-3 da seção 4~~: decididos em 15/11/2026 (Visão v2.7 e Arquitetura v2.5).
 5. Criar as issues da seção 5 e o quadro da Sprint 5 no GitHub Projects.
 
 ### 3.3 Casos do roteiro a fechar na Sprint 5 (Quadro 26)
@@ -78,77 +78,77 @@ Posição na `main` (`886e00b`). "Regras" indica as funções puras do Quadro 5 
 
 ## 4 Decisões pendentes do PO
 
-Pontos que os documentos não definem e que afetam issues da Sprint 5. Cada decisão tomada gera nova versão da Visão ou da Arquitetura antes de virar código.
+Pontos que os documentos não definiam e que afetam issues da Sprint 5. Cada decisão tomada gera nova versão da Visão ou da Arquitetura antes de virar código. **Os três pontos foram decididos pelo PO em 15/11/2026.**
 
-| # | Ponto em aberto | Onde aparece | Bloqueia |
-| :--: | :-- | :-- | :-- |
-| DP-1 | **Texto do motivo das recomendações da avaliação.** O Quadro 16 define o motivo de cada regra do check-in (R-D2 a R-D6), mas o Quadro 18 não define motivo para as tags geradas por R-A2 a R-A4, e a R-S5 exige um motivo por recomendação. | Visão, Quadros 18 e 20 (R-S5) | `POST /api/avaliacoes` (recomendações) e tela de resultado |
-| DP-2 | **O check-in do dia mostra os materiais ao ser reaberto?** A Figura 3 diz "exibir resultado já registrado do dia", mas o Quadro 6 define a saída de `GET /api/checkins/hoje` só com p1 a p5, nível e tags. | Arquitetura, Figura 3 e Quadro 6 | Ajuste de `GET /api/checkins/hoje` e tela do check-in |
-| DP-3 | **Saída de `GET /api/avaliacoes/{id}`.** O Quadro 6 indica apenas "200". Sugestão a decidir: os mesmos campos da resposta de `POST /api/avaliacoes`. | Arquitetura, Quadro 6 | `GET /api/avaliacoes/{id}` e tela de resultado a partir do histórico |
+| # | Ponto em aberto | Onde aparece | Bloqueava | Decisão do PO |
+| :--: | :-- | :-- | :-- | :-- |
+| DP-1 | **Texto do motivo das recomendações da avaliação.** O Quadro 16 define o motivo de cada regra do check-in (R-D2 a R-D6), mas o Quadro 18 não define motivo para as tags geradas por R-A2 a R-A4, e a R-S5 exige um motivo por recomendação. | Visão, Quadros 18 e 20 (R-S5) | `POST /api/avaliacoes` (recomendações) e tela de resultado | Um motivo por tag e regra, na nova coluna do Quadro 18 (Visão v2.7). |
+| DP-2 | **O check-in do dia mostra os materiais ao ser reaberto?** A Figura 3 diz "exibir resultado já registrado do dia", mas o Quadro 6 define a saída de `GET /api/checkins/hoje` só com p1 a p5, nível e tags. | Arquitetura, Figura 3 e Quadro 6 | Ajuste de `GET /api/checkins/hoje` e tela do check-in | Sim: `GET /api/checkins/hoje` devolve também as recomendações (Arquitetura v2.5, Quadro 6 e Figura 3). |
+| DP-3 | **Saída de `GET /api/avaliacoes/{id}`.** O Quadro 6 indica apenas "200". Sugestão a decidir: os mesmos campos da resposta de `POST /api/avaliacoes`. | Arquitetura, Quadro 6 | `GET /api/avaliacoes/{id}` e tela de resultado a partir do histórico | Os mesmos campos da resposta de `POST /api/avaliacoes` (Arquitetura v2.5, Quadro 6). |
 
 ## 5 Backlog proposto da Sprint 5
 
-Responsáveis sugeridos conforme os papéis do Quadro 7 da Visão. Os blocos A e B1, B2 e B5 começam na primeira semana; as telas e o roteiro de sistema ficam para a segunda. As issues já existentes (#45, #46 e #47) são reutilizadas.
+Responsáveis sugeridos conforme os papéis do Quadro 7 da Visão. Os blocos A e B1, B2 e B5 começam na primeira semana; as telas e o roteiro de sistema ficam para a segunda. As issues já existentes (#45, #46 e #47) são reutilizadas; as novas foram criadas em 15/11/2026 (#51 a #63).
 
 ### Bloco A – Pendências da Sprint 4 (prioridade máxima)
 
 | ID | Issue | Resp. | Depende de | Requisitos e testes | Base nos documentos |
 | :--: | :-- | :--: | :--: | :-- | :-- |
-| #46 + #47 | [Backend] Seleção de conteúdo conforme o Quadro 20 e TU-06 completo | Luiz Felipe | — | R06, R09; TU-06; M1 = 100%; R-S1 corrigida antes da B3 | Visão, Quadro 20; Arquitetura, Quadro 5; DEF-02, DEF-03 |
+| #46 + #47 | [Backend] Seleção de conteúdo conforme o Quadro 20 e TU-06 completo | Luiz Felipe | — | R06, R09; TU-06; M1 = 100%; R-S1 corrigida antes da #54 | Visão, Quadro 20; Arquitetura, Quadro 5; DEF-02, DEF-03 |
 | #45 | [Backend] Recomendacao e recomendações no `POST /api/checkins` | Luiz Felipe | #46 | R06, R10; TI-03, TI-05 | Visão, R06 e seção 4.5.3; Arquitetura, Figuras 3 e 6, Quadro 6; DEF-01 |
-| A4 | [Frontend] Materiais do dia com motivo após o check-in | Júlio | contrato da #45 (pode usar mock) | R06; prepara TSI-01 | Visão, R06 (título, fonte, resumo, link e motivo) e R-S5 ("Por que estou vendo isto?") |
+| #56 | [Frontend] Materiais do dia com motivo após o check-in | Júlio | contrato da #45 (pode usar mock) | R06; prepara TSI-01 | Visão, R06 (título, fonte, resumo, link e motivo) e R-S5 ("Por que estou vendo isto?") |
 
 ### Bloco B – Avaliação quinzenal (R08, R09, R10)
 
 | ID | Issue | Resp. | Depende de | Requisitos e testes | Base nos documentos |
 | :--: | :-- | :--: | :--: | :-- | :-- |
-| B1 | [Conteúdo/UX] Textos oficiais do PHQ-9 e do GAD-7 em português do Brasil e protótipo das telas de avaliação e resultado | Vinícius | — | R08, R09 | Visão, seção 4.5.2 (PHQ SCREENERS, 2026) e Quadro 18 |
-| B2 | [Backend] Modelo de dados e migração da Avaliacao | Carlos Eduardo | — | R08, R04 (cascata) | Arquitetura, Figura 6 e seção 2.5.3 |
-| B3 | [Backend] `POST /api/avaliacoes`: escores, faixas, nível, orientação e recomendações | Luiz Felipe | #45, B2, DP-1 | R08, R09, R10; TI-06 (perfis A a E) | Visão, Quadros 17 a 20; Arquitetura, Figura 4 e Quadro 6 |
-| B4 | [Backend] `GET /api/avaliacoes` e `GET /api/avaliacoes/{id}` e parte de avaliações do TS-03 | Carlos Eduardo | B2, DP-3 | R12, R14; TS-03 | Visão, R12; Arquitetura, Quadro 6 |
-| B5 | [Frontend] Cliente de API e tipos para avaliações | Danilo | contrato do Quadro 6 | R08, R09, R12 | Arquitetura, Quadro 6 |
-| B6 | [Frontend] Tela da avaliação quinzenal | Júlio | B1, B5 | R08, R10; prepara TSI-03 | Visão, seção 4.5.2 (16 itens 0–3, aviso das duas semanas, item 9 ≥ 1 abre a Tela de Ajuda) |
-| B7 | [Frontend] Tela de resultado da avaliação | Júlio | B1, B5, DP-1 | R09; prepara TSI-03 | Visão, R09 e Quadro 18 (escores, faixas, orientação, materiais, aviso "não é diagnóstico") |
+| #52 | [Conteúdo/UX] Textos oficiais do PHQ-9 e do GAD-7 em português do Brasil e protótipo das telas de avaliação e resultado | Vinícius | — | R08, R09 | Visão, seção 4.5.2 (PHQ SCREENERS, 2026) e Quadro 18 |
+| #51 | [Backend] Modelo de dados e migração da Avaliacao | Carlos Eduardo | — | R08, R04 (cascata) | Arquitetura, Figura 6 e seção 2.5.3 |
+| #54 | [Backend] `POST /api/avaliacoes`: escores, faixas, nível, orientação e recomendações | Luiz Felipe | #45, #51, DP-1 | R08, R09, R10; TI-06 (perfis A a E) | Visão, Quadros 17 a 20; Arquitetura, Figura 4 e Quadro 6 |
+| #55 | [Backend] `GET /api/avaliacoes` e `GET /api/avaliacoes/{id}` e parte de avaliações do TS-03 | Carlos Eduardo | #51, DP-3 | R12, R14; TS-03 | Visão, R12; Arquitetura, Quadro 6 |
+| #53 | [Frontend] Cliente de API e tipos para avaliações | Danilo | contrato do Quadro 6 | R08, R09, R12 | Arquitetura, Quadro 6 |
+| #57 | [Frontend] Tela da avaliação quinzenal | Júlio | #52, #53 | R08, R10; prepara TSI-03 | Visão, seção 4.5.2 (16 itens 0–3, aviso das duas semanas, item 9 ≥ 1 abre a Tela de Ajuda) |
+| #58 | [Frontend] Tela de resultado da avaliação | Júlio | #52, #53, DP-1 | R09; prepara TSI-03 | Visão, R09 e Quadro 18 (escores, faixas, orientação, materiais, aviso "não é diagnóstico") |
 
 ### Bloco C – Histórico (R12)
 
 | ID | Issue | Resp. | Depende de | Requisitos e testes | Base nos documentos |
 | :--: | :-- | :--: | :--: | :-- | :-- |
-| C1 | [Frontend] Avaliações no histórico | Danilo | B4, B5 | R12; prepara TSI-01 | Visão, R12 (data, escores, faixas e nível de todas as avaliações) |
+| #59 | [Frontend] Avaliações no histórico | Danilo | #55, #53 | R12; prepara TSI-01 | Visão, R12 (data, escores, faixas e nível de todas as avaliações) |
 
 ### Bloco D – Exclusão de conta (R04)
 
 | ID | Issue | Resp. | Depende de | Requisitos e testes | Base nos documentos |
 | :--: | :-- | :--: | :--: | :-- | :-- |
-| D1 | [Backend] `DELETE /api/me`: exclusão física da conta e dos dados | Carlos Eduardo | #45, B2 (para o TI-07 cobrir todas as tabelas) | R04, R14; TI-07; TS-02 com exclusão real | Visão, R04; Arquitetura, Quadro 6 e seção 2.5.3 |
-| D2 | [Frontend] Excluir conta com confirmação | Danilo | D1 | R04; prepara TSI-05 (Sprint 6) | Visão, R04 |
+| #60 | [Backend] `DELETE /api/me`: exclusão física da conta e dos dados | Carlos Eduardo | #45, #51 (para o TI-07 cobrir todas as tabelas) | R04, R14; TI-07; TS-02 com exclusão real | Visão, R04; Arquitetura, Quadro 6 e seção 2.5.3 |
+| #61 | [Frontend] Excluir conta com confirmação | Danilo | #60 | R04; prepara TSI-05 (Sprint 6) | Visão, R04 |
 
 ### Bloco E – Qualidade e gestão
 
 | ID | Issue | Resp. | Depende de | Requisitos e testes | Base nos documentos |
 | :--: | :-- | :--: | :--: | :-- | :-- |
-| E1 | [QA] Acompanhamento da Sprint 5 e ciclo 1 do roteiro de sistema | Hugo | todas as anteriores (TSI no fim) | M1 a M5; TSI-01 a TSI-04; Quadro 26 | Visão, seções 5 e 6; [Métricas](../metricas/index.md) |
-| E2 | [PO] Revisão da Sprint 4, planejamento e decisões da Sprint 5 | Martin | — | — | Visão, seções 2.3 e 2.6; esta página |
+| #62 | [QA] Acompanhamento da Sprint 5 e ciclo 1 do roteiro de sistema | Hugo | todas as anteriores (TSI no fim) | M1 a M5; TSI-01 a TSI-04; Quadro 26 | Visão, seções 5 e 6; [Métricas](../metricas/index.md) |
+| #63 | [PO] Revisão da Sprint 4, planejamento e decisões da Sprint 5 | Martin | — | — | Visão, seções 2.3 e 2.6; esta página |
 
 ### Ordem de execução
 
 ```mermaid
 flowchart LR
     S46["#46 + #47<br/>Seleção (Quadro 20)"] --> S45["#45<br/>Recomendacao no check-in"]
-    S45 --> A4["A4<br/>Materiais do dia"]
-    S45 --> B3["B3<br/>POST /api/avaliacoes"]
-    B2["B2<br/>Modelo Avaliacao"] --> B3
-    B2 --> B4["B4<br/>GET avaliações + TS-03"]
-    S45 --> D1["D1<br/>DELETE /api/me"]
+    S45 --> A4["#56<br/>Materiais do dia"]
+    S45 --> B3["#54<br/>POST /api/avaliacoes"]
+    B2["#51<br/>Modelo Avaliacao"] --> B3
+    B2 --> B4["#55<br/>GET avaliações + TS-03"]
+    S45 --> D1["#60<br/>DELETE /api/me"]
     B2 --> D1
-    D1 --> D2["D2<br/>Excluir conta (tela)"]
-    B1["B1<br/>Textos e protótipo"] --> B6["B6<br/>Tela da avaliação"]
-    B5["B5<br/>Cliente de API"] --> B6
-    B1 --> B7["B7<br/>Tela de resultado"]
+    D1 --> D2["#61<br/>Excluir conta (tela)"]
+    B1["#52<br/>Textos e protótipo"] --> B6["#57<br/>Tela da avaliação"]
+    B5["#53<br/>Cliente de API"] --> B6
+    B1 --> B7["#58<br/>Tela de resultado"]
     B5 --> B7
-    B4 --> C1["C1<br/>Avaliações no histórico"]
+    B4 --> C1["#59<br/>Avaliações no histórico"]
     B5 --> C1
-    A4 & B3 & B6 & B7 & C1 --> E1["E1<br/>TSI-01 a TSI-04"]
+    A4 & B3 & B6 & B7 & C1 --> E1["#62<br/>TSI-01 a TSI-04"]
     PO{{"Decisões DP-1 a DP-3"}} -.-> B3
     PO -.-> B4
     PO -.-> B7
