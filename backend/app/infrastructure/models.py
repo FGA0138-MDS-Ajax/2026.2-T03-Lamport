@@ -72,6 +72,9 @@ class RevokedTokenModel(Base):
     __tablename__ = "revoked_tokens"
 
     jti: Mapped[str] = mapped_column(String(64), primary_key=True)
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), index=True
+    )
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
 
 

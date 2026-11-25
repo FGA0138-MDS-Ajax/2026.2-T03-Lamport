@@ -9,7 +9,11 @@ from sqlalchemy.orm import Session
 
 from app.domain.avaliacao import Avaliacao, Faixa
 from app.domain.checkin import Checkin, Nivel, Tag
-from app.domain.errors import CheckinAlreadyExistsError, EmailAlreadyRegisteredError
+from app.domain.errors import (
+    CheckinAlreadyExistsError,
+    EmailAlreadyRegisteredError,
+    NotAuthenticatedError,
+)
 from app.domain.material import Material
 from app.domain.recomendacao import Recomendacao
 from app.domain.users import Consent, User
@@ -113,7 +117,12 @@ class SqlUserRepository:
         return _to_user(model) if model else None
 
     def get_by_email(self, email: str) -> User | None:
-        model = self.session.scalar(select(UserModel).where(UserModel.email == email))
+        # Keep deletion from racing a login that is about to record a failure for this account.
+        model = self.session.scalar(
+            select(UserModel)
+            .where(UserModel.email == email)
+            .with_for_update(read=True, key_share=True)
+        )
         return _to_user(model) if model else None
 
     def add(self, user: User, *consents: Consent) -> None:
@@ -148,18 +157,35 @@ class SqlUserRepository:
         )
         self.session.commit()
 
+    def delete_account(self, user_id: uuid.UUID, attempt_key: str) -> None:
+        deleted_id = self.session.scalar(
+            delete(UserModel).where(UserModel.id == user_id).returning(UserModel.id)
+        )
+        if deleted_id is None:
+            raise NotAuthenticatedError
+        self.session.execute(delete(LoginAttemptModel).where(LoginAttemptModel.key == attempt_key))
+        self.session.commit()
+
 
 class SqlRevokedTokenRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def revoke(self, jti: str, expires_at: datetime) -> None:
+    def revoke(self, user_id: uuid.UUID, jti: str, expires_at: datetime) -> None:
+        # A concurrent account deletion must either cascade this revocation or finish first.
+        owner = self.session.scalar(
+            select(UserModel.id)
+            .where(UserModel.id == user_id)
+            .with_for_update(read=True, key_share=True)
+        )
+        if owner is None:
+            raise NotAuthenticatedError
         self.session.execute(
             delete(RevokedTokenModel).where(RevokedTokenModel.expires_at < func.now())
         )
         self.session.execute(
             insert(RevokedTokenModel)
-            .values(jti=jti, expires_at=expires_at)
+            .values(jti=jti, user_id=user_id, expires_at=expires_at)
             .on_conflict_do_nothing(index_elements=["jti"])
         )
         self.session.commit()

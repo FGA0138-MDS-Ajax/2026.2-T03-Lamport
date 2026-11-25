@@ -195,6 +195,7 @@ A API usa JWT enviado no cabeçalho `Authorization: Bearer <token>`. Senhas são
 | POST   | `/api/auth/login`    | Não          | Retorna `access_token` para `email` e `senha`                 |
 | POST   | `/api/auth/logout`   | Sim          | Revoga o token atual                                          |
 | GET    | `/api/me`            | Sim          | Retorna os dados do usuário autenticado                       |
+| DELETE | `/api/me`            | Sim          | Exclui a conta autenticada e seus dados. Retorna 204 sem corpo. |
 | GET    | `/api/terms`         | Não          | Retorna a versão vigente dos termos de uso                    |
 
 Respostas de erro seguem o formato `{"detail": ...}`: `401` para credenciais ou token inválidos, `409` para e-mail já cadastrado, `422` para dados inválidos, `429` para excesso de tentativas de login e `503` para falha de acesso ao banco.

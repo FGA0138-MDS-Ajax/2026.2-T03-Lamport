@@ -132,4 +132,7 @@ class AuthService:
         return AuthenticatedSession(user=user, claims=claims)
 
     def logout(self, session: AuthenticatedSession) -> None:
-        self.revoked_tokens.revoke(session.claims.jti, session.claims.expires_at)
+        self.revoked_tokens.revoke(session.user.id, session.claims.jti, session.claims.expires_at)
+
+    def delete_account(self, user: User) -> None:
+        self.users.delete_account(user.id, _attempt_key(user.email))
