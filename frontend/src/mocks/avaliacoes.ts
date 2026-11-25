@@ -1,105 +1,115 @@
-import type {
-  Avaliacao,
-  AvaliacaoListItem,
-} from '../api/avaliacoes'
+import type { Avaliacao, AvaliacaoListItem } from '../api/avaliacoes'
 
-const mockAvaliacoes: Avaliacao[] = [
+interface MockAvaliacao {
+  id: string
+  data: string
+  resultado: Avaliacao
+}
+
+const mockAvaliacoes: MockAvaliacao[] = [
   {
-    id: '1',
-    criado_em: '2026-11-20T10:30:00.000Z',
-    respostas_phq9: [1, 0, 1, 0, 0, 1, 0, 0, 0],
-    respostas_gad7: [1, 0, 1, 0, 1, 0, 1],
-    escore_phq9: 3,
-    escore_gad7: 4,
-    faixa_phq9: 'minima',
-    faixa_gad7: 'minima',
-    nivel: 'autocuidado',
-    orientacao:
-      'Continue cuidando do seu bem-estar. Mantenha hábitos saudáveis e procure atividades que contribuam para sua qualidade de vida.',
-    recomendacoes: [
-      {
-        titulo: 'Cuidados com a saúde mental',
-        fonte: 'Ministério da Saúde',
-        resumo:
-          'Informações sobre práticas de autocuidado e manutenção da saúde mental.',
-        url: 'https://www.gov.br/saude',
-        regra: 'R01',
-        motivo: 'Material informativo para promoção do autocuidado.',
-      },
-    ],
+    id: '550e8400-e29b-41d4-a716-446655440001',
+    data: '2026-11-20',
+    resultado: {
+      escore_phq9: 3,
+      escore_gad7: 4,
+      faixa_phq9: 'minima',
+      faixa_gad7: 'minima',
+      nivel: 'autocuidado',
+      orientacao: 'Continue acompanhando como você está. Seguem materiais de autocuidado.',
+      recomendacoes: [
+        {
+          titulo: 'Saúde Mental – Saúde de A a Z',
+          fonte: 'Ministério da Saúde',
+          resumo: 'Explica o que é saúde mental.',
+          url: 'https://www.gov.br/saude/saude-mental',
+          regra: 'R-A4',
+          motivo: 'Suas respostas não indicaram sintomas marcantes nas últimas duas semanas.',
+        },
+      ],
+    },
   },
   {
-    id: '2',
-    criado_em: '2026-11-15T14:00:00.000Z',
-    respostas_phq9: [1, 1, 1, 1, 1, 1, 1, 1, 0],
-    respostas_gad7: [1, 1, 1, 1, 1, 2, 1],
-    escore_phq9: 8,
-    escore_gad7: 9,
-    faixa_phq9: 'leve',
-    faixa_gad7: 'leve',
-    nivel: 'atencao',
-    orientacao:
-      'Seus resultados indicam alguns sinais de sofrimento emocional. Observe como você tem se sentido e considere buscar orientação profissional.',
-    recomendacoes: [
-      {
-        titulo: 'Saúde mental e qualidade de vida',
-        fonte: 'Ministério da Saúde',
-        resumo:
-          'Conteúdo informativo sobre saúde mental, prevenção e busca por ajuda.',
-        url: 'https://www.gov.br/saude',
-        regra: 'R02',
-        motivo: 'Material recomendado para resultados na faixa leve.',
-      },
-    ],
+    id: '550e8400-e29b-41d4-a716-446655440002',
+    data: '2026-11-15',
+    resultado: {
+      escore_phq9: 3,
+      escore_gad7: 10,
+      faixa_phq9: 'minima',
+      faixa_gad7: 'moderada',
+      nivel: 'atencao',
+      orientacao:
+        'Recomendamos conversar com um profissional de saúde. No SUS, a porta de entrada é a Unidade Básica de Saúde (UBS).',
+      recomendacoes: [
+        {
+          titulo: 'Saúde Mental – Saúde de A a Z',
+          fonte: 'Ministério da Saúde',
+          resumo: 'Explica o que é saúde mental.',
+          url: 'https://www.gov.br/saude/saude-mental',
+          regra: 'R-A3',
+          motivo: 'Suas respostas indicam que conversar com um profissional de saúde pode ajudar.',
+        },
+        {
+          titulo: 'Faça o que importa em tempos de estresse',
+          fonte: 'OPAS/OMS',
+          resumo: 'Guia ilustrado da OMS.',
+          url: 'https://www.paho.org/pt/documentos/faca-que-importa',
+          regra: 'R-A3',
+          motivo: 'Seu resultado no GAD-7 ficou na faixa moderada ou acima.',
+        },
+      ],
+    },
   },
   {
-    id: '3',
-    criado_em: '2026-11-10T09:15:00.000Z',
-    respostas_phq9: [2, 2, 2, 2, 2, 2, 2, 1, 1],
-    respostas_gad7: [2, 2, 2, 2, 2, 2, 3],
-    escore_phq9: 16,
-    escore_gad7: 15,
-    faixa_phq9: 'moderadamente_grave',
-    faixa_gad7: 'grave',
-    nivel: 'prioritario',
-    orientacao:
-      'Seus resultados indicam sofrimento emocional significativo. É importante procurar acompanhamento de um profissional de saúde.',
-    recomendacoes: [
-      {
-        titulo: 'Como buscar ajuda em saúde mental',
-        fonte: 'Ministério da Saúde',
-        resumo:
-          'Orientações sobre os serviços de saúde disponíveis e como procurar atendimento.',
-        url: 'https://www.gov.br/saude',
-        regra: 'R03',
-        motivo:
-          'Material recomendado para resultados que exigem atenção profissional.',
-      },
-    ],
+    id: '550e8400-e29b-41d4-a716-446655440003',
+    data: '2026-11-10',
+    resultado: {
+      escore_phq9: 3,
+      escore_gad7: 15,
+      faixa_phq9: 'minima',
+      faixa_gad7: 'grave',
+      nivel: 'prioritario',
+      orientacao:
+        'Suas respostas indicam sintomas intensos. Recomendamos procurar atendimento em saúde nos próximos dias, na sua UBS de referência ou em um CAPS. Se piorar, use a Ajuda Imediata.',
+      recomendacoes: [
+        {
+          titulo: 'Saúde Mental – Saúde de A a Z',
+          fonte: 'Ministério da Saúde',
+          resumo: 'Explica o que é saúde mental.',
+          url: 'https://www.gov.br/saude/saude-mental',
+          regra: 'R-A2',
+          motivo:
+            'Suas respostas indicam sintomas intensos. Este material explica onde buscar atendimento.',
+        },
+      ],
+    },
+  },
+  {
+    id: '550e8400-e29b-41d4-a716-446655440004',
+    data: '2026-11-05',
+    resultado: {
+      escore_phq9: 1,
+      escore_gad7: 4,
+      faixa_phq9: 'minima',
+      faixa_gad7: 'minima',
+      nivel: 'crise',
+      orientacao: 'Tela de Ajuda Imediata. Nenhum material é exibido.',
+      recomendacoes: [],
+    },
   },
 ]
 
 export const mockAvaliacoesApi = {
   listAvaliacoes: async (): Promise<AvaliacaoListItem[]> => {
-    return mockAvaliacoes.map(
-      ({
-        id,
-        criado_em,
-        escore_phq9,
-        escore_gad7,
-        faixa_phq9,
-        faixa_gad7,
-        nivel,
-      }) => ({
-        id,
-        criado_em,
-        escore_phq9,
-        escore_gad7,
-        faixa_phq9,
-        faixa_gad7,
-        nivel,
-      }),
-    )
+    return mockAvaliacoes.map(({ id, data, resultado }) => ({
+      id,
+      data,
+      escore_phq9: resultado.escore_phq9,
+      escore_gad7: resultado.escore_gad7,
+      faixa_phq9: resultado.faixa_phq9,
+      faixa_gad7: resultado.faixa_gad7,
+      nivel: resultado.nivel,
+    }))
   },
 
   getAvaliacao: async (id: string): Promise<Avaliacao> => {
@@ -109,6 +119,6 @@ export const mockAvaliacoesApi = {
       throw new Error('Avaliação não encontrada')
     }
 
-    return avaliacao
+    return avaliacao.resultado
   },
 }

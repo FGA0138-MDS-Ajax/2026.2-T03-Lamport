@@ -14,8 +14,7 @@ const respostaAvaliacao = {
   faixa_phq9: 'leve',
   faixa_gad7: 'leve',
   nivel: 'autocuidado',
-  orientacao:
-    'Continue acompanhando como você está. Seguem materiais de autocuidado.',
+  orientacao: 'Continue acompanhando como você está. Seguem materiais de autocuidado.',
   recomendacoes: [
     {
       titulo: 'Cuidados com a saúde mental',
@@ -28,6 +27,23 @@ const respostaAvaliacao = {
   ],
 }
 
+const itemHistorico = {
+  id: '550e8400-e29b-41d4-a716-446655440000',
+  data: '2026-11-20',
+  escore_phq9: 6,
+  escore_gad7: 5,
+  faixa_phq9: 'leve',
+  faixa_gad7: 'leve',
+  nivel: 'autocuidado',
+}
+
+function criarResposta(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  })
+}
+
 afterEach(() => {
   vi.unstubAllGlobals()
 })
@@ -35,19 +51,11 @@ afterEach(() => {
 describe('avaliacoesApi', () => {
   describe('createAvaliacao', () => {
     it('envia as respostas ao backend e retorna o resultado da avaliação', async () => {
-      const fetchMock = vi.fn().mockResolvedValue(
-        new Response(JSON.stringify(respostaAvaliacao), {
-          status: 201,
-          headers: { 'Content-Type': 'application/json' },
-        }),
-      )
+      const fetchMock = vi.fn().mockResolvedValue(criarResposta(respostaAvaliacao, 201))
 
       vi.stubGlobal('fetch', fetchMock)
 
-      const resultado = await avaliacoesApi.createAvaliacao(
-        token,
-        dadosAvaliacao,
-      )
+      const resultado = await avaliacoesApi.createAvaliacao(token, dadosAvaliacao)
 
       expect(fetchMock).toHaveBeenCalledOnce()
 
@@ -67,18 +75,13 @@ describe('avaliacoesApi', () => {
     })
 
     it('propaga erros retornados pelo backend', async () => {
-      const fetchMock = vi.fn().mockResolvedValue(
-        new Response(JSON.stringify({ detail: 'Respostas inválidas' }), {
-          status: 422,
-          headers: { 'Content-Type': 'application/json' },
-        }),
-      )
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValue(criarResposta({ detail: 'Respostas inválidas' }, 422))
 
       vi.stubGlobal('fetch', fetchMock)
 
-      await expect(
-        avaliacoesApi.createAvaliacao(token, dadosAvaliacao),
-      ).rejects.toMatchObject({
+      await expect(avaliacoesApi.createAvaliacao(token, dadosAvaliacao)).rejects.toMatchObject({
         name: 'ApiError',
         status: 422,
         message: 'Respostas inválidas',
@@ -87,52 +90,105 @@ describe('avaliacoesApi', () => {
   })
 
   describe('listAvaliacoes', () => {
-    it('lista as avaliações sem retornar os detalhes das recomendações', async () => {
+    it('consulta o histórico de avaliações do usuário', async () => {
+      const fetchMock = vi.fn().mockResolvedValue(criarResposta([itemHistorico]))
+
+      vi.stubGlobal('fetch', fetchMock)
+
       const resultado = await avaliacoesApi.listAvaliacoes(token)
 
-      expect(resultado.length).toBeGreaterThan(0)
+      expect(fetchMock).toHaveBeenCalledOnce()
 
-      expect(resultado[0]).toMatchObject({
-        id: expect.any(String),
-        criado_em: expect.any(String),
-        escore_phq9: expect.any(Number),
-        escore_gad7: expect.any(Number),
-        faixa_phq9: expect.any(String),
-        faixa_gad7: expect.any(String),
-        nivel: expect.any(String),
+      const [url, options] = fetchMock.mock.calls[0]
+
+      expect(url).toBe('http://localhost:8000/api/avaliacoes')
+      expect(options).toMatchObject({
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
 
-      expect(resultado[0]).not.toHaveProperty('recomendacoes')
-      expect(resultado[0]).not.toHaveProperty('orientacao')
-      expect(resultado[0]).not.toHaveProperty('respostas_phq9')
-      expect(resultado[0]).not.toHaveProperty('respostas_gad7')
+      expect(resultado).toEqual([itemHistorico])
+    })
+
+    it('retorna uma lista vazia quando o usuário não possui avaliações', async () => {
+      const fetchMock = vi.fn().mockResolvedValue(criarResposta([]))
+
+      vi.stubGlobal('fetch', fetchMock)
+
+      const resultado = await avaliacoesApi.listAvaliacoes(token)
+
+      expect(resultado).toEqual([])
+    })
+
+    it('propaga erros retornados pelo backend', async () => {
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValue(criarResposta({ detail: 'Not authenticated' }, 401))
+
+      vi.stubGlobal('fetch', fetchMock)
+
+      await expect(avaliacoesApi.listAvaliacoes(token)).rejects.toMatchObject({
+        name: 'ApiError',
+        status: 401,
+      })
     })
   })
 
   describe('getAvaliacao', () => {
     it('consulta uma avaliação pelo ID', async () => {
-      const resultado = await avaliacoesApi.getAvaliacao(token, '1')
+      const fetchMock = vi.fn().mockResolvedValue(criarResposta(respostaAvaliacao))
 
-      expect(resultado).toMatchObject({
-        id: '1',
-        escore_phq9: 3,
-        escore_gad7: 4,
-        faixa_phq9: 'minima',
-        faixa_gad7: 'minima',
-        nivel: 'autocuidado',
-        respostas_phq9: [1, 0, 1, 0, 0, 1, 0, 0, 0],
-        respostas_gad7: [1, 0, 1, 0, 1, 0, 1],
+      vi.stubGlobal('fetch', fetchMock)
+
+      const id = '550e8400-e29b-41d4-a716-446655440000'
+      const resultado = await avaliacoesApi.getAvaliacao(token, id)
+
+      expect(fetchMock).toHaveBeenCalledOnce()
+
+      const [url, options] = fetchMock.mock.calls[0]
+
+      expect(url).toBe(`http://localhost:8000/api/avaliacoes/${id}`)
+      expect(options).toMatchObject({
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
 
-      expect(resultado.recomendacoes).toBeDefined()
-      expect(resultado.orientacao).toBeTruthy()
-      expect(resultado.criado_em).toBeTruthy()
+      expect(resultado).toEqual(respostaAvaliacao)
+      expect(resultado).not.toHaveProperty('id')
+      expect(resultado).not.toHaveProperty('criado_em')
+      expect(resultado).not.toHaveProperty('respostas_phq9')
+      expect(resultado).not.toHaveProperty('respostas_gad7')
     })
 
-    it('retorna erro ao consultar uma avaliação inexistente', async () => {
+    it('propaga erro 404 ao consultar uma avaliação inexistente ou de outro usuário', async () => {
+      const fetchMock = vi
+        .fn()
+        .mockResolvedValue(criarResposta({ detail: 'Avaliacao not found' }, 404))
+
+      vi.stubGlobal('fetch', fetchMock)
+
       await expect(
-        avaliacoesApi.getAvaliacao(token, 'id-inexistente'),
-      ).rejects.toThrow('Avaliação não encontrada')
+        avaliacoesApi.getAvaliacao(token, '550e8400-e29b-41d4-a716-446655440000'),
+      ).rejects.toMatchObject({
+        name: 'ApiError',
+        status: 404,
+        message: 'Avaliacao not found',
+      })
+    })
+
+    it('propaga erro 422 quando o ID possui formato inválido', async () => {
+      const fetchMock = vi.fn().mockResolvedValue(criarResposta({ detail: [] }, 422))
+
+      vi.stubGlobal('fetch', fetchMock)
+
+      await expect(avaliacoesApi.getAvaliacao(token, 'id-invalido')).rejects.toMatchObject({
+        name: 'ApiError',
+        status: 422,
+      })
     })
   })
 })

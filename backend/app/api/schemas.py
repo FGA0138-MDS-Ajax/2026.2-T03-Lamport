@@ -120,3 +120,21 @@ class AvaliacaoCreatedResponse(BaseModel):
     nivel: Nivel
     orientacao: str
     recomendacoes: list[RecomendacaoResponse] = Field(default_factory=list)
+
+
+class AvaliacaoItemResponse(BaseModel):
+    """Item do histórico de avaliações (Arquitetura, Quadro 6: GET /api/avaliacoes)."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    data: date
+    escore_phq9: int
+    escore_gad7: int
+    faixa_phq9: Faixa
+    faixa_gad7: Faixa
+    nivel: Nivel
+
+
+# DP-3: GET /api/avaliacoes/{id} devolve os mesmos campos de POST /api/avaliacoes.
+AvaliacaoDetailResponse = AvaliacaoCreatedResponse

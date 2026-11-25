@@ -1,18 +1,12 @@
 import type { Nivel } from './checkins'
 import { request } from './client'
-import { mockAvaliacoesApi } from '../mocks/avaliacoes'
 
 export interface CreateAvaliacaoData {
   phq9: number[]
   gad7: number[]
 }
 
-export type Faixa =
-  | 'minima'
-  | 'leve'
-  | 'moderada'
-  | 'moderadamente_grave'
-  | 'grave'
+export type Faixa = 'minima' | 'leve' | 'moderada' | 'moderadamente_grave' | 'grave'
 
 export interface Recomendacao {
   titulo: string
@@ -24,8 +18,8 @@ export interface Recomendacao {
 }
 
 /**
- * Resultado retornado pelo POST /api/avaliacoes.
- * Corresponde ao schema AvaliacaoCreatedResponse do backend.
+ * Resposta de POST /api/avaliacoes e GET /api/avaliacoes/{id}.
+ * Corresponde a AvaliacaoCreatedResponse do backend.
  */
 export interface ResultadoAvaliacao {
   escore_phq9: number
@@ -37,9 +31,13 @@ export interface ResultadoAvaliacao {
   recomendacoes: Recomendacao[]
 }
 
+/**
+ * Item retornado por GET /api/avaliacoes.
+ * Corresponde a AvaliacaoItemResponse do backend.
+ */
 export interface AvaliacaoListItem {
   id: string
-  criado_em: string
+  data: string
   escore_phq9: number
   escore_gad7: number
   faixa_phq9: Faixa
@@ -48,14 +46,12 @@ export interface AvaliacaoListItem {
 }
 
 /**
- * Representação completa utilizada pelos mocks de consulta individual.
+ * Tipo de compatibilidade para componentes que ainda utilizam
+ * metadados da implementação anterior da Issue #58.
+ *
+ * Esses campos adicionais não são retornados pelo GET individual.
  */
-export interface Avaliacao extends ResultadoAvaliacao {
-  id: string
-  criado_em: string
-  respostas_phq9: number[]
-  respostas_gad7: number[]
-}
+export type Avaliacao = ResultadoAvaliacao
 
 export const avaliacoesApi = {
   createAvaliacao: async (
@@ -69,12 +65,17 @@ export const avaliacoesApi = {
     })
   },
 
-  listAvaliacoes: async (
-    _token: string,
-  ): Promise<AvaliacaoListItem[]> => mockAvaliacoesApi.listAvaliacoes(),
+  listAvaliacoes: async (token: string): Promise<AvaliacaoListItem[]> => {
+    return request<AvaliacaoListItem[]>('/avaliacoes', {
+      method: 'GET',
+      token,
+    })
+  },
 
-  getAvaliacao: async (
-    _token: string,
-    id: string,
-  ): Promise<Avaliacao> => mockAvaliacoesApi.getAvaliacao(id),
+  getAvaliacao: async (token: string, id: string): Promise<Avaliacao> => {
+    return request<Avaliacao>(`/avaliacoes/${id}`, {
+      method: 'GET',
+      token,
+    })
+  },
 }

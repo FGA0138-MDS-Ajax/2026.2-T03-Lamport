@@ -1,11 +1,15 @@
 import uuid
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from enum import StrEnum
 from typing import Protocol
+from zoneinfo import ZoneInfo
 
 from app.domain.checkin import Nivel, Tag
 from app.domain.recomendacao import Recomendacao
+
+# Mesmo fuso usado para a data do check-in.
+FUSO_AVALIACAO = ZoneInfo("America/Sao_Paulo")
 
 
 def _now() -> datetime:
@@ -55,6 +59,10 @@ class Avaliacao:
     @property
     def usuario_id(self) -> uuid.UUID:
         return self.user_id
+
+    @property
+    def data(self) -> date:
+        return self.criado_em.astimezone(FUSO_AVALIACAO).date()
 
     @property
     def orientacao(self) -> str:
