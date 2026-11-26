@@ -1,0 +1,26 @@
+{
+    "escore_phq9": 10,
+    "escore_gad7": 5,
+    "faixa_phq9": "moderada",
+    "faixa_gad7": "leve",
+    "nivel": "atencao",
+    "orientacao": "Recomendamos conversar com um profissional de saúde. No SUS, a porta de entrada é a Unidade Básica de Saúde (UBS).",
+    "recomendacoes": [
+        {
+            "titulo": "Saúde Mental – Saúde de A a Z",
+            "fonte": "Ministério da Saúde",
+            "resumo": "Explica o que é saúde mental e como o corpo, as emoções, as relações e as condições de vida influenciam o bem-estar. Mostra também onde buscar cuidado na rede pública de saúde.",
+            "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental",
+            "regra": "R-A3",
+            "motivo": "Suas respostas indicam que conversar com um profissional de saúde pode ajudar."
+        },
+        {
+            "titulo": "Depressão – Saúde de A a Z",
+            "fonte": "Ministério da Saúde",
+            "resumo": "Apresenta o que é a depressão, os sinais mais comuns e as formas de tratamento e prevenção. O diagnóstico é feito por um médico, e o atendimento pode acontecer na rede pública de saúde.",
+            "url": "https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao",
+            "regra": "R-A3",
+            "motivo": "Seu resultado no PHQ-9 ficou na faixa moderada ou acima."
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+TSI-04: botão visível na tela de login: true
+TSI-04: URL após clicar: http://localhost:8080/risco; CVV 188: true; SAMU 192: true
+tsi01: após cadastro/login a URL é http://localhost:8080/
+tsi01: POST /api/checkins → 201 {"nivel":"autocuidado","tags":["humor"],"recomendacoes":[{"titulo":"Depressão – Saúde de A a Z","fonte":"Ministério da Saúde","resumo":"Apresenta o que é a depressão, os sinais mais comuns e as formas de tratamento e prevenção. O diagnóstico é feito por um médico, e o atendimento pode acontecer na rede pública de saúde.","url":"https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao","regra":"R-D2","motivo":"Você indicou humor ruim ou muito ruim hoje."}]}
+tsi01: após o envio a URL é http://localhost:8080/dailycheckin
+TSI-01: materiais da resposta exibidos na tela: Depressão – Saúde de A a Z=true
+TSI-01: motivo exibido: true
+TSI-01: href do link: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao; target=_blank
+TSI-01: nova aba abriu em https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao; título "Depressão — Ministério da Saúde"
+TSI-01: histórico: Histórico Seus últimos 30 check-ins. Hoje Humor: Ruim Temas: Humor
+tsi02: após cadastro/login a URL é http://localhost:8080/
+tsi02: POST /api/checkins → 201 {"nivel":"crise","tags":[],"recomendacoes":[]}
+tsi02: após o envio a URL é http://localhost:8080/risco
+TSI-02: URL: http://localhost:8080/risco; CVV 188: true; SAMU 192: true
+tsi03: após cadastro/login a URL é http://localhost:8080/
+TSI-03: links e botões na página inicial: Sintoniza | ♥
+Preciso de ajuda agora | Início | Histórico | Sair | Início | Histórico | Sair da conta | Check-in Diário | Excluir conta | Termos de uso e privacidade
+TSI-03: rota /avaliacao: título "Página não encontrada"
+TSI-03: rota /avaliacoes: título "Página não encontrada"
+TSI-03: POST /api/avaliacoes (perfil B, pela API) → 201; id 215e3c81-324e-47b9-a3ba-d533a5c20792
+TSI-03: URL http://localhost:8080/avaliacoes/215e3c81-324e-47b9-a3ba-d533a5c20792; contém 10: true; 5: true; Moderada: true; Leve: true; UBS: true; "não é diagnóstico": true; links de material: 2
+TSI-03: texto da tela: Resultado da avaliação Este resultado não é um diagnóstico. Ele resume suas respostas sobre as últimas duas semanas e não substitui a avaliação de um profissional de saúde. Orientação Procurar a UBS Recomendamos conversar com um profissional de saúde. No SUS, a porta de entrada é a Unidade Básica de Saúde (UBS). Seus escores PHQ-9 Sintomas de depressão 10 de 27 Faixa: Moderada Mínima 0–4 Leve 5–9 Moderada Sua faixa 10–14 Moderadamente grave 15–19 Grave 20–27 GAD-7 Sintomas de ansiedade 5 de 21 Faixa: Leve Mínima 0–4 Leve Sua faixa 5–9 Moderada 10–14 Grave 15–21 O escore é a soma das respostas: de 0 a 27 pontos no PHQ-9 e de 0 a 21 pontos no GAD-7. As faixas são classificações dos instrumentos e não representam um diagnóstico. Materiais recomendados Separamos materiais de fontes oficiais com base no seu resultado. Saúde Mental – Saúde de A a Z Fonte: Ministério da Saúde Explica o que é sa
+tsi05: após cadastro/login a URL é http://localhost:8080/
+tsi05: POST /api/checkins → 201 {"nivel":"autocuidado","tags":["humor"],"recomendacoes":[{"titulo":"Depressão – Saúde de A a Z","fonte":"Ministério da Saúde","resumo":"Apresenta o que é a depressão, os sinais mais comuns e as formas de tratamento e prevenção. O diagnóstico é feito por um médico, e o atendimento pode acontecer na rede pública de saúde.","url":"https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao","regra":"R-D2","motivo":"Você indicou humor ruim ou muito ruim hoje."}]}
+tsi05: após o envio a URL é http://localhost:8080/dailycheckin
+TSI-03: avaliação de outro usuário: Avaliação não encontrada. Verifique o endereço ou volte ao histórico.
+TSI-05: confirmação: Excluir sua conta? Todos os seus dados (check-ins, avaliações e recomendações) serão apagados sem possibilidade de recuperação. Cancelar Excluir definitivamente
+TSI-05: após Cancelar: GET /api/me → 200; URL http://localhost:8080/
+TSI-05: DELETE /api/me → 204; URL após excluir http://localhost:8080/login; token na sessão: removido
+TSI-05: login com as mesmas credenciais → 401; URL http://localhost:8080/login; mensagem: Entrar Acesse sua conta para acompanhar seu bem-estar. E-mail ou senha incorretos. E-mail Senha Entrar Ainda não tem conta? Criar conta
