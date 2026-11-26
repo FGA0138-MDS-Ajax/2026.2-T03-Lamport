@@ -4,6 +4,20 @@ import { useAuth } from '../auth/AuthContext'
 import { avaliacoesApi, type AvaliacaoListItem } from '../api/avaliacoes'
 import { checkinsApi, type Checkin } from '../api/checkins'
 import { faixaLabels, nivelLabels } from '../constants/avaliacao'
+import { useNavigate } from 'react-router'
+
+function CheckinButton() {
+  const navigate = useNavigate()
+  const handleCheckin = () => {
+    navigate('/DailyCheckin')
+  }
+
+  return (
+    <button type="button" className="button button-primary" onClick={handleCheckin}>
+      {'Fazer o primeiro check-in'}
+    </button>
+  )
+}
 
 const tagLabels: Record<string, string> = {
   HUMOR: 'Humor',
@@ -102,9 +116,7 @@ function CheckinsSection({ token }: { token: string | null }) {
           {checkins.length === 0 ? (
             <div className="history-empty">
               <p>Você ainda não fez nenhum check-in.</p>
-              <button type="button" className="button button-primary history-empty-button">
-                Fazer o primeiro check-in
-              </button>
+              <CheckinButton />
             </div>
           ) : (
             <div className="history-list">
