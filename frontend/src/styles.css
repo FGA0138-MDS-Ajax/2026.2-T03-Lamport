@@ -293,6 +293,49 @@ a {
   }
 }
 
+/* Exclusão de conta (R04) */
+
+.account-delete {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.account-delete h2 {
+  margin-top: 0;
+  color: var(--color-error);
+}
+
+.account-delete-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.account-delete-actions .button-secondary {
+  padding: 0.625rem 1rem;
+}
+
+.button-danger {
+  background: var(--color-error);
+  color: #fff;
+}
+
+.button-danger:hover:not(:disabled) {
+  background: #8c1d17;
+}
+
+.button-danger-outline {
+  background: transparent;
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.button-danger-outline:hover:not(:disabled) {
+  background: var(--color-error-bg);
+}
+
 /* Navegação do cabeçalho */
 
 .header-actions {
