@@ -1,0 +1,19 @@
+TSI-04: botão visível na tela de login: true
+TSI-04: URL após clicar: http://localhost:8080/risco; CVV 188: true; SAMU 192: true
+tsi01: após cadastro/login a URL é http://localhost:8080/
+tsi01: POST /api/checkins → 201 {"nivel":"autocuidado","tags":["humor"],"recomendacoes":[{"titulo":"Depressão – Saúde de A a Z","fonte":"Ministério da Saúde","resumo":"Apresenta o que é a depressão, os sinais mais comuns e as formas de tratamento e prevenção. O diagnóstico é feito por um médico, e o atendimento pode acontecer na rede pública de saúde.","url":"https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao","regra":"R-D2","motivo":"Você indicou humor ruim ou muito ruim hoje."}]}
+tsi01: após o envio a URL é http://localhost:8080/dailycheckin
+TSI-01: materiais da resposta exibidos na tela: Depressão – Saúde de A a Z=true
+TSI-01: motivo exibido: true
+TSI-01: href do link: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao; target=_blank
+TSI-01: nova aba abriu em https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao; título "Depressão — Ministério da Saúde"
+TSI-01: histórico: Histórico Seus últimos 30 check-ins. Hoje Humor: Ruim Temas: Humor
+tsi02: após cadastro/login a URL é http://localhost:8080/
+tsi02: POST /api/checkins → 201 {"nivel":"crise","tags":[],"recomendacoes":[]}
+tsi02: após o envio a URL é http://localhost:8080/risco
+TSI-02: URL: http://localhost:8080/risco; CVV 188: true; SAMU 192: true
+tsi03: após cadastro/login a URL é http://localhost:8080/
+TSI-03: links e botões na página inicial: Sintoniza | ♥
+Preciso de ajuda agora | Início | Histórico | Sair | Início | Histórico | Sair da conta | Check-in Diário | Termos de uso e privacidade
+TSI-03: rota /avaliacao: título "Página não encontrada"
+TSI-03: rota /avaliacoes: título "Página não encontrada"
