@@ -466,6 +466,34 @@ a {
   line-height: 1.5;
 }
 
+.history-section + .history-section {
+  margin-top: 2rem;
+}
+
+.history-section h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+}
+
+.history-item-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.history-item-link:hover,
+.history-item-link:focus-visible {
+  border-color: var(--color-primary);
+}
+
+.history-score {
+  margin: 0 0 0.25rem;
+  font-size: 0.875rem;
+}
+
+.history-score:last-child {
+  margin-bottom: 0;
+}
+
 .history-empty {
   display: flex;
   flex-direction: column;

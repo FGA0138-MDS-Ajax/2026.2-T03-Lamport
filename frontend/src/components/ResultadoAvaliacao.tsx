@@ -1,34 +1,12 @@
 import { Link } from 'react-router'
 import type { Faixa, ResultadoAvaliacao as ResultadoAvaliacaoType } from '../api/avaliacoes'
 import { AJUDA_PATH } from '../constants/ajuda'
+import { faixaLabels, nivelLabels } from '../constants/avaliacao'
 
 interface ResultadoAvaliacaoProps {
   resultado: ResultadoAvaliacaoType
   recemRegistrada?: boolean
 }
-
-const faixaLabels: Record<Faixa, string> = {
-  minima: 'Mínima',
-  leve: 'Leve',
-  moderada: 'Moderada',
-  moderadamente_grave: 'Moderadamente grave',
-  grave: 'Grave',
-}
-
-const nivelConfig = {
-  autocuidado: {
-    titulo: 'Orientação de autocuidado',
-  },
-  atencao: {
-    titulo: 'Procurar a UBS',
-  },
-  prioritario: {
-    titulo: 'Atenção prioritária',
-  },
-  crise: {
-    titulo: 'Ajuda imediata',
-  },
-} as const
 
 const faixasPhq9 = [
   { faixa: 'minima', label: 'Mínima', intervalo: '0–4' },
@@ -113,8 +91,6 @@ export function ResultadoAvaliacao({
   resultado,
   recemRegistrada = false,
 }: ResultadoAvaliacaoProps) {
-  const config = nivelConfig[resultado.nivel]
-
   const recomendacoes = resultado.recomendacoes
 
   return (
@@ -139,7 +115,7 @@ export function ResultadoAvaliacao({
 
       <section className="resultado-orientacao" aria-labelledby="orientacao-title">
         <h2 id="orientacao-title">Orientação</h2>
-        <h3>{config.titulo}</h3>
+        <h3>{nivelLabels[resultado.nivel]}</h3>
         <p>{resultado.orientacao}</p>
         {resultado.nivel === 'crise' && (
           <Link className="button button-primary resultado-ajuda-link" to={AJUDA_PATH}>
