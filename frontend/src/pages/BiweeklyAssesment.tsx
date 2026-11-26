@@ -5,6 +5,7 @@ import { BWASSESMENT_QUESTIONS, type BWAssesmmentQuestion } from '../constants/b
 import { checkinsApi } from '../api/checkins'
 import { ApiError } from '../api/client'
 import { AJUDA_PATH } from '../constants/ajuda'
+import { avaliacoesApi, type CreateAvaliacaoData } from '../api/avaliacoes'
 
 type AnswerValue = number | boolean
 type Option = { readonly value: AnswerValue; readonly label: string }
@@ -70,6 +71,33 @@ export function BiweeklyAssesment() {
     })
   }
 
+  function createAssesmentDataFromAnswers(data: CreateAssesmentData): CreateAvaliacaoData {
+    const AvaliacaoData: CreateAvaliacaoData = {
+        phq9: [
+            data.phq9_q1 ?? 0,
+            data.phq9_q2 ?? 0,
+            data.phq9_q3 ?? 0,
+            data.phq9_q4 ?? 0,
+            data.phq9_q5 ?? 0,
+            data.phq9_q6 ?? 0,
+            data.phq9_q7 ?? 0,
+            data.phq9_q8 ?? 0,
+            data.phq9_q9 ?? 0,
+        ],
+        gad7: [
+            data.gad7_q1 ?? 0,
+            data.gad7_q2 ?? 0,
+            data.gad7_q3 ?? 0,
+            data.gad7_q4 ?? 0,
+            data.gad7_q5 ?? 0,
+            data.gad7_q6 ?? 0,
+            data.gad7_q7 ?? 0,
+        ],
+    }
+
+    return AvaliacaoData
+  }
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!canSubmit || submitting) return
@@ -104,7 +132,7 @@ export function BiweeklyAssesment() {
 
     const hasRisk = AssesmentData.phq9_q9 >= 1;
     try {
-      await checkinsApi.createAssesment(token as string, AssesmentData)
+      await avaliacoesApi.createAvaliacao(token as string, createAssesmentDataFromAnswers(AssesmentData))
       navigate(hasRisk ? AJUDA_PATH : '/')
     } catch {
       setError('Não foi possível enviar o check-in. Tente novamente.')
@@ -117,8 +145,9 @@ export function BiweeklyAssesment() {
   return (
     <section className="card" aria-labelledby="checkin-title">
       <h1 id="checkin-title">Avaliação quinzenal</h1>
+
       <p>
-        Você está conectado como <strong>{user.email}</strong>.
+        Durante as últimas 2 semanas, com que freqüência você foi incomodado/a por qualquer um dos problemas abaixo?
       </p>
 
       <form onSubmit={handleSubmit}>
