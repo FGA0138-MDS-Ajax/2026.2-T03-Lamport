@@ -1,6 +1,6 @@
 # Sprint 5: Pendências da Sprint 4, avaliação e histórico
 
-**12/11 a 25/11/2026** · Base: [Visão v2.7](../visao-produto-projeto.md) e [Arquitetura v2.5](../arquitetura.md) · Código analisado: `main` no commit `886e00b` (PR #44).
+**12/11 a 25/11/2026** · Base: [Visão v2.8](../visao-produto-projeto.md) e [Arquitetura v2.5](../arquitetura.md) · Código analisado: `main` no commit `886e00b` (PR #44).
 
 Esta página registra a revisão da Sprint 4 pelo PO, o estado do produto requisito a requisito, as pendências e o backlog proposto para a Sprint 5. O backlog é a base para criar as issues; cada issue deve citar a seção ou o quadro dos documentos de que vem. O que não está nos documentos entra como decisão pendente do PO (seção 4), e não diretamente na issue.
 
@@ -18,14 +18,25 @@ A conferência do QA está em [Métricas da Sprint 4](../metricas/sprint-4.md). 
 
 **Decisão do PO sobre o DEF-02 (Visão v2.6):** vale o Quadro 20. O código e os testes de `selecionar_materiais` se ajustam a R-S1 a R-S6 como estão escritas. A correção da R-S1 (ordem de prioridade com AJUDA_PROFISSIONAL) é obrigatória antes de ligar a seleção à avaliação: sem ela, quem estiver em N2 receberia materiais de BEM_ESTAR, o que seria defeito crítico (risco R3).
 
-### Lições da Sprint 4 (proposta para a retrospectiva)
+### Retrospectiva da Sprint 4
 
-Os pontos abaixo saem dos dados da conferência do QA e devem ser confirmados ou ajustados pela equipe na retrospectiva.
+Registrada em 25/11/2026. A equipe confirmou as quatro ações propostas a partir dos dados da conferência do QA, sem ajustes:
 
-1. **Duas issues foram fechadas sem cumprir o critério de aceite** (#5 e #17). Proposta: fechar a issue só pelo PR que atende todos os critérios, com o PO marcando a lista de aceite antes do merge (Definição de Pronto, seção 3).
-2. **Uma dependência entre issues não foi respeitada:** a #5 foi fechada antes de existir o modelo `Material` (#19). Proposta: registrar "Depende de" em cada issue e não iniciar a integração antes da dependência estar na `main`.
-3. **Testes que passam sem verificar o resultado esperado do roteiro** (TI-03 confere só nível e tags). Proposta: cada teste do roteiro cita o ID do caso e confere todos os itens da coluna "Resultado esperado" do Quadro 26.
-4. **26% das execuções da CI em PR falharam** (10 de 38), todas corrigidas antes do merge. A CI cumpriu sua função; rodar `pytest` e `npm test` localmente antes do push reduz o retrabalho.
+1. **Duas issues foram fechadas sem cumprir o critério de aceite** (#5 e #17). Ação: fechar a issue só pelo PR que atende todos os critérios, com o PO marcando a lista de aceite antes do merge (Definição de Pronto, seção 3).
+2. **Uma dependência entre issues não foi respeitada:** a #5 foi fechada antes de existir o modelo `Material` (#19). Ação: registrar "Depende de" em cada issue e não iniciar a integração antes da dependência estar na `main`.
+3. **Testes que passam sem verificar o resultado esperado do roteiro** (TI-03 confere só nível e tags). Ação: cada teste do roteiro cita o ID do caso e confere todos os itens da coluna "Resultado esperado" do Quadro 26.
+4. **26% das execuções da CI em PR falharam** (10 de 38), todas corrigidas antes do merge. Ação: rodar `pytest` e `npm test` localmente antes do push.
+
+**Acompanhamento na Sprint 5** (situação em 25/11/2026, para a retrospectiva da Sprint 5):
+
+| Ação | Situação | Evidência |
+| :--: | :--: | :-- |
+| 1 | Não seguida | As 14 issues de código e conteúdo (#45 a #47 e #51 a #61) foram fechadas em 25 e 26/11 com nenhum critério de aceite marcado. Nenhuma ficou ligada ao PR que a atende: os PRs vão para a `developer`, e o `Closes #n` só fecha a issue no merge na branch padrão. |
+| 2 | Parcial | Todas as issues registram "Depende de", e a ordem dos merges respeitou as dependências da seção 5 (por exemplo, #66 antes de #67, e #67 e #68 antes de #69 e #73). As dependências entraram na `developer`, não na `main`, que continua em `886e00b`. |
+| 3 | Parcial | Os testes citam o ID em TU-06, TI-03 e TS-03; os testes de TI-05, TI-06 e TI-07 não citam o ID. A conferência dos resultados esperados fica com o QA (#62). |
+| 4 | Seguida | 1 de 17 execuções da CI em PR falhou (6%), contra 26% na Sprint 4. |
+
+Ponto novo para a retrospectiva da Sprint 5: 7 dos 12 PRs de código da sprint foram mergeados sem revisão aprovada de outro integrante (#66, #67, #70, #71, #72, #74 e #76), e o #66 foi mergeado com mudanças pedidas. A Figura 4 e a Definição de Pronto exigem essa revisão.
 
 ## 2 Estado do produto por requisito
 
@@ -59,11 +70,12 @@ Posição na `main` (`886e00b`). "Regras" indica as funções puras do Quadro 5 
 
 ### 3.2 Tarefas do PO
 
-1. Conferir os 7 materiais do catálogo (fonte oficial, link abre, tag adequada) e atualizar o Quadro 21 em nova versão da Visão.
-2. Revisar e decidir o PR #25 (protótipo do check-in e do histórico, aberto na `docs` desde a Sprint 4).
-3. Registrar a retrospectiva da Sprint 4 (seção 1).
+1. ~~Conferir os 7 materiais do catálogo (fonte oficial, link abre, tag adequada) e atualizar o Quadro 21 em nova versão da Visão~~: conferidos em 25/11/2026, sem alteração (Visão v2.8, Quadro 21).
+2. ~~Revisar e decidir o PR #25 (protótipo do check-in e do histórico, aberto na `docs` desde a Sprint 4)~~: mergeado em 25/11/2026.
+3. ~~Registrar a retrospectiva da Sprint 4 (seção 1)~~: registrada em 25/11/2026.
 4. ~~Decidir os pontos DP-1 a DP-3 da seção 4~~: decididos em 15/11/2026 (Visão v2.7 e Arquitetura v2.5).
-5. Criar as issues da seção 5 e o quadro da Sprint 5 no GitHub Projects.
+5. Criar as issues da seção 5 (criadas em 15/11/2026) e o quadro da Sprint 5 no GitHub Projects.
+6. Fazer a revisão da Sprint 5 (seção 8) depois do ciclo 1 do roteiro de sistema (#62).
 
 ### 3.3 Casos do roteiro a fechar na Sprint 5 (Quadro 26)
 
@@ -172,3 +184,27 @@ flowchart LR
 | R3. Erro nas regras | A seleção de conteúdo muda (DEF-02) e passa a ser usada pela avaliação; com a R-S1 atual, o N2 receberia BEM_ESTAR. | #46 antes da B3; TU-06 seguindo o Quadro 20; M1 = 100% antes das telas. |
 | R1 e R2. Crise real; resultado lido como diagnóstico | A avaliação introduz o item 9 do PHQ-9 e a exibição de escores. | Item 9 ≥ 1 abre a Tela de Ajuda sem materiais (TI-06, perfil D); aviso "não é diagnóstico" no resultado (TSI-03). |
 | R7. Pouca experiência com React | Quatro telas novas ou alteradas no frontend. | Telas simples conforme o protótipo (B1); backend apoia se necessário. |
+
+## 8 Revisão da Sprint 5
+
+**Aguarda o QA.** O PO aceita ou rejeita cada issue pelos critérios de aceite depois que a #62 registrar o ciclo 1 do roteiro de sistema (TSI-01 a TSI-04), o Quadro 26 e as métricas M1 a M5. O percentual da Sprint 5 no Quadro 8 entra em nova versão da Visão depois desta revisão.
+
+Situação em 25/11/2026: o código da sprint está na `developer` (46 commits à frente da `main`), e a `main` continua em `886e00b`. O roteiro de sistema roda sobre a `main` (seção 3, passo 4), então o merge da `developer` na `main` vem antes do ciclo 1.
+
+| Issue | PR | Revisão aprovada no PR | Critérios marcados na issue | Decisão do PO |
+| :--: | :--: | :-- | :--: | :--: |
+| #45 | #67 | Não (só comentário) | 0 de 5 | Aguarda QA |
+| #46 + #47 | #66 | Não (mudanças pedidas) | 0 de 3 e 0 de 3 | Aguarda QA |
+| #51 | #68 | Sim | 0 de 3 | Aguarda QA |
+| #52 | #65 | Não | 0 de 3 | Aguarda QA |
+| #53 | #72 | Não | 0 de 2 | Aguarda QA |
+| #54 | #69 | Sim | 0 de 4 | Aguarda QA |
+| #55 | #70 | Não | 0 de 3 | Aguarda QA |
+| #56 | #71 | Não | 0 de 2 | Aguarda QA |
+| #57 | #77 | Sim | 0 de 3 | Aguarda QA |
+| #58 | #75 | Sim | 0 de 3 | Aguarda QA |
+| #59 | #76 | Não | 0 de 3 | Aguarda QA |
+| #60 | #73 | Sim | 0 de 3 | Aguarda QA |
+| #61 | #74 | Não | 0 de 3 | Aguarda QA |
+| #62 | — | — | — | Em andamento (QA) |
+| #63 | este registro | — | — | Em andamento (PO) |

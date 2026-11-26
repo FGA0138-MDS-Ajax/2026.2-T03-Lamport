@@ -1,11 +1,11 @@
 # Visão do Produto e do Projeto
 
-**Versão 2.7 – 15/11/2026** · Aplicação web de apoio à saúde mental: check-in diário, rastreio com instrumentos validados e encaminhamento a conteúdos e serviços oficiais.
+**Versão 2.8 – 25/11/2026** · Aplicação web de apoio à saúde mental: check-in diário, rastreio com instrumentos validados e encaminhamento a conteúdos e serviços oficiais.
 
 !!! info "Versão vigente"
-    Esta página reproduz a versão 2.7, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md).
+    Esta página reproduz a versão 2.8, que substitui as anteriores. O que mudou em cada versão está no [Histórico de versões](historico-versoes.md).
 
-    Baixar em PDF (formatado nas normas ABNT): [Visão do Produto e do Projeto v2.7](pdf/visao-produto-projeto-v2.7.pdf).
+    Baixar em PDF (formatado nas normas ABNT): [Visão do Produto e do Projeto v2.7](pdf/visao-produto-projeto-v2.7.pdf). O PDF da versão 2.8 ainda não foi gerado.
 
 ## Integrantes do grupo
 
@@ -33,6 +33,7 @@
 | 12/11/2026 | 2.5 | Correções do registro da Sprint 4 no Quadro 26 (issue #10): status do TU-06 com a divergência de R-S1 (ordem de prioridade sem AJUDA_PROFISSIONAL no código) e o material menos recente não verificado; ciclos do TI-01 (2) e do TS-01 (3) alinhados aos reparos registrados; observação de que o teste do TS-01 percorre o contrato OpenAPI. | Grupo Lamport |
 | 15/11/2026 | 2.6 | Revisão da Sprint 4 pelo PO e planejamento da Sprint 5: percentuais de conclusão das Sprints 2 a 4 no Quadro 8; replanejamento pelo critério 1 da seção 2.6, com as recomendações do check-in (R06, TI-03, TI-05, TU-06) passando à Sprint 5; decisão do PO sobre o defeito DEF-02: o Quadro 20 permanece e o código se ajusta a ele (R-S1 a R-S6); situação do catálogo (seção 4.5.4) e risco R6 atualizados. | Grupo Lamport |
 | 15/11/2026 | 2.7 | Decisão do PO no planejamento da Sprint 5 (DP-1): Quadro 18 com o motivo exibido ao usuário para cada tag gerada pela avaliação, e regra gravada nas recomendações da avaliação (R-S5). | Grupo Lamport |
+| 25/11/2026 | 2.8 | Conferência do catálogo pelo PO (seção 4.5.4, regra 3): os 7 materiais têm fonte oficial em domínio permitido, o link abre e as tags são adequadas; o Quadro 21 passa a listar o catálogo completo, com a data da conferência. | Grupo Lamport |
 
 ---
 
@@ -457,9 +458,9 @@ Os materiais ficam no arquivo `catalog/materiais.yaml` do repositório. Cada mat
 3. inclusão ou alteração apenas por pull request revisado pelo PO, conferindo se a fonte é oficial, se o link abre e se a tag é adequada;
 4. o comando seed carrega o arquivo no banco; para retirar um material, ele é marcado como inativo no arquivo, o que preserva o histórico de recomendações.
 
-O Quadro 21 mostra os materiais identificados para o catálogo inicial. Para completar o mínimo de 1 material por tag, faltava um material com a tag SONO: ele foi incluído no arquivo na Sprint 4, junto dos demais, e o teste TU-07 confirma o mínimo por tag. A conferência dos materiais pelo PO (regra 3) está prevista para a Sprint 5; depois dela, o Quadro 21 passa a listar o catálogo completo.
+O Quadro 21 lista o catálogo completo, igual ao arquivo `catalog/materiais.yaml`. São 7 materiais ativos, com pelo menos 1 por tag; o teste TU-07 confirma o mínimo por tag e os domínios permitidos. Em 25/11/2026, o PO conferiu os 7 materiais pela regra 3: todos são de fonte oficial em domínio permitido (`gov.br`, incluindo `bvsms.saude.gov.br`, e `paho.org`), todos os links abrem com o título informado e as tags correspondem ao assunto de cada página.
 
-**Quadro 21 – Amostra do catálogo inicial**
+**Quadro 21 – Catálogo de conteúdos (conferido pelo PO em 25/11/2026)**
 
 | Slug | Título | Fonte | URL | Tags |
 | :-- | :-- | :-- | :-- | :-- |
@@ -469,6 +470,7 @@ O Quadro 21 mostra os materiais identificados para o catálogo inicial. Para com
 | depressao-ms | Depressão – Saúde de A a Z | Ministério da Saúde | <https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao> | HUMOR |
 | suicidio-prevencao-ms | Suicídio (Prevenção) – sinais de alerta e onde pedir ajuda | Ministério da Saúde | <https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/suicidio-prevencao> | AJUDA_PROFISSIONAL |
 | faca-o-que-importa-opas | Faça o que importa em tempos de estresse: guia ilustrado (versão para o Brasil) | OPAS/OMS | <https://www.paho.org/pt/documentos/faca-que-importa-em-tempos-estresse-guia-ilustrado-versao-adaptada-para-brasil> | ESTRESSE, ANSIEDADE |
+| durma-bem-viva-melhor-ms | “Durma Bem, Viva Melhor”: 13/3 – Dia Mundial do Sono 2026 | Ministério da Saúde | <https://bvsms.saude.gov.br/durma-bem-viva-melhor-13-3-dia-mundial-do-sono-2026/> | SONO |
 
 #### 4.5.5 Tela de Ajuda Imediata
 
