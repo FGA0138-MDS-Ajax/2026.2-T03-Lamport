@@ -15,7 +15,8 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
 | 12/11/2026 | 2.5 | Correções do registro da Sprint 4 no Quadro 26 (issue #10): status do TU-06 com a divergência de R-S1 (ordem de prioridade sem AJUDA_PROFISSIONAL no código) e o material menos recente não verificado; ciclos do TI-01 (2) e do TS-01 (3) alinhados aos reparos registrados; observação de que o teste do TS-01 percorre o contrato OpenAPI. | Grupo Lamport |
 | 15/11/2026 | 2.6 | Revisão da Sprint 4 pelo PO e planejamento da Sprint 5: percentuais de conclusão das Sprints 2 a 4 no Quadro 8; replanejamento pelo critério 1 da seção 2.6, com as recomendações do check-in (R06) passando à Sprint 5; decisão do PO sobre o DEF-02 (o Quadro 20 permanece); situação do catálogo e risco R6 atualizados. | Grupo Lamport |
 | 15/11/2026 | 2.7 | Decisão do PO no planejamento da Sprint 5 (DP-1): Quadro 18 com o motivo exibido para cada tag gerada pela avaliação, e regra gravada nas recomendações da avaliação (R-S5). | Grupo Lamport |
-| 25/11/2026 | **2.8** (vigente) | Conferência do catálogo pelo PO: os 7 materiais aprovados pela regra 3 da seção 4.5.4; Quadro 21 com o catálogo completo. | Grupo Lamport |
+| 25/11/2026 | 2.8 | Conferência do catálogo pelo PO: os 7 materiais aprovados pela regra 3 da seção 4.5.4; Quadro 21 com o catálogo completo. | Grupo Lamport |
+| 25/11/2026 | **2.9** (vigente) | Revisão da Sprint 5 pelo QA (issue #62): Quadro 26 com status, evidência, reparos e ciclos; TU-06, TI-03, TI-05, TI-06, TI-07 e TS-03 aprovados; ciclo 1 do roteiro de sistema com TSI-01 a TSI-05 aprovados; seção 6.1, item 5, atualizada. | Grupo Lamport |
 
 ### Principais mudanças entre versões
 
@@ -80,6 +81,12 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
     - **Seção 4.5.4:** o PO conferiu os 7 materiais de `catalog/materiais.yaml` pela regra 3, em 25/11/2026: fonte oficial em domínio permitido, link abrindo com o título informado e tag adequada ao assunto. Nenhum material foi alterado ou marcado como inativo.
     - **Quadro 21:** deixa de ser uma amostra e passa a listar o catálogo completo; entra o material de SONO (`durma-bem-viva-melhor-ms`), que já estava no arquivo desde a Sprint 4.
     - Regras do catálogo, requisitos, roteiro de testes e Arquitetura não mudaram.
+
+??? abstract "2.8 → 2.9"
+    - **Origem:** revisão da Sprint 5 pelo QA (issue #62); detalhes em [Métricas da Sprint 5](metricas/sprint-5.md).
+    - **Quadro 26:** TU-06, TI-03, TI-05 e TS-03 passam de parcial ou não atendido a aprovado (PRs #66, #67 e #70); TI-06 aprovado (PR #69); TI-07 aprovado (PR #73, `DELETE /api/me`); no ciclo 1, TSI-01 (após o PR #71, DEF-06), TSI-02, TSI-03 (após os PRs #75 e #77, DEF-07), TSI-04 e TSI-05 (antecipado da Sprint 6) aprovados. Os 24 casos do roteiro ficam aprovados. A evidência dos automatizados passa a ser a execução da CI na `main`, depois do PR #80 (`developer` → `main`).
+    - **Seção 6.1, item 5:** resultados da Sprint 5.
+    - Regras, limites, requisitos, Quadro 8 e Arquitetura não mudaram. O percentual da Sprint 5 no Quadro 8 é registrado pelo PO.
 
 ## Documento de Arquitetura
 
