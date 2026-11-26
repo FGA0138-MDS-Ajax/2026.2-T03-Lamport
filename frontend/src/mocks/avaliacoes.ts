@@ -98,19 +98,6 @@ const mockAvaliacoes: MockAvaliacao[] = [
       recomendacoes: [],
     },
   },
-  {
-    id: '4',
-    data: '2026-11-05',
-    resultado: {
-      escore_phq9: 1,
-      escore_gad7: 4,
-      faixa_phq9: 'minima',
-      faixa_gad7: 'minima',
-      nivel: 'crise',
-      orientacao: 'Procure a Tela de Ajuda Imediata para receber orientações.',
-      recomendacoes: [],
-    },
-  },
 ]
 
 export const mockAvaliacoesApi = {

@@ -11,6 +11,7 @@ import { AjudaPage } from './pages/AjudaPage'
 import { HistoryPage } from './pages/HistoryPage'
 import { AJUDA_PATH } from './constants/ajuda'
 import { ResultadoAvaliacaoPage } from './pages/ResultadoAvaliacaoPage'
+
 export function App() {
   return (
     <Routes>
