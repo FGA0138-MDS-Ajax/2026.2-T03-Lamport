@@ -2,9 +2,12 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { useAuth } from '../auth/AuthContext'
 import { useNavigate } from 'react-router'
 import { CHECKIN_QUESTIONS, type CheckinQuestion } from '../constants/checkin'
-import { checkinsApi } from '../api/checkins'
+import { checkinsApi, type CheckinResultado } from '../api/checkins'
 import { ApiError } from '../api/client'
+import type { Recomendacao } from '../api/recomendacoes'
 import { AJUDA_PATH } from '../constants/ajuda'
+import { ConteudosDoDia } from '../components/ConteudosDoDia'
+import { LoadingState } from '../components/LoadingState'
 
 type AnswerValue = number | boolean
 type Option = { readonly value: AnswerValue; readonly label: string }
@@ -19,26 +22,48 @@ export interface CreateCheckinData {
   p5: boolean
 }
 
+interface Resultado {
+  recomendacoes: Recomendacao[]
+  acabouDeRegistrar: boolean
+}
+
 export function DailyCheckin() {
   const { user, token } = useAuth()
   const navigate = useNavigate()
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({})
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [checkingToday, setCheckingToday] = useState(true)
+  const [resultado, setResultado] = useState<Resultado | null>(null)
 
-  // Se já existe check-in hoje, volta para a home avisando o usuário.
+  // Resultado já registrado do dia (Arquitetura, Figura 3; vocabulário, Quadro 7):
+  // nível crise abre a Tela de Ajuda; os demais mostram os materiais gravados.
+  function showResult(checkin: CheckinResultado, acabouDeRegistrar: boolean) {
+    if (checkin.nivel === 'crise') {
+      navigate(AJUDA_PATH, { replace: !acabouDeRegistrar })
+      return
+    }
+    setResultado({ recomendacoes: checkin.recomendacoes, acabouDeRegistrar })
+  }
+
   useEffect(() => {
     if (!token) return
     let cancelled = false
     checkinsApi
       .getTodayCheckin(token)
       .then((today) => {
-        if (!cancelled && today != null) {
-          navigate('/', { state: { checkinAlreadyExists: true } })
-        }
+        if (cancelled) return
+        if (today.nivel === 'crise') navigate(AJUDA_PATH, { replace: true })
+        else setResultado({ recomendacoes: today.recomendacoes, acabouDeRegistrar: false })
       })
       .catch((err) => {
-        if (err instanceof ApiError) console.error('Erro ao verificar o check-in de hoje:', err)
+        // 404: ainda não há check-in hoje, então o formulário é exibido.
+        if (err instanceof ApiError && err.status !== 404) {
+          console.error('Erro ao verificar o check-in de hoje:', err)
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setCheckingToday(false)
       })
     return () => {
       cancelled = true
@@ -46,6 +71,15 @@ export function DailyCheckin() {
   }, [token, navigate])
 
   if (!user) return null
+  if (checkingToday) return <LoadingState />
+  if (resultado) {
+    return (
+      <ConteudosDoDia
+        recomendacoes={resultado.recomendacoes}
+        acabouDeRegistrar={resultado.acabouDeRegistrar}
+      />
+    )
+  }
 
   const canSubmit = CHECKIN_QUESTIONS.every((q) => !q.required || answers[q.id] !== undefined)
 
@@ -82,13 +116,26 @@ export function DailyCheckin() {
 
     const hasRisk = checkinData.p5 === true
     try {
-      await checkinsApi.createCheckin(token as string, checkinData)
-      navigate(hasRisk ? AJUDA_PATH : '/')
-    } catch {
+      const created = await checkinsApi.createCheckin(token as string, checkinData)
+      if (hasRisk) navigate(AJUDA_PATH)
+      else showResult(created, true)
+    } catch (err) {
+      // Por segurança, sinal de risco leva à página de ajuda mesmo se o envio falhar.
+      if (hasRisk) {
+        navigate(AJUDA_PATH)
+        return
+      }
+      // 409: o check-in de hoje já existe; mostra o resultado do dia (vocabulário, Quadro 13).
+      if (err instanceof ApiError && err.status === 409) {
+        try {
+          showResult(await checkinsApi.getTodayCheckin(token as string), false)
+          return
+        } catch {
+          // Segue para a mensagem de erro abaixo.
+        }
+      }
       setError('Não foi possível enviar o check-in. Tente novamente.')
       setSubmitting(false)
-      // Por segurança, sinal de risco leva à página de ajuda mesmo se o envio falhar.
-      if (hasRisk) navigate(AJUDA_PATH)
     }
   }
 

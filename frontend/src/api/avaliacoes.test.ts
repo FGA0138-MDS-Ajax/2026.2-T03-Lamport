@@ -1,21 +1,27 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { avaliacoesApi } from './avaliacoes'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import {
+  avaliacoesApi,
+  type AvaliacaoListItem,
+  type CreateAvaliacaoData,
+  type ResultadoAvaliacao,
+} from './avaliacoes'
+import { mockApi } from '../test/utils'
 
 const token = 'test-token'
+const id = '550e8400-e29b-41d4-a716-446655440000'
 
-const dadosAvaliacao = {
+const dados: CreateAvaliacaoData = {
   phq9: [1, 0, 2, 1, 0, 1, 0, 1, 0],
   gad7: [0, 1, 1, 0, 2, 0, 1],
 }
 
-const respostaAvaliacao = {
+const resultado: ResultadoAvaliacao = {
   escore_phq9: 6,
   escore_gad7: 5,
   faixa_phq9: 'leve',
   faixa_gad7: 'leve',
   nivel: 'autocuidado',
-  orientacao:
-    'Continue acompanhando como você está. Seguem materiais de autocuidado.',
+  orientacao: 'Continue acompanhando como você está. Seguem materiais de autocuidado.',
   recomendacoes: [
     {
       titulo: 'Cuidados com a saúde mental',
@@ -28,111 +34,122 @@ const respostaAvaliacao = {
   ],
 }
 
-afterEach(() => {
-  vi.unstubAllGlobals()
-})
+const item: AvaliacaoListItem = {
+  id,
+  data: '2026-11-20',
+  escore_phq9: 6,
+  escore_gad7: 5,
+  faixa_phq9: 'leve',
+  faixa_gad7: 'leve',
+  nivel: 'autocuidado',
+}
 
 describe('avaliacoesApi', () => {
-  describe('createAvaliacao', () => {
-    it('envia as respostas ao backend e retorna o resultado da avaliação', async () => {
-      const fetchMock = vi.fn().mockResolvedValue(
-        new Response(JSON.stringify(respostaAvaliacao), {
-          status: 201,
-          headers: { 'Content-Type': 'application/json' },
-        }),
-      )
+  beforeEach(() => {
+    vi.unstubAllGlobals()
+  })
 
-      vi.stubGlobal('fetch', fetchMock)
-
-      const resultado = await avaliacoesApi.createAvaliacao(
-        token,
-        dadosAvaliacao,
-      )
-
-      expect(fetchMock).toHaveBeenCalledOnce()
-
-      const [url, options] = fetchMock.mock.calls[0]
-
-      expect(url).toBe('http://localhost:8000/api/avaliacoes')
-      expect(options).toMatchObject({
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(dadosAvaliacao),
-      })
-
-      expect(resultado).toEqual(respostaAvaliacao)
+  it('cria uma avaliação enviando as respostas do PHQ-9 e do GAD-7', async () => {
+    const fetchMock = mockApi({
+      'POST /api/avaliacoes': { status: 201, body: resultado },
     })
 
-    it('propaga erros retornados pelo backend', async () => {
-      const fetchMock = vi.fn().mockResolvedValue(
-        new Response(JSON.stringify({ detail: 'Respostas inválidas' }), {
-          status: 422,
-          headers: { 'Content-Type': 'application/json' },
-        }),
-      )
+    const result = await avaliacoesApi.createAvaliacao(token, dados)
 
-      vi.stubGlobal('fetch', fetchMock)
+    expect(result).toEqual(resultado)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
 
-      await expect(
-        avaliacoesApi.createAvaliacao(token, dadosAvaliacao),
-      ).rejects.toMatchObject({
-        name: 'ApiError',
-        status: 422,
-        message: 'Respostas inválidas',
-      })
+    const [url, init] = fetchMock.mock.calls[0]
+
+    expect(String(url)).toContain('/api/avaliacoes')
+    expect(init?.method).toBe('POST')
+    expect(init?.headers).toMatchObject({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    })
+    expect(JSON.parse(String(init?.body))).toEqual(dados)
+  })
+
+  it('propaga erro 422 quando as respostas são inválidas', async () => {
+    mockApi({
+      'POST /api/avaliacoes': { status: 422, body: { detail: 'Respostas inválidas' } },
+    })
+
+    await expect(avaliacoesApi.createAvaliacao(token, dados)).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 422,
+      message: 'Respostas inválidas',
     })
   })
 
-  describe('listAvaliacoes', () => {
-    it('lista as avaliações sem retornar os detalhes das recomendações', async () => {
-      const resultado = await avaliacoesApi.listAvaliacoes(token)
+  it('lista o histórico de avaliações do usuário', async () => {
+    const fetchMock = mockApi({
+      'GET /api/avaliacoes': { status: 200, body: [item] },
+    })
 
-      expect(resultado.length).toBeGreaterThan(0)
+    const result = await avaliacoesApi.listAvaliacoes(token)
 
-      expect(resultado[0]).toMatchObject({
-        id: expect.any(String),
-        criado_em: expect.any(String),
-        escore_phq9: expect.any(Number),
-        escore_gad7: expect.any(Number),
-        faixa_phq9: expect.any(String),
-        faixa_gad7: expect.any(String),
-        nivel: expect.any(String),
-      })
+    expect(result).toEqual([item])
 
-      expect(resultado[0]).not.toHaveProperty('recomendacoes')
-      expect(resultado[0]).not.toHaveProperty('orientacao')
-      expect(resultado[0]).not.toHaveProperty('respostas_phq9')
-      expect(resultado[0]).not.toHaveProperty('respostas_gad7')
+    const [, init] = fetchMock.mock.calls[0]
+
+    expect(init?.method).toBe('GET')
+    expect(init?.headers).toMatchObject({ Authorization: `Bearer ${token}` })
+  })
+
+  it('retorna lista vazia quando o usuário não possui avaliações', async () => {
+    mockApi({
+      'GET /api/avaliacoes': { status: 200, body: [] },
+    })
+
+    await expect(avaliacoesApi.listAvaliacoes(token)).resolves.toEqual([])
+  })
+
+  it('propaga erro 401 ao listar sem autenticação', async () => {
+    mockApi({
+      'GET /api/avaliacoes': { status: 401, body: { detail: 'Not authenticated' } },
+    })
+
+    await expect(avaliacoesApi.listAvaliacoes(token)).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 401,
     })
   })
 
-  describe('getAvaliacao', () => {
-    it('consulta uma avaliação pelo ID', async () => {
-      const resultado = await avaliacoesApi.getAvaliacao(token, '1')
-
-      expect(resultado).toMatchObject({
-        id: '1',
-        escore_phq9: 3,
-        escore_gad7: 4,
-        faixa_phq9: 'minima',
-        faixa_gad7: 'minima',
-        nivel: 'autocuidado',
-        respostas_phq9: [1, 0, 1, 0, 0, 1, 0, 0, 0],
-        respostas_gad7: [1, 0, 1, 0, 1, 0, 1],
-      })
-
-      expect(resultado.recomendacoes).toBeDefined()
-      expect(resultado.orientacao).toBeTruthy()
-      expect(resultado.criado_em).toBeTruthy()
+  it('busca uma avaliação pelo ID com os mesmos campos do POST', async () => {
+    const fetchMock = mockApi({
+      [`GET /api/avaliacoes/${id}`]: { status: 200, body: resultado },
     })
 
-    it('retorna erro ao consultar uma avaliação inexistente', async () => {
-      await expect(
-        avaliacoesApi.getAvaliacao(token, 'id-inexistente'),
-      ).rejects.toThrow('Avaliação não encontrada')
+    const result = await avaliacoesApi.getAvaliacao(token, id)
+
+    expect(result).toEqual(resultado)
+
+    const [, init] = fetchMock.mock.calls[0]
+
+    expect(init?.method).toBe('GET')
+    expect(init?.headers).toMatchObject({ Authorization: `Bearer ${token}` })
+  })
+
+  it('propaga erro 404 para avaliação inexistente ou de outro usuário', async () => {
+    mockApi({
+      [`GET /api/avaliacoes/${id}`]: { status: 404, body: { detail: 'Avaliacao not found' } },
+    })
+
+    await expect(avaliacoesApi.getAvaliacao(token, id)).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 404,
+      message: 'Avaliacao not found',
+    })
+  })
+
+  it('transforma erro de rede em ApiError com status 0', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('Failed to fetch')))
+
+    await expect(avaliacoesApi.listAvaliacoes(token)).rejects.toMatchObject({
+      name: 'ApiError',
+      status: 0,
+      message: 'Network error',
     })
   })
 })

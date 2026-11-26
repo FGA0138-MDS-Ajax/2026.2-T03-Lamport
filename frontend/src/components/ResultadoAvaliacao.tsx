@@ -1,10 +1,8 @@
-
 import { Link } from 'react-router'
 import type { Faixa, ResultadoAvaliacao as ResultadoAvaliacaoType } from '../api/avaliacoes'
 
 interface ResultadoAvaliacaoProps {
   resultado: ResultadoAvaliacaoType
-  criadoEm?: string
   recemRegistrada?: boolean
 }
 
@@ -19,19 +17,15 @@ const faixaLabels: Record<Faixa, string> = {
 const nivelConfig = {
   autocuidado: {
     titulo: 'Orientação de autocuidado',
-    limiteMateriais: 3,
   },
   atencao: {
     titulo: 'Procurar a UBS',
-    limiteMateriais: 3,
   },
   prioritario: {
     titulo: 'Atenção prioritária',
-    limiteMateriais: 2,
   },
   crise: {
     titulo: 'Ajuda imediata',
-    limiteMateriais: 0,
   },
 } as const
 
@@ -53,20 +47,6 @@ const faixasGad7 = [
   { faixa: 'moderada', label: 'Moderada', intervalo: '10–14' },
   { faixa: 'grave', label: 'Grave', intervalo: '15–21' },
 ] as const
-
-function formatarData(data?: string) {
-  if (!data) return null
-
-  const dataObj = new Date(data)
-
-  if (Number.isNaN(dataObj.getTime())) return null
-
-  return new Intl.DateTimeFormat('pt-BR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(dataObj)
-}
 
 function ScoreCard({
   titulo,
@@ -112,24 +92,14 @@ function ScoreCard({
           return (
             <li
               key={item.faixa}
-              className={
-                selecionada
-                  ? 'resultado-faixa resultado-faixa-ativa'
-                  : 'resultado-faixa'
-              }
+              className={selecionada ? 'resultado-faixa resultado-faixa-ativa' : 'resultado-faixa'}
               aria-current={selecionada ? 'true' : undefined}
             >
               <span className="resultado-faixa-label">
                 {item.label}
-                {selecionada && (
-                  <strong className="resultado-faixa-indicador">
-                    Sua faixa
-                  </strong>
-                )}
+                {selecionada && <strong className="resultado-faixa-indicador">Sua faixa</strong>}
               </span>
-              <span className="resultado-faixa-intervalo">
-                {item.intervalo}
-              </span>
+              <span className="resultado-faixa-intervalo">{item.intervalo}</span>
             </li>
           )
         })}
@@ -140,16 +110,11 @@ function ScoreCard({
 
 export function ResultadoAvaliacao({
   resultado,
-  criadoEm,
   recemRegistrada = false,
 }: ResultadoAvaliacaoProps) {
   const config = nivelConfig[resultado.nivel]
-  const dataFormatada = formatarData(criadoEm)
 
-  const recomendacoes = resultado.recomendacoes.slice(
-    0,
-    config.limiteMateriais,
-  )
+  const recomendacoes = resultado.recomendacoes
 
   return (
     <section className="resultado-page" aria-labelledby="resultado-title">
@@ -161,24 +126,17 @@ export function ResultadoAvaliacao({
 
       <header className="resultado-header">
         <h1 id="resultado-title">Resultado da avaliação</h1>
-
-        {dataFormatada && (
-          <p className="resultado-date">Respondida em {dataFormatada}</p>
-        )}
       </header>
 
       <aside className="resultado-disclaimer" aria-label="Aviso importante">
         <strong>Este resultado não é um diagnóstico.</strong>
         <p>
-          Ele resume suas respostas sobre as últimas duas semanas e não
-          substitui a avaliação de um profissional de saúde.
+          Ele resume suas respostas sobre as últimas duas semanas e não substitui a avaliação de um
+          profissional de saúde.
         </p>
       </aside>
 
-      <section
-        className="resultado-orientacao"
-        aria-labelledby="orientacao-title"
-      >
+      <section className="resultado-orientacao" aria-labelledby="orientacao-title">
         <h2 id="orientacao-title">Orientação</h2>
         <h3>{config.titulo}</h3>
         <p>{resultado.orientacao}</p>
@@ -208,9 +166,8 @@ export function ResultadoAvaliacao({
         </div>
 
         <p className="resultado-score-note">
-          O escore é a soma das respostas: de 0 a 27 pontos no PHQ-9 e de 0 a
-          21 pontos no GAD-7. As faixas são classificações dos instrumentos e
-          não representam um diagnóstico.
+          O escore é a soma das respostas: de 0 a 27 pontos no PHQ-9 e de 0 a 21 pontos no GAD-7. As
+          faixas são classificações dos instrumentos e não representam um diagnóstico.
         </p>
       </section>
 
@@ -223,38 +180,22 @@ export function ResultadoAvaliacao({
           </p>
 
           {recomendacoes.length === 0 ? (
-            <p className="muted">
-              Não há materiais recomendados para esta avaliação.
-            </p>
+            <p className="muted">Não há materiais recomendados para esta avaliação.</p>
           ) : (
             <div className="resultado-recomendacoes">
               {recomendacoes.map((recomendacao, index) => (
-                <article
-                  className="resultado-material"
-                  key={`${recomendacao.url}-${index}`}
-                >
+                <article className="resultado-material" key={`${recomendacao.url}-${index}`}>
                   <h3>{recomendacao.titulo}</h3>
 
-                  <p className="resultado-material-source">
-                    Fonte: {recomendacao.fonte}
-                  </p>
+                  <p className="resultado-material-source">Fonte: {recomendacao.fonte}</p>
 
-                  <p className="resultado-material-summary">
-                    {recomendacao.resumo}
-                  </p>
+                  <p className="resultado-material-summary">{recomendacao.resumo}</p>
 
-                  <a
-                    href={recomendacao.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={recomendacao.url} target="_blank" rel="noopener noreferrer">
                     Abrir no site oficial ↗
                   </a>
 
-                  <details
-                    className="resultado-material-reason"
-                    open
-                  >
+                  <details className="resultado-material-reason" open>
                     <summary>Por que estou vendo isto?</summary>
                     <p>{recomendacao.motivo}</p>
                   </details>

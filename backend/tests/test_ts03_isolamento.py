@@ -2,7 +2,7 @@
 
 Os testes de `test_checkins_get.py` usam repositório falso. Estes percorrem rota, serviço
 e consulta SQL reais, de modo que remover o filtro por usuário em qualquer camada falha aqui.
-A parte de avaliações do TS-03 depende do endpoint `/api/avaliacoes` (Sprint 5).
+A parte de avaliações do TS-03 está em `test_avaliacoes_get.py`.
 """
 
 import uuid
