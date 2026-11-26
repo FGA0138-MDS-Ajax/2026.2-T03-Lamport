@@ -127,12 +127,6 @@ def test_terms_returns_current_version(client):
     assert response.json() == {"version": get_settings().terms_version}
 
 
-def test_me_rejects_token_of_deleted_user(client, auth_headers, db_session):
-    from sqlalchemy import delete
-
-    from app.infrastructure.models import UserModel
-
-    db_session.execute(delete(UserModel))
-    db_session.commit()
-
+def test_ts02_me_rejects_token_of_deleted_user(client, auth_headers):
+    assert client.delete("/api/me", headers=auth_headers).status_code == 204
     assert client.get("/api/me", headers=auth_headers).status_code == 401

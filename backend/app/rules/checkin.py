@@ -1,4 +1,6 @@
 from app.domain.checkin import Nivel, ResultadoCheckin, Tag
+from app.rules.avaliacao import ORDEM_TAGS
+from app.rules.selecao import TagSelecao
 
 # Constantes Originais (Aviso: Alterar exige aprovação do PO)
 LIMITE_HUMOR = 2
@@ -6,8 +8,38 @@ LIMITE_ANSIEDADE = 2
 LIMITE_SONO = 2
 LIMITE_ESTRESSE = 2
 
-# R-S1 (Prioridade de tags para exibição e materiais)
-ORDEM_TAGS = (Tag.ANSIEDADE, Tag.HUMOR, Tag.ESTRESSE, Tag.SONO)
+# Quadro 16 (Visão v2.7, seção 4.5.1): regras e motivos exibidos ao usuário por tag do check-in.
+REGRA_POR_TAG_CHECKIN: dict[Tag, str] = {
+    Tag.HUMOR: "R-D2",
+    Tag.ANSIEDADE: "R-D3",
+    Tag.SONO: "R-D4",
+    Tag.ESTRESSE: "R-D5",
+    Tag.BEM_ESTAR: "R-D6",
+}
+
+MOTIVO_POR_REGRA_CHECKIN: dict[str, str] = {
+    "R-D2": "Você indicou humor ruim ou muito ruim hoje.",
+    "R-D3": "Você indicou ter se sentido bastante ou extremamente ansioso(a) hoje.",
+    "R-D4": "Você indicou que dormiu mal na última noite.",
+    "R-D5": "Você indicou ter se sentido bastante ou extremamente sobrecarregado(a).",
+    "R-D6": "Você não indicou dificuldades marcantes hoje.",
+}
+
+MOTIVO_POR_TAG_CHECKIN: dict[Tag, str] = {
+    tag: MOTIVO_POR_REGRA_CHECKIN[regra] for tag, regra in REGRA_POR_TAG_CHECKIN.items()
+}
+
+
+def tags_selecao_checkin(resultado: ResultadoCheckin) -> tuple[TagSelecao, ...]:
+    """Converte ResultadoCheckin nas entradas TagSelecao do Quadro 16."""
+    return tuple(
+        TagSelecao(
+            tag=tag,
+            regra=REGRA_POR_TAG_CHECKIN[tag],
+            motivo=MOTIVO_POR_TAG_CHECKIN[tag],
+        )
+        for tag in resultado.tags
+    )
 
 
 def avaliar_checkin(

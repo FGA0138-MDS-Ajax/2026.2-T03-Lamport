@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
 import { useAuth } from '../auth/AuthContext'
-import { useLocation, useNavigate } from 'react-router'
-import { Alert } from '../components/Alert'
+import { useNavigate } from 'react-router'
+import { ExcluirConta } from '../components/ExcluirConta'
 
 const dateFormatter = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' })
 
@@ -18,21 +17,22 @@ function CheckinButton() {
   )
 }
 
-function CheckinAlreadyExistsAlert() {
-  return <Alert tone="error">Você já realizou o check-in hoje.</Alert>
+function AvaliacaoButton() {
+  const navigate = useNavigate()
+
+  return (
+    <button
+      type="button"
+      className="button button-primary"
+      onClick={() => navigate('/avaliacoes/nova')}
+    >
+      Avaliação quinzenal
+    </button>
+  )
 }
 
 export function HomePage() {
   const { user } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const [checkinAlreadyExists] = useState(Boolean(location.state?.checkinAlreadyExists))
-
-  useEffect(() => {
-    if (location.state?.checkinAlreadyExists) {
-      navigate(location.pathname, { replace: true, state: null })
-    }
-  }, [location.state, location.pathname, navigate])
 
   if (!user) return null
 
@@ -44,9 +44,12 @@ export function HomePage() {
       </p>
       <p className="muted">Conta criada em {dateFormatter.format(new Date(user.criado_em))}.</p>
 
-      {checkinAlreadyExists && <CheckinAlreadyExistsAlert />}
+      <div className="home-acoes">
+        <CheckinButton />
+        <AvaliacaoButton />
+      </div>
 
-      <CheckinButton />
+      <ExcluirConta />
     </section>
   )
 }

@@ -29,6 +29,7 @@ export const authApi = {
     request<TokenResponse>('/auth/login', { method: 'POST', body: { email, senha: password } }),
   logout: (token: string) => request<void>('/auth/logout', { method: 'POST', token }),
   me: (token: string) => request<User>('/me', { token }),
+  deleteAccount: (token: string) => request<void>('/me', { method: 'DELETE', token }),
 }
 
 export const termsApi = {

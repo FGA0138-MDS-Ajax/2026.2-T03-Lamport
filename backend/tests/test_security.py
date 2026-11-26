@@ -93,6 +93,12 @@ def test_ts04_all_endpoints_responses_have_no_sensitive_fields(client, registere
     checkin_id = history.json()[0]["id"]
     assert client.get(f"/api/checkins/{checkin_id}", headers=headers).status_code == 200
     assert client.get(f"/api/checkins/{uuid.uuid4()}", headers=headers).status_code == 404
+    avaliacao = client.post(
+        "/api/avaliacoes",
+        json={"phq9": [0] * 9, "gad7": [0] * 7},
+        headers=headers,
+    )
+    assert avaliacao.status_code == 201
     assert client.post("/api/auth/logout", headers=headers).status_code == 204
     assert client.get("/api/me", headers=headers).status_code == 401
 

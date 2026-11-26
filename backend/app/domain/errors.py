@@ -32,3 +32,7 @@ class CheckinNotFoundError(DomainError):
 
 class CheckinAlreadyExistsError(DomainError):
     pass
+
+
+class AvaliacaoNotFoundError(DomainError):
+    """Avaliação inexistente ou de outro usuário (mesma resposta nos dois casos)."""

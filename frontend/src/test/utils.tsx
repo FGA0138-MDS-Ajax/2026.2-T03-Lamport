@@ -9,11 +9,16 @@ interface MockResponse {
   body?: unknown
 }
 
-export function mockApi(routes: Record<string, MockResponse>) {
+// Uma lista de respostas é devolvida em sequência; a última se repete nas chamadas seguintes.
+export function mockApi(routes: Record<string, MockResponse | MockResponse[]>) {
+  const calls: Record<string, number> = {}
   const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
     const key = `${init?.method ?? 'GET'} ${new URL(String(input)).pathname}`
-    const route = routes[key]
-    if (!route) throw new Error(`Unexpected request: ${key}`)
+    const entry = routes[key]
+    if (!entry) throw new Error(`Unexpected request: ${key}`)
+    const index = calls[key] ?? 0
+    calls[key] = index + 1
+    const route = Array.isArray(entry) ? entry[Math.min(index, entry.length - 1)] : entry
     return new Response(route.body === undefined ? null : JSON.stringify(route.body), {
       status: route.status,
       headers: { 'Content-Type': 'application/json' },
