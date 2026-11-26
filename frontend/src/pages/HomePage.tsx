@@ -1,6 +1,5 @@
 import { useAuth } from '../auth/AuthContext'
 import { useNavigate } from 'react-router'
-import { BiweeklyAssesment } from './BiweeklyAssesment'
 import { ExcluirConta } from '../components/ExcluirConta'
 
 const dateFormatter = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' })
@@ -18,15 +17,16 @@ function CheckinButton() {
   )
 }
 
-function BiweeklyAssesmentButton() {
+function AvaliacaoButton() {
   const navigate = useNavigate()
-  const handleBiweeklyAssesment = () => {
-    navigate('/BiweeklyAssesment')
-  }
 
   return (
-    <button type="button" className="button button-primary" onClick={handleBiweeklyAssesment}>
-      {'Avaliação Quinzenal'}
+    <button
+      type="button"
+      className="button button-primary"
+      onClick={() => navigate('/avaliacoes/nova')}
+    >
+      Avaliação quinzenal
     </button>
   )
 }
@@ -44,14 +44,10 @@ export function HomePage() {
       </p>
       <p className="muted">Conta criada em {dateFormatter.format(new Date(user.criado_em))}.</p>
 
-      <CheckinButton />
-      
-      <div style={{ height: "20px" }} />
-      <p className="muted">
-        A cada 15 dias, você será convidado a preencher uma avaliação quinzenal. Ela é opcional, mas
-        ajuda a monitorar seu bem-estar.
-      </p>
-      <BiweeklyAssesmentButton />
+      <div className="home-acoes">
+        <CheckinButton />
+        <AvaliacaoButton />
+      </div>
 
       <ExcluirConta />
     </section>

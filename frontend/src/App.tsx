@@ -10,7 +10,7 @@ import { DailyCheckin } from './pages/DailyCheckin'
 import { AjudaPage } from './pages/AjudaPage'
 import { HistoryPage } from './pages/HistoryPage'
 import { AJUDA_PATH } from './constants/ajuda'
-import { BiweeklyAssesment } from './pages/BiweeklyAssesment'
+import { AvaliacaoPage } from './pages/AvaliacaoPage'
 import { ResultadoAvaliacaoPage } from './pages/ResultadoAvaliacaoPage'
 
 export function App() {
@@ -20,8 +20,8 @@ export function App() {
         <Route element={<RequireAuth />}>
           <Route index element={<HomePage />} />
           <Route path="dailycheckin" element={<DailyCheckin />} />
-          <Route path="biweeklyassesment" element={<BiweeklyAssesment />} />
           <Route path="historico" element={<HistoryPage />} />
+          <Route path="avaliacoes/nova" element={<AvaliacaoPage />} />
           <Route path="avaliacoes/resultado" element={<ResultadoAvaliacaoPage />} />
           <Route path="avaliacoes/:id" element={<ResultadoAvaliacaoPage />} />
         </Route>

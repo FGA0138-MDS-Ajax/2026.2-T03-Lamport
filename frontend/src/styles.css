@@ -1141,3 +1141,40 @@ a {
   flex-wrap: wrap;
   gap: 1rem;
 }
+
+.home-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.avaliacao-parte {
+  margin-top: 1.5rem;
+}
+
+.avaliacao-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.avaliacao-item[aria-invalid='true'] {
+  border-color: var(--color-error);
+}
+
+.avaliacao-item legend {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0 0.25rem;
+}
+
+.avaliacao-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
