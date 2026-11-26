@@ -1,0 +1,1814 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação do Sintoniza, aplicação web de apoio à saúde mental (MDS 2026 – Turma 03).">
+      
+      
+      
+      
+        <link rel="prev" href="../vocabulario-avaliacao/">
+      
+      
+        <link rel="next" href="../historico-versoes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+      
+        <title>Protótipo do check-in - Sintoniza – Grupo Lamport</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#prototipo-do-check-in-e-do-historico" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Sintoniza – Grupo Lamport" class="md-header__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sintoniza – Grupo Lamport
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Protótipo do check-in
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Sintoniza – Grupo Lamport" class="md-nav__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Sintoniza – Grupo Lamport
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visao-produto-projeto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão do Produto e do Projeto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vocabulario-checkin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vocabulário do check-in
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vocabulario-avaliacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vocabulário da avaliação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protótipo do check-in
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protótipo do check-in
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#historico-de-revisoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histórico de revisões
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-objetivo-e-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 Objetivo e escopo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-fluxo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 Fluxo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-rastreabilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Rastreabilidade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-decisoes-de-interface-aplicadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 Decisões de interface aplicadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-telas-mobile-390-px" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 Telas mobile (390 px)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 Telas mobile (390 px)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-inicio-e-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Início e menu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-etapa-1-p1-a-p4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Etapa 1: P1 a P4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-etapa-2-p5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Etapa 2: P5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-resultado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Resultado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-tela-de-ajuda-imediata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Tela de Ajuda Imediata
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-historico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Histórico
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-telas-desktop-1280-px" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 Telas desktop (1280 px)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-pendencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7 Pendências
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../historico-versoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Histórico de versões
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprints/sprint-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Planejamento da Sprint 5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Métricas e qualidade
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Métricas e qualidade
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Painel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/metodologia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metodologia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/sprint-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/sprint-3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/sprint-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/sprint-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/matriz-regras-testes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matriz regra × teste
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/conferencia-prs-sprint-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conferência dos PRs da Sprint 4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/conferencia-prs-sprint-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conferência dos PRs da Sprint 5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/defeitos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defeitos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/quadro-26-sprint-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quadro 26 da Sprint 4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metricas/quadro-26-sprint-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quadro 26 da Sprint 5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atas de Reunião
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Atas de Reunião
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../atas-reuniao/ata-reuniao-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ata 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#historico-de-revisoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Histórico de revisões
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-objetivo-e-escopo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 Objetivo e escopo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-fluxo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 Fluxo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-rastreabilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 Rastreabilidade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-decisoes-de-interface-aplicadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 Decisões de interface aplicadas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-telas-mobile-390-px" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 Telas mobile (390 px)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 Telas mobile (390 px)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-inicio-e-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Início e menu
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-etapa-1-p1-a-p4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Etapa 1: P1 a P4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-etapa-2-p5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Etapa 2: P5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-resultado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Resultado
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-tela-de-ajuda-imediata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Tela de Ajuda Imediata
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-historico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Histórico
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-telas-desktop-1280-px" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 Telas desktop (1280 px)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-pendencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7 Pendências
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="prototipo-do-check-in-e-do-historico">Protótipo do check-in e do histórico<a class="headerlink" href="#prototipo-do-check-in-e-do-historico" title="Permanent link">&para;</a></h1>
+<p><strong>Versão 1.0 – 29/10/2026</strong> · Telas do check-in diário, do resultado, da Tela de Ajuda Imediata e do histórico, em mobile e desktop.</p>
+<div class="admonition warning">
+<p class="admonition-title">Aguardando validação do frontend</p>
+<p>Este documento atende à issue <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/issues/2">#2</a> e segue a <a href="../visao-produto-projeto/">Visão do Produto e do Projeto</a> e o <a href="../arquitetura/">Documento de Arquitetura</a>, ambos na versão 2.2, e o <a href="../vocabulario-checkin/">Vocabulário do check-in</a> v1.1. <strong>Onde houver divergência, valem a Visão e a Arquitetura.</strong> Pelos critérios de aceite da issue, o frontend valida o protótipo antes da implementação.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Projeto</strong></td>
+<td style="text-align: left;">Sintoniza – Grupo Lamport, MDS 2026.2, Turma 03 (UnB)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Issue</strong></td>
+<td style="text-align: left;"><a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/issues/2">#2</a> [UX] Protótipo das telas de check-in diário e histórico</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Base</strong></td>
+<td style="text-align: left;">Visão do Produto e do Projeto v2.2 e Documento de Arquitetura v2.2, ambos de 29/10/2026; Vocabulário do check-in v1.1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Figma</strong></td>
+<td style="text-align: left;"><a href="https://www.figma.com/design/eY40HsGcHOBxnHPRMeB9gj">Arquivo de design</a> · <a href="https://www.figma.com/proto/eY40HsGcHOBxnHPRMeB9gj?node-id=1-2&amp;starting-point-node-id=1%3A2">Protótipo navegável (mobile)</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Elaboração</strong></td>
+<td style="text-align: left;">Vinícius Evangelista Borges Pinto (UX/UI, conteúdo e documentação)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Validação</strong></td>
+<td style="text-align: left;">Júlio Barros de Oliveira e Danilo Menezes Gomez (frontend) – pendente</td>
+</tr>
+</tbody>
+</table>
+<h2 id="historico-de-revisoes">Histórico de revisões<a class="headerlink" href="#historico-de-revisoes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Data</th>
+<th style="text-align: center;">Versão</th>
+<th style="text-align: left;">Descrição</th>
+<th style="text-align: left;">Autor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">29/10/2026</td>
+<td style="text-align: center;">1.0</td>
+<td style="text-align: left;">Protótipo alinhado à Visão v2.2 e ao vocabulário v1.1: 20 telas mobile navegáveis e 10 telas desktop de referência.</td>
+<td style="text-align: left;">Vinícius E. B. Pinto</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-objetivo-e-escopo">1 Objetivo e escopo<a class="headerlink" href="#1-objetivo-e-escopo" title="Permanent link">&para;</a></h2>
+<p>Este documento registra o protótipo das telas do check-in diário (C02/R05 e C02/R06), da Tela de Ajuda Imediata (C04/R10 e C04/R11) e do histórico de check-ins (C05/R12). O protótipo fica no Figma; aqui estão o fluxo de navegação, a correspondência com as tarefas da issue #2 e a imagem de cada tela.</p>
+<p>O mobile, com 390 px de largura, é a referência principal e o único com navegação no Figma. O desktop mostra as telas principais em 1280 px, sem navegação.</p>
+<p>Os textos seguem a Visão e, no que ela não define, o vocabulário do check-in. As exceções são “Olá!”, o e-mail do usuário e “Sair”, que já existem no frontend atual, e “Início” e “Histórico”, que são os nomes das páginas no menu.</p>
+<p>Ficam fora do escopo a avaliação quinzenal (C03), as avaliações no histórico (parte do R12 prevista para a Sprint 5), o cadastro, o login e a página de termos de uso.</p>
+<div class="admonition note">
+<p class="admonition-title">Como navegar no protótipo</p>
+<p>O <a href="https://www.figma.com/proto/eY40HsGcHOBxnHPRMeB9gj?node-id=1-2&amp;starting-point-node-id=1%3A2">protótipo navegável</a> abre no fluxo “Check-in diário (mobile)”, que começa na tela M-01a. O fluxo “Histórico (mobile)” começa na M-06a. No modo de desenvolvimento (Dev Mode) do Figma, as anotações trazem detalhes de implementação, como os links <code>tel:188</code> e <code>tel:192</code> e o estilo de foco.</p>
+</div>
+<h2 id="2-fluxo">2 Fluxo<a class="headerlink" href="#2-fluxo" title="Permanent link">&para;</a></h2>
+<p>A Figura 1 mostra o caminho principal do check-in no protótipo mobile. Ele segue a Figura 3 da Arquitetura e o fluxo de duas etapas do vocabulário (seção 6).</p>
+<p><strong>Figura 1 – Fluxo do protótipo mobile</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    A["M-01a · Início"] -- "Fazer check-in" --&gt; B["M-02a / M-02b · Etapa 1&lt;br/&gt;P1 a P4, opcionais"]
+    B -- "Continuar" --&gt; C["M-03a · Etapa 2&lt;br/&gt;P5, obrigatória"]
+    C -- "Concluir sem resposta" --&gt; V["M-03b · Erro de validação"]
+    C -- "Marca Não" --&gt; N["M-03e · Não marcado"]
+    C -- "Marca Sim" --&gt; S["M-03f · Sim marcado"]
+    N -- "Concluir check-in" --&gt; E["M-03c · Enviando…"]
+    E --&gt; R["M-04a · Conteúdos do dia"]
+    S -- "Concluir check-in" --&gt; H["M-05a · Tela de Ajuda Imediata"]
+    R -- "Voltar ao início" --&gt; F["M-01b · Check-in já feito"]
+    F -- "Ver check-in de hoje" --&gt; R
+    T["Qualquer tela"] -- "Preciso de ajuda agora" --&gt; G["M-05c · Tela de Ajuda Imediata"]
+    style H fill:#f8d7da,stroke:#c0392b,color:#1f2a2e
+    style G fill:#f8d7da,stroke:#c0392b,color:#1f2a2e</code></pre>
+<p>Fora do caminho principal, o protótipo mostra também:</p>
+<ul>
+<li>o erro de conexão ao enviar, que mantém as respostas (M-03d);</li>
+<li>o resultado sem materiais (M-04c);</li>
+<li>a falha ao salvar um check-in com P5 = Sim (M-05b);</li>
+<li>o histórico vazio, carregando e com erro (M-06b a M-06d);</li>
+<li>o menu aberto (M-01c).</li>
+</ul>
+<p>Em todas as telas, o logo “Sintoniza” leva ao início e o ☰ abre o menu.</p>
+<h2 id="3-rastreabilidade">3 Rastreabilidade<a class="headerlink" href="#3-rastreabilidade" title="Permanent link">&para;</a></h2>
+<p><strong>Quadro 1 – Tarefas da issue #2 e telas do protótipo</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Tarefa da issue #2</th>
+<th style="text-align: left;">Requisito ou referência</th>
+<th style="text-align: left;">Telas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Check-in: perguntas P1 a P5 com os textos e as opções do Quadro 15 da Visão; P1 a P4 opcionais e P5 obrigatória</td>
+<td style="text-align: left;">C02/R05; Visão, Quadro 15</td>
+<td style="text-align: left;">M-02a, M-02b, M-03a a M-03f</td>
+</tr>
+<tr>
+<td style="text-align: left;">Estado “check-in de hoje já feito”, com o resultado do dia</td>
+<td style="text-align: left;">Arquitetura, Figura 3</td>
+<td style="text-align: left;">M-01b, que leva à M-04a</td>
+</tr>
+<tr>
+<td style="text-align: left;">Resultado sem risco: até 3 materiais com título, fonte, resumo, link e motivo</td>
+<td style="text-align: left;">C02/R06; Visão, Quadro 16</td>
+<td style="text-align: left;">M-04a, M-04c</td>
+</tr>
+<tr>
+<td style="text-align: left;">Resultado com P5 = Sim: Tela de Ajuda Imediata, sem materiais</td>
+<td style="text-align: left;">C04/R10; Visão, seção 4.5.5</td>
+<td style="text-align: left;">M-03f, que leva à M-05a; M-05b</td>
+</tr>
+<tr>
+<td style="text-align: left;">Botão “Preciso de ajuda agora” em todas as telas</td>
+<td style="text-align: left;">C04/R11</td>
+<td style="text-align: left;">Todas; o botão abre a M-05c</td>
+</tr>
+<tr>
+<td style="text-align: left;">Histórico: últimos 30 check-ins com data, humor e tags</td>
+<td style="text-align: left;">C05/R12</td>
+<td style="text-align: left;">M-06a a M-06d</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quadro 2 – Critérios de aceite da issue #2</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Critério</th>
+<th style="text-align: left;">Como foi atendido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Link do Figma anexado na issue</td>
+<td style="text-align: left;">Links do arquivo e do protótipo navegável no início deste documento, para comentar na issue.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Textos iguais aos da Visão e, no que ela não define, aos do vocabulário revisado pelo PO (#3)</td>
+<td style="text-align: left;">Atendido, com as exceções da seção 1, que já existem no frontend atual ou são nomes de páginas.</td>
+</tr>
+<tr>
+<td style="text-align: left;">O frontend validou o protótipo antes da implementação</td>
+<td style="text-align: left;">Pendente.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-decisoes-de-interface-aplicadas">4 Decisões de interface aplicadas<a class="headerlink" href="#4-decisoes-de-interface-aplicadas" title="Permanent link">&para;</a></h2>
+<p>O protótipo aplica as decisões do vocabulário (seção 7) e os requisitos de acessibilidade da seção 6.8:</p>
+<ul>
+<li><strong>P1 a P4 opcionais (D3, aprovada na v2.2):</strong> “Prefiro não responder” é a última opção de cada pergunta e “Continuar” fica sempre habilitado.</li>
+<li><strong>Histórico sem a P5 e sem o nível (D6):</strong> cada item mostra apenas a data, o humor e os temas.</li>
+<li><strong>Sem ícones nas opções (D7):</strong> toda opção tem rótulo em texto. O ♥ do botão “Preciso de ajuda agora” é decorativo.</li>
+<li><strong>Aviso de que o check-in não é teste de saúde (D8):</strong> aparece no resultado (M-04a e M-04c).</li>
+<li><strong>Tela de Ajuda imediata com P5 = Sim (D9):</strong> a tela abre ao concluir, sem depender do envio. Se o envio falhar, os contatos continuam visíveis (M-05b). A D9 ainda aguarda decisão do PO (vocabulário, seção 10, ponto 4).</li>
+<li><strong>Acessibilidade:</strong><ul>
+<li>as escalas aparecem em lista vertical no mobile, na ordem do Quadro 4 do vocabulário, e as opções têm 47 px de altura;</li>
+<li>a opção marcada tem o ponto no círculo e o texto em negrito, e não só a cor;</li>
+<li>a M-02b mostra o foco do teclado com contorno de 3 px na cor primária, a 2 px da opção, como o <code>:focus-visible</code> do <code>styles.css</code>;</li>
+<li>os nomes das camadas indicam o papel de cada elemento, como “h1 (recebe o foco)”, “descrição (aria-describedby)” e “Registro (role=status)”.</li>
+</ul>
+</li>
+</ul>
+<p>As respostas da M-02b (humor ruim, bastante ansiedade, sono ruim e P4 sem resposta) geram exatamente os temas da M-04a e o item “Hoje” da M-06a: Ansiedade, Humor e Sono, na ordem da regra R-S1.</p>
+<h2 id="5-telas-mobile-390-px">5 Telas mobile (390 px)<a class="headerlink" href="#5-telas-mobile-390-px" title="Permanent link">&para;</a></h2>
+<p>Clique em uma imagem para abri-la em tamanho real.</p>
+<h3 id="51-inicio-e-menu">5.1 Início e menu<a class="headerlink" href="#51-inicio-e-menu" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>M-01a:</strong> início sem check-in no dia, com o cartão “Check-in de hoje” (vocabulário, Quadro 7).</li>
+<li><strong>M-01b:</strong> início com o check-in do dia feito. O botão “Ver check-in de hoje” mostra o resultado já registrado.</li>
+<li><strong>M-01c:</strong> menu aberto pelo ☰, com Início, Histórico, o e-mail e “Sair”.</li>
+</ul>
+<p><strong>Figura 2 – Início e menu</strong></p>
+<p><a href="../prototipo/m-01a.png"><img alt="M-01a – Início sem check-in no dia" loading="lazy" src="../prototipo/m-01a.png" width="220" /></a>
+<a href="../prototipo/m-01b.png"><img alt="M-01b – Início com o check-in do dia feito" loading="lazy" src="../prototipo/m-01b.png" width="220" /></a>
+<a href="../prototipo/m-01c.png"><img alt="M-01c – Menu aberto" loading="lazy" src="../prototipo/m-01c.png" width="220" /></a></p>
+<h3 id="52-etapa-1-p1-a-p4">5.2 Etapa 1: P1 a P4<a class="headerlink" href="#52-etapa-1-p1-a-p4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>M-02a:</strong> etapa vazia, sem opção pré-selecionada.</li>
+<li><strong>M-02b:</strong> etapa respondida, com a P4 sem resposta e o foco do teclado na primeira opção dela.</li>
+</ul>
+<p><strong>Figura 3 – Etapa 1 do check-in</strong></p>
+<p><a href="../prototipo/m-02a.png"><img alt="M-02a – Etapa 1 vazia" loading="lazy" src="../prototipo/m-02a.png" width="220" /></a>
+<a href="../prototipo/m-02b.png"><img alt="M-02b – Etapa 1 respondida, com foco visível" loading="lazy" src="../prototipo/m-02b.png" width="220" /></a></p>
+<h3 id="53-etapa-2-p5">5.3 Etapa 2: P5<a class="headerlink" href="#53-etapa-2-p5" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>M-03a:</strong> etapa vazia.</li>
+<li><strong>M-03e e M-03f:</strong> “Não” e “Sim” marcados. Marcar uma opção não envia o check-in; o envio só acontece em “Concluir check-in”. Marcar “Sim” não pede confirmação (vocabulário, Quadro 9).</li>
+<li><strong>M-03b:</strong> erro ao concluir sem responder.</li>
+<li><strong>M-03c:</strong> envio em andamento, com o botão desabilitado.</li>
+<li><strong>M-03d:</strong> erro de conexão, com as respostas mantidas.</li>
+</ul>
+<p><strong>Figura 4 – Etapa 2 do check-in: resposta</strong></p>
+<p><a href="../prototipo/m-03a.png"><img alt="M-03a – Etapa 2 vazia" loading="lazy" src="../prototipo/m-03a.png" width="220" /></a>
+<a href="../prototipo/m-03e.png"><img alt="M-03e – Etapa 2 com Não marcado" loading="lazy" src="../prototipo/m-03e.png" width="220" /></a>
+<a href="../prototipo/m-03f.png"><img alt="M-03f – Etapa 2 com Sim marcado" loading="lazy" src="../prototipo/m-03f.png" width="220" /></a></p>
+<p><strong>Figura 5 – Etapa 2 do check-in: erros e envio</strong></p>
+<p><a href="../prototipo/m-03b.png"><img alt="M-03b – Erro de validação" loading="lazy" src="../prototipo/m-03b.png" width="220" /></a>
+<a href="../prototipo/m-03c.png"><img alt="M-03c – Enviando" loading="lazy" src="../prototipo/m-03c.png" width="220" /></a>
+<a href="../prototipo/m-03d.png"><img alt="M-03d – Erro de conexão" loading="lazy" src="../prototipo/m-03d.png" width="220" /></a></p>
+<h3 id="54-resultado">5.4 Resultado<a class="headerlink" href="#54-resultado" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>M-04a:</strong> conteúdos do dia. São até 3 materiais, na ordem da regra R-S1, cada um com “Por que estou vendo isto?” e o motivo da regra (Visão, Quadro 16). Títulos, fontes e resumos estão como marcadores: os reais vêm do <code>materiais.yaml</code>.</li>
+<li><strong>M-04c:</strong> resultado sem materiais (regra R-S6).</li>
+</ul>
+<p><strong>Figura 6 – Resultado do check-in</strong></p>
+<p><a href="../prototipo/m-04a.png"><img alt="M-04a – Conteúdos do dia" loading="lazy" src="../prototipo/m-04a.png" width="220" /></a>
+<a href="../prototipo/m-04c.png"><img alt="M-04c – Resultado sem materiais" loading="lazy" src="../prototipo/m-04c.png" width="220" /></a></p>
+<h3 id="55-tela-de-ajuda-imediata">5.5 Tela de Ajuda Imediata<a class="headerlink" href="#55-tela-de-ajuda-imediata" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>M-05a:</strong> aberta pelo check-in com P5 = Sim. Tem o conteúdo fixo da seção 4.5.5 da Visão e os textos do Quadro 12 do vocabulário.</li>
+<li><strong>M-05b:</strong> mesma tela, quando o check-in não pôde ser salvo.</li>
+<li><strong>M-05c:</strong> aberta pelo botão “Preciso de ajuda agora”. Tem só o conteúdo fixo, sem os textos do check-in.</li>
+</ul>
+<p><strong>Figura 7 – Tela de Ajuda Imediata</strong></p>
+<p><a href="../prototipo/m-05a.png"><img alt="M-05a – Tela de Ajuda aberta pelo check-in" loading="lazy" src="../prototipo/m-05a.png" width="220" /></a>
+<a href="../prototipo/m-05b.png"><img alt="M-05b – Tela de Ajuda com falha ao salvar" loading="lazy" src="../prototipo/m-05b.png" width="220" /></a>
+<a href="../prototipo/m-05c.png"><img alt="M-05c – Tela de Ajuda aberta pelo botão" loading="lazy" src="../prototipo/m-05c.png" width="220" /></a></p>
+<h3 id="56-historico">5.6 Histórico<a class="headerlink" href="#56-historico" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>M-06a:</strong> lista com data, humor e temas (vocabulário, Quadro 14).</li>
+<li><strong>M-06b a M-06d:</strong> histórico vazio, carregando e com erro.</li>
+</ul>
+<p><strong>Figura 8 – Histórico de check-ins</strong></p>
+<p><a href="../prototipo/m-06a.png"><img alt="M-06a – Histórico" loading="lazy" src="../prototipo/m-06a.png" width="220" /></a>
+<a href="../prototipo/m-06b.png"><img alt="M-06b – Histórico vazio" loading="lazy" src="../prototipo/m-06b.png" width="220" /></a>
+<a href="../prototipo/m-06c.png"><img alt="M-06c – Histórico carregando" loading="lazy" src="../prototipo/m-06c.png" width="220" /></a>
+<a href="../prototipo/m-06d.png"><img alt="M-06d – Histórico com erro" loading="lazy" src="../prototipo/m-06d.png" width="220" /></a></p>
+<h2 id="6-telas-desktop-1280-px">6 Telas desktop (1280 px)<a class="headerlink" href="#6-telas-desktop-1280-px" title="Permanent link">&para;</a></h2>
+<p>O desktop repete os textos das telas principais do mobile, com o cabeçalho do frontend atual: Início, Histórico, o e-mail, “Sair” e o botão “Preciso de ajuda agora”. É uma referência visual estática; a navegação está só no protótipo mobile.</p>
+<p><strong>Quadro 3 – Telas desktop e equivalentes no mobile</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Tela</th>
+<th style="text-align: left;">Estado</th>
+<th style="text-align: center;">Mobile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><a href="../prototipo/d-01a.png">D-01a</a></td>
+<td style="text-align: left;">Início sem check-in no dia</td>
+<td style="text-align: center;">M-01a</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="../prototipo/d-01b.png">D-01b</a></td>
+<td style="text-align: left;">Início com o check-in do dia feito</td>
+<td style="text-align: center;">M-01b</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="../prototipo/d-02b.png">D-02b</a></td>
+<td style="text-align: left;">Etapa 1 respondida, com foco visível</td>
+<td style="text-align: center;">M-02b</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="../prototipo/d-03a.png">D-03a</a></td>
+<td style="text-align: left;">Etapa 2 vazia</td>
+<td style="text-align: center;">M-03a</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="../prototipo/d-03b.png">D-03b</a></td>
+<td style="text-align: left;">Etapa 2 com erro de validação</td>
+<td style="text-align: center;">M-03b</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="../prototipo/d-04a.png">D-04a</a></td>
+<td style="text-align: left;">Conteúdos do dia</td>
+<td style="text-align: center;">M-04a</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="../prototipo/d-05a.png">D-05a</a></td>
+<td style="text-align: left;">Tela de Ajuda aberta pelo check-in</td>
+<td style="text-align: center;">M-05a</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="../prototipo/d-05c.png">D-05c</a></td>
+<td style="text-align: left;">Tela de Ajuda aberta pelo botão</td>
+<td style="text-align: center;">M-05c</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="../prototipo/d-06a.png">D-06a</a></td>
+<td style="text-align: left;">Histórico</td>
+<td style="text-align: center;">M-06a</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="../prototipo/d-06b.png">D-06b</a></td>
+<td style="text-align: left;">Histórico vazio</td>
+<td style="text-align: center;">M-06b</td>
+</tr>
+</tbody>
+</table>
+<details class="example">
+<summary>Figura 9 – Telas desktop</summary>
+<p><img alt="D-01a – Início sem check-in no dia" loading="lazy" src="../prototipo/d-01a.png" /></p>
+<p><img alt="D-01b – Início com o check-in do dia feito" loading="lazy" src="../prototipo/d-01b.png" /></p>
+<p><img alt="D-02b – Etapa 1 respondida, com foco visível" loading="lazy" src="../prototipo/d-02b.png" /></p>
+<p><img alt="D-03a – Etapa 2 vazia" loading="lazy" src="../prototipo/d-03a.png" /></p>
+<p><img alt="D-03b – Etapa 2 com erro de validação" loading="lazy" src="../prototipo/d-03b.png" /></p>
+<p><img alt="D-04a – Conteúdos do dia" loading="lazy" src="../prototipo/d-04a.png" /></p>
+<p><img alt="D-05a – Tela de Ajuda aberta pelo check-in" loading="lazy" src="../prototipo/d-05a.png" /></p>
+<p><img alt="D-05c – Tela de Ajuda aberta pelo botão" loading="lazy" src="../prototipo/d-05c.png" /></p>
+<p><img alt="D-06a – Histórico" loading="lazy" src="../prototipo/d-06a.png" /></p>
+<p><img alt="D-06b – Histórico vazio" loading="lazy" src="../prototipo/d-06b.png" /></p>
+</details>
+<h2 id="7-pendencias">7 Pendências<a class="headerlink" href="#7-pendencias" title="Permanent link">&para;</a></h2>
+<p>O protótipo segue o texto atual dos documentos. Quatro pontos do vocabulário (seção 10) ainda aguardam decisão do PO e podem mudar as telas:</p>
+<ul>
+<li><strong>Ponto 2:</strong> check-in com P1 a P4 em branco recebe o tema Bem-estar, que hoje aparece com o motivo “Você não indicou dificuldades marcantes hoje.”</li>
+<li><strong>Ponto 4:</strong> momento em que a Tela de Ajuda abre (decisão D9, já aplicada no protótipo).</li>
+<li><strong>Ponto 6:</strong> escalas em sentidos opostos. P1 e P3 vão de “Muito ruim” a “Muito bom”; P2 e P4 vão de “Nada” a “Extremamente”.</li>
+<li><strong>Ponto 7:</strong> a P4 pergunta sobre sobrecarga, mas gera o tema exibido como “Estresse”.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>

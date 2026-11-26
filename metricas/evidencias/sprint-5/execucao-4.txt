@@ -1,0 +1,31 @@
+TSI-04: botão visível na tela de login: true
+TSI-04: URL após clicar: http://localhost:8080/risco; CVV 188: true; SAMU 192: true
+tsi01: após cadastro/login a URL é http://localhost:8080/
+tsi01: POST /api/checkins → 201 {"nivel":"autocuidado","tags":["humor"],"recomendacoes":[{"titulo":"Depressão – Saúde de A a Z","fonte":"Ministério da Saúde","resumo":"Apresenta o que é a depressão, os sinais mais comuns e as formas de tratamento e prevenção. O diagnóstico é feito por um médico, e o atendimento pode acontecer na rede pública de saúde.","url":"https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao","regra":"R-D2","motivo":"Você indicou humor ruim ou muito ruim hoje."}]}
+tsi01: após o envio a URL é http://localhost:8080/dailycheckin
+TSI-01: materiais da resposta exibidos na tela: Depressão – Saúde de A a Z=true
+TSI-01: motivo exibido: true
+TSI-01: href do link: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao; target=_blank
+TSI-01: nova aba abriu em https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao; título "Depressão — Ministério da Saúde"
+TSI-01: histórico: Histórico Check-ins Seus últimos 30 check-ins. Hoje Humor: Ruim Temas: Humor Avaliações Você ainda não fez nenhuma avaliação.
+tsi02: após cadastro/login a URL é http://localhost:8080/
+tsi02: POST /api/checkins → 201 {"nivel":"crise","tags":[],"recomendacoes":[]}
+tsi02: após o envio a URL é http://localhost:8080/risco
+TSI-02: URL: http://localhost:8080/risco; CVV 188: true; SAMU 192: true
+tsi03: após cadastro/login a URL é http://localhost:8080/
+TSI-03: tela da avaliação em http://localhost:8080/avaliacoes/nova; 16 itens; botão de ajuda visível: true
+TSI-03: envio sem respostas: URL http://localhost:8080/avaliacoes/nova; alerta: Responda a todas as perguntas para concluir a avaliação. Faltam: PHQ-9, pergunta 1 PHQ-9, pergunta 2 PHQ-9, pergunta 3 P
+TSI-03: POST /api/avaliacoes → 201 {"escore_phq9":10,"escore_gad7":5,"faixa_phq9":"moderada","faixa_gad7":"leve","nivel":"atencao","orientacao":"Recomendamos conversar com um profissional de saúde. No SUS, a porta de entrada é a Unidad
+TSI-03: URL http://localhost:8080/avaliacoes/resultado; 10 de 27: true; 5 de 21: true; Moderada: true; Leve: true; UBS: true; "não é um diagnóstico": true; materiais: 2
+TSI-03: histórico: Histórico Check-ins Seus últimos 30 check-ins. Você ainda não fez nenhum check-in. Fazer o primeiro check-in Avaliações Hoje PHQ-9: 10 · Moderada GAD-7: 5 · Leve Nível: Procurar a UBS
+TSI-03: resultado aberto pelo histórico: http://localhost:8080/avaliacoes/75bb3d2b-d744-40f3-815b-8b61c81f1069; 10 de 27: true; materiais: 2
+perfild: após cadastro/login a URL é http://localhost:8080/
+Perfil D: POST → 201 {"escore_phq9":1,"escore_gad7":0,"faixa_phq9":"minima","faixa_gad7":"minima","nivel":"crise","orientacao":"Tela de Ajuda Imediata. Nenhum material é exibido.","recomendacoes":[]}; URL http://localhost:8080/risco; CVV 188: true; SAMU 192: true
+tsi05: após cadastro/login a URL é http://localhost:8080/
+tsi05: POST /api/checkins → 201 {"nivel":"autocuidado","tags":["humor"],"recomendacoes":[{"titulo":"Depressão – Saúde de A a Z","fonte":"Ministério da Saúde","resumo":"Apresenta o que é a depressão, os sinais mais comuns e as formas de tratamento e prevenção. O diagnóstico é feito por um médico, e o atendimento pode acontecer na rede pública de saúde.","url":"https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/d/depressao","regra":"R-D2","motivo":"Você indicou humor ruim ou muito ruim hoje."}]}
+tsi05: após o envio a URL é http://localhost:8080/dailycheckin
+TSI-03: avaliação de outro usuário: Avaliação não encontrada. Verifique o endereço ou volte ao histórico.
+TSI-05: confirmação: Excluir sua conta? Todos os seus dados (check-ins, avaliações e recomendações) serão apagados sem possibilidade de recuperação. Cancelar Excluir definitivamente
+TSI-05: após Cancelar: GET /api/me → 200; URL http://localhost:8080/
+TSI-05: DELETE /api/me → 204; URL após excluir http://localhost:8080/login; token na sessão: removido
+TSI-05: login com as mesmas credenciais → 401; URL http://localhost:8080/login; mensagem: Entrar Acesse sua conta para acompanhar seu bem-estar. E-mail ou senha incorretos. E-mail Senha Entrar Ainda não tem conta? Criar conta

@@ -1,0 +1,1653 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação do Sintoniza, aplicação web de apoio à saúde mental (MDS 2026 – Turma 03).">
+      
+      
+      
+      
+        <link rel="prev" href="../conferencia-prs-sprint-5/">
+      
+      
+        <link rel="next" href="../quadro-26-sprint-4/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
+    
+    
+      
+        <title>Defeitos - Sintoniza – Grupo Lamport</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#registro-de-defeitos" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Sintoniza – Grupo Lamport" class="md-header__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sintoniza – Grupo Lamport
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Defeitos
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Sintoniza – Grupo Lamport" class="md-nav__button md-logo" aria-label="Sintoniza – Grupo Lamport" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Sintoniza – Grupo Lamport
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-produto-projeto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão do Produto e do Projeto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documento de Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vocabulario-checkin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vocabulário do check-in
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vocabulario-avaliacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vocabulário da avaliação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prototipo-checkin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protótipo do check-in
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../historico-versoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Histórico de versões
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sprints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprints/sprint-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Planejamento da Sprint 5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Métricas e qualidade
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Métricas e qualidade
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Painel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../metodologia/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metodologia
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprint-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprint-3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprint-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sprint-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../matriz-regras-testes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matriz regra × teste
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conferencia-prs-sprint-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conferência dos PRs da Sprint 4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conferencia-prs-sprint-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conferência dos PRs da Sprint 5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defeitos
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defeitos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#criterio-de-severidade-usado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de severidade usado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-06-materiais-e-motivo-nao-aparecem-depois-do-check-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-06: materiais e motivo não aparecem depois do check-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-07-nao-ha-tela-de-avaliacao-nem-de-resultado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-07: não há tela de avaliação nem de resultado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-08-ambiente-de-demonstracao-sobe-sem-o-catalogo-de-materiais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-08: ambiente de demonstração sobe sem o catálogo de materiais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-10-botao-fazer-o-primeiro-check-in-do-historico-nao-faz-nada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-10: botão "Fazer o primeiro check-in" do histórico não faz nada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-09-mkdocsyml-com-marcadores-de-conflito-site-da-documentacao-nao-publica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-09: mkdocs.yml com marcadores de conflito; site da documentação não publica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-01-post-apicheckins-nao-gera-nem-grava-recomendacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-01: POST /api/checkins não gera nem grava recomendações
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-02-selecionar_materiais-diverge-do-quadro-20-da-visao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-02: selecionar_materiais diverge do Quadro 20 da Visão
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-03-testes-de-selecao-nao-cobrem-inativos-nem-regra-e-motivo-por-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-03: testes de seleção não cobrem inativos nem regra e motivo por item
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-04-cadastro-e-get-apime-divergem-do-contrato-da-arquitetura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-04: cadastro e GET /api/me divergem do contrato da Arquitetura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-05-testes-de-api-do-ts-03-nao-usam-o-banco-de-teste" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-05: testes de API do TS-03 não usam o banco de teste
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quadro-26-sprint-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quadro 26 da Sprint 4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quadro-26-sprint-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quadro 26 da Sprint 5
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atas de Reunião
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Atas de Reunião
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../atas-reuniao/ata-reuniao-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ata 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#criterio-de-severidade-usado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critério de severidade usado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-06-materiais-e-motivo-nao-aparecem-depois-do-check-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-06: materiais e motivo não aparecem depois do check-in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-07-nao-ha-tela-de-avaliacao-nem-de-resultado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-07: não há tela de avaliação nem de resultado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-08-ambiente-de-demonstracao-sobe-sem-o-catalogo-de-materiais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-08: ambiente de demonstração sobe sem o catálogo de materiais
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-10-botao-fazer-o-primeiro-check-in-do-historico-nao-faz-nada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-10: botão "Fazer o primeiro check-in" do histórico não faz nada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-09-mkdocsyml-com-marcadores-de-conflito-site-da-documentacao-nao-publica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-09: mkdocs.yml com marcadores de conflito; site da documentação não publica
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-01-post-apicheckins-nao-gera-nem-grava-recomendacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-01: POST /api/checkins não gera nem grava recomendações
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-02-selecionar_materiais-diverge-do-quadro-20-da-visao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-02: selecionar_materiais diverge do Quadro 20 da Visão
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-03-testes-de-selecao-nao-cobrem-inativos-nem-regra-e-motivo-por-item" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-03: testes de seleção não cobrem inativos nem regra e motivo por item
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-04-cadastro-e-get-apime-divergem-do-contrato-da-arquitetura" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-04: cadastro e GET /api/me divergem do contrato da Arquitetura
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#def-05-testes-de-api-do-ts-03-nao-usam-o-banco-de-teste" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEF-05: testes de API do TS-03 não usam o banco de teste
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="registro-de-defeitos">Registro de defeitos<a class="headerlink" href="#registro-de-defeitos" title="Permanent link">&para;</a></h1>
+<p>Defeitos encontrados pelo QA nas conferências das Sprints 4 e 5. Pela Visão (seção 6.1, item 4), cada defeito vira uma issue com a label <code>bug</code> e a severidade (crítica, alta, média ou baixa); depois do reparo, o caso é executado de novo e o número de ciclos é atualizado. Quando uma issue aberta já cobre o defeito, ela é usada em vez de abrir uma duplicada (precedente do DEF-04).</p>
+<p><strong>Situação em 25/11/2026, às 22h45 (fim da Sprint 5):</strong> dos 10 defeitos registrados, <strong>9 estão corrigidos</strong> (DEF-01 a DEF-07, DEF-09 e DEF-10) e <strong>1 segue aberto</strong> (DEF-08, médio), que ainda não tem issue. Nenhuma issue <code>bug</code> está aberta.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">ID</th>
+<th style="text-align: center;">Severidade</th>
+<th style="text-align: left;">Título</th>
+<th style="text-align: left;">Casos afetados</th>
+<th style="text-align: center;">Sprint</th>
+<th style="text-align: center;">Issue</th>
+<th style="text-align: center;">Situação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a href="#def-08">DEF-08</a></td>
+<td style="text-align: center;"><strong>Média</strong></td>
+<td style="text-align: left;">Ambiente de demonstração sobe sem o catálogo de materiais</td>
+<td style="text-align: left;">TSI-01, TSI-03</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">a abrir</td>
+<td style="text-align: center;"><strong>Aberto</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="#def-10">DEF-10</a></td>
+<td style="text-align: center;">Média</td>
+<td style="text-align: left;">Botão "Fazer o primeiro check-in" do histórico não faz nada</td>
+<td style="text-align: left;">— (histórico vazio)</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">— (PR #78)</td>
+<td style="text-align: center;">Corrigido (PR #78)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="#def-09">DEF-09</a></td>
+<td style="text-align: center;">Baixa</td>
+<td style="text-align: left;"><code>mkdocs.yml</code> com marcadores de conflito; site da documentação não publica</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">#52</td>
+<td style="text-align: center;">Corrigido (commit <code>eedab0a</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="#def-07">DEF-07</a></td>
+<td style="text-align: center;">Alta</td>
+<td style="text-align: left;">Não há tela de avaliação nem de resultado</td>
+<td style="text-align: left;">TSI-03</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">#57, #58</td>
+<td style="text-align: center;">Corrigido (PRs #75 e #77)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="#def-06">DEF-06</a></td>
+<td style="text-align: center;">Alta</td>
+<td style="text-align: left;">Materiais e motivo não aparecem depois do check-in</td>
+<td style="text-align: left;">TSI-01</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">#56</td>
+<td style="text-align: center;">Corrigido (PR #71)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="#def-01">DEF-01</a></td>
+<td style="text-align: center;">Alta</td>
+<td style="text-align: left;"><code>POST /api/checkins</code> não gera nem grava recomendações</td>
+<td style="text-align: left;">TI-03, TI-05</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">#45</td>
+<td style="text-align: center;">Corrigido (PR #67)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="#def-02">DEF-02</a></td>
+<td style="text-align: center;">Média</td>
+<td style="text-align: left;"><code>selecionar_materiais</code> diverge do Quadro 20 da Visão</td>
+<td style="text-align: left;">TU-06</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">#46</td>
+<td style="text-align: center;">Corrigido (PR #66)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="#def-03">DEF-03</a></td>
+<td style="text-align: center;">Média</td>
+<td style="text-align: left;">Testes de seleção não cobrem inativos nem regra e motivo por item</td>
+<td style="text-align: left;">TU-06, M1</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">#47</td>
+<td style="text-align: center;">Corrigido (PRs #38 e #66)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="#def-04">DEF-04</a></td>
+<td style="text-align: center;">Média</td>
+<td style="text-align: left;">Cadastro e <code>GET /api/me</code> divergem do contrato da Arquitetura</td>
+<td style="text-align: left;">TI-01, TS-04</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">#22</td>
+<td style="text-align: center;">Corrigido (PRs #39, #41 e #42)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="#def-05">DEF-05</a></td>
+<td style="text-align: center;">Média</td>
+<td style="text-align: left;">Testes de API do TS-03 não usam o banco de teste</td>
+<td style="text-align: left;">TS-03</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">Corrigido (PR #39)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Totais por severidade (abertos):</strong> 0 críticas, 0 altas, 1 média, 0 baixas. <strong>Total encontrado:</strong> 0 críticas, 3 altas, 6 médias, 1 baixa. Nenhum defeito crítico: as jornadas do check-in (TSI-01), de risco (TSI-02) e da Ajuda Imediata sem login (TSI-04) foram aprovadas, nenhum teste de segurança falha e as regras em uso encaminham corretamente. O aviso "não é diagnóstico" (risco R2) já aparece na tela de resultado.</p>
+<h2 id="criterio-de-severidade-usado">Critério de severidade usado<a class="headerlink" href="#criterio-de-severidade-usado" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Severidade</th>
+<th style="text-align: left;">Critério</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Crítica</td>
+<td style="text-align: left;">Falha de teste de segurança (risco R4) ou regra que encaminha o usuário de forma errada (risco R3).</td>
+</tr>
+<tr>
+<td style="text-align: left;">Alta</td>
+<td style="text-align: left;">Requisito Must sem o resultado esperado do roteiro, sem risco imediato ao usuário.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Média</td>
+<td style="text-align: left;">Divergência entre código e documento, ou lacuna de teste, que não impede o fluxo principal.</td>
+</tr>
+<tr>
+<td style="text-align: left;">Baixa</td>
+<td style="text-align: left;">Problema de forma ou de documentação sem efeito no comportamento.</td>
+</tr>
+</tbody>
+</table>
+<p><a id="def-06"></a></p>
+<h2 id="def-06-materiais-e-motivo-nao-aparecem-depois-do-check-in">DEF-06: materiais e motivo não aparecem depois do check-in<a class="headerlink" href="#def-06-materiais-e-motivo-nao-aparecem-depois-do-check-in" title="Permanent link">&para;</a></h2>
+<p><strong>Corrigido na Sprint 5</strong> pelo PR #71 (issue #56, fechada): na execução 2 do ciclo 1 (25/11, 19h32), o TSI-01 foi aprovado, com material, motivo, link para a fonte oficial e histórico (<a href="../sprint-5/#roteiro-de-sistema-ciclo-1">evidências</a>).</p>
+<p><strong>Severidade:</strong> alta. <strong>Requisito:</strong> R06 (Must). <strong>Caso:</strong> TSI-01 (não atendido na execução 1). <strong>Issue:</strong> #56. <strong>Encontrado em:</strong> 25/11/2026, execução 1 do ciclo 1 do roteiro de sistema.</p>
+<p><strong>Resultado esperado (Visão, Quadro 26, TSI-01):</strong> cadastro → login → check-in com P1 = 2 → materiais de HUMOR com motivo → link abre a fonte oficial → histórico mostra o check-in.</p>
+<p><strong>Resultado obtido:</strong> o <code>POST /api/checkins</code> devolve 201 com 1 material de HUMOR ("Depressão – Saúde de A a Z", regra R-D2, motivo "Você indicou humor ruim ou muito ruim hoje."), mas a tela do check-in volta à página inicial sem exibir material nem motivo. Sem o material na tela, o passo do link não é executável. O histórico mostra o check-in com o tema Humor.</p>
+<p><strong>Evidência:</strong> <a href="../evidencias/sprint-5/tsi01-execucao1-apos-checkin.png">após o envio</a>; resposta da API no <a href="../evidencias/sprint-5/execucao-1.txt">registro da execução 1</a>; <code>frontend/src/pages/DailyCheckin.tsx</code> navega para <code>/</code> depois do envio.</p>
+<p><strong>Causa:</strong> a tela da #56 ainda não estava na <code>developer</code>; o backend da #45 já estava pronto.</p>
+<p><a id="def-07"></a></p>
+<h2 id="def-07-nao-ha-tela-de-avaliacao-nem-de-resultado">DEF-07: não há tela de avaliação nem de resultado<a class="headerlink" href="#def-07-nao-ha-tela-de-avaliacao-nem-de-resultado" title="Permanent link">&para;</a></h2>
+<p><strong>Corrigido na Sprint 5:</strong> a tela de resultado entrou no PR #75 (#58) e a tela da avaliação no PR #77 (#57). Na execução 4 do ciclo 1 (25/11, 22h24), o TSI-03 foi aprovado de ponta a ponta pela interface (<a href="../evidencias/sprint-5/tsi03-06-resultado.png">resultado</a>).</p>
+<p><strong>Severidade:</strong> alta. <strong>Requisitos:</strong> R08 e R09 (Must). <strong>Caso:</strong> TSI-03 (não atendido nas execuções 1 e 2; parcial na 3). <strong>Issues:</strong> #57 (PR #77) e #58 (PR #75), fechadas. <strong>Encontrado em:</strong> 25/11/2026, ciclo 1.</p>
+<p><strong>Resultado esperado (TSI-03, perfil B):</strong> escores 10/5, faixa moderada, orientação de procurar a UBS, aviso "não é diagnóstico" e 2 materiais.</p>
+<p><strong>Resultado obtido:</strong> depois do login, a página inicial só oferece o check-in; <code>/avaliacao</code> e <code>/avaliacoes</code> mostram "Página não encontrada". Pela API, o mesmo perfil devolve o resultado esperado (<a href="../evidencias/sprint-5/tsi03-api-perfil-b.json">resposta</a>), então a falha está só na interface.</p>
+<p><strong>Evidência (execuções 1 a 3):</strong> <a href="../evidencias/sprint-5/tsi03-03-logado.png">página inicial</a>, <a href="../evidencias/sprint-5/tsi03-04-rota-avaliacao.png">rota inexistente</a>. O aviso "não é diagnóstico" (risco R2), ponto de maior risco do caso, aparece no topo do resultado desde o PR #75.</p>
+<p><a id="def-08"></a></p>
+<h2 id="def-08-ambiente-de-demonstracao-sobe-sem-o-catalogo-de-materiais">DEF-08: ambiente de demonstração sobe sem o catálogo de materiais<a class="headerlink" href="#def-08-ambiente-de-demonstracao-sobe-sem-o-catalogo-de-materiais" title="Permanent link">&para;</a></h2>
+<p><strong>Severidade:</strong> média. <strong>Casos:</strong> TSI-01 e TSI-03 (pré-condição do Quadro 25: "catálogo real"). <strong>Issue:</strong> a abrir. <strong>Encontrado em:</strong> 25/11/2026, ao preparar o ciclo 1.</p>
+<p><strong>Resultado esperado (Visão, Quadro 25):</strong> o ambiente de demonstração roda "com catálogo real e usuários fictícios".</p>
+<p><strong>Resultado obtido:</strong> o README manda rodar só <code>python -m app.seed_demo</code>, que cria usuários e não carrega materiais; o próprio README diz que o seed do catálogo "ainda não foi integrado", embora <code>app.seed_materiais</code> exista desde o PR #37. O job <code>demo</code> da CI segue o README e também não carrega o catálogo. Seguindo os passos documentados, todo check-in e toda avaliação saem sem recomendações (R-S6), e o TSI-01 falha mesmo com a tela da #56.</p>
+<p><strong>Para corrigir:</strong> acrescentar <code>docker compose exec api python -m app.seed_materiais</code> ao passo 3 do README e ao job <code>demo</code> da CI, e retirar o aviso de que o seed não foi integrado. As quatro execuções do ciclo 1 foram feitas rodando esse comando à parte.</p>
+<p><a id="def-10"></a></p>
+<h2 id="def-10-botao-fazer-o-primeiro-check-in-do-historico-nao-faz-nada">DEF-10: botão "Fazer o primeiro check-in" do histórico não faz nada<a class="headerlink" href="#def-10-botao-fazer-o-primeiro-check-in-do-historico-nao-faz-nada" title="Permanent link">&para;</a></h2>
+<p><strong>Severidade:</strong> média (lacuna de teste que não impede o fluxo principal: o check-in segue acessível pela página inicial). <strong>Requisito:</strong> R12. <strong>Origem:</strong> PR #29 (Sprint 4, commit <code>b88a719</code>). <strong>Encontrado em:</strong> 25/11/2026, pela equipe, depois da execução 4 do ciclo 1. <strong>Corrigido</strong> no PR #78, sem issue.</p>
+<p><strong>Resultado obtido antes da correção:</strong> no histórico de quem ainda não fez check-in, o botão "Fazer o primeiro check-in" não tinha ação ao clicar.</p>
+<p><strong>Correção e verificação:</strong> o PR #78 faz o botão levar à tela do check-in; na execução 5 do ciclo 1 (25/11, 22h42), o clique abriu "Check-in diário" (<a href="../evidencias/sprint-5/historico-01-primeiro-checkin.png">captura</a>).</p>
+<p><strong>Por que passou:</strong> nenhum teste clicava no botão, e o roteiro de sistema não passa pelo histórico vazio. O PR #78 também não acrescenta teste; recomenda-se um teste de clique em <code>HistoryPage.test.tsx</code>.</p>
+<p><a id="def-09"></a></p>
+<h2 id="def-09-mkdocsyml-com-marcadores-de-conflito-site-da-documentacao-nao-publica">DEF-09: <code>mkdocs.yml</code> com marcadores de conflito; site da documentação não publica<a class="headerlink" href="#def-09-mkdocsyml-com-marcadores-de-conflito-site-da-documentacao-nao-publica" title="Permanent link">&para;</a></h2>
+<p><strong>Severidade:</strong> baixa (documentação, sem efeito no comportamento do produto). <strong>Issue de origem:</strong> #52 (fechada pelo PR #65). <strong>Encontrado em:</strong> 25/11/2026. <strong>Corrigido</strong> em 25/11/2026, às 19h53, pelo commit <code>eedab0a</code> (push direto na <code>docs</code>, sem PR); a publicação seguinte (<a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/45716938818">execução 45716938818</a>) foi aprovada e o site passou a mostrar a página da #52.</p>
+<p><strong>Resultado esperado (critério de aceite da #52):</strong> "Página publicada por PR na branch <code>docs</code>".</p>
+<p><strong>Resultado obtido:</strong> o merge do PR #65 deixou no <code>mkdocs.yml</code> os marcadores <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code>, <code>=======</code> e <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/docs</code> em volta das entradas "Vocabulário da avaliação" e "Protótipo do check-in". O <code>mkdocs gh-deploy</code> falha ao ler a configuração (<a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/45713457088">execução 45713457088</a>), e o site fica parado na versão anterior, sem a página da #52.</p>
+<p><strong>Correção:</strong> os marcadores foram retirados, mantendo as duas entradas do menu; <code>mkdocs build --strict</code> passa sem avisos. Para evitar que se repita: rodar <code>mkdocs build --strict</code> antes do merge e incluí-lo em um job da CI em PR para a <code>docs</code> (hoje a CI da <code>docs</code> só roda depois do push).</p>
+<p><a id="def-01"></a></p>
+<h2 id="def-01-post-apicheckins-nao-gera-nem-grava-recomendacoes">DEF-01: <code>POST /api/checkins</code> não gera nem grava recomendações<a class="headerlink" href="#def-01-post-apicheckins-nao-gera-nem-grava-recomendacoes" title="Permanent link">&para;</a></h2>
+<p><strong>Corrigido na Sprint 5</strong> pelo PR #67 (issue #45, fechada): TI-03 e TI-05 aprovados, com as recomendações conferidas na resposta e no banco.</p>
+<p><strong>Severidade:</strong> alta. <strong>Requisitos:</strong> R05, R06. <strong>Casos:</strong> TI-03 (não atendido), TI-05 (parcial). <strong>Issue de origem:</strong> #5 (fechada).</p>
+<p><strong>Resultado esperado (Visão, Quadro 26, TI-03):</strong> P1 = 4, P2 = 3, P3 = 1, P4 = 0, P5 = Não → 201; tags [ANSIEDADE, SONO]; 2 recomendações persistidas com materiais dessas tags e regras R-D3 e R-D4. TI-05: lista de recomendações vazia e nenhuma linha nova em <code>Recomendacao</code>.</p>
+<p><strong>Resultado obtido:</strong> 201 com apenas <code>{"nivel": "autocuidado", "tags": ["ansiedade", "sono"]}</code>. <code>CheckinService.create</code> chama <code>avaliar_checkin</code>, grava o check-in e termina; não chama <code>selecionar_materiais</code>. O modelo <code>Material</code> e a tabela <code>materiais</code> já estão na <code>main</code> (PR #37), mas não existem a entidade <code>Recomendacao</code> (Arquitetura, Figura 6) nem a migração correspondente. A resposta não traz a lista de recomendações exigida pela issue #5.</p>
+<p><strong>Evidência:</strong> <code>backend/app/application/checkins.py</code> (função <code>create</code>); <code>backend/tests/test_checkins.py::test_ti03_create_checkin_returns_201_with_nivel_and_tags</code> verifica só nível e tags e, por isso, passa na CI (<a href="https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/42691191624">execução 42691191624</a>).</p>
+<p><strong>Causa provável:</strong> a #5 depende da #17 (concluída) e da #19 (catálogo e <code>Material</code>, mesclada depois, no PR #37). A issue foi fechada sem as recomendações.</p>
+<p><strong>Para corrigir:</strong> com o catálogo já na <code>main</code> (PR #37), criar <code>Recomendacao</code> (modelo e migração com regra e motivo, cascata a partir do usuário), integrar <code>selecionar_materiais</code> ao serviço, devolver as recomendações na resposta e completar o TI-03 e o TI-05 com as verificações do Quadro 26. Reabrir a #5 ou abrir issue nova que a referencie. Sem isso, o R06 não é entregue na Sprint 4.</p>
+<p><a id="def-02"></a></p>
+<h2 id="def-02-selecionar_materiais-diverge-do-quadro-20-da-visao">DEF-02: <code>selecionar_materiais</code> diverge do Quadro 20 da Visão<a class="headerlink" href="#def-02-selecionar_materiais-diverge-do-quadro-20-da-visao" title="Permanent link">&para;</a></h2>
+<p><strong>Corrigido na Sprint 5</strong> pelo PR #66 (issue #46, fechada): R-S1 a R-S6 aderentes ao Quadro 20; TU-06 aprovado.</p>
+<p><strong>Severidade:</strong> média. <strong>Caso:</strong> TU-06 (parcial). <strong>Requisitos:</strong> R06 e R09.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Regra</th>
+<th style="text-align: left;">Quadro 20</th>
+<th style="text-align: left;">Código em <code>app/rules/selecao.py</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">R-S1</td>
+<td style="text-align: left;">Buscar os materiais ativos de cada tag na ordem AJUDA_PROFISSIONAL → ANSIEDADE → HUMOR → ESTRESSE → SONO → BEM_ESTAR</td>
+<td style="text-align: left;">Usa a ordem do check-in, sem AJUDA_PROFISSIONAL: só com essa tag (N2), devolve materiais de BEM_ESTAR pelo fallback; <code>MaterialCatalogo</code> não tem o indicador de ativo</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-S2</td>
+<td style="text-align: left;">Escolher o material recomendado há mais tempo; nunca recomendado primeiro; empate pelo menor id</td>
+<td style="text-align: left;">Exclui os materiais exibidos recentemente; não ordena por tempo</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-S5</td>
+<td style="text-align: left;">Guardar a regra de origem (ex.: R-D4) e o motivo</td>
+<td style="text-align: left;"><code>Sugestao.regra</code> recebe "R-S3" ou "R-S6"</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-S6</td>
+<td style="text-align: left;">Sem material para nenhuma tag, exibir só a orientação do nível</td>
+<td style="text-align: left;">Completa a lista com materiais BEM_ESTAR ou sem tag</td>
+</tr>
+<tr>
+<td style="text-align: center;">R-S3</td>
+<td style="text-align: left;">Material não se repete</td>
+<td style="text-align: left;">A deduplicação existe, mas o rótulo "R-S3" é usado para o casamento de tags</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decisão do PO (12/11/2026, registrada na Visão v2.6):</strong> o Quadro 20 permanece como está e o código se ajusta a ele em todas as linhas divergentes: R-S1 inclui AJUDA_PROFISSIONAL na ordem de prioridade e só considera materiais ativos; R-S2 ordena os candidatos pela data da última recomendação ao usuário (nunca recomendado primeiro; empate pelo menor id), sem janela de bloqueio; R-S3 continua como deduplicação, sem ser usada como rótulo do casamento de tags; R-S5 grava a regra de origem da tag (R-D2 a R-D6 ou R-A2 a R-A4) e o motivo correspondente; R-S6 não completa a lista com outros materiais. Os testes do TU-06 devem seguir o Quadro 20, e não o código atual. A divergência já havia sido apontada na revisão do PR #32.</p>
+<p><strong>R-S1 não depende de decisão:</strong> o Quadro 20 e a ordem usada em <code>app/rules/avaliacao.py</code> já incluem AJUDA_PROFISSIONAL, então o ajuste é no código. Hoje a seleção não é chamada pelo sistema (DEF-01), por isso a severidade segue média. Se ela for ligada à avaliação (Sprint 5) sem essa correção, quem estiver em N2 recebe materiais de BEM_ESTAR em vez de AJUDA_PROFISSIONAL, o que, pelo critério desta página, é defeito crítico (risco R3).</p>
+<p><a id="def-03"></a></p>
+<h2 id="def-03-testes-de-selecao-nao-cobrem-inativos-nem-regra-e-motivo-por-item">DEF-03: testes de seleção não cobrem inativos nem regra e motivo por item<a class="headerlink" href="#def-03-testes-de-selecao-nao-cobrem-inativos-nem-regra-e-motivo-por-item" title="Permanent link">&para;</a></h2>
+<p><strong>Corrigido na Sprint 5</strong> pelo PR #66 (issue #47, fechada): inativos, regra e motivo por item e teto de 2 para N2 verificados; M1 = 100%.</p>
+<p><strong>Severidade:</strong> média. <strong>Caso:</strong> TU-06; <strong>métrica</strong> M1 (R-S abaixo de 100%). <strong>Issue de origem:</strong> #17, cujo critério de aceite exige "toda linha de R-D1 a R-D6 e de R-S1 a R-S6 com ao menos um teste".</p>
+<p><strong>Faltavam:</strong> (a) ordem de prioridade com duas ou mais tags (R-S1); (b) material com duas tags geradas aparecendo uma só vez (R-S3); (c) teto de 3 materiais, de 2 para N2 e descarte pela ordem de prioridade (R-S4); (d) exclusão de material inativo e presença de regra e motivo em cada item, previstos no resultado esperado do TU-06.</p>
+<p>Os testes de (a), (b) e o teto geral de (c) foram escritos e mesclados no PR #38; (d) e o teto de 2 para N2 seguem pendentes. O teste de (a) usa só as tags do check-in; a ordem com AJUDA_PROFISSIONAL está no <a href="#def-02">DEF-02</a>. Estes testes não dependem da decisão do DEF-02 (exceto R-S5) e devem ser escritos primeiro. Ver <a href="../matriz-regras-testes/">matriz regra × teste</a>.</p>
+<p><a id="def-04"></a></p>
+<h2 id="def-04-cadastro-e-get-apime-divergem-do-contrato-da-arquitetura">DEF-04: cadastro e <code>GET /api/me</code> divergem do contrato da Arquitetura<a class="headerlink" href="#def-04-cadastro-e-get-apime-divergem-do-contrato-da-arquitetura" title="Permanent link">&para;</a></h2>
+<p><strong>Severidade:</strong> média. <strong>Casos:</strong> TI-01 (não executável como escrito), TS-04 (parcial). <strong>Corrigido na issue #22</strong> (fechada) pelos PRs #39, #41 e #42; as decisões do PO estão na Visão e na Arquitetura v2.3 (PR #40).</p>
+<p><strong>Situação final:</strong> o cadastro exige <code>maior_de_idade</code> (422 sem ela); as rotas são <code>/api/auth/cadastro</code> e <code>/api/me</code>; <code>GET /api/me</code> devolve só <code>id</code>, <code>email</code> e <code>criado_em</code>; os campos de entrada estão em português (<code>senha</code>, <code>aceite_termos</code>), conforme a v2.3. TI-01 e TS-04 passam a <strong>Aprovado</strong>.</p>
+<p><strong>Histórico do defeito:</strong></p>
+<ul>
+<li>A declaração de maioridade (<code>maior_de_idade</code>) não existe no cadastro; o TI-01 exige 422 sem a declaração 18+.</li>
+<li>As rotas são <code>/api/auth/register</code> e <code>/api/users/me</code>; o Quadro 6 define <code>/api/auth/cadastro</code> e <code>/api/me</code>.</li>
+<li><code>GET /api/users/me</code> devolve <code>id</code>, <code>email</code>, <code>role</code> e <code>created_at</code>; o TS-04 exige apenas <code>id</code>, <code>email</code> e <code>criado_em</code>.</li>
+</ul>
+<p>A #22 já cobria o defeito; não foi aberta issue duplicada.</p>
+<p><a id="def-05"></a></p>
+<h2 id="def-05-testes-de-api-do-ts-03-nao-usam-o-banco-de-teste">DEF-05: testes de API do TS-03 não usam o banco de teste<a class="headerlink" href="#def-05-testes-de-api-do-ts-03-nao-usam-o-banco-de-teste" title="Permanent link">&para;</a></h2>
+<p><strong>Severidade:</strong> média. <strong>Caso:</strong> TS-03 (parcial). <strong>Issue de origem:</strong> #6 (PR #15). <strong>Corrigido</strong> no PR #39 com <code>backend/tests/test_ts03_isolamento.py</code> (5 testes com o <code>client</code> e o banco de teste, usuários A e B). A parte de avaliações do TS-03 segue na Sprint 5.</p>
+<p>A issue #6 pede "testes de integração no PostgreSQL de teste cobrindo ordem, limite e isolamento". Em <code>test_checkins_get.py</code>, os testes de API (<code>test_api_list_checkins_isolation_ts_03</code>, <code>test_api_get_checkin_by_id_other_user_returns_404</code>) substituem o repositório por <code>FakeCheckinRepository</code> e a sessão por um <code>MagicMock</code>. O isolamento no nível do banco só é verificado em <code>test_checkin_repository.py</code>. Se o filtro por usuário fosse removido da rota ou da consulta de integração, a falha poderia passar despercebida. O risco R4 (vazamento de dados) depende desse teste.</p>
+<p><strong>Correção aplicada:</strong> versão do teste que usa o <code>client</code> e as fixtures de banco do <code>conftest.py</code>, com os usuários A e B.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "toc.follow", "content.code.copy"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
