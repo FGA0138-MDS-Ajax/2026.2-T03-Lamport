@@ -41,6 +41,8 @@ export function Layout() {
                   Início
                 </NavLink>
 
+                <NavLink to="/avaliacoes/nova">Avaliação</NavLink>
+
                 <NavLink to="/historico">Histórico</NavLink>
               </nav>
 
@@ -76,6 +78,10 @@ export function Layout() {
               >
                 <NavLink to="/" end onClick={closeMenu}>
                   Início
+                </NavLink>
+
+                <NavLink to="/avaliacoes/nova" onClick={closeMenu}>
+                  Avaliação
                 </NavLink>
 
                 <NavLink to="/historico" onClick={closeMenu}>

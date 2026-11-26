@@ -17,6 +17,20 @@ function CheckinButton() {
   )
 }
 
+function AvaliacaoButton() {
+  const navigate = useNavigate()
+
+  return (
+    <button
+      type="button"
+      className="button button-primary"
+      onClick={() => navigate('/avaliacoes/nova')}
+    >
+      Avaliação quinzenal
+    </button>
+  )
+}
+
 export function HomePage() {
   const { user } = useAuth()
 
@@ -30,7 +44,10 @@ export function HomePage() {
       </p>
       <p className="muted">Conta criada em {dateFormatter.format(new Date(user.criado_em))}.</p>
 
-      <CheckinButton />
+      <div className="home-acoes">
+        <CheckinButton />
+        <AvaliacaoButton />
+      </div>
 
       <ExcluirConta />
     </section>
