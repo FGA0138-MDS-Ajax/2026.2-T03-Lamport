@@ -1,18 +1,23 @@
 # Registro de defeitos
 
-Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026). Pela Visão (seção 6.1, item 4), cada defeito vira uma issue com a label `bug` e a severidade (crítica, alta, média ou baixa); depois do reparo, o caso é executado de novo e o número de ciclos é atualizado.
+Defeitos encontrados pelo QA nas conferências das Sprints 4 e 5. Pela Visão (seção 6.1, item 4), cada defeito vira uma issue com a label `bug` e a severidade (crítica, alta, média ou baixa); depois do reparo, o caso é executado de novo e o número de ciclos é atualizado. Quando uma issue aberta já cobre o defeito, ela é usada em vez de abrir uma duplicada (precedente do DEF-04).
 
-**Situação:** dos 5 defeitos, **2 foram corrigidos na própria sprint** (DEF-04 e DEF-05) e **3 seguem abertos** (DEF-01, DEF-02 e DEF-03). Os 3 abertos têm issue `bug`: #45 (DEF-01), #46 (DEF-02) e #47 (DEF-03).
+**Situação em 25/11/2026, às 22h45 (fim da Sprint 5):** dos 10 defeitos registrados, **9 estão corrigidos** (DEF-01 a DEF-07, DEF-09 e DEF-10) e **1 segue aberto** (DEF-08, médio), que ainda não tem issue. Nenhuma issue `bug` está aberta.
 
-| ID | Severidade | Título | Casos afetados | Responsável sugerido | Issue |
-| :-- | :--: | :-- | :-- | :-- | :--: |
-| [DEF-01](#def-01) | **Alta** | `POST /api/checkins` não gera nem grava recomendações | TI-03, TI-05 | Luiz Felipe | #45 |
-| [DEF-02](#def-02) | Média | `selecionar_materiais` diverge do Quadro 20 da Visão | TU-06 | Luiz Felipe (PO decidiu em 12/11: vale o Quadro 20) | #46 |
-| [DEF-03](#def-03) | Média | Testes de seleção não cobrem inativos nem regra e motivo por item | TU-06, M1 | Luiz Felipe | parcialmente corrigido (PR #38); restante na #47 |
-| [DEF-04](#def-04) | Média | Cadastro e `GET /api/me` divergem do contrato da Arquitetura | TI-01, TS-04 | Luiz Felipe, Carlos Eduardo | **corrigido** (#22, PRs #39, #41 e #42) |
-| [DEF-05](#def-05) | Média | Testes de API do TS-03 não usam o banco de teste | TS-03 | Carlos Eduardo | **corrigido** (PR #39) |
+| ID | Severidade | Título | Casos afetados | Sprint | Issue | Situação |
+| :-- | :--: | :-- | :-- | :--: | :--: | :--: |
+| [DEF-08](#def-08) | **Média** | Ambiente de demonstração sobe sem o catálogo de materiais | TSI-01, TSI-03 | 5 | a abrir | **Aberto** |
+| [DEF-10](#def-10) | Média | Botão "Fazer o primeiro check-in" do histórico não faz nada | — (histórico vazio) | 5 | — (PR #78) | Corrigido (PR #78) |
+| [DEF-09](#def-09) | Baixa | `mkdocs.yml` com marcadores de conflito; site da documentação não publica | — | 5 | #52 | Corrigido (commit `eedab0a`) |
+| [DEF-07](#def-07) | Alta | Não há tela de avaliação nem de resultado | TSI-03 | 5 | #57, #58 | Corrigido (PRs #75 e #77) |
+| [DEF-06](#def-06) | Alta | Materiais e motivo não aparecem depois do check-in | TSI-01 | 5 | #56 | Corrigido (PR #71) |
+| [DEF-01](#def-01) | Alta | `POST /api/checkins` não gera nem grava recomendações | TI-03, TI-05 | 4 | #45 | Corrigido (PR #67) |
+| [DEF-02](#def-02) | Média | `selecionar_materiais` diverge do Quadro 20 da Visão | TU-06 | 4 | #46 | Corrigido (PR #66) |
+| [DEF-03](#def-03) | Média | Testes de seleção não cobrem inativos nem regra e motivo por item | TU-06, M1 | 4 | #47 | Corrigido (PRs #38 e #66) |
+| [DEF-04](#def-04) | Média | Cadastro e `GET /api/me` divergem do contrato da Arquitetura | TI-01, TS-04 | 4 | #22 | Corrigido (PRs #39, #41 e #42) |
+| [DEF-05](#def-05) | Média | Testes de API do TS-03 não usam o banco de teste | TS-03 | 4 | — | Corrigido (PR #39) |
 
-**Totais por severidade (abertos):** 0 críticas, 1 alta, 2 médias, 0 baixas; 2 médias corrigidas. Total encontrado: 0 críticas, 1 alta, 4 médias, 0 baixas. Nenhum defeito crítico (um teste de segurança reprovado ou um encaminhamento errado ao usuário seria crítico).
+**Totais por severidade (abertos):** 0 críticas, 0 altas, 1 média, 0 baixas. **Total encontrado:** 0 críticas, 3 altas, 6 médias, 1 baixa. Nenhum defeito crítico: as jornadas do check-in (TSI-01), de risco (TSI-02) e da Ajuda Imediata sem login (TSI-04) foram aprovadas, nenhum teste de segurança falha e as regras em uso encaminham corretamente. O aviso "não é diagnóstico" (risco R2) já aparece na tela de resultado.
 
 ## Critério de severidade usado
 
@@ -23,8 +28,71 @@ Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026)
 | Média | Divergência entre código e documento, ou lacuna de teste, que não impede o fluxo principal. |
 | Baixa | Problema de forma ou de documentação sem efeito no comportamento. |
 
+<a id="def-06"></a>
+## DEF-06: materiais e motivo não aparecem depois do check-in
+
+**Corrigido na Sprint 5** pelo PR #71 (issue #56, fechada): na execução 2 do ciclo 1 (25/11, 19h32), o TSI-01 foi aprovado, com material, motivo, link para a fonte oficial e histórico ([evidências](sprint-5.md#roteiro-de-sistema-ciclo-1)).
+
+**Severidade:** alta. **Requisito:** R06 (Must). **Caso:** TSI-01 (não atendido na execução 1). **Issue:** #56. **Encontrado em:** 25/11/2026, execução 1 do ciclo 1 do roteiro de sistema.
+
+**Resultado esperado (Visão, Quadro 26, TSI-01):** cadastro → login → check-in com P1 = 2 → materiais de HUMOR com motivo → link abre a fonte oficial → histórico mostra o check-in.
+
+**Resultado obtido:** o `POST /api/checkins` devolve 201 com 1 material de HUMOR ("Depressão – Saúde de A a Z", regra R-D2, motivo "Você indicou humor ruim ou muito ruim hoje."), mas a tela do check-in volta à página inicial sem exibir material nem motivo. Sem o material na tela, o passo do link não é executável. O histórico mostra o check-in com o tema Humor.
+
+**Evidência:** [após o envio](evidencias/sprint-5/tsi01-execucao1-apos-checkin.png); resposta da API no [registro da execução 1](evidencias/sprint-5/execucao-1.txt); `frontend/src/pages/DailyCheckin.tsx` navega para `/` depois do envio.
+
+**Causa:** a tela da #56 ainda não estava na `developer`; o backend da #45 já estava pronto.
+
+<a id="def-07"></a>
+## DEF-07: não há tela de avaliação nem de resultado
+
+**Corrigido na Sprint 5:** a tela de resultado entrou no PR #75 (#58) e a tela da avaliação no PR #77 (#57). Na execução 4 do ciclo 1 (25/11, 22h24), o TSI-03 foi aprovado de ponta a ponta pela interface ([resultado](evidencias/sprint-5/tsi03-06-resultado.png)).
+
+**Severidade:** alta. **Requisitos:** R08 e R09 (Must). **Caso:** TSI-03 (não atendido nas execuções 1 e 2; parcial na 3). **Issues:** #57 (PR #77) e #58 (PR #75), fechadas. **Encontrado em:** 25/11/2026, ciclo 1.
+
+**Resultado esperado (TSI-03, perfil B):** escores 10/5, faixa moderada, orientação de procurar a UBS, aviso "não é diagnóstico" e 2 materiais.
+
+**Resultado obtido:** depois do login, a página inicial só oferece o check-in; `/avaliacao` e `/avaliacoes` mostram "Página não encontrada". Pela API, o mesmo perfil devolve o resultado esperado ([resposta](evidencias/sprint-5/tsi03-api-perfil-b.json)), então a falha está só na interface.
+
+**Evidência (execuções 1 a 3):** [página inicial](evidencias/sprint-5/tsi03-03-logado.png), [rota inexistente](evidencias/sprint-5/tsi03-04-rota-avaliacao.png). O aviso "não é diagnóstico" (risco R2), ponto de maior risco do caso, aparece no topo do resultado desde o PR #75.
+
+<a id="def-08"></a>
+## DEF-08: ambiente de demonstração sobe sem o catálogo de materiais
+
+**Severidade:** média. **Casos:** TSI-01 e TSI-03 (pré-condição do Quadro 25: "catálogo real"). **Issue:** a abrir. **Encontrado em:** 25/11/2026, ao preparar o ciclo 1.
+
+**Resultado esperado (Visão, Quadro 25):** o ambiente de demonstração roda "com catálogo real e usuários fictícios".
+
+**Resultado obtido:** o README manda rodar só `python -m app.seed_demo`, que cria usuários e não carrega materiais; o próprio README diz que o seed do catálogo "ainda não foi integrado", embora `app.seed_materiais` exista desde o PR #37. O job `demo` da CI segue o README e também não carrega o catálogo. Seguindo os passos documentados, todo check-in e toda avaliação saem sem recomendações (R-S6), e o TSI-01 falha mesmo com a tela da #56.
+
+**Para corrigir:** acrescentar `docker compose exec api python -m app.seed_materiais` ao passo 3 do README e ao job `demo` da CI, e retirar o aviso de que o seed não foi integrado. As quatro execuções do ciclo 1 foram feitas rodando esse comando à parte.
+
+<a id="def-10"></a>
+## DEF-10: botão "Fazer o primeiro check-in" do histórico não faz nada
+
+**Severidade:** média (lacuna de teste que não impede o fluxo principal: o check-in segue acessível pela página inicial). **Requisito:** R12. **Origem:** PR #29 (Sprint 4, commit `b88a719`). **Encontrado em:** 25/11/2026, pela equipe, depois da execução 4 do ciclo 1. **Corrigido** no PR #78, sem issue.
+
+**Resultado obtido antes da correção:** no histórico de quem ainda não fez check-in, o botão "Fazer o primeiro check-in" não tinha ação ao clicar.
+
+**Correção e verificação:** o PR #78 faz o botão levar à tela do check-in; na execução 5 do ciclo 1 (25/11, 22h42), o clique abriu "Check-in diário" ([captura](evidencias/sprint-5/historico-01-primeiro-checkin.png)).
+
+**Por que passou:** nenhum teste clicava no botão, e o roteiro de sistema não passa pelo histórico vazio. O PR #78 também não acrescenta teste; recomenda-se um teste de clique em `HistoryPage.test.tsx`.
+
+<a id="def-09"></a>
+## DEF-09: `mkdocs.yml` com marcadores de conflito; site da documentação não publica
+
+**Severidade:** baixa (documentação, sem efeito no comportamento do produto). **Issue de origem:** #52 (fechada pelo PR #65). **Encontrado em:** 25/11/2026. **Corrigido** em 25/11/2026, às 19h53, pelo commit `eedab0a` (push direto na `docs`, sem PR); a publicação seguinte ([execução 45716938818](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/45716938818)) foi aprovada e o site passou a mostrar a página da #52.
+
+**Resultado esperado (critério de aceite da #52):** "Página publicada por PR na branch `docs`".
+
+**Resultado obtido:** o merge do PR #65 deixou no `mkdocs.yml` os marcadores `<<<<<<< HEAD`, `=======` e `>>>>>>> origin/docs` em volta das entradas "Vocabulário da avaliação" e "Protótipo do check-in". O `mkdocs gh-deploy` falha ao ler a configuração ([execução 45713457088](https://github.com/FGA0138-MDS-Ajax/2026.2-T03-Lamport/actions/runs/45713457088)), e o site fica parado na versão anterior, sem a página da #52.
+
+**Correção:** os marcadores foram retirados, mantendo as duas entradas do menu; `mkdocs build --strict` passa sem avisos. Para evitar que se repita: rodar `mkdocs build --strict` antes do merge e incluí-lo em um job da CI em PR para a `docs` (hoje a CI da `docs` só roda depois do push).
+
 <a id="def-01"></a>
 ## DEF-01: `POST /api/checkins` não gera nem grava recomendações
+
+**Corrigido na Sprint 5** pelo PR #67 (issue #45, fechada): TI-03 e TI-05 aprovados, com as recomendações conferidas na resposta e no banco.
 
 **Severidade:** alta. **Requisitos:** R05, R06. **Casos:** TI-03 (não atendido), TI-05 (parcial). **Issue de origem:** #5 (fechada).
 
@@ -40,6 +108,8 @@ Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026)
 
 <a id="def-02"></a>
 ## DEF-02: `selecionar_materiais` diverge do Quadro 20 da Visão
+
+**Corrigido na Sprint 5** pelo PR #66 (issue #46, fechada): R-S1 a R-S6 aderentes ao Quadro 20; TU-06 aprovado.
 
 **Severidade:** média. **Caso:** TU-06 (parcial). **Requisitos:** R06 e R09.
 
@@ -57,6 +127,8 @@ Defeitos encontrados na conferência da Sprint 4 (posição final em 11/11/2026)
 
 <a id="def-03"></a>
 ## DEF-03: testes de seleção não cobrem inativos nem regra e motivo por item
+
+**Corrigido na Sprint 5** pelo PR #66 (issue #47, fechada): inativos, regra e motivo por item e teto de 2 para N2 verificados; M1 = 100%.
 
 **Severidade:** média. **Caso:** TU-06; **métrica** M1 (R-S abaixo de 100%). **Issue de origem:** #17, cujo critério de aceite exige "toda linha de R-D1 a R-D6 e de R-S1 a R-S6 com ao menos um teste".
 

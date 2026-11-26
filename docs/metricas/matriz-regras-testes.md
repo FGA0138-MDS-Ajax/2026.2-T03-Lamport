@@ -1,8 +1,8 @@
 # Matriz regra × teste (M1)
 
-Posição final em **11/11/2026**, `main` no commit `886e00b` (PR #44). O oráculo são os Quadros 16, 18 e 20 da Visão. Cada linha das tabelas de regras deve ter ao menos um teste que verifique o comportamento do Quadro (Visão, seção 6.1).
+Posição em **25/11/2026** (Sprint 5), `main` no commit `22bf6a4` (PR #80), com o mesmo conteúdo da `developer` em `0dca653`. O oráculo são os Quadros 16, 18 e 20 da Visão v2.7. Cada linha das tabelas de regras deve ter ao menos um teste que verifique o comportamento do Quadro (Visão, seção 6.1).
 
-**Resultado: 12 de 16 linhas cobertas, M1 = 75%** (valor esperado: 100%), já na `main`: os testes de R-S3 e R-S4 entraram com o PR #38, junto com o de R-S1, que não conta porque o código diverge do Quadro nessa regra. Antes dele, na `main` (`faac2cf`), eram 10 de 16 (62,5%). Pela leitura literal da fórmula, contando também os testes de regras em que o código diverge do Quadro, seriam 15 de 16 (93,75%).
+**Resultado: 16 de 16 linhas cobertas, M1 = 100%** (valor esperado: 100%). Na Sprint 4 eram 12 de 16 (75%); as quatro linhas que faltavam (R-S1, R-S2, R-S5 e R-S6) passaram a aderir ao Quadro 20 com o PR #66 (issues #46 e #47). Pela leitura literal da fórmula, o valor é o mesmo.
 
 ## R-D: check-in diário (Quadro 16)
 
@@ -26,7 +26,7 @@ Testes em `backend/tests/test_rules_avaliacao.py`.
 | Regra | Condição | Teste | Situação |
 | :--: | :-- | :-- | :--: |
 | R-A1 | Item 9 do PHQ-9 ≥ 1 → N3 CRISE | `test_tu04_caso1_item9_precedencia`; `test_tu04_ra1_prevalece_sobre_todas`; `test_perfil_d` | Coberta |
-| R-A2 | PHQ-9 ≥ 20 ou GAD-7 ≥ 15 → N2 | `test_tu04_caso2_phq9_grave`; `test_tu04_caso3_gad7_grave`; `test_perfil_c` | Coberta |
+| R-A2 | PHQ-9 ≥ 20 ou GAD-7 ≥ 15 → N2 | `test_tu04_caso2_phq9_grave`; `test_tu04_caso3_gad7_grave`; `test_perfil_c`; TI-06 (perfil C, pela API) | Coberta |
 | R-A3 | PHQ-9 ≥ 10 ou GAD-7 ≥ 10 → N1 | `test_tu04_caso4` a `caso6`; `test_perfil_b` | Coberta |
 | R-A4 | Nenhuma anterior → N0 | `test_tu04_caso7`; `test_tu04_caso8`; `test_perfil_a`; `test_perfil_e` | Coberta |
 
@@ -34,18 +34,18 @@ Pontuação e faixas (TU-01 a TU-03) também têm testes nos valores-limite. **4
 
 ## R-S: seleção de conteúdo (Quadro 20)
 
-Código em `backend/app/rules/selecao.py`; testes `test_tu06_*` em `backend/tests/test_rules_checkin.py` (7 testes).
+Código em `backend/app/rules/selecao.py`; testes `test_tu06_*` em `backend/tests/test_rules_checkin.py` (9 testes), com o catálogo fixo `catalogo_tu06` (2 materiais por tag, 1 inativo). R-S2 e R-S5 também são verificadas na integração (`test_checkins.py` e `test_avaliacoes.py`).
 
-| Regra | Descrição no Quadro 20 | O que existe | Situação |
+| Regra | Descrição no Quadro 20 | Teste | Situação |
 | :--: | :-- | :-- | :--: |
-| R-S1 | Buscar os materiais ativos de cada tag na ordem AJUDA_PROFISSIONAL → ANSIEDADE → HUMOR → ESTRESSE → SONO → BEM_ESTAR | `selecao.py` usa a ordem de `app/rules/checkin.py` (ANSIEDADE, HUMOR, ESTRESSE, SONO), sem AJUDA_PROFISSIONAL: só com essa tag (nível N2), a função devolve materiais de BEM_ESTAR pelo fallback. `MaterialCatalogo` não tem o indicador de ativo, então nada exclui inativos. `test_tu06_rs1_respeita_a_ordem_de_prioridade_das_tags` usa só as quatro tags do check-in. | **Código diverge** |
-| R-S2 | Escolher o material recomendado há mais tempo; nunca recomendado vem primeiro; empate pelo menor id | O código **exclui** materiais exibidos recentemente (`ids_exibidos_recentemente`); `test_tu06_rs2_ignora_ultimas_exibicoes` testa essa exclusão. Comportamento diferente do Quadro. | **Teste diverge** |
-| R-S3 | Um material não aparece duas vezes na mesma resposta | `test_tu06_rs3_material_com_duas_tags_aparece_uma_vez`. | Coberta |
-| R-S4 | No máximo 3 materiais (2 para N2); excedentes descartados por prioridade | `test_tu06_rs4_maximo_de_tres_descarta_tags_de_menor_prioridade` e `test_tu06_rs4_limite_padrao_e_tres`. O teto de 2 para N2 é do chamador (check-in e avaliação) e será testado na integração. | Coberta |
-| R-S5 | Cada recomendação guarda a regra de origem (ex.: R-D4) e o motivo | `Sugestao` guarda "R-S3" ou "R-S6", não a regra de origem R-Dx. Não há teste. | **Sem teste** |
-| R-S6 | Sem material para nenhuma tag, exibir apenas a orientação do nível | O código completa a lista com materiais BEM_ESTAR ou sem tag ("fallback"); `test_tu06_rs2_ignora_ultimas_exibicoes` verifica esse fallback. Comportamento diferente do Quadro. | **Teste diverge** |
+| R-S1 | Buscar os materiais ativos de cada tag na ordem AJUDA_PROFISSIONAL → ANSIEDADE → HUMOR → ESTRESSE → SONO → BEM_ESTAR | `test_tu06_rs1_ordem_prioridade_com_ajuda_profissional` (catálogo em ordem inversa, as seis tags); `test_tu06_rs1_material_inativo_nunca_sugerido` | Coberta |
+| R-S2 | Escolher o material recomendado há mais tempo; nunca recomendado vem primeiro; empate pelo menor id | `test_tu06_rs2_nunca_recomendado_depois_mais_antigo_e_desempate_menor_id`; `test_tu06_rs2_rs4_um_material_por_tag_com_multiplos_ativos`; na integração, `test_rs2_checkin_uses_ultimas_exibicoes_from_database` e `test_rs2_avaliacao_rotaciona_materiais_com_ultimas_exibicoes` | Coberta |
+| R-S3 | Um material não aparece duas vezes na mesma resposta | `test_tu06_rs3_material_com_duas_tags_aparece_uma_vez` | Coberta |
+| R-S4 | No máximo 3 materiais (2 para N2); excedentes descartados por prioridade | `test_tu06_rs4_limite_tres_padrao_e_limite_dois_n2`; TI-06, perfil C (no máximo 2, de AJUDA_PROFISSIONAL) | Coberta |
+| R-S5 | Cada recomendação guarda a regra de origem (ex.: R-D4) e o motivo | `test_tu06_rs5_checkin_preserva_regra_e_motivo_quadro_16` (R-D2 a R-D6); `test_tu06_rs5_avaliacao_preserva_regra_e_motivo_quadro_18` (R-A2 a R-A4); TI-03 e TI-06 conferem regra e motivo gravados no banco | Coberta |
+| R-S6 | Sem material para nenhuma tag, exibir apenas a orientação do nível | `test_tu06_rs6_sem_material_disponivel_retorna_vazio_sem_fallback` | Coberta |
 
-**2 de 6 aderentes ao Quadro** (R-S3 e R-S4); R-S1 tem teste, mas o código diverge do Quadro; R-S2 e R-S6 têm teste divergente; R-S5 não tem teste.
+**6 de 6 aderentes ao Quadro.** As divergências do DEF-02 foram corrigidas no código: R-S1 usa a ordem completa (a mesma de `app/rules/avaliacao.py`) e descarta inativos; R-S2 ordena pela última exibição, sem janela de bloqueio; R-S5 grava a regra de origem; R-S6 não completa a lista com outros materiais.
 
 ## Totais
 
@@ -53,12 +53,19 @@ Código em `backend/app/rules/selecao.py`; testes `test_tu06_*` em `backend/test
 | :-- | :--: | :--: | :--: |
 | R-D | 6 | 6 | 100% |
 | R-A | 4 | 4 | 100% |
-| R-S | 6 | 2 | 33,3% |
-| **Total (M1)** | **16** | **12** | **75%** |
+| R-S | 6 | 6 | 100% |
+| **Total (M1)** | **16** | **16** | **100%** |
 
-## Ações para chegar a 100%
+## Evolução
 
-1. **PO decide** as divergências de R-S2, R-S5 e R-S6 (atualizar o Quadro 20 em nova versão da Visão ou ajustar o código). Os documentos são a fonte da verdade; enquanto não houver decisão, não se altera o código nem o teste. Registrado como [DEF-02](defeitos.md#def-02).
-2. **Corrigir R-S1 no código:** usar a ordem completa do Quadro 20, a mesma de `app/rules/avaliacao.py`, garantir que só materiais ativos entrem na seleção e estender o teste a AJUDA_PROFISSIONAL e BEM_ESTAR. Não depende de decisão do PO e deve ser feito antes de ligar a seleção à avaliação (Sprint 5). Registrado em [DEF-02](defeitos.md#def-02).
-3. ~~Escrever os testes de R-S1, R-S3 e R-S4~~ (feito e mesclado no PR #38): [DEF-03](defeitos.md#def-03). Resta o teste de R-S5, que depende da decisão do item 1.
-4. Reconferir a matriz na revisão da Sprint 4 e ao fim de cada sprint seguinte (Visão, Quadro 23: abaixo de 100%, criar o teste antes de novas funcionalidades).
+| Sprint | R-D | R-A | R-S | M1 |
+| :--: | :--: | :--: | :--: | :--: |
+| 3 | 0/6 | 0/4 | 0/6 | 0% |
+| 4 | 6/6 | 4/4 | 2/6 | 75% |
+| 5 | 6/6 | 4/4 | 6/6 | **100%** |
+
+## Para manter em 100%
+
+1. Reconferir a matriz sempre que `backend/app/rules/` ou os testes de regras mudarem, e na revisão de cada sprint.
+2. Qualquer mudança nos Quadros 16, 18 ou 20 entra primeiro em nova versão da Visão; o teste muda junto com o código, no mesmo PR.
+3. Ponto para o PO, sem efeito em M1: com um material por tag (R-S2), o teto de 2 do N2 (R-S4) nunca é atingido, porque o N2 só tem a tag AJUDA_PROFISSIONAL. Ver [Conferência dos PRs da Sprint 5](conferencia-prs-sprint-5.md#46-e-47-pr-66-selecao-de-conteudo-conforme-o-quadro-20).

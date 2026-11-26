@@ -15,3 +15,9 @@ S4,29/10-11/11/2026,M3,80%,4,5,100%,roteiro,TS-01 TS-02 TS-04 TS-05 aprovados; T
 S4,29/10-11/11/2026,M4 (estado das issues),100%,14,14,>=80%,issue #12 e GitHub,#10 contada como concluida (fechada pelo PR de metricas)
 S4,29/10-11/11/2026,M4 (criterios de aceite),85.7%,12,14,>=80%,issue #12 e conferencia do QA,#5 e #17 fechadas sem atender criterios; #10 contada como concluida
 S4,29/10-11/11/2026,M5,3 abertos (0 criticos / 1 alto / 2 medios / 0 baixos) / 2 corrigidos,0,,0 criticos,GitHub Issues #45 #46 #47,DEF-04 e DEF-05 corrigidos na sprint
+S5,12/11-25/11/2026,M1,100%,16,16,100%,matriz regra x teste,R-D 6/6; R-A 4/4; R-S 6/6 (PR #66 corrige DEF-02 e DEF-03); literal: 16/16
+S5,12/11-25/11/2026,M2,100%,298,298,100% na main,CI execucao 45738490093,pytest 298/298 na main (22bf6a4; PR #80; mesmo conteudo da developer 0dca653); frontend 85/85 como complemento
+S5,12/11-25/11/2026,M3,100%,5,5,100%,roteiro,TS-01 a TS-05 aprovados; TS-03 completo com avaliacoes (PR #70)
+S5,12/11-25/11/2026,M4 (estado das issues),93.8%,15,16,>=80%,planejamento da Sprint 5 secao 5 e GitHub,#62 contada como concluida (fechada pelo PR de metricas)
+S5,12/11-25/11/2026,M4 (criterios de aceite),93.8%,15,16,>=80%,planejamento da Sprint 5 e conferencia do QA,Todas as issues de desenvolvimento entregues; so #63 (PO) aberta; #63 (PO) aberta
+S5,12/11-25/11/2026,M5,0 issues bug abertas / 5 defeitos novos (0 criticos / 2 altos / 2 medios / 1 baixo) / 1 aberto (1 medio),0,,0 criticos,GitHub Issues e defeitos.md,DEF-07 corrigido (PRs #75 e #77); DEF-08 aberto (issue a abrir); DEF-06 corrigido (PR #71); DEF-09 corrigido (commit eedab0a); DEF-10 corrigido (PR #78); DEF-01 a DEF-03 corrigidos

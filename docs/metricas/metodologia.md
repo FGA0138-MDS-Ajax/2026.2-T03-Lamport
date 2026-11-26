@@ -19,7 +19,7 @@ Esta página descreve como as métricas M1 a M5 do GQM (Visão, Quadro 23) foram
 | **M1** – Cobertura das tabelas de regras | Total de linhas: 16 (R-D1 a R-D6, R-A1 a R-A4 e R-S1 a R-S6). Uma linha conta como coberta quando existe teste que verifica o comportamento descrito **no Quadro da Visão**. Teste que existe mas verifica comportamento diferente do Quadro é anotado à parte e não conta. O valor pela leitura literal da fórmula (qualquer teste associado à linha) é informado entre parênteses. |
 | **M2** – Aprovação dos testes automatizados | Testes aprovados ÷ executados no pytest, na última execução da CI na `main` (ou no PR indicado) da sprint. O pytest é a única suíte que contém os testes TU, TI e TS. O resultado do vitest (frontend) é informado como complemento. |
 | **M3** – Testes de segurança aprovados | Casos TS-01 a TS-05 com **todos** os critérios do Quadro 26 verificados por teste aprovado ÷ 5. Caso com teste verde mas critério sem verificação fica como "Parcial" e não conta. |
-| **M4** – Conclusão da sprint | Itens concluídos ÷ comprometidos. Os itens comprometidos são os do Quadro 8 (Sprints 2 e 3) e as issues listadas na issue #12 (Sprint 4). "Concluído" é o item entregue e aceito sem pendência. Para a Sprint 4 há duas leituras: pelo estado da issue no GitHub e pelos critérios de aceite verificados pelo QA. |
+| **M4** – Conclusão da sprint | Itens concluídos ÷ comprometidos. Os itens comprometidos são os do Quadro 8 (Sprints 2 e 3), as issues listadas na issue #12 (Sprint 4) e as da seção 5 do Planejamento da Sprint 5 (Sprint 5). "Concluído" é o item entregue e aceito sem pendência. Para a Sprint 4 há duas leituras: pelo estado da issue no GitHub e pelos critérios de aceite verificados pelo QA. |
 | **M5** – Defeitos abertos por severidade | Issues abertas com a label `bug`, por severidade. Defeitos encontrados na conferência que ainda não viraram issue estão em [Defeitos](defeitos.md) e são contados à parte, como "propostos". |
 
 ## Status dos casos de teste
@@ -44,6 +44,9 @@ Esta página descreve como as métricas M1 a M5 do GQM (Visão, Quadro 23) foram
 3. As Sprints 2 e 3 são reconstruídas depois do fim, a partir do histórico do GitHub. Nelas só existem dados de CI a partir de 13/10/2026 e não havia roteiro de testes executável (os casos TU, TI e TS entram a partir da Sprint 4).
 4. Nenhuma issue do repositório usa as labels `sprint-N`, `qualidade` e `seguranca`, embora as issues as prevejam. Por isso M4 não pôde ser obtido por filtro de label e foi conferido issue a issue. As labels de severidade só passaram a ser usadas nas issues de defeito abertas na revisão da Sprint 4 (#45 a #47, com `severidade-alta` ou `severidade-media`); a partir delas, M5 pode ser obtido pelo filtro `bug`.
 
+5. Na Sprint 5, os PRs foram mesclados na `developer`, e a `main` só recebeu as entregas no último dia, pelo PR #80. O roteiro de sistema foi executado com a `developer`, e a execução final usou um commit de conteúdo idêntico ao da `main`; M2 e a evidência dos casos automatizados vêm da CI na `main`.
+6. O roteiro de sistema (TSI) é conduzido por script no Google Chrome ([`roteiro-tsi.mjs`](evidencias/sprint-5/roteiro-tsi.mjs), com `playwright-core`), que repete os passos do Quadro 26 e salva as capturas. O QA confere as capturas antes de registrar o status; o script não decide o resultado sozinho.
+
 ## Reprodução
 
 ```bash
@@ -55,6 +58,10 @@ gh run view <id> --log --job <id-do-job-backend> | grep "passed"
 
 # Defeitos abertos por severidade
 gh issue list --label bug --state open --json number,title,labels
+
+# Roteiro de sistema (ambiente de demonstração no ar, catálogo carregado)
+docker compose exec api python -m app.seed_materiais
+npm i playwright-core && node roteiro-tsi.mjs ./capturas
 
 # Testes de regras, sem banco (exige o ambiente do backend)
 cd backend && pytest --noconftest tests/test_rules_avaliacao.py tests/test_rules_checkin.py -q
