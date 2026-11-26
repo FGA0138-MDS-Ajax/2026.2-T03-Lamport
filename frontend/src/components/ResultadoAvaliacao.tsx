@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import type { Faixa, ResultadoAvaliacao as ResultadoAvaliacaoType } from '../api/avaliacoes'
+import { AJUDA_PATH } from '../constants/ajuda'
 
 interface ResultadoAvaliacaoProps {
   resultado: ResultadoAvaliacaoType
@@ -140,6 +141,11 @@ export function ResultadoAvaliacao({
         <h2 id="orientacao-title">Orientação</h2>
         <h3>{config.titulo}</h3>
         <p>{resultado.orientacao}</p>
+        {resultado.nivel === 'crise' && (
+          <Link className="button button-primary resultado-ajuda-link" to={AJUDA_PATH}>
+            Ir para a Tela de Ajuda Imediata
+          </Link>
+        )}
       </section>
 
       <section aria-labelledby="escores-title">
