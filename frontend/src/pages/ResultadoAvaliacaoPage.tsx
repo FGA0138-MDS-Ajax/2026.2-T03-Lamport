@@ -4,6 +4,7 @@ import { useAuth } from '../auth/AuthContext'
 import { avaliacoesApi, type ResultadoAvaliacao as ResultadoAvaliacaoType } from '../api/avaliacoes'
 import { ResultadoAvaliacao } from '../components/ResultadoAvaliacao'
 import { Alert } from '../components/Alert'
+import { ApiError } from '../api/client'
 
 interface LocationState {
   resultado?: ResultadoAvaliacaoType
@@ -52,9 +53,8 @@ export function ResultadoAvaliacaoPage() {
       } catch (error) {
         if (cancelled) return
 
-        const message = error instanceof Error ? error.message.toLowerCase() : ''
-
-        if (message.includes('não encontrada') || message.includes('not found')) {
+        // 404: não existe ou pertence a outro usuário; 422: id que não é um UUID válido.
+        if (error instanceof ApiError && (error.status === 404 || error.status === 422)) {
           setLoadState({
             id: avaliacaoId,
             status: 'not-found',
