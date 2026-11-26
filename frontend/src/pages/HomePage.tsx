@@ -1,5 +1,6 @@
 import { useAuth } from '../auth/AuthContext'
 import { useNavigate } from 'react-router'
+import { ExcluirConta } from '../components/ExcluirConta'
 
 const dateFormatter = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' })
 
@@ -30,6 +31,8 @@ export function HomePage() {
       <p className="muted">Conta criada em {dateFormatter.format(new Date(user.criado_em))}.</p>
 
       <CheckinButton />
+
+      <ExcluirConta />
     </section>
   )
 }
