@@ -6,7 +6,6 @@ import { checkinsApi, type Checkin } from '../api/checkins'
 import { faixaLabels, nivelLabels } from '../constants/avaliacao'
 import { useNavigate } from 'react-router'
 
-
 function CheckinButton() {
   const navigate = useNavigate()
   const handleCheckin = () => {
@@ -63,7 +62,6 @@ interface ListState<T> {
   loading: boolean
   error: boolean
 }
-
 
 function useList<T>(token: string | null, load: (token: string) => Promise<T[]>): ListState<T> {
   const [state, setState] = useState<ListState<T>>({ items: [], loading: true, error: false })
