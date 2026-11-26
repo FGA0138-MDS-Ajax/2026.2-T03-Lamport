@@ -14,7 +14,8 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
 | 11/11/2026 | 2.4 | Revisão da Sprint 4 pelo QA (issue #10): Quadro 26 com status, evidência (execução da CI na `main`), reparos e ciclos dos casos previstos até a Sprint 4; seção 6.1, item 5, e legenda da seção 6.2 atualizadas. | Grupo Lamport |
 | 12/11/2026 | 2.5 | Correções do registro da Sprint 4 no Quadro 26 (issue #10): status do TU-06 com a divergência de R-S1 (ordem de prioridade sem AJUDA_PROFISSIONAL no código) e o material menos recente não verificado; ciclos do TI-01 (2) e do TS-01 (3) alinhados aos reparos registrados; observação de que o teste do TS-01 percorre o contrato OpenAPI. | Grupo Lamport |
 | 15/11/2026 | 2.6 | Revisão da Sprint 4 pelo PO e planejamento da Sprint 5: percentuais de conclusão das Sprints 2 a 4 no Quadro 8; replanejamento pelo critério 1 da seção 2.6, com as recomendações do check-in (R06) passando à Sprint 5; decisão do PO sobre o DEF-02 (o Quadro 20 permanece); situação do catálogo e risco R6 atualizados. | Grupo Lamport |
-| 15/11/2026 | **2.7** (vigente) | Decisão do PO no planejamento da Sprint 5 (DP-1): Quadro 18 com o motivo exibido para cada tag gerada pela avaliação, e regra gravada nas recomendações da avaliação (R-S5). | Grupo Lamport |
+| 15/11/2026 | 2.7 | Decisão do PO no planejamento da Sprint 5 (DP-1): Quadro 18 com o motivo exibido para cada tag gerada pela avaliação, e regra gravada nas recomendações da avaliação (R-S5). | Grupo Lamport |
+| 25/11/2026 | **2.8** (vigente) | Conferência do catálogo pelo PO: os 7 materiais aprovados pela regra 3 da seção 4.5.4; Quadro 21 com o catálogo completo. | Grupo Lamport |
 
 ### Principais mudanças entre versões
 
@@ -73,6 +74,12 @@ Esta página registra todas as versões dos documentos do projeto. **A versão m
     - **Quadro 18:** nova coluna com o motivo exibido ao usuário para cada tag gerada por R-A2, R-A3 e R-A4, no lugar da lacuna entre o Quadro 18 e a R-S5 (o check-in já tinha os motivos no Quadro 16).
     - **Seção 4.5.2:** nas recomendações da avaliação, a regra gravada é a que definiu o nível (R-A2, R-A3 ou R-A4) e o motivo é o da tag do material.
     - Limites, níveis, orientações, requisitos e roteiro de testes não mudaram.
+
+??? abstract "2.7 → 2.8"
+    - **Origem:** tarefa do PO no [planejamento da Sprint 5](sprints/sprint-5.md#32-tarefas-do-po) (issue #63).
+    - **Seção 4.5.4:** o PO conferiu os 7 materiais de `catalog/materiais.yaml` pela regra 3, em 25/11/2026: fonte oficial em domínio permitido, link abrindo com o título informado e tag adequada ao assunto. Nenhum material foi alterado ou marcado como inativo.
+    - **Quadro 21:** deixa de ser uma amostra e passa a listar o catálogo completo; entra o material de SONO (`durma-bem-viva-melhor-ms`), que já estava no arquivo desde a Sprint 4.
+    - Regras do catálogo, requisitos, roteiro de testes e Arquitetura não mudaram.
 
 ## Documento de Arquitetura
 
