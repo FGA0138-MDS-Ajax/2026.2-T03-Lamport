@@ -9,6 +9,7 @@ export interface AuthContextValue {
   token: string | null
   login: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>
+  deleteAccount: () => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null)

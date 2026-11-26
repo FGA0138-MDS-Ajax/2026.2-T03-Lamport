@@ -11,6 +11,10 @@
   --color-error-bg: #fdecea;
   --color-success: #1e6b3a;
   --color-success-bg: #e7f4ec;
+  --color-success-border: #9bc9aa;
+  --color-primary-soft: #e7f1f1;
+  --color-primary-border: #8bb8bd;
+  --color-surface-muted: #f1f5f5;
   --radius: 10px;
 
   font-family: 'Inter', sans-serif;
@@ -291,6 +295,49 @@ a {
   .header-email {
     display: none;
   }
+}
+
+/* Exclusão de conta (R04) */
+
+.account-delete {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.account-delete h2 {
+  margin-top: 0;
+  color: var(--color-error);
+}
+
+.account-delete-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.account-delete-actions .button-secondary {
+  padding: 0.625rem 1rem;
+}
+
+.button-danger {
+  background: var(--color-error);
+  color: #fff;
+}
+
+.button-danger:hover:not(:disabled) {
+  background: #8c1d17;
+}
+
+.button-danger-outline {
+  background: transparent;
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.button-danger-outline:hover:not(:disabled) {
+  background: var(--color-error-bg);
 }
 
 /* Navegação do cabeçalho */
@@ -738,6 +785,300 @@ a {
   margin-bottom: 1rem;
   text-align: center;
   text-decoration: none;
+}
+
+/* Resultado da avaliação */
+
+.resultado-page {
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.resultado-page h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+.resultado-page h2 {
+  margin: 0 0 0.65rem;
+  font-size: 1.05rem;
+}
+
+/* Aviso de registro */
+
+.resultado-page > .alert-success {
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--color-success-border);
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+/* Aviso de que o resultado não é diagnóstico */
+
+.resultado-disclaimer {
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--color-primary-border);
+  border-radius: 7px;
+  background: var(--color-surface);
+  font-size: 0.875rem;
+}
+
+.resultado-disclaimer strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--color-primary);
+}
+
+.resultado-disclaimer p {
+  margin: 0;
+}
+
+/* Orientação */
+
+.resultado-orientacao {
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 7px;
+  background: var(--color-surface);
+}
+
+.resultado-orientacao h2 {
+  margin-bottom: 0.35rem;
+  color: var(--color-primary);
+  font-size: 0.875rem;
+}
+
+.resultado-orientacao h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.resultado-orientacao p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.resultado-ajuda-link {
+  display: inline-block;
+  width: auto;
+  margin-top: 0.75rem;
+  text-decoration: none;
+}
+
+/* Escores */
+
+.resultado-scores {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.resultado-score {
+  min-width: 0;
+  padding: 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  background: var(--color-surface);
+}
+
+.resultado-score-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.resultado-score-header h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.resultado-score-header > div > p {
+  margin: 0.1rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+.resultado-score-value {
+  flex-shrink: 0;
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.resultado-score-value span {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.resultado-score-range {
+  margin: 0.45rem 0;
+  font-size: 0.875rem;
+}
+
+.resultado-faixas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resultado-faixa {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 1.6rem;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-size: 0.8rem;
+}
+
+.resultado-faixa-label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.resultado-faixa-intervalo {
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.resultado-faixa-ativa {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.resultado-faixa-ativa .resultado-faixa-intervalo {
+  color: var(--color-primary);
+}
+
+.resultado-faixa-indicador {
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.resultado-score-note {
+  margin: 0.5rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+/* Materiais recomendados */
+
+.resultado-section-description {
+  margin: -0.2rem 0 0.65rem;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.resultado-recomendacoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.resultado-material {
+  padding: 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  background: var(--color-surface);
+}
+
+.resultado-material h3 {
+  margin: 0 0 0.2rem;
+  font-size: 0.95rem;
+}
+
+.resultado-material-source {
+  margin: 0 0 0.4rem;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+.resultado-material-summary {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.resultado-material > a {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.resultado-material-reason {
+  padding: 0.45rem 0.55rem;
+  border-radius: 5px;
+  background: var(--color-surface-muted);
+  font-size: 0.8rem;
+}
+
+.resultado-material-reason summary {
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.resultado-material-reason p {
+  margin: 0.35rem 0 0;
+  line-height: 1.45;
+}
+
+/* Navegação inferior */
+
+.resultado-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.resultado-actions .button {
+  font-size: 0.875rem;
+}
+
+.resultado-home-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+@media (max-width: 30rem) {
+  .resultado-page {
+    gap: 0.85rem;
+  }
+
+  .resultado-page h1 {
+    font-size: 1.3rem;
+  }
+
+  .resultado-scores {
+    grid-template-columns: 1fr;
+  }
 }
 
 .visually-hidden {

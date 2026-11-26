@@ -11,6 +11,7 @@ import { AjudaPage } from './pages/AjudaPage'
 import { HistoryPage } from './pages/HistoryPage'
 import { AJUDA_PATH } from './constants/ajuda'
 import { BiweeklyAssesment } from './pages/BiweeklyAssesment'
+import { ResultadoAvaliacaoPage } from './pages/ResultadoAvaliacaoPage'
 
 export function App() {
   return (
@@ -21,6 +22,8 @@ export function App() {
           <Route path="dailycheckin" element={<DailyCheckin />} />
           <Route path="biweeklyassesment" element={<BiweeklyAssesment />} />
           <Route path="historico" element={<HistoryPage />} />
+          <Route path="avaliacoes/resultado" element={<ResultadoAvaliacaoPage />} />
+          <Route path="avaliacoes/:id" element={<ResultadoAvaliacaoPage />} />
         </Route>
         <Route element={<GuestOnly />}>
           <Route path="login" element={<LoginPage />} />

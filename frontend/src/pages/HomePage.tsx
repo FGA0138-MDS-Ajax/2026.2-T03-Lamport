@@ -1,6 +1,7 @@
 import { useAuth } from '../auth/AuthContext'
 import { useNavigate } from 'react-router'
 import { BiweeklyAssesment } from './BiweeklyAssesment'
+import { ExcluirConta } from '../components/ExcluirConta'
 
 const dateFormatter = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' })
 
@@ -51,6 +52,8 @@ export function HomePage() {
         ajuda a monitorar seu bem-estar.
       </p>
       <BiweeklyAssesmentButton />
+
+      <ExcluirConta />
     </section>
   )
 }

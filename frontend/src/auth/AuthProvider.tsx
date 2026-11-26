@@ -57,6 +57,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setSession({ status: 'anonymous' })
   }, [session])
 
+  // Diferente do logout: se a API falhar, a sessão é mantida e o erro sobe para a tela,
+  // porque a conta continua existindo e o usuário precisa saber disso (R04).
+  const deleteAccount = useCallback(async () => {
+    if (session.status !== 'authenticated') return
+    await authApi.deleteAccount(session.token)
+    sessionStorage.removeItem(TOKEN_KEY)
+    setSession({ status: 'anonymous' })
+  }, [session])
+
   const value = useMemo<AuthContextValue>(
     () => ({
       status: session.status,
@@ -64,8 +73,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       token: session.status === 'authenticated' ? session.token : null,
       login,
       logout,
+      deleteAccount,
     }),
-    [session, login, logout],
+    [session, login, logout, deleteAccount],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
